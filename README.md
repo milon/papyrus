@@ -15,7 +15,8 @@ This is a port of [ibis-next](https://github.com/Hi-Folks/ibis-next) from PHP to
 - 🎨 Customizable themes and styling
 - 💻 Syntax highlighting for code blocks
 - 📋 Frontmatter support for metadata
-- 🖼️ Support for custom fonts, images, and cover pages
+- 🖼️ Support for custom fonts, images, and cover pages (PNG, JPG, GIF, WEBP, SVG)
+- 🎯 Default cover image and sample content included with `init`
 
 ## Installation
 
@@ -52,12 +53,15 @@ This creates the following structure:
 ├── assets/
 │   ├── fonts/        # Custom fonts
 │   ├── images/       # Images and cover
+│   │   └── cover.png # Default cover image
 │   ├── theme-light.html
 │   ├── theme-dark.html
 │   ├── theme-html.html
 │   └── style.css
 └── export/           # Generated files
 ```
+
+**Note**: The `init` command automatically includes a default cover image (`cover.png`) and sample content to help you get started.
 
 ### Generate PDF
 
@@ -96,7 +100,9 @@ title = "My Book"
 author = "Author Name"
 language = "en"
 version = "1.0.0"
-cover = "cover.jpg"  # Optional: path relative to assets/images/
+cover = "cover.png"  # Optional: path relative to assets/images/
+                     # Supported formats: PNG, JPG, JPEG, GIF, WEBP, SVG
+                     # Default: cover.png (included with init)
 
 # Optional: specify which markdown files to include
 # If not specified, all .md files in content/ are included
@@ -224,18 +230,34 @@ Generate an HTML eBook.
 
 Generate a sample PDF (uses sample configuration from `papyrus.toml`).
 
-### `config:migrate [--book-dir <path>]`
+## Cover Images
 
-Migrate old ibis-next configuration files (PHP) to Papyrus format (TOML).
+Papyrus supports cover images in the following formats:
+- **PNG** (recommended)
+- **JPG/JPEG**
+- **GIF**
+- **WEBP**
+- **SVG**
+
+Cover images should be placed in the `assets/images/` directory and referenced in `papyrus.toml`:
+
+```toml
+cover = "my-cover.png"  # Relative to assets/images/
+```
+
+**Note**: PDF files are not supported as cover images. Convert PDF covers to PNG or JPG before using them.
+
+When you run `papyrus init`, a default `cover.png` is automatically created in `assets/images/` with the Papyrus branding.
 
 ## Migration from ibis-next
 
 If you're migrating from ibis-next:
 
-1. Run `papyrus config:migrate` to attempt automatic migration
-2. Review and update `papyrus.toml` manually if needed
+1. Create a new `papyrus.toml` configuration file based on your old `ibis.php` config
+2. Review and update `papyrus.toml` manually as needed
 3. Your markdown files should work as-is
-4. Update theme files if you had custom themes
+4. Update theme files if you had custom themes (convert PHP templates to Tera templates)
+5. Convert any PDF cover images to PNG or JPG format
 
 ## Development
 
@@ -252,7 +274,7 @@ RUST_LOG=debug cargo run pdf
 
 ## License
 
-MIT License - see LICENSE file for details.
+[MIT License](https://opensource.org/license/mit)
 
 ## Credits
 
@@ -262,3 +284,7 @@ MIT License - see LICENSE file for details.
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
+
+## Disclaimer
+
+This project was built for the purpose of learning Rust. While it is functional and can be used to generate eBooks, it may not have all the features or polish of production-ready software. Use at your own discretion.

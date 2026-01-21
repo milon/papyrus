@@ -55,7 +55,7 @@ pub async fn generate_html<P: AsRef<Path>>(book_dir: P, content_dir: P) -> Resul
         .join("\n<hr>\n");
     
     // Render template
-    let mut tera = Tera::new("dummy")?;
+    let mut tera = Tera::default();
     tera.add_raw_template("theme", &theme_content)?;
     
     let mut context = Context::new();

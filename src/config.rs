@@ -4,6 +4,23 @@ use crate::error::{PapyrusError, Result};
 use std::fs;
 use toml;
 
+// Embed template files at compile time
+const THEME_LIGHT_TEMPLATE: &str = include_str!("../templates/stubs/assets/theme-light.html");
+const THEME_DARK_TEMPLATE: &str = include_str!("../templates/stubs/assets/theme-dark.html");
+const THEME_HTML_TEMPLATE: &str = include_str!("../templates/stubs/assets/theme-html.html");
+const STYLE_CSS_TEMPLATE: &str = include_str!("../templates/stubs/assets/style.css");
+const COVER_IMAGE: &[u8] = include_bytes!("../templates/stubs/assets/images/cover.png");
+
+// Sample content chapters
+const SAMPLE_CHAPTER_01: &str = include_str!("../templates/stubs/content/01-introduction.md");
+const SAMPLE_CHAPTER_02: &str = include_str!("../templates/stubs/content/02-installation.md");
+const SAMPLE_CHAPTER_03: &str = include_str!("../templates/stubs/content/03-quick-start.md");
+const SAMPLE_CHAPTER_04: &str = include_str!("../templates/stubs/content/04-configuration.md");
+const SAMPLE_CHAPTER_05: &str = include_str!("../templates/stubs/content/05-writing-content.md");
+const SAMPLE_CHAPTER_06: &str = include_str!("../templates/stubs/content/06-themes-and-styling.md");
+const SAMPLE_CHAPTER_07: &str = include_str!("../templates/stubs/content/07-generating-ebooks.md");
+const SAMPLE_CHAPTER_08: &str = include_str!("../templates/stubs/content/08-cover-images.md");
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Config {
     pub title: String,
@@ -59,7 +76,7 @@ impl Config {
             title: "My Book".to_string(),
             author: "Author Name".to_string(),
             language: Some("en".to_string()),
-            cover: None,
+            cover: Some("cover.png".to_string()),
             version: Some("1.0.0".to_string()),
             md_file_list: None,
             sample: None,
@@ -81,189 +98,31 @@ pub async fn init_project<P: AsRef<Path>>(path: P) -> Result<()> {
     let config = Config::default();
     config.save(path)?;
     
-    // Create sample content file
-    let sample_content = r#"---
-title: "Introduction"
----
-
-# Introduction
-
-Welcome to your new book!
-
-This is a sample chapter. You can start writing your content here.
-
-## Getting Started
-
-Edit the files in the `content` directory to add your chapters.
-"#;
+    // Create sample content files from templates
+    fs::write(path.join("content").join("01-introduction.md"), SAMPLE_CHAPTER_01)?;
+    fs::write(path.join("content").join("02-installation.md"), SAMPLE_CHAPTER_02)?;
+    fs::write(path.join("content").join("03-quick-start.md"), SAMPLE_CHAPTER_03)?;
+    fs::write(path.join("content").join("04-configuration.md"), SAMPLE_CHAPTER_04)?;
+    fs::write(path.join("content").join("05-writing-content.md"), SAMPLE_CHAPTER_05)?;
+    fs::write(path.join("content").join("06-themes-and-styling.md"), SAMPLE_CHAPTER_06)?;
+    fs::write(path.join("content").join("07-generating-ebooks.md"), SAMPLE_CHAPTER_07)?;
+    fs::write(path.join("content").join("08-cover-images.md"), SAMPLE_CHAPTER_08)?;
     
-    fs::write(path.join("content").join("01-introduction.md"), sample_content)?;
+    // Create sample theme files from templates
+    copy_template_file(path, "theme-light.html", THEME_LIGHT_TEMPLATE)?;
+    copy_template_file(path, "theme-dark.html", THEME_DARK_TEMPLATE)?;
+    copy_template_file(path, "theme-html.html", THEME_HTML_TEMPLATE)?;
+    copy_template_file(path, "style.css", STYLE_CSS_TEMPLATE)?;
     
-    // Create sample theme files
-    create_default_theme_light(path)?;
-    create_default_theme_dark(path)?;
-    create_default_theme_html(path)?;
-    create_default_style_css(path)?;
+    // Copy default cover image
+    let cover_path = path.join("assets").join("images").join("cover.png");
+    fs::write(&cover_path, COVER_IMAGE)?;
     
     Ok(())
 }
 
-fn create_default_theme_light<P: AsRef<Path>>(path: P) -> Result<()> {
-    let theme = r#"<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
-    <style>
-        body {
-            font-family: 'Georgia', serif;
-            line-height: 1.6;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background: #fff;
-            color: #333;
-        }
-        h1, h2, h3 {
-            color: #2c3e50;
-        }
-        code {
-            background: #f4f4f4;
-            padding: 2px 6px;
-            border-radius: 3px;
-        }
-        pre {
-            background: #f4f4f4;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-        }
-    </style>
-</head>
-<body>
-    {{ content }}
-</body>
-</html>"#;
-    
-    fs::write(path.as_ref().join("assets").join("theme-light.html"), theme)?;
-    Ok(())
-}
-
-fn create_default_theme_dark<P: AsRef<Path>>(path: P) -> Result<()> {
-    let theme = r#"<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
-    <style>
-        body {
-            font-family: 'Georgia', serif;
-            line-height: 1.6;
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
-            background: #1a1a1a;
-            color: #e0e0e0;
-        }
-        h1, h2, h3 {
-            color: #fff;
-        }
-        code {
-            background: #2d2d2d;
-            padding: 2px 6px;
-            border-radius: 3px;
-            color: #f8f8f2;
-        }
-        pre {
-            background: #2d2d2d;
-            padding: 15px;
-            border-radius: 5px;
-            overflow-x: auto;
-        }
-    </style>
-</head>
-<body>
-    {{ content }}
-</body>
-</html>"#;
-    
-    fs::write(path.as_ref().join("assets").join("theme-dark.html"), theme)?;
-    Ok(())
-}
-
-fn create_default_theme_html<P: AsRef<Path>>(path: P) -> Result<()> {
-    let theme = r#"<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ title }}</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-    <div class="container">
-        {{ content }}
-    </div>
-</body>
-</html>"#;
-    
-    fs::write(path.as_ref().join("assets").join("theme-html.html"), theme)?;
-    Ok(())
-}
-
-fn create_default_style_css<P: AsRef<Path>>(path: P) -> Result<()> {
-    let css = r#"body {
-    font-family: 'Georgia', serif;
-    line-height: 1.6;
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-    background: #fff;
-    color: #333;
-}
-
-h1, h2, h3 {
-    color: #2c3e50;
-}
-
-code {
-    background: #f4f4f4;
-    padding: 2px 6px;
-    border-radius: 3px;
-}
-
-pre {
-    background: #f4f4f4;
-    padding: 15px;
-    border-radius: 5px;
-    overflow-x: auto;
-}
-
-img {
-    max-width: 100%;
-    height: auto;
-}
-"#;
-    
-    fs::write(path.as_ref().join("assets").join("style.css"), css)?;
-    Ok(())
-}
-
-pub async fn migrate_config<P: AsRef<Path>>(book_dir: P) -> Result<()> {
-    // Check for old PHP config file
-    let old_config_path = book_dir.as_ref().join("ibis.php");
-    
-    if old_config_path.exists() {
-        // TODO: Parse PHP array config and convert to TOML
-        // This would require parsing PHP code, which is complex
-        // For now, we'll just inform the user
-        println!("Found old ibis.php config file. Manual migration may be required.");
-        println!("Please review the old config and create a papyrus.toml file.");
-    } else {
-        println!("No old configuration file found.");
-    }
-    
+fn copy_template_file<P: AsRef<Path>>(path: P, filename: &str, content: &str) -> Result<()> {
+    let assets_dir = path.as_ref().join("assets");
+    fs::write(assets_dir.join(filename), content)?;
     Ok(())
 }

@@ -93,16 +93,26 @@ pub async fn generate_epub<P: AsRef<Path>>(book_dir: P, content_dir: P) -> Resul
         zip.write_all(css_content.as_bytes())?;
     }
     
-    // Copy cover image if exists
+    // Copy cover image if exists (only image formats supported)
     if let Some(cover_path) = &config.cover {
         let cover_file_path = book_dir.join("assets").join("images").join(cover_path);
         if cover_file_path.exists() {
-            let cover_data = fs::read(&cover_file_path)?;
             let ext = cover_file_path.extension()
                 .and_then(|s| s.to_str())
-                .unwrap_or("jpg");
-            zip.start_file(format!("OEBPS/cover.{}", ext), options)?;
-            zip.write_all(&cover_data)?;
+                .map(|s| s.to_lowercase())
+                .unwrap_or_else(|| "jpg".to_string());
+            
+            // EPUB supports PNG, JPG, GIF, SVG, WEBP - only image formats
+            match ext.as_str() {
+                "png" | "jpg" | "jpeg" | "gif" | "webp" | "svg" => {
+                    let cover_data = fs::read(&cover_file_path)?;
+                    zip.start_file(format!("OEBPS/cover.{}", ext), options)?;
+                    zip.write_all(&cover_data)?;
+                }
+                _ => {
+                    // Skip unsupported formats (like PDF)
+                }
+            }
         }
     }
     

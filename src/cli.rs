@@ -54,12 +54,6 @@ pub enum Commands {
         #[arg(default_value = "light")]
         theme: String,
     },
-    /// Migrate old configuration files
-    ConfigMigrate {
-        /// Book directory where config file is located
-        #[arg(short, long, default_value = ".")]
-        book_dir: PathBuf,
-    },
 }
 
 pub async fn init_command(path: PathBuf) -> Result<()> {
@@ -107,12 +101,5 @@ pub async fn sample_command(theme: String) -> Result<()> {
     // TODO: Implement sample generation logic
     pdf::generate_pdf(&book_dir, &content_dir, &theme).await?;
     println!("Sample PDF generated successfully!");
-    Ok(())
-}
-
-pub async fn config_migrate_command(book_dir: PathBuf) -> Result<()> {
-    use crate::config;
-    config::migrate_config(&book_dir).await?;
-    println!("Configuration migrated successfully!");
     Ok(())
 }

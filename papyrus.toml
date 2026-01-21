@@ -1,0 +1,5 @@
+title = "My Book"
+author = "Author Name"
+language = "en"
+cover = "cover.png"
+version = "1.0.0"

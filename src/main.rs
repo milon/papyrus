@@ -32,9 +32,6 @@ async fn main() -> Result<()> {
         cli::Commands::Sample { theme } => {
             cli::sample_command(theme).await?;
         }
-        cli::Commands::ConfigMigrate { book_dir } => {
-            cli::config_migrate_command(book_dir).await?;
-        }
     }
     
     Ok(())

@@ -42,28 +42,73 @@ pub async fn generate_pdf<P: AsRef<Path>>(book_dir: P, content_dir: P, theme: &s
     
     let theme_content = fs::read_to_string(&theme_path)?;
     
-    // Combine all HTML content
+    // Generate cover page HTML if cover exists
+    let cover_html = if let Some(cover_file) = &config.cover {
+        let cover_path = book_dir.join("assets").join("images").join(cover_file);
+        if cover_path.exists() {
+            let cover_url = cover_path.canonicalize()?
+                .to_string_lossy()
+                .replace('\\', "/");
+            
+            // Check file extension - only support image formats
+            let ext = cover_path.extension()
+                .and_then(|s| s.to_str())
+                .map(|s| s.to_lowercase())
+                .unwrap_or_default();
+            
+            match ext.as_str() {
+                "png" | "jpg" | "jpeg" | "gif" | "webp" | "svg" => {
+                    // For image covers, use img tag
+                    format!(
+                        r#"<div class="cover-page" style="page-break-after: always; text-align: center; padding: 2cm; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+                            <img src="file://{}" alt="Cover" style="max-width: 100%; max-height: 80vh; object-fit: contain;" />
+                        </div>"#,
+                        cover_url
+                    )
+                }
+                _ => {
+                    // Skip unsupported formats (like PDF)
+                    String::new()
+                }
+            }
+        } else {
+            String::new()
+        }
+    } else {
+        String::new()
+    };
+    
+    // Combine all HTML content with page breaks between chapters
     let combined_html: String = processed_files
         .iter()
-        .map(|file| {
+        .enumerate()
+        .map(|(index, file)| {
             let title = file.frontmatter
                 .as_ref()
                 .and_then(|fm| fm.title.as_ref())
                 .map(|t| format!("<h1>{}</h1>", html_escape(t)))
                 .unwrap_or_default();
-            format!("{}\n{}", title, file.html)
+            
+            // Add page break before each chapter (except the first one)
+            let page_break = if index > 0 {
+                r#"<div style="page-break-before: always;"></div>"#
+            } else {
+                ""
+            };
+            
+            format!("{}\n{}\n{}", page_break, title, file.html)
         })
         .collect::<Vec<_>>()
-        .join("\n<hr>\n");
+        .join("\n");
     
     // Render template
     use tera::{Tera, Context};
-    let mut tera = Tera::new("dummy")?;
+    let mut tera = Tera::default();
     tera.add_raw_template("theme", &theme_content)?;
     
     let mut context = Context::new();
     context.insert("title", &config.title);
-    context.insert("content", &combined_html);
+    context.insert("content", &format!("{}\n{}", cover_html, combined_html));
     
     let rendered = tera.render("theme", &context)?;
     
