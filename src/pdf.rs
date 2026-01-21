@@ -78,6 +78,9 @@ pub async fn generate_pdf<P: AsRef<Path>>(book_dir: P, content_dir: P, theme: &s
         String::new()
     };
     
+    // Generate table of contents
+    let toc_html = generate_toc(&processed_files);
+    
     // Combine all HTML content with page breaks between chapters
     let combined_html: String = processed_files
         .iter()
@@ -86,8 +89,8 @@ pub async fn generate_pdf<P: AsRef<Path>>(book_dir: P, content_dir: P, theme: &s
             let title = file.frontmatter
                 .as_ref()
                 .and_then(|fm| fm.title.as_ref())
-                .map(|t| format!("<h1>{}</h1>", html_escape(t)))
-                .unwrap_or_default();
+                .map(|t| format!("<h1 id=\"chapter-{}\">{}</h1>", index + 1, html_escape(t)))
+                .unwrap_or_else(|| format!("<h1 id=\"chapter-{}\">Chapter {}</h1>", index + 1, index + 1));
             
             // Add page break before each chapter (except the first one)
             let page_break = if index > 0 {
@@ -108,7 +111,7 @@ pub async fn generate_pdf<P: AsRef<Path>>(book_dir: P, content_dir: P, theme: &s
     
     let mut context = Context::new();
     context.insert("title", &config.title);
-    context.insert("content", &format!("{}\n{}", cover_html, combined_html));
+    context.insert("content", &format!("{}\n{}\n{}", cover_html, toc_html, combined_html));
     
     let rendered = tera.render("theme", &context)?;
     
@@ -185,11 +188,22 @@ async fn generate_with_weasyprint(html_path: &Path, pdf_path: &Path) -> Result<(
     // Inject CSS page number rules for weasyprint
     const PAGE_CSS: &str = include_str!("../templates/pdf_page.css");
     let html_content = fs::read_to_string(html_path)?;
+    
+    // Add TOC page number CSS using target-counter (supported by weasyprint)
+    let toc_css = r#"
+        .toc-page a::after {
+            content: leader('.') target-counter(attr(href), page);
+            float: right;
+            margin-left: 1em;
+        }
+    "#;
+    
     let page_css = format!(r#"
         <style>
             {}
+            {}
         </style>
-    "#, PAGE_CSS);
+    "#, PAGE_CSS, toc_css);
     
     // Insert CSS before closing </head> tag
     let modified_html = html_content.replace("</head>", &format!("{}</head>", page_css));
@@ -215,11 +229,21 @@ async fn generate_with_chrome(html_path: &Path, pdf_path: &Path) -> Result<()> {
     // Inject CSS page number rules for Chrome
     const PAGE_CSS: &str = include_str!("../templates/pdf_page.css");
     let html_content = fs::read_to_string(html_path)?;
+    
+    // Add TOC page number CSS using target-counter (supported by Chrome)
+    let toc_css = r#"
+        .toc-page a::after {
+            content: leader('.') target-counter(attr(href), page);
+            float: right;
+        }
+    "#;
+    
     let page_css = format!(r#"
         <style>
             {}
+            {}
         </style>
-    "#, PAGE_CSS);
+    "#, PAGE_CSS, toc_css);
     
     // Insert CSS before closing </head> tag
     let modified_html = html_content.replace("</head>", &format!("{}</head>", page_css));
@@ -270,6 +294,31 @@ async fn generate_with_chrome(html_path: &Path, pdf_path: &Path) -> Result<()> {
             String::from_utf8_lossy(&output.stderr)
         )))
     }
+}
+
+fn generate_toc(files: &[markdown::MarkdownFile]) -> String {
+    let toc_items: Vec<String> = files
+        .iter()
+        .enumerate()
+        .map(|(index, file)| {
+            let title = file.frontmatter
+                .as_ref()
+                .and_then(|fm| fm.title.as_ref())
+                .map(|t| html_escape(t))
+                .unwrap_or_else(|| format!("Chapter {}", index + 1));
+            
+            format!(
+                "        <li style=\"margin-bottom: 0.5em;\">\n            <a href=\"#chapter-{}\" style=\"text-decoration: none; color: inherit;\">{}</a>\n        </li>",
+                index + 1,
+                title
+            )
+        })
+        .collect();
+    
+    format!(
+        "<div class=\"toc-page\" style=\"page-break-after: always; padding: 2cm;\">\n    <h1 style=\"text-align: center; margin-bottom: 2cm; font-size: 2em;\">Table of Contents</h1>\n    <ul style=\"list-style: none; padding: 0; font-size: 1.1em; line-height: 1.8;\">\n{}\n    </ul>\n</div>",
+        toc_items.join("\n")
+    )
 }
 
 fn html_escape(s: &str) -> String {
