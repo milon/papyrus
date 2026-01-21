@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <style>
+        body {
+            font-family: 'Georgia', serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #1a1a1a !important;
+            color: #e0e0e0;
+            border: none !important;
+        }
+        h1, h2, h3 {
+            color: #fff;
+        }
+        code {
+            font-family: 'Courier New', Courier, 'Lucida Console', Monaco, monospace !important;
+            background: #2d2d2d;
+            padding: 2px 6px;
+            border-radius: 3px;
+            border: none !important;
+            color: #f8f8f2;
+        }
+        pre {
+            font-family: 'Courier New', Courier, 'Lucida Console', Monaco, monospace !important;
+            background: #2d2d2d;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #444 !important;
+            overflow-x: auto;
+        }
+        pre code {
+            font-family: 'Courier New', Courier, 'Lucida Console', Monaco, monospace !important;
+            border: none !important;
+            background: transparent !important;
+        }
+        code[class*="language-"] {
+            font-family: 'Courier New', Courier, 'Lucida Console', Monaco, monospace !important;
+            border: none !important;
+        }
+        img {
+            border: none !important;
+        }
+        table {
+            border-color: #444 !important;
+        }
+        table td, table th {
+            border-color: #444 !important;
+        }
+        hr {
+            border-color: #444 !important;
+            background-color: #444 !important;
+        }
+    </style>
+</head>
+<body>
+    {{ content }}
+</body>
+</html>
