@@ -1,0 +1,52 @@
+@page {
+    /* Full-bleed dark page so the "margins" aren't white */
+    margin: 0;
+    background: #1a1a1a !important;
+    background-color: #1a1a1a !important;
+    @bottom-center {
+        content: counter(page);
+        font-family: 'Georgia', serif;
+        font-size: 10pt;
+        color: #e0e0e0;
+        padding-bottom: 0.5cm;
+    }
+}
+@page:first {
+    background: #1a1a1a !important;
+    background-color: #1a1a1a !important;
+    @bottom-center {
+        content: "";
+    }
+}
+.cover-page {
+    page: cover;
+}
+@page cover {
+    background: #1a1a1a !important;
+    background-color: #1a1a1a !important;
+    @bottom-center {
+        content: "";
+    }
+}
+html {
+    background: #1a1a1a !important;
+    background-color: #1a1a1a !important;
+}
+html, body {
+    background: #1a1a1a !important;
+    background-color: #1a1a1a !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+/* Re-create the 2cm "margins" as padding on a wrapper (doesn't touch typography) */
+body {
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+}
+.pdf-content {
+    padding: 2cm !important;
+    box-sizing: border-box;
+}

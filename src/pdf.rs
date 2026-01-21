@@ -111,7 +111,15 @@ pub async fn generate_pdf<P: AsRef<Path>>(book_dir: P, content_dir: P, theme: &s
     
     let mut context = Context::new();
     context.insert("title", &config.title);
-    context.insert("content", &format!("{}\n{}\n{}", cover_html, toc_html, combined_html));
+    let full_content = format!("{}\n{}\n{}", cover_html, toc_html, combined_html);
+    // For dark PDFs we use full-bleed rendering in some backends; keep consistent
+    // margins by applying padding to an explicit wrapper element.
+    let full_content = if theme == "dark" {
+        format!(r#"<div class="pdf-content">{}</div>"#, full_content)
+    } else {
+        full_content
+    };
+    context.insert("content", &full_content);
     
     let rendered = tera.render("theme", &context)?;
     
@@ -124,19 +132,20 @@ pub async fn generate_pdf<P: AsRef<Path>>(book_dir: P, content_dir: P, theme: &s
     
     // Generate PDF using external tool
     // Try wkhtmltopdf first, then weasyprint, then chrome/chromium
-    let pdf_path = export_dir.join(format!("{}.pdf", sanitize_filename(&config.title)));
+    let filename_suffix = if theme == "dark" { "_dark" } else { "" };
+    let pdf_path = export_dir.join(format!("{}{}.pdf", sanitize_filename(&config.title), filename_suffix));
     
-    if let Ok(_) = generate_with_wkhtmltopdf(&temp_html, &pdf_path).await {
+    if let Ok(_) = generate_with_wkhtmltopdf(&temp_html, &pdf_path, theme).await {
         fs::remove_file(&temp_html)?;
         return Ok(());
     }
     
-    if let Ok(_) = generate_with_weasyprint(&temp_html, &pdf_path).await {
+    if let Ok(_) = generate_with_weasyprint(&temp_html, &pdf_path, theme).await {
         fs::remove_file(&temp_html)?;
         return Ok(());
     }
     
-    if let Ok(_) = generate_with_chrome(&temp_html, &pdf_path).await {
+    if let Ok(_) = generate_with_chrome(&temp_html, &pdf_path, theme).await {
         fs::remove_file(&temp_html)?;
         return Ok(());
     }
@@ -148,30 +157,61 @@ pub async fn generate_pdf<P: AsRef<Path>>(book_dir: P, content_dir: P, theme: &s
     ))
 }
 
-async fn generate_with_wkhtmltopdf(html_path: &Path, pdf_path: &Path) -> Result<()> {
+async fn generate_with_wkhtmltopdf(html_path: &Path, pdf_path: &Path, theme: &str) -> Result<()> {
     // Load footer HTML template
     const FOOTER_HTML: &str = include_str!("../templates/pdf_footer.html");
+    
+    // Inject background CSS for dark theme only (light theme uses default white)
+    if theme == "dark" {
+        const DARK_BG_CSS: &str = include_str!("../templates/pdf_dark_bg_wkhtmltopdf.css");
+        let html_content = fs::read_to_string(html_path)?;
+        let bg_css = format!(r#"
+        <style>
+            {}
+        </style>
+        "#, DARK_BG_CSS);
+        let modified_html = html_content.replace("</head>", &format!("{}</head>", bg_css));
+        fs::write(html_path, modified_html)?;
+    }
     
     // Write footer HTML to a temporary file
     let footer_path = html_path.parent().unwrap().join("footer.html");
     fs::write(&footer_path, FOOTER_HTML)?;
     
-    let output = Command::new("wkhtmltopdf")
-        .arg("--enable-local-file-access")
+    // IMPORTANT: wkhtmltopdf will keep the page "canvas" white when margins are non-zero.
+    // For dark PDFs we render full-bleed (0 margins) and recreate spacing via CSS padding.
+    let margin_args = if theme == "dark" {
+        vec![
+            "--margin-top".to_string(), "0".to_string(),
+            "--margin-bottom".to_string(), "0".to_string(),
+            "--margin-left".to_string(), "0".to_string(),
+            "--margin-right".to_string(), "0".to_string(),
+        ]
+    } else {
+        vec![
+            "--margin-top".to_string(), "2cm".to_string(),
+            "--margin-bottom".to_string(), "2cm".to_string(),
+            "--margin-left".to_string(), "2cm".to_string(),
+            "--margin-right".to_string(), "2cm".to_string(),
+        ]
+    };
+    
+    let mut cmd = Command::new("wkhtmltopdf");
+    cmd.arg("--enable-local-file-access")
         .arg("--page-size")
-        .arg("A4")
-        .arg("--margin-top")
-        .arg("2cm")
-        .arg("--margin-bottom")
-        .arg("2cm")
-        .arg("--margin-left")
-        .arg("2cm")
-        .arg("--margin-right")
-        .arg("2cm")
+        .arg("A4");
+    
+    for arg in margin_args {
+        cmd.arg(arg);
+    }
+    
+    let output = cmd
+        .arg("--background")
+        .arg("--print-media-type")
         .arg("--footer-html")
         .arg(&footer_path)
         .arg("--footer-spacing")
-        .arg("5")
+        .arg(if theme == "dark" { "0" } else { "5" })
         .arg("--no-footer-line")
         .arg("--disable-smart-shrinking")
         .arg(html_path)
@@ -192,26 +232,41 @@ async fn generate_with_wkhtmltopdf(html_path: &Path, pdf_path: &Path) -> Result<
     }
 }
 
-async fn generate_with_weasyprint(html_path: &Path, pdf_path: &Path) -> Result<()> {
+async fn generate_with_weasyprint(html_path: &Path, pdf_path: &Path, theme: &str) -> Result<()> {
     // Inject CSS page number rules for weasyprint
-    const PAGE_CSS: &str = include_str!("../templates/pdf_page.css");
     let html_content = fs::read_to_string(html_path)?;
     
-    // Add TOC page number CSS using target-counter (supported by weasyprint)
-    let toc_css = r#"
-        .toc-page a::after {
-            content: leader('.') target-counter(attr(href), page);
-            float: right;
-            margin-left: 1em;
+    // Load CSS files
+    const TOC_CSS: &str = include_str!("../templates/pdf_toc.css");
+    let page_css_content = if theme == "dark" {
+        const PAGE_DARK_CSS: &str = include_str!("../templates/pdf_page_dark.css");
+        PAGE_DARK_CSS
+    } else {
+        const PAGE_CSS: &str = include_str!("../templates/pdf_page.css");
+        PAGE_CSS
+    };
+    
+    // For dark theme, also add body background to ensure dark page
+    let body_bg_css = if theme == "dark" {
+        r#"
+        html, body {
+            background: #1a1a1a !important;
+            background-color: #1a1a1a !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
         }
-    "#;
+        "#
+    } else {
+        ""
+    };
     
     let page_css = format!(r#"
         <style>
             {}
             {}
+            {}
         </style>
-    "#, PAGE_CSS, toc_css);
+    "#, page_css_content, body_bg_css, TOC_CSS);
     
     // Insert CSS before closing </head> tag
     let modified_html = html_content.replace("</head>", &format!("{}</head>", page_css));
@@ -233,25 +288,41 @@ async fn generate_with_weasyprint(html_path: &Path, pdf_path: &Path) -> Result<(
     }
 }
 
-async fn generate_with_chrome(html_path: &Path, pdf_path: &Path) -> Result<()> {
+async fn generate_with_chrome(html_path: &Path, pdf_path: &Path, theme: &str) -> Result<()> {
     // Inject CSS page number rules for Chrome
-    const PAGE_CSS: &str = include_str!("../templates/pdf_page.css");
     let html_content = fs::read_to_string(html_path)?;
     
-    // Add TOC page number CSS using target-counter (supported by Chrome)
-    let toc_css = r#"
-        .toc-page a::after {
-            content: leader('.') target-counter(attr(href), page);
-            float: right;
+    // Load CSS files
+    const TOC_CSS: &str = include_str!("../templates/pdf_toc.css");
+    let page_css_content = if theme == "dark" {
+        const PAGE_DARK_CSS: &str = include_str!("../templates/pdf_page_dark.css");
+        PAGE_DARK_CSS
+    } else {
+        const PAGE_CSS: &str = include_str!("../templates/pdf_page.css");
+        PAGE_CSS
+    };
+    
+    // For dark theme, also add body background to ensure dark page
+    let body_bg_css = if theme == "dark" {
+        r#"
+        html, body {
+            background: #1a1a1a !important;
+            background-color: #1a1a1a !important;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
         }
-    "#;
+        "#
+    } else {
+        ""
+    };
     
     let page_css = format!(r#"
         <style>
             {}
             {}
+            {}
         </style>
-    "#, PAGE_CSS, toc_css);
+    "#, page_css_content, body_bg_css, TOC_CSS);
     
     // Insert CSS before closing </head> tag
     let modified_html = html_content.replace("</head>", &format!("{}</head>", page_css));

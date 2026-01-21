@@ -1,0 +1,5 @@
+.toc-page a::after {
+    content: leader('.') target-counter(attr(href), page);
+    float: right;
+    margin-left: 1em;
+}

@@ -1,0 +1,28 @@
+html, body {
+    background: #1a1a1a !important;
+    background-color: #1a1a1a !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+}
+body {
+    margin: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    box-sizing: border-box;
+}
+/* Apply the "margins" as padding on an explicit wrapper (more reliable in wkhtmltopdf) */
+.pdf-content {
+    padding: 2cm !important;
+    box-sizing: border-box;
+}
+/* Paint a full-page dark layer (wkhtmltopdf can ignore @page backgrounds) */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: #1a1a1a;
+    z-index: -1;
+}
