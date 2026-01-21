@@ -60,7 +60,7 @@ pub async fn generate_pdf<P: AsRef<Path>>(book_dir: P, content_dir: P, theme: &s
                 "png" | "jpg" | "jpeg" | "gif" | "webp" | "svg" => {
                     // For image covers, use img tag
                     format!(
-                        r#"<div class="cover-page" style="page-break-after: always; text-align: center; padding: 2cm; min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+                        r#"<div class="cover-page" style="page-break-after: always; text-align: center; padding: 2cm; min-height: 100vh; display: flex; align-items: center; justify-content: center; page: cover;">
                             <img src="file://{}" alt="Cover" style="max-width: 100%; max-height: 80vh; object-fit: contain;" />
                         </div>"#,
                         cover_url
@@ -146,14 +146,30 @@ pub async fn generate_pdf<P: AsRef<Path>>(book_dir: P, content_dir: P, theme: &s
 }
 
 async fn generate_with_wkhtmltopdf(html_path: &Path, pdf_path: &Path) -> Result<()> {
+    // Load footer HTML template
+    const FOOTER_HTML: &str = include_str!("../templates/pdf_footer.html");
+    
+    // Write footer HTML to a temporary file
+    let footer_path = html_path.parent().unwrap().join("footer.html");
+    fs::write(&footer_path, FOOTER_HTML)?;
+    
     let output = Command::new("wkhtmltopdf")
         .arg("--enable-local-file-access")
         .arg("--page-size")
         .arg("A4")
+        .arg("--footer-html")
+        .arg(&footer_path)
+        .arg("--footer-spacing")
+        .arg("10")
+        .arg("--no-footer-line")
+        .arg("--disable-smart-shrinking")
         .arg(html_path)
         .arg(pdf_path)
         .output()
         .await?;
+    
+    // Clean up footer file
+    let _ = fs::remove_file(&footer_path);
     
     if output.status.success() {
         Ok(())
@@ -166,6 +182,19 @@ async fn generate_with_wkhtmltopdf(html_path: &Path, pdf_path: &Path) -> Result<
 }
 
 async fn generate_with_weasyprint(html_path: &Path, pdf_path: &Path) -> Result<()> {
+    // Inject CSS page number rules for weasyprint
+    const PAGE_CSS: &str = include_str!("../templates/pdf_page.css");
+    let html_content = fs::read_to_string(html_path)?;
+    let page_css = format!(r#"
+        <style>
+            {}
+        </style>
+    "#, PAGE_CSS);
+    
+    // Insert CSS before closing </head> tag
+    let modified_html = html_content.replace("</head>", &format!("{}</head>", page_css));
+    fs::write(html_path, modified_html)?;
+    
     let output = Command::new("weasyprint")
         .arg(html_path)
         .arg(pdf_path)
@@ -183,6 +212,19 @@ async fn generate_with_weasyprint(html_path: &Path, pdf_path: &Path) -> Result<(
 }
 
 async fn generate_with_chrome(html_path: &Path, pdf_path: &Path) -> Result<()> {
+    // Inject CSS page number rules for Chrome
+    const PAGE_CSS: &str = include_str!("../templates/pdf_page.css");
+    let html_content = fs::read_to_string(html_path)?;
+    let page_css = format!(r#"
+        <style>
+            {}
+        </style>
+    "#, PAGE_CSS);
+    
+    // Insert CSS before closing </head> tag
+    let modified_html = html_content.replace("</head>", &format!("{}</head>", page_css));
+    fs::write(html_path, modified_html)?;
+    
     // Try Chrome first, then Chromium
     let chrome_cmd = if Command::new("google-chrome")
         .arg("--version")

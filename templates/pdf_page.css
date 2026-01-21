@@ -1,0 +1,24 @@
+@page {
+    margin: 2cm;
+    margin-bottom: 3cm;
+    @bottom-center {
+        content: counter(page);
+        font-family: 'Georgia', serif;
+        font-size: 10pt;
+        color: #666;
+        padding-bottom: 1cm;
+    }
+}
+@page:first {
+    @bottom-center {
+        content: "";
+    }
+}
+.cover-page {
+    page: cover;
+}
+@page cover {
+    @bottom-center {
+        content: "";
+    }
+}
