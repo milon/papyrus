@@ -2,8 +2,6 @@
 title: "Quick Start"
 ---
 
-# Quick Start
-
 Let's create your first eBook in just a few steps!
 
 ## Initialize a New Book

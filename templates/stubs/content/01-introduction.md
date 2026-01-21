@@ -2,8 +2,6 @@
 title: "Introduction"
 ---
 
-# Introduction
-
 Welcome to your new book!
 
 Papyrus is a powerful tool that helps you write eBooks in Markdown and convert them to PDF, EPUB, and HTML formats. This book will guide you through everything you need to know to get started.
@@ -14,13 +12,13 @@ Papyrus is a Rust-based eBook generation tool that takes your Markdown content a
 
 ## Features
 
-- 📝 Write your book in Markdown
-- 📄 Generate PDF eBooks (with light/dark themes)
-- 📱 Generate EPUB eBooks
-- 🌐 Generate HTML eBooks
-- 🎨 Customizable themes and styling
-- 💻 Syntax highlighting for code blocks
-- 📋 Frontmatter support for metadata
-- 🖼️ Support for custom fonts, images, and cover pages
+- Write your book in Markdown
+- Generate PDF eBooks (with light/dark themes)
+- Generate EPUB eBooks
+- Generate HTML eBooks
+- Customizable themes and styling
+- Syntax highlighting for code blocks
+- Frontmatter support for metadata
+- Support for custom fonts, images, and cover pages
 
 Let's get started!

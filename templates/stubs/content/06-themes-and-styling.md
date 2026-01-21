@@ -2,8 +2,6 @@
 title: "Themes and Styling"
 ---
 
-# Themes and Styling
-
 Customize the appearance of your eBooks with themes and styles.
 
 ## PDF Themes

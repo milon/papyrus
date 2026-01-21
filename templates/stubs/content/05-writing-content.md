@@ -2,8 +2,6 @@
 title: "Writing Content"
 ---
 
-# Writing Content
-
 Papyrus uses Markdown for content, making it easy to write and format your book.
 
 ## Frontmatter

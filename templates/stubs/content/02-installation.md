@@ -2,8 +2,6 @@
 title: "Installation"
 ---
 
-# Installation
-
 There are several ways to install Papyrus on your system.
 
 ## From Source

@@ -1,12 +1,11 @@
 @page {
     margin: 2cm;
-    margin-bottom: 3cm;
     @bottom-center {
         content: counter(page);
         font-family: 'Georgia', serif;
         font-size: 10pt;
         color: #666;
-        padding-bottom: 1cm;
+        padding-bottom: 0.5cm;
     }
 }
 @page:first {

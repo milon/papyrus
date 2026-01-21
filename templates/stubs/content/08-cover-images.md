@@ -2,8 +2,6 @@
 title: "Cover Images"
 ---
 
-# Cover Images
-
 Add a professional cover to your eBook!
 
 ## Supported Formats

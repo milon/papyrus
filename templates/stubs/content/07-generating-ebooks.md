@@ -2,8 +2,6 @@
 title: "Generating eBooks"
 ---
 
-# Generating eBooks
-
 Papyrus can generate your book in three formats: PDF, EPUB, and HTML.
 
 ## PDF Generation

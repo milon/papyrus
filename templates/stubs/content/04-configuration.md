@@ -2,8 +2,6 @@
 title: "Configuration"
 ---
 
-# Configuration
-
 The `papyrus.toml` file controls how your book is generated. Let's explore the configuration options.
 
 ## Basic Configuration
