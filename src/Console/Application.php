@@ -22,12 +22,14 @@ use Milon\Papyrus\Commands\SizesCommand;
 use Milon\Papyrus\Commands\SortCommand;
 use Milon\Papyrus\Commands\WatchCommand;
 use Symfony\Component\Console\Application as SymfonyApplication;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 final class Application extends SymfonyApplication
 {
     public function __construct()
     {
-        parent::__construct('Papyrus', '0.1.0-dev');
+        parent::__construct('Papyrus', '0.1.0');
 
         $this->addCommands([
             new InitCommand,
@@ -48,6 +50,33 @@ final class Application extends SymfonyApplication
             new KdpCoverCommand,
             new KdpMetadataCommand,
         ]);
+    }
+
+    public function doRun(InputInterface $input, OutputInterface $output): int
+    {
+        if ($this->shouldRenderBanner($input)) {
+            Banner::render($output);
+            $output->writeln('');
+        }
+
+        return parent::doRun($input, $output);
+    }
+
+    private function shouldRenderBanner(InputInterface $input): bool
+    {
+        if ($input->hasParameterOption(['--quiet', '-q'], true)
+            || $input->hasParameterOption('--silent', true)) {
+            return false;
+        }
+
+        if ($input->hasParameterOption(['--version', '-V'], true)
+            || $input->hasParameterOption(['--help', '-h'], true)) {
+            return true;
+        }
+
+        $command = $input->getFirstArgument();
+
+        return $command === null || $command === 'list' || $command === 'help';
     }
 
     public static function main(): int
