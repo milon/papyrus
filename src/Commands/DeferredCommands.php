@@ -15,24 +15,6 @@ final class BuildCommand extends NotImplementedCommand
     }
 }
 
-#[AsCommand(name: 'epub', description: 'Build EPUB (not implemented)')]
-final class EpubCommand extends NotImplementedCommand
-{
-    public function __construct()
-    {
-        parent::__construct('epub');
-    }
-}
-
-#[AsCommand(name: 'html', description: 'Build single-file HTML (not implemented)')]
-final class HtmlCommand extends NotImplementedCommand
-{
-    public function __construct()
-    {
-        parent::__construct('html');
-    }
-}
-
 #[AsCommand(name: 'sample', description: 'Build sample PDF (not implemented)')]
 final class SampleCommand extends NotImplementedCommand
 {

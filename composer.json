@@ -8,12 +8,14 @@
         "ext-dom": "*",
         "ext-gd": "*",
         "ext-mbstring": "*",
+        "ext-zip": "*",
         "ext-zlib": "*",
         "league/commonmark": "^2.7",
         "mpdf/mpdf": "^8.2",
         "spatie/commonmark-highlighter": "^3.0",
         "symfony/console": "^7.2",
-        "symfony/yaml": "^7.2"
+        "symfony/yaml": "^7.2",
+        "hi-folks/phpepub": "^1.0"
     },
     "require-dev": {
         "laravel/pint": "^1.21",

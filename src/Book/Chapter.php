@@ -23,4 +23,18 @@ final class Chapter
 
         return is_string($title) ? $title : '';
     }
+
+    /**
+     * @return list<string>
+     */
+    public function imageReferences(): array
+    {
+        $markdown = file_get_contents($this->path);
+
+        if ($markdown === false || ! preg_match_all('/!\[.*?\]\((.*?)\)/', $markdown, $matches)) {
+            return [];
+        }
+
+        return array_values(array_filter(array_map('strval', $matches[1])));
+    }
 }

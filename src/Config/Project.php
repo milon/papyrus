@@ -100,12 +100,19 @@ final class Project
         return is_callable($hook) ? $hook : null;
     }
 
-    public function bookConverter(): BookConverter
+    public function bookConverter(?int $breakLevel = null): BookConverter
     {
         return new BookConverter(
-            breakLevel: $this->breakLevel(),
+            breakLevel: $breakLevel ?? $this->breakLevel(),
             configureCommonMark: $this->configureCommonMark(),
         );
+    }
+
+    public function language(): string
+    {
+        $language = $this->config['language'] ?? 'en';
+
+        return is_string($language) && $language !== '' ? $language : 'en';
     }
 
     public function documentSize(): DocumentSize
