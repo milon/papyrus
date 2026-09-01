@@ -65,4 +65,16 @@ HTML);
             unlink($path);
         }
     }
+
+    #[Test]
+    public function dark_theme_includes_page_background(): void
+    {
+        $path = dirname(__DIR__, 2).'/stubs/assets/theme-dark.html';
+        $html = file_get_contents($path);
+
+        $this->assertIsString($html);
+        $this->assertStringContainsString('@page', $html);
+        $this->assertStringContainsString('background-color: #1a1a1a', $html);
+        $this->assertStringContainsString('{{$subtitle}}', $html);
+    }
 }

@@ -28,6 +28,14 @@ return [
 
     'cover' => [
         'image' => 'cover.png',
+        'light' => 'cover-light.png',
+        'dark' => 'cover-dark.png',
+    ],
+
+    'fonts' => [
+        'script' => [
+            ['match' => ['bn', 'ben', 'bengali'], 'face' => 'notosansbengali'],
+        ],
     ],
 
     'mermaid' => [

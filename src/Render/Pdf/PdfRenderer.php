@@ -30,24 +30,14 @@ final class PdfRenderer
         $book = $this->project->bookConverter()->convertDirectory($this->project->contentDir);
         $document = $this->project->documentSize();
 
-        try {
-            $pdf = new Mpdf([
-                'mode' => 'utf-8',
-                'format' => [$document->widthMm, $document->heightMm],
-                'margin_left' => $document->marginLeft,
-                'margin_right' => $document->marginRight,
-                'margin_top' => $document->marginTop,
-                'margin_bottom' => $document->marginBottom,
-            ]);
-        } catch (MpdfException $e) {
-            throw new PdfException($e->getMessage(), previous: $e);
-        }
+        $pdf = MpdfFactory::create($this->project, $document);
 
         $pdf->SetTitle($this->project->title());
         $pdf->SetAuthor($this->project->author());
         $pdf->SetCreator($this->project->author());
 
         $basePath = realpath($this->project->contentDir);
+
         if ($basePath !== false) {
             $pdf->SetBasePath($basePath);
         }
@@ -59,20 +49,31 @@ final class PdfRenderer
         $pdf->h2toc = $tocLevels;
         $pdf->h2bookmarks = $tocLevels;
 
+        $headerStyle = htmlspecialchars($this->project->headerStyle(), ENT_QUOTES | ENT_HTML5);
+
+        $this->suppressFolios($pdf);
         $this->writeCover($pdf, $themeName, $document->widthMm, $document->heightMm);
 
-        $pdf->SetHTMLFooter('<div style="text-align: center">{PAGENO}</div>');
-
         try {
-            $pdf->WriteHTML($theme->preamble());
+            $pdf->WriteHTML($theme->head);
         } catch (MpdfException $e) {
             throw new PdfException($e->getMessage(), previous: $e);
         }
 
-        $headerStyle = htmlspecialchars($this->project->headerStyle(), ENT_QUOTES | ENT_HTML5);
+        foreach ($book->preToc() as $chapter) {
+            $this->writeChapter($pdf, $chapter, $headerStyle, frontMatter: true);
+        }
 
-        foreach ($book->chapters as $chapter) {
-            $this->writeChapter($pdf, $chapter, $headerStyle);
+        try {
+            $pdf->WriteHTML($theme->tail);
+        } catch (MpdfException $e) {
+            throw new PdfException($e->getMessage(), previous: $e);
+        }
+
+        $this->enableFolios($pdf);
+
+        foreach ($book->body() as $chapter) {
+            $this->writeChapter($pdf, $chapter, $headerStyle, frontMatter: false);
         }
 
         $pdf->SetHTMLHeader(sprintf(
@@ -99,6 +100,17 @@ final class PdfRenderer
         }
 
         return $filename;
+    }
+
+    private function suppressFolios(Mpdf $pdf): void
+    {
+        $pdf->SetHTMLFooter('');
+        $pdf->SetHTMLHeader('');
+    }
+
+    private function enableFolios(Mpdf $pdf): void
+    {
+        $pdf->SetHTMLFooter('<div style="text-align: center">{PAGENO}</div>');
     }
 
     private function writeCover(Mpdf $pdf, string $themeName, float $pageWidthMm, float $pageHeightMm): void
@@ -140,15 +152,17 @@ final class PdfRenderer
         }
     }
 
-    private function writeChapter(Mpdf $pdf, Chapter $chapter, string $headerStyle): void
+    private function writeChapter(Mpdf $pdf, Chapter $chapter, string $headerStyle, bool $frontMatter): void
     {
-        $title = $chapter->title() !== '' ? $chapter->title() : $this->project->title();
+        if (! $frontMatter) {
+            $title = $chapter->title() !== '' ? $chapter->title() : $this->project->title();
 
-        $pdf->SetHTMLHeader(sprintf(
-            '<div style="%s">%s</div>',
-            $headerStyle,
-            htmlspecialchars($title, ENT_QUOTES | ENT_HTML5),
-        ));
+            $pdf->SetHTMLHeader(sprintf(
+                '<div style="%s">%s</div>',
+                $headerStyle,
+                htmlspecialchars($title, ENT_QUOTES | ENT_HTML5),
+            ));
+        }
 
         try {
             $pdf->WriteHTML($chapter->html);

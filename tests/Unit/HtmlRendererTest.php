@@ -38,6 +38,7 @@ final class HtmlRendererTest extends TestCase
             $this->assertIsString($html);
             $this->assertStringContainsString('<title>Mini Book</title>', $html);
             $this->assertStringContainsString('Papyrus fixture', $html);
+            $this->assertStringContainsString('<p>Papyrus fixture</p>', $html);
             $this->assertStringContainsString('<strong>world</strong>', $html);
             $this->assertStringContainsString('বন্ধন', $html);
             $this->assertStringContainsString("class='notice'", $html);

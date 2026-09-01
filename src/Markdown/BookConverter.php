@@ -77,6 +77,7 @@ final class BookConverter
         $postProcessor = new HtmlPostProcessor($this->breakLevel);
 
         $chapters = [];
+        $bodyChapterIndex = 0;
 
         foreach ($files as $index => $file) {
             $markdown = file_get_contents($file);
@@ -92,7 +93,14 @@ final class BookConverter
                 $frontMatter = $converted->getFrontMatter();
             }
 
-            $html = $postProcessor->process($converted->getContent(), $index);
+            $pretoc = $this->isPretoc($frontMatter);
+            $breakIndex = $pretoc ? 0 : $bodyChapterIndex;
+            $html = $postProcessor->process($converted->getContent(), $breakIndex);
+
+            if (! $pretoc) {
+                $bodyChapterIndex++;
+            }
+
             $relative = ltrim(str_replace($contentDir, '', $file), '/');
 
             $chapters[] = new Chapter(

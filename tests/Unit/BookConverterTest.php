@@ -37,6 +37,12 @@ final class BookConverterTest extends TestCase
         $chapter = $book->body()[0];
         $this->assertSame('01-chapter-one.md', $chapter->source);
         $this->assertFalse($chapter->pretoc);
+
+        $beforeFirstHeading = ($position = strpos($chapter->html, '<h1>')) === false
+            ? $chapter->html
+            : substr($chapter->html, 0, $position);
+        $this->assertStringNotContainsString('page-break-after: always', $beforeFirstHeading);
+
         $this->assertStringContainsString('<strong>world</strong>', $chapter->html);
         $this->assertStringContainsString("class='notice'", $chapter->html);
         $this->assertStringContainsString('class="caution"', $chapter->html);

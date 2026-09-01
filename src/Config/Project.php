@@ -179,6 +179,11 @@ final class Project
         return $slug !== '' ? $slug : 'book';
     }
 
+    public function fontRegistry(): FontRegistry
+    {
+        return FontRegistry::fromProject($this);
+    }
+
     private static function normalizeDir(string $dir): string
     {
         $resolved = realpath($dir);

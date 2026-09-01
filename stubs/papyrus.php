@@ -24,6 +24,8 @@ return [
 
     'cover' => [
         'image' => 'cover.png',
+        'light' => 'cover-light.png',
+        'dark' => 'cover-dark.png',
     ],
 
     'header' => [
