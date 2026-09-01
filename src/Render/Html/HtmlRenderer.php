@@ -28,7 +28,7 @@ final class HtmlRenderer
             throw new HtmlException(sprintf('Unable to read HTML theme: %s', $templatePath));
         }
 
-        $book = $this->project->bookConverter(breakLevel: 1)->convertDirectory($this->project->contentDir);
+        $book = $this->project->bookWithFigures(breakLevel: 1, exportTheme: 'default');
 
         $body = '';
 

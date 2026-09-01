@@ -9,6 +9,7 @@ Built from scratch with heavy influence from [ibis-next](https://github.com/Hi-F
 - PHP 8.2+
 - Composer
 - PHP extensions: `dom`, `gd`, `mbstring`, `zip`, `zlib` (PDF via mPDF; EPUB packaging)
+- Node: `@mermaid-js/mermaid-cli` (`mmdc`) when Mermaid diagrams are enabled
 
 ## Install (development)
 

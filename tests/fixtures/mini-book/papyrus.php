@@ -40,5 +40,8 @@ return [
 
     'mermaid' => [
         'enabled' => false,
+        'format' => 'svg',
+        'theme' => 'auto',
+        'max_width_mm' => 130,
     ],
 ];

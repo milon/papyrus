@@ -27,7 +27,7 @@ final class PdfRenderer
             throw new PdfException($e->getMessage(), previous: $e);
         }
 
-        $book = $this->project->bookConverter()->convertDirectory($this->project->contentDir);
+        $book = $this->project->bookWithFigures(breakLevel: null, exportTheme: $themeName);
         $document = $this->project->documentSize();
 
         $pdf = MpdfFactory::create($this->project, $document);

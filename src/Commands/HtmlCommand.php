@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Milon\Papyrus\Commands;
 
 use Milon\Papyrus\Config\ConfigException;
+use Milon\Papyrus\Mermaid\MermaidException;
 use Milon\Papyrus\Render\Html\HtmlException;
 use Milon\Papyrus\Render\Html\HtmlRenderer;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -28,7 +29,7 @@ final class HtmlCommand extends BookCommand
         try {
             $path = (new HtmlRenderer($project))->render();
             $output->writeln(sprintf('<info>✓</info> %s', $path));
-        } catch (HtmlException $e) {
+        } catch (HtmlException|MermaidException $e) {
             $output->writeln('<error>'.$e->getMessage().'</error>');
 
             return Command::FAILURE;

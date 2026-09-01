@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace Milon\Papyrus\Config;
 
 use League\CommonMark\Environment\Environment;
+use Milon\Papyrus\Book\Book;
 use Milon\Papyrus\Markdown\BookConverter;
+use Milon\Papyrus\Mermaid\MermaidCache;
+use Milon\Papyrus\Mermaid\MermaidCliResolver;
+use Milon\Papyrus\Mermaid\MermaidRenderer;
 
 final class Project
 {
@@ -106,6 +110,37 @@ final class Project
             breakLevel: $breakLevel ?? $this->breakLevel(),
             configureCommonMark: $this->configureCommonMark(),
         );
+    }
+
+    public function mermaidConfig(): MermaidConfig
+    {
+        return MermaidConfig::fromConfig($this->config);
+    }
+
+    public function mermaidCacheDir(): string
+    {
+        return $this->dir.'/.papyrus/cache/mermaid';
+    }
+
+    public function mermaidRenderer(): MermaidRenderer
+    {
+        return new MermaidRenderer(
+            project: $this,
+            cli: MermaidCliResolver::resolve($this->mermaidConfig()->command),
+            cache: new MermaidCache($this->mermaidCacheDir()),
+            config: $this->mermaidConfig(),
+        );
+    }
+
+    public function bookWithFigures(?int $breakLevel, string $exportTheme): Book
+    {
+        $book = $this->bookConverter($breakLevel)->convertDirectory($this->contentDir);
+
+        if (! $this->mermaidConfig()->enabled) {
+            return $book;
+        }
+
+        return $this->mermaidRenderer()->processBook($book, $exportTheme);
     }
 
     public function language(): string

@@ -19,7 +19,7 @@ final class EpubRenderer
         $styleCss = $this->readAsset('style.css');
         $codeblockCss = $this->readAsset('highlight.codeblock.min.css');
 
-        $book = $this->project->bookConverter(breakLevel: 1)->convertDirectory($this->project->contentDir);
+        $book = $this->project->bookWithFigures(breakLevel: 1, exportTheme: 'default');
         $language = $this->project->language();
 
         $contentStart = '<?xml version="1.0" encoding="UTF-8"?>'."\n"

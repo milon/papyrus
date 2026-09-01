@@ -6,6 +6,7 @@ namespace Milon\Papyrus\Commands;
 
 use Milon\Papyrus\Config\ConfigException;
 use Milon\Papyrus\Config\Project;
+use Milon\Papyrus\Mermaid\MermaidException;
 use Milon\Papyrus\Render\Pdf\PdfException;
 use Milon\Papyrus\Render\Pdf\PdfRenderer;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -55,6 +56,9 @@ final class PdfCommand extends BookCommand
                 $path = $renderer->render($theme);
                 $output->writeln(sprintf('<info>✓</info> %s', $path));
             } catch (PdfException $e) {
+                $output->writeln(sprintf('<error>✗ %s: %s</error>', $theme, $e->getMessage()));
+                $failed = true;
+            } catch (MermaidException $e) {
                 $output->writeln(sprintf('<error>✗ %s: %s</error>', $theme, $e->getMessage()));
                 $failed = true;
             }

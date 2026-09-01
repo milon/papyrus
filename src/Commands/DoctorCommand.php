@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Milon\Papyrus\Commands;
 
 use Milon\Papyrus\Config\ConfigException;
+use Milon\Papyrus\Mermaid\MermaidCliResolver;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -54,6 +55,16 @@ final class DoctorCommand extends BookCommand
         }
 
         $output->writeln('Themes: '.implode(', ', $project->themes()));
+
+        if ($project->mermaidConfig()->enabled) {
+            $cli = MermaidCliResolver::resolve($project->mermaidConfig()->command);
+
+            if ($cli->isAvailable()) {
+                $output->writeln(sprintf('<info>✓</info> Mermaid CLI: %s (%s)', $cli->command(), $cli->version()));
+            } else {
+                $output->writeln('<comment>! Mermaid is enabled but mmdc (@mermaid-js/mermaid-cli) was not found.</comment>');
+            }
+        }
 
         if (! $ok) {
             $output->writeln('');

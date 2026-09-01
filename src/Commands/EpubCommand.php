@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Milon\Papyrus\Commands;
 
 use Milon\Papyrus\Config\ConfigException;
+use Milon\Papyrus\Mermaid\MermaidException;
 use Milon\Papyrus\Render\Epub\EpubException;
 use Milon\Papyrus\Render\Epub\EpubRenderer;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -28,7 +29,7 @@ final class EpubCommand extends BookCommand
         try {
             $path = (new EpubRenderer($project))->render();
             $output->writeln(sprintf('<info>✓</info> %s', $path));
-        } catch (EpubException $e) {
+        } catch (EpubException|MermaidException $e) {
             $output->writeln('<error>'.$e->getMessage().'</error>');
 
             return Command::FAILURE;
