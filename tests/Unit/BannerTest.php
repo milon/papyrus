@@ -23,6 +23,16 @@ final class BannerTest extends TestCase
     }
 
     #[Test]
+    public function banner_contains_scroll_logo(): void
+    {
+        $lines = Banner::logoLines();
+
+        $this->assertNotEmpty($lines);
+        $this->assertStringContainsString('╭', $lines[0]);
+        $this->assertStringContainsString('▓', implode("\n", $lines));
+    }
+
+    #[Test]
     public function list_command_renders_banner(): void
     {
         $application = new Application;
@@ -30,8 +40,11 @@ final class BannerTest extends TestCase
         $tester = new ApplicationTester($application);
         $tester->run(['command' => 'list', '--ansi' => true]);
 
-        $this->assertStringContainsString('___', $tester->getDisplay());
-        $this->assertStringContainsString('Papyrus', $tester->getDisplay());
+        $display = $tester->getDisplay();
+        $this->assertStringContainsString('___', $display);
+        $this->assertStringContainsString('Papyrus', $display);
+        $this->assertStringContainsString(Banner::TAGLINE, $display);
+        $this->assertStringContainsString('╭', $display);
     }
 
     #[Test]

@@ -1,5 +1,9 @@
 # Papyrus
 
+<p align="center">
+  <img src="assets/papyrus-banner.jpg" alt="Papyrus — Markdown books to PDF, EPUB, and HTML" width="100%">
+</p>
+
 PHP CLI for Markdown book projects — PDF, EPUB, HTML, and KDP exports.
 
 Built from scratch with heavy influence from [ibis-next](https://github.com/Hi-Folks/ibis-next). Book projects use `papyrus.php`, `content/`, and `assets/`.

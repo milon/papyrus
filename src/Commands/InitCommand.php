@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Milon\Papyrus\Commands;
 
+use Milon\Papyrus\Console\Styles;
 use Milon\Papyrus\Stubs\StubRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -60,10 +61,15 @@ final class InitCommand extends BookCommand
             return self::SUCCESS;
         }
 
-        $output->writeln('<info>Scaffolded book project in '.$dir.':</info>');
-        foreach ($written as $path) {
-            $output->writeln('  '.$path);
+        $output->writeln('');
+        Styles::header($output, 'Papyrus', 'New book project');
+        $output->writeln('');
+        $output->writeln(Styles::successMsg('Initialized '.$dir));
+        foreach (['papyrus.php', 'content/', 'assets/'] as $path) {
+            $output->writeln(Styles::item($path));
         }
+        $output->writeln('');
+        $output->writeln(Styles::step('Edit papyrus.php, then run papyrus build'));
 
         return self::SUCCESS;
     }
