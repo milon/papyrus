@@ -7,6 +7,7 @@ namespace Milon\Papyrus\Commands;
 use Milon\Papyrus\Config\ConfigException;
 use Milon\Papyrus\Config\Project;
 use Milon\Papyrus\Mermaid\MermaidException;
+use Milon\Papyrus\Render\Pdf\ParallelPdfRenderer;
 use Milon\Papyrus\Render\Pdf\PdfException;
 use Milon\Papyrus\Render\Pdf\PdfRenderer;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -27,6 +28,13 @@ final class PdfCommand extends BookCommand
             't',
             InputOption::VALUE_REQUIRED,
             'Comma-separated theme names (default: all configured themes)',
+        );
+
+        $this->addOption(
+            'parallel',
+            'p',
+            InputOption::VALUE_NONE,
+            'Build PDF themes in parallel (one process per theme)',
         );
     }
 
@@ -50,6 +58,23 @@ final class PdfCommand extends BookCommand
 
         $renderer = new PdfRenderer($project);
         $failed = false;
+
+        if ((bool) $input->getOption('parallel') && count($themes) > 1) {
+            $results = (new ParallelPdfRenderer($project, $this->papyrusBinary()))->render($themes);
+
+            foreach ($results as $theme => $result) {
+                if ($result instanceof PdfException) {
+                    $output->writeln(sprintf('<error>✗ %s: %s</error>', $theme, $result->getMessage()));
+                    $failed = true;
+
+                    continue;
+                }
+
+                $output->writeln(sprintf('<info>✓</info> %s', $result));
+            }
+
+            return $failed ? Command::FAILURE : Command::SUCCESS;
+        }
 
         foreach ($themes as $theme) {
             try {
@@ -82,5 +107,10 @@ final class PdfCommand extends BookCommand
             trim(...),
             explode(',', $option),
         )));
+    }
+
+    private function papyrusBinary(): string
+    {
+        return dirname(__DIR__, 2).'/bin/papyrus';
     }
 }

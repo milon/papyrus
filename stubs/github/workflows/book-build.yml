@@ -1,0 +1,32 @@
+# Copy to .github/workflows/book-build.yml in your book repo.
+name: book-build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: dom, gd, mbstring, zip
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Validate project
+        run: vendor/bin/papyrus doctor
+
+      - name: Lint PHP code fences
+        run: vendor/bin/papyrus lint
+
+      - name: Build all outputs
+        run: composer build

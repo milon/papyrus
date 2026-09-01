@@ -16,6 +16,8 @@ use League\CommonMark\Extension\TaskList\TaskListExtension;
 use League\CommonMark\MarkdownConverter;
 use Milon\Papyrus\Book\Book;
 use Milon\Papyrus\Book\Chapter;
+use Milon\Papyrus\Cache\CachedChapter;
+use Milon\Papyrus\Cache\ChapterHtmlCache;
 use Milon\Papyrus\Markdown\Extensions\Aside;
 use Milon\Papyrus\Markdown\Extensions\AsideExtension;
 use Milon\Papyrus\Markdown\Extensions\AsideRenderer;
@@ -64,6 +66,8 @@ final class BookConverter
     public function __construct(
         private readonly int $breakLevel = 2,
         private $configureCommonMark = null,
+        private readonly ?ChapterHtmlCache $cache = null,
+        private readonly string $configHash = '',
     ) {}
 
     public function convertDirectory(string $contentDir): Book
@@ -86,29 +90,47 @@ final class BookConverter
                 throw new MarkdownException(sprintf('Could not read: %s', $file));
             }
 
-            $converted = $converter->convert($markdown);
-            $frontMatter = [];
+            $relative = ltrim(str_replace($contentDir, '', $file), '/');
+            $contentHash = ChapterHtmlCache::contentHash($markdown);
+            $cached = $this->cache?->get($relative, $contentHash, $this->configHash, $this->breakLevel);
 
-            if ($converted instanceof RenderedContentWithFrontMatter) {
-                $frontMatter = $converted->getFrontMatter();
+            if ($cached !== null) {
+                $pretoc = $cached->pretoc;
+                $frontMatter = $cached->frontMatter;
+                $breakIndex = $pretoc ? 0 : $bodyChapterIndex;
+                $html = $postProcessor->process($cached->rawHtml, $breakIndex);
+            } else {
+                $converted = $converter->convert($markdown);
+                $frontMatter = [];
+
+                if ($converted instanceof RenderedContentWithFrontMatter) {
+                    $frontMatter = $converted->getFrontMatter();
+                }
+
+                $pretoc = $this->isPretoc($frontMatter);
+                $breakIndex = $pretoc ? 0 : $bodyChapterIndex;
+                $rawHtml = $converted->getContent();
+                $html = $postProcessor->process($rawHtml, $breakIndex);
+
+                $this->cache?->put(
+                    $relative,
+                    $contentHash,
+                    $this->configHash,
+                    $this->breakLevel,
+                    new CachedChapter($rawHtml, is_array($frontMatter) ? $frontMatter : [], $pretoc),
+                );
             }
-
-            $pretoc = $this->isPretoc($frontMatter);
-            $breakIndex = $pretoc ? 0 : $bodyChapterIndex;
-            $html = $postProcessor->process($converted->getContent(), $breakIndex);
 
             if (! $pretoc) {
                 $bodyChapterIndex++;
             }
-
-            $relative = ltrim(str_replace($contentDir, '', $file), '/');
 
             $chapters[] = new Chapter(
                 source: $relative,
                 path: $file,
                 frontMatter: is_array($frontMatter) ? $frontMatter : [],
                 html: $html,
-                pretoc: $this->isPretoc($frontMatter),
+                pretoc: $pretoc,
             );
         }
 

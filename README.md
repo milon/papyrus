@@ -46,7 +46,7 @@ mkdir my-book && ./bin/papyrus init -d my-book
 |---------|--------|
 | `init` | Scaffold `papyrus.php`, `content/`, `assets/` |
 | `doctor` | Validate config and project paths |
-| `pdf` | Build PDF themes (`--theme light,dark`) |
+| `pdf` | Build PDF themes (`--theme light,dark`, `--parallel` for multi-theme) |
 | `html` | Build single-file HTML from `assets/theme-html.html` |
 | `epub` | Build EPUB3 with CSS and embedded images |
 | `build` | Build all PDF themes, EPUB, HTML, and enabled KDP outputs |
@@ -58,7 +58,9 @@ mkdir my-book && ./bin/papyrus init -d my-book
 | `kdp:metadata` | Emit KDP metadata sidecar JSON |
 | `sizes` | List KDP page-size presets |
 | `migrate-ibis` | Migrate `ibis.php` to `papyrus.php` and update theme TOC markers |
-| `sort`, `watch` | Not yet implemented |
+| `lint` | Lint PHP code fences in `content/` (`--fix` to auto-fix) |
+| `watch` | Rebuild on file changes (`--interval` seconds) |
+| `sort` | Not yet implemented |
 
 Convert Markdown chapters programmatically:
 

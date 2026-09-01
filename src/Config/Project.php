@@ -6,6 +6,7 @@ namespace Milon\Papyrus\Config;
 
 use League\CommonMark\Environment\Environment;
 use Milon\Papyrus\Book\Book;
+use Milon\Papyrus\Cache\ChapterHtmlCache;
 use Milon\Papyrus\Markdown\BookConverter;
 use Milon\Papyrus\Mermaid\MermaidCache;
 use Milon\Papyrus\Mermaid\MermaidCliResolver;
@@ -104,12 +105,29 @@ final class Project
         return is_callable($hook) ? $hook : null;
     }
 
-    public function bookConverter(?int $breakLevel = null): BookConverter
+    public function bookConverter(?int $breakLevel = null, bool $useCache = true): BookConverter
     {
+        $level = $breakLevel ?? $this->breakLevel();
+        $cache = $useCache ? new ChapterHtmlCache($this->markdownCacheDir()) : null;
+
         return new BookConverter(
-            breakLevel: $breakLevel ?? $this->breakLevel(),
+            breakLevel: $level,
             configureCommonMark: $this->configureCommonMark(),
+            cache: $cache,
+            configHash: $this->configHash(),
         );
+    }
+
+    public function markdownCacheDir(): string
+    {
+        return $this->dir.'/.papyrus/cache/markdown';
+    }
+
+    public function configHash(): string
+    {
+        $contents = file_get_contents($this->configPath);
+
+        return hash('sha256', $contents !== false ? $contents : '');
     }
 
     public function mermaidConfig(): MermaidConfig

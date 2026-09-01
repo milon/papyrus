@@ -14,6 +14,7 @@ use Milon\Papyrus\Commands\Kdp\KdpCoverCommand;
 use Milon\Papyrus\Commands\Kdp\KdpEbookCommand;
 use Milon\Papyrus\Commands\Kdp\KdpMetadataCommand;
 use Milon\Papyrus\Commands\Kdp\KdpPrintCommand;
+use Milon\Papyrus\Commands\LintCommand;
 use Milon\Papyrus\Commands\MigrateIbisCommand;
 use Milon\Papyrus\Commands\PdfCommand;
 use Milon\Papyrus\Commands\SampleCommand;
@@ -36,6 +37,7 @@ final class Application extends SymfonyApplication
             new EpubCommand,
             new HtmlCommand,
             new SampleCommand,
+            new LintCommand,
             new SortCommand,
             new SizesCommand,
             new WatchCommand,

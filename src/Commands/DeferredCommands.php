@@ -14,12 +14,3 @@ final class SortCommand extends NotImplementedCommand
         parent::__construct('sort');
     }
 }
-
-#[AsCommand(name: 'watch', description: 'Rebuild on file changes (not implemented)')]
-final class WatchCommand extends NotImplementedCommand
-{
-    public function __construct()
-    {
-        parent::__construct('watch');
-    }
-}
