@@ -1,0 +1,16 @@
+{
+    "title": "Mini Book",
+    "subtitle": "Papyrus fixture",
+    "author": "Papyrus",
+    "language": "en",
+    "description": "A short fixture book for Papyrus tests.",
+    "keywords": [
+        "papyrus",
+        "fixture"
+    ],
+    "print": {
+        "paper": "white",
+        "bleed_mm": 3,
+        "margin_preset": "recommended"
+    }
+}

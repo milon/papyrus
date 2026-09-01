@@ -224,6 +224,11 @@ final class Project
         return SampleConfig::fromConfig($this->config);
     }
 
+    public function kdpConfig(): KdpConfig
+    {
+        return KdpConfig::fromConfig($this->config);
+    }
+
     private static function normalizeDir(string $dir): string
     {
         $resolved = realpath($dir);

@@ -52,4 +52,20 @@ return [
     ],
 
     'sample_notice' => 'This is a sample from Mini Book.',
+
+    'kdp' => [
+        'ebook' => [
+            'enabled' => true,
+        ],
+        'print' => [
+            'enabled' => true,
+            'bleed_mm' => 3,
+            'margin_preset' => 'recommended',
+        ],
+        'metadata' => [
+            'description' => 'A short fixture book for Papyrus tests.',
+            'keywords' => ['papyrus', 'fixture'],
+            'language' => 'en',
+        ],
+    ],
 ];

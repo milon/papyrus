@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Milon\Papyrus\Render\Pdf;
 
 use Milon\Papyrus\Book\Chapter;
+use Milon\Papyrus\Config\DocumentSize;
 use Milon\Papyrus\Config\Project;
 use Milon\Papyrus\Theme\Theme;
 use Milon\Papyrus\Theme\ThemeException;
@@ -17,8 +18,12 @@ final class PdfRenderer
         private readonly Project $project,
     ) {}
 
-    public function render(string $themeName, ?string $outputPath = null): string
-    {
+    public function render(
+        string $themeName,
+        ?string $outputPath = null,
+        ?DocumentSize $documentSize = null,
+        bool $skipCover = false,
+    ): string {
         $themePath = $this->project->assetsDir.'/theme-'.$themeName.'.html';
 
         try {
@@ -28,7 +33,7 @@ final class PdfRenderer
         }
 
         $book = $this->project->bookWithFigures(breakLevel: null, exportTheme: $themeName);
-        $document = $this->project->documentSize();
+        $document = $documentSize ?? $this->project->documentSize();
 
         $pdf = MpdfFactory::create($this->project, $document);
 
@@ -52,7 +57,10 @@ final class PdfRenderer
         $headerStyle = htmlspecialchars($this->project->headerStyle(), ENT_QUOTES | ENT_HTML5);
 
         $this->suppressFolios($pdf);
-        $this->writeCover($pdf, $themeName, $document->widthMm, $document->heightMm);
+
+        if (! $skipCover) {
+            $this->writeCover($pdf, $themeName, $document->widthMm, $document->heightMm);
+        }
 
         try {
             $pdf->WriteHTML($theme->head);

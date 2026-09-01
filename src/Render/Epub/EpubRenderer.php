@@ -14,8 +14,10 @@ final class EpubRenderer
         private readonly Project $project,
     ) {}
 
-    public function render(?string $outputPath = null): string
+    public function render(?string $outputPath = null, ?EpubOptions $options = null): string
     {
+        $options ??= new EpubOptions;
+
         $styleCss = $this->readAsset('style.css');
         $codeblockCss = $this->readAsset('highlight.codeblock.min.css');
 
@@ -39,7 +41,7 @@ final class EpubRenderer
             EPub::IDENTIFIER_UUID,
         );
         $epub->setLanguage($language);
-        $epub->setDescription(sprintf('%s - %s', $this->project->title(), $this->project->author()));
+        $epub->setDescription($options->description ?? sprintf('%s - %s', $this->project->title(), $this->project->author()));
         $epub->setTitle($this->project->title());
         $epub->setAuthor($this->project->author(), $this->project->author());
         $epub->setIdentifier(
@@ -58,7 +60,7 @@ final class EpubRenderer
 
         $coverHtml .= $contentEnd;
 
-        $this->addCoverImage($epub);
+        $this->addCoverImage($epub, $options->coverImageName);
 
         $epub->addChapter('Cover', 'Cover.html', $coverHtml);
         $epub->addChapter('Table of Contents', 'TOC.xhtml', null, false, EPub::EXTERNAL_REF_IGNORE);
@@ -116,9 +118,10 @@ final class EpubRenderer
         return $contents;
     }
 
-    private function addCoverImage(EPub $epub): void
+    private function addCoverImage(EPub $epub, ?string $coverImageName = null): void
     {
-        $imageName = $this->project->coverImageForTheme('light')
+        $imageName = $coverImageName
+            ?? $this->project->coverImageForTheme('light')
             ?? $this->project->coverImageForTheme('dark');
 
         if ($imageName === null) {

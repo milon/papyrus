@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace Milon\Papyrus\Tests\Unit;
 
-use Milon\Papyrus\Commands\BuildCommand;
-use Milon\Papyrus\Commands\SampleCommand;
+use Milon\Papyrus\Commands\Kdp\KdpCommand;
+use Milon\Papyrus\Commands\Kdp\KdpMetadataCommand;
+use Milon\Papyrus\Commands\Kdp\KdpPrintCommand;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
 
-final class BuildCommandTest extends TestCase
+final class KdpCommandTest extends TestCase
 {
     private string $fixtureDir;
 
@@ -20,39 +21,45 @@ final class BuildCommandTest extends TestCase
     }
 
     #[Test]
-    public function build_exits_zero_for_mini_book(): void
+    public function kdp_exits_zero_for_mini_book(): void
     {
         if (! extension_loaded('gd')) {
-            $this->markTestSkipped('ext-gd is required for PDF build');
+            $this->markTestSkipped('ext-gd is required for KDP print PDF');
         }
 
-        $tester = new CommandTester(new BuildCommand);
+        $tester = new CommandTester(new KdpCommand);
         $exitCode = $tester->execute(['--dir' => $this->fixtureDir]);
 
         $this->assertSame(0, $exitCode);
-        $this->assertStringContainsString('mini-book-light.pdf', $tester->getDisplay());
-        $this->assertStringContainsString('mini-book-dark.pdf', $tester->getDisplay());
-        $this->assertStringContainsString('mini-book.epub', $tester->getDisplay());
-        $this->assertStringContainsString('mini-book.html', $tester->getDisplay());
         $this->assertStringContainsString('mini-book-kdp.epub', $tester->getDisplay());
         $this->assertStringContainsString('mini-book-kdp-print.pdf', $tester->getDisplay());
         $this->assertStringContainsString('mini-book-kdp-metadata.json', $tester->getDisplay());
     }
 
     #[Test]
-    public function sample_exits_zero_for_mini_book(): void
+    public function kdp_print_exits_zero_for_mini_book(): void
     {
         if (! extension_loaded('gd')) {
-            $this->markTestSkipped('ext-gd is required for sample PDF build');
+            $this->markTestSkipped('ext-gd is required for KDP print PDF');
         }
 
-        $tester = new CommandTester(new SampleCommand);
+        $tester = new CommandTester(new KdpPrintCommand);
         $exitCode = $tester->execute([
             '--dir' => $this->fixtureDir,
             '--theme' => 'light',
         ]);
 
         $this->assertSame(0, $exitCode);
-        $this->assertStringContainsString('sample-mini-book-light.pdf', $tester->getDisplay());
+        $this->assertStringContainsString('mini-book-kdp-print.pdf', $tester->getDisplay());
+    }
+
+    #[Test]
+    public function kdp_metadata_exits_zero_for_mini_book(): void
+    {
+        $tester = new CommandTester(new KdpMetadataCommand);
+        $exitCode = $tester->execute(['--dir' => $this->fixtureDir]);
+
+        $this->assertSame(0, $exitCode);
+        $this->assertStringContainsString('mini-book-kdp-metadata.json', $tester->getDisplay());
     }
 }

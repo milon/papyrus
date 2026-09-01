@@ -49,9 +49,14 @@ mkdir my-book && ./bin/papyrus init -d my-book
 | `pdf` | Build PDF themes (`--theme light,dark`) |
 | `html` | Build single-file HTML from `assets/theme-html.html` |
 | `epub` | Build EPUB3 with CSS and embedded images |
-| `build` | Build all PDF themes, EPUB, and HTML |
+| `build` | Build all PDF themes, EPUB, HTML, and enabled KDP outputs |
 | `sample` | Build sample PDF from `sample.ranges` page ranges |
-| `sort`, `sizes`, `watch`, `migrate-ibis`, `kdp …` | Not yet implemented |
+| `kdp` | Build all enabled KDP outputs (eBook, print, cover, metadata) |
+| `kdp:ebook` | KDP-ready Kindle EPUB (`export/<slug>-kdp.epub`) |
+| `kdp:print` | Print interior PDF with KDP margin/bleed presets |
+| `kdp:cover` | Export KDP cover assets to `export/` |
+| `kdp:metadata` | Emit KDP metadata sidecar JSON |
+| `sort`, `sizes`, `watch`, `migrate-ibis` | Not yet implemented |
 
 Convert Markdown chapters programmatically:
 
