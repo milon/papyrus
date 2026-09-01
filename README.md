@@ -56,7 +56,9 @@ mkdir my-book && ./bin/papyrus init -d my-book
 | `kdp:print` | Print interior PDF with KDP margin/bleed presets |
 | `kdp:cover` | Export KDP cover assets to `export/` |
 | `kdp:metadata` | Emit KDP metadata sidecar JSON |
-| `sort`, `sizes`, `watch`, `migrate-ibis` | Not yet implemented |
+| `sizes` | List KDP page-size presets |
+| `migrate-ibis` | Migrate `ibis.php` to `papyrus.php` and update theme TOC markers |
+| `sort`, `watch` | Not yet implemented |
 
 Convert Markdown chapters programmatically:
 

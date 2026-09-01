@@ -15,29 +15,11 @@ final class SortCommand extends NotImplementedCommand
     }
 }
 
-#[AsCommand(name: 'sizes', description: 'List page-size presets (not implemented)')]
-final class SizesCommand extends NotImplementedCommand
-{
-    public function __construct()
-    {
-        parent::__construct('sizes');
-    }
-}
-
 #[AsCommand(name: 'watch', description: 'Rebuild on file changes (not implemented)')]
 final class WatchCommand extends NotImplementedCommand
 {
     public function __construct()
     {
         parent::__construct('watch');
-    }
-}
-
-#[AsCommand(name: 'migrate-ibis', description: 'Migrate ibis.php to papyrus.php (not implemented)')]
-final class MigrateIbisCommand extends NotImplementedCommand
-{
-    public function __construct()
-    {
-        parent::__construct('migrate-ibis');
     }
 }

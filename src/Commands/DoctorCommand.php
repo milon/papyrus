@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Milon\Papyrus\Commands;
 
 use Milon\Papyrus\Config\ConfigException;
+use Milon\Papyrus\Config\DocumentSize;
+use Milon\Papyrus\Config\KdpTrimBounds;
 use Milon\Papyrus\Mermaid\MermaidCliResolver;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -55,6 +57,30 @@ final class DoctorCommand extends BookCommand
         }
 
         $output->writeln('Themes: '.implode(', ', $project->themes()));
+
+        $document = $project->documentSize();
+
+        if (! KdpTrimBounds::isWithinBounds($document)) {
+            $output->writeln(sprintf(
+                '<comment>! Document trim %.3f × %.3f mm is outside typical KDP paperback bounds (%.1f–%.1f × %.1f–%.1f mm).</comment>',
+                $document->widthMm,
+                $document->heightMm,
+                KdpTrimBounds::MIN_WIDTH_MM,
+                KdpTrimBounds::MAX_WIDTH_MM,
+                KdpTrimBounds::MIN_HEIGHT_MM,
+                KdpTrimBounds::MAX_HEIGHT_MM,
+            ));
+        } else {
+            $preset = DocumentSize::resolvePresetName($document->widthMm, $document->heightMm);
+            $label = $preset ?? 'custom';
+
+            $output->writeln(sprintf(
+                'Document: %.3f × %.3f mm (%s)',
+                $document->widthMm,
+                $document->heightMm,
+                $label,
+            ));
+        }
 
         if ($project->mermaidConfig()->enabled) {
             $cli = MermaidCliResolver::resolve($project->mermaidConfig()->command);

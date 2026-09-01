@@ -7,14 +7,17 @@ namespace Milon\Papyrus\Config;
 final class DocumentSize
 {
     /**
-     * @var array<string, array{width: float, height: float}>
+     * @var list<DocumentPreset>
      */
-    private const PRESETS = [
-        'a4' => ['width' => 210.0, 'height' => 297.0],
-        'a5' => ['width' => 148.0, 'height' => 210.0],
-        'letter' => ['width' => 215.9, 'height' => 279.4],
-        '6x9' => ['width' => 152.4, 'height' => 228.6],
-        'crown-quarto' => ['width' => 188.976, 'height' => 246.126],
+    private const PRESET_CATALOG = [
+        ['name' => '5x8', 'width' => 127.0, 'height' => 203.2, 'inches' => '5×8'],
+        ['name' => '5.5x8.5', 'width' => 139.7, 'height' => 215.9, 'inches' => '5.5×8.5', 'aliases' => ['digest']],
+        ['name' => '6x9', 'width' => 152.4, 'height' => 228.6, 'inches' => '6×9', 'aliases' => ['trade']],
+        ['name' => '7x10', 'width' => 177.8, 'height' => 254.0, 'inches' => '7×10'],
+        ['name' => 'crown-quarto', 'width' => 188.976, 'height' => 246.126, 'inches' => '7.44×9.69', 'aliases' => ['7.44x9.69']],
+        ['name' => 'letter', 'width' => 215.9, 'height' => 279.4, 'inches' => '8.5×11', 'aliases' => ['8.5x11']],
+        ['name' => 'a4', 'width' => 210.0, 'height' => 297.0, 'inches' => '8.27×11.69'],
+        ['name' => 'a5', 'width' => 148.0, 'height' => 210.0, 'inches' => '5.83×8.27'],
     ];
 
     public function __construct(
@@ -44,11 +47,49 @@ final class DocumentSize
     }
 
     /**
+     * @return list<DocumentPreset>
+     */
+    public static function presets(): array
+    {
+        return array_map(
+            static fn (array $preset): DocumentPreset => new DocumentPreset(
+                name: $preset['name'],
+                widthMm: $preset['width'],
+                heightMm: $preset['height'],
+                inchesLabel: $preset['inches'],
+                aliases: $preset['aliases'] ?? [],
+            ),
+            self::PRESET_CATALOG,
+        );
+    }
+
+    /**
      * @return list<string>
      */
     public static function presetNames(): array
     {
-        return array_keys(self::PRESETS);
+        $names = [];
+
+        foreach (self::presets() as $preset) {
+            $names[] = $preset->name;
+
+            foreach ($preset->aliases as $alias) {
+                $names[] = $alias;
+            }
+        }
+
+        return $names;
+    }
+
+    public static function resolvePresetName(float $widthMm, float $heightMm): ?string
+    {
+        foreach (self::presets() as $preset) {
+            if ($preset->matches($widthMm, $heightMm)) {
+                return $preset->name;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -65,17 +106,18 @@ final class DocumentSize
         }
 
         $size = (string) ($document['size'] ?? 'a4');
-        $preset = self::PRESETS[$size] ?? null;
 
-        if ($preset === null) {
-            throw new ConfigException(sprintf(
-                'Unknown document size "%s". Known presets: %s',
-                $size,
-                implode(', ', self::presetNames()),
-            ));
+        foreach (self::presets() as $preset) {
+            if ($size === $preset->name || in_array($size, $preset->aliases, true)) {
+                return [$preset->widthMm, $preset->heightMm];
+            }
         }
 
-        return [$preset['width'], $preset['height']];
+        throw new ConfigException(sprintf(
+            'Unknown document size "%s". Known presets: %s',
+            $size,
+            implode(', ', array_map(static fn (DocumentPreset $preset): string => $preset->name, self::presets())),
+        ));
     }
 
     private static function floatValue(mixed $value): float
