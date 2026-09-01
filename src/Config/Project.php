@@ -219,6 +219,11 @@ final class Project
         return FontRegistry::fromProject($this);
     }
 
+    public function sampleConfig(): SampleConfig
+    {
+        return SampleConfig::fromConfig($this->config);
+    }
+
     private static function normalizeDir(string $dir): string
     {
         $resolved = realpath($dir);

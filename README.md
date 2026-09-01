@@ -49,7 +49,9 @@ mkdir my-book && ./bin/papyrus init -d my-book
 | `pdf` | Build PDF themes (`--theme light,dark`) |
 | `html` | Build single-file HTML from `assets/theme-html.html` |
 | `epub` | Build EPUB3 with CSS and embedded images |
-| `build`, `sample`, `sort`, `sizes`, `watch`, `migrate-ibis`, `kdp …` | Not yet implemented |
+| `build` | Build all PDF themes, EPUB, and HTML |
+| `sample` | Build sample PDF from `sample.ranges` page ranges |
+| `sort`, `sizes`, `watch`, `migrate-ibis`, `kdp …` | Not yet implemented |
 
 Convert Markdown chapters programmatically:
 

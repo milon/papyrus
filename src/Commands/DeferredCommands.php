@@ -6,24 +6,6 @@ namespace Milon\Papyrus\Commands;
 
 use Symfony\Component\Console\Attribute\AsCommand;
 
-#[AsCommand(name: 'build', description: 'Build PDF, EPUB, and HTML (not implemented)')]
-final class BuildCommand extends NotImplementedCommand
-{
-    public function __construct()
-    {
-        parent::__construct('build');
-    }
-}
-
-#[AsCommand(name: 'sample', description: 'Build sample PDF (not implemented)')]
-final class SampleCommand extends NotImplementedCommand
-{
-    public function __construct()
-    {
-        parent::__construct('sample');
-    }
-}
-
 #[AsCommand(name: 'sort', description: 'Sort content files (not implemented)')]
 final class SortCommand extends NotImplementedCommand
 {

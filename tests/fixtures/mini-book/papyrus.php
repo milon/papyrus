@@ -44,4 +44,12 @@ return [
         'theme' => 'auto',
         'max_width_mm' => 130,
     ],
+
+    'sample' => [
+        'ranges' => [
+            ['from' => 1, 'to' => 2],
+        ],
+    ],
+
+    'sample_notice' => 'This is a sample from Mini Book.',
 ];
