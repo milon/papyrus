@@ -1,0 +1,38 @@
+{
+    "name": "milon/papyrus",
+    "description": "PHP CLI for Markdown book projects — PDF, EPUB, HTML, and KDP exports",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "symfony/console": "^7.2"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.21",
+        "phpunit/phpunit": "^11.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Milon\\Papyrus\\": "src/"
+        },
+        "classmap": [
+            "src/Commands/DeferredCommands.php",
+            "src/Commands/Kdp/KdpCommands.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Milon\\Papyrus\\Tests\\": "tests/"
+        }
+    },
+    "bin": [
+        "bin/papyrus"
+    ],
+    "scripts": {
+        "test": "phpunit",
+        "lint": "pint --test",
+        "format": "pint"
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

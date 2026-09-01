@@ -1,0 +1,14 @@
+/vendor/
+/composer.lock
+/.phpunit.cache/
+/.papyrus/
+/export/
+*.pdf
+*.epub
+
+.DS_Store
+*.swp
+*~
+.idea/
+.vscode/
+/local-docs/
