@@ -6,8 +6,11 @@
     "require": {
         "php": "^8.2",
         "ext-dom": "*",
+        "ext-gd": "*",
         "ext-mbstring": "*",
+        "ext-zlib": "*",
         "league/commonmark": "^2.7",
+        "mpdf/mpdf": "^8.2",
         "spatie/commonmark-highlighter": "^3.0",
         "symfony/console": "^7.2",
         "symfony/yaml": "^7.2"

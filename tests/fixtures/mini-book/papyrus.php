@@ -22,6 +22,10 @@ return [
         'h3' => 1,
     ],
 
+    'header' => [
+        'style' => 'font-style: italic; text-align: right; border-bottom: solid 1px #808080;',
+    ],
+
     'cover' => [
         'image' => 'cover.png',
     ],

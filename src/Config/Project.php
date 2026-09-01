@@ -108,6 +108,70 @@ final class Project
         );
     }
 
+    public function documentSize(): DocumentSize
+    {
+        $document = $this->config['document'] ?? [];
+
+        return DocumentSize::fromConfig(is_array($document) ? $document : []);
+    }
+
+    /**
+     * @return array{H1: int, H2: int, H3: int}
+     */
+    public function tocLevels(): array
+    {
+        $toc = $this->config['toc'] ?? [];
+
+        if (! is_array($toc)) {
+            $toc = [];
+        }
+
+        return [
+            'H1' => (int) ($toc['h1'] ?? 0),
+            'H2' => (int) ($toc['h2'] ?? 0),
+            'H3' => (int) ($toc['h3'] ?? 1),
+        ];
+    }
+
+    public function headerStyle(): string
+    {
+        $header = $this->config['header'] ?? [];
+
+        if (! is_array($header)) {
+            return 'font-style: italic; text-align: right; border-bottom: solid 1px #808080;';
+        }
+
+        return (string) ($header['style'] ?? 'font-style: italic; text-align: right; border-bottom: solid 1px #808080;');
+    }
+
+    public function coverImageForTheme(string $theme): ?string
+    {
+        $cover = $this->config['cover'] ?? [];
+
+        if (! is_array($cover)) {
+            return null;
+        }
+
+        if (isset($cover[$theme]) && is_string($cover[$theme]) && $cover[$theme] !== '') {
+            return $cover[$theme];
+        }
+
+        if (isset($cover['image']) && is_string($cover['image']) && $cover['image'] !== '') {
+            return $cover['image'];
+        }
+
+        return null;
+    }
+
+    public function outputSlug(): string
+    {
+        $slug = strtolower(trim($this->title()));
+        $slug = preg_replace('/[^\p{L}\p{N}]+/u', '-', $slug) ?? '';
+        $slug = trim($slug, '-');
+
+        return $slug !== '' ? $slug : 'book';
+    }
+
     private static function normalizeDir(string $dir): string
     {
         $resolved = realpath($dir);

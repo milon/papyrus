@@ -15,15 +15,6 @@ final class BuildCommand extends NotImplementedCommand
     }
 }
 
-#[AsCommand(name: 'pdf', description: 'Build PDF themes (not implemented)')]
-final class PdfCommand extends NotImplementedCommand
-{
-    public function __construct()
-    {
-        parent::__construct('pdf');
-    }
-}
-
 #[AsCommand(name: 'epub', description: 'Build EPUB (not implemented)')]
 final class EpubCommand extends NotImplementedCommand
 {

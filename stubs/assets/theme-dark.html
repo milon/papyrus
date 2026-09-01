@@ -1,15 +1,64 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>{{$title}}</title>
-    <!-- PAPYRUS:TOC -->
-</head>
-<body>
-    <header>
-        <h1>{{$title}}</h1>
-        <p>{{$subtitle}}</p>
-        <p>{{$author}}</p>
-    </header>
-</body>
-</html>
+<header>
+  <style>
+    body {
+      font-family: sans-serif;
+      font-size: 12pt;
+      line-height: 1.4;
+      color: #e8e8e8;
+      background-color: #1a1a1a;
+    }
+
+    h1 {
+      font-size: 24pt;
+      padding-bottom: 20px;
+      color: #ffffff;
+    }
+
+    h2 {
+      font-size: 18pt;
+      padding-bottom: 12px;
+      color: #ffffff;
+    }
+
+    h3 {
+      font-size: 14pt;
+      color: #f0f0f0;
+    }
+
+    pre {
+      page-break-inside: avoid;
+      border-left: solid 4px #555555;
+      background-color: #2a2a2a;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      color: #e8e8e8;
+    }
+
+    blockquote.notice,
+    blockquote.warning,
+    blockquote.caution,
+    blockquote.tip,
+    blockquote.danger {
+      border-left: solid 4px #888888;
+      padding-left: 15px;
+      margin: 20px 0;
+    }
+
+    .mpdf_toc {
+      font-family: sans-serif;
+      color: #e8e8e8;
+    }
+  </style>
+</header>
+
+<div style="text-align: center; margin-top: 25mm;">
+  <h1>{{$title}}</h1>
+  <p>{{$subtitle}}</p>
+  <p>{{$author}}</p>
+</div>
+
+<!-- PAPYRUS:TOC -->
+<tocpagebreak links="on"
+              toc-suppress="on"
+              toc-preHTML="&lt;h1&gt;Contents&lt;/h1&gt;"
+              toc-bookmarkText="Contents">

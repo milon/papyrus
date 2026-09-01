@@ -8,6 +8,7 @@ Built from scratch with heavy influence from [ibis-next](https://github.com/Hi-F
 
 - PHP 8.2+
 - Composer
+- PHP extensions: `dom`, `gd`, `mbstring`, `zlib` (PDF export via mPDF)
 
 ## Install (development)
 
@@ -44,7 +45,8 @@ mkdir my-book && ./bin/papyrus init -d my-book
 |---------|--------|
 | `init` | Scaffold `papyrus.php`, `content/`, `assets/` |
 | `doctor` | Validate config and project paths |
-| `build`, `pdf`, `epub`, `html`, `sample`, `sort`, `sizes`, `watch`, `migrate-ibis`, `kdp …` | Not yet implemented |
+| `pdf` | Build PDF themes (`--theme light,dark`) |
+| `build`, `epub`, `html`, `sample`, `sort`, `sizes`, `watch`, `migrate-ibis`, `kdp …` | Not yet implemented |
 
 Convert Markdown chapters programmatically:
 
