@@ -12,7 +12,6 @@ abstract class NotImplementedCommand extends BookCommand
 {
     public function __construct(
         private readonly string $feature,
-        private readonly string $milestone,
     ) {
         parent::__construct();
     }
@@ -20,9 +19,8 @@ abstract class NotImplementedCommand extends BookCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $output->writeln(sprintf(
-            '<comment>%s is not implemented yet (planned %s).</comment>',
+            '<comment>%s is not implemented yet.</comment>',
             $this->feature,
-            $this->milestone,
         ));
 
         return Command::FAILURE;

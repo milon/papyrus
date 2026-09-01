@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Milon\Papyrus\Config;
 
+use League\CommonMark\Environment\Environment;
+use Milon\Papyrus\Markdown\BookConverter;
+
 final class Project
 {
     public const CONFIG_FILE = 'papyrus.php';
@@ -78,6 +81,31 @@ final class Project
         }
 
         return array_values(array_filter(array_map('strval', $themes)));
+    }
+
+    public function breakLevel(): int
+    {
+        $level = $this->config['break_level'] ?? 2;
+
+        return is_int($level) ? $level : (int) $level;
+    }
+
+    /**
+     * @return (callable(Environment): void)|null
+     */
+    public function configureCommonMark(): ?callable
+    {
+        $hook = $this->config['configure_commonmark'] ?? null;
+
+        return is_callable($hook) ? $hook : null;
+    }
+
+    public function bookConverter(): BookConverter
+    {
+        return new BookConverter(
+            breakLevel: $this->breakLevel(),
+            configureCommonMark: $this->configureCommonMark(),
+        );
     }
 
     private static function normalizeDir(string $dir): string

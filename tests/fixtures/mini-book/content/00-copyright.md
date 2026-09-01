@@ -1,5 +1,5 @@
 ---
-title: Chapter One
+title: Copyright
 pretoc: true
 ---
 

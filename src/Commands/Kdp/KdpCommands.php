@@ -12,7 +12,7 @@ final class KdpCommand extends NotImplementedCommand
 {
     public function __construct()
     {
-        parent::__construct('kdp', 'M7');
+        parent::__construct('kdp');
     }
 }
 
@@ -21,7 +21,7 @@ final class KdpEbookCommand extends NotImplementedCommand
 {
     public function __construct()
     {
-        parent::__construct('kdp ebook', 'M7');
+        parent::__construct('kdp ebook');
     }
 }
 
@@ -30,7 +30,7 @@ final class KdpPrintCommand extends NotImplementedCommand
 {
     public function __construct()
     {
-        parent::__construct('kdp print', 'M7');
+        parent::__construct('kdp print');
     }
 }
 
@@ -39,7 +39,7 @@ final class KdpCoverCommand extends NotImplementedCommand
 {
     public function __construct()
     {
-        parent::__construct('kdp cover', 'M7');
+        parent::__construct('kdp cover');
     }
 }
 
@@ -48,6 +48,6 @@ final class KdpMetadataCommand extends NotImplementedCommand
 {
     public function __construct()
     {
-        parent::__construct('kdp metadata', 'M7');
+        parent::__construct('kdp metadata');
     }
 }

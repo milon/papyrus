@@ -38,13 +38,20 @@ mkdir my-book && ./bin/papyrus init -d my-book
 ./bin/papyrus doctor -d my-book
 ```
 
-## Commands (M0)
+## Commands
 
 | Command | Status |
 |---------|--------|
 | `init` | Scaffold `papyrus.php`, `content/`, `assets/` |
 | `doctor` | Validate config and project paths |
-| `build`, `pdf`, `epub`, `html`, `sample`, `sort`, `sizes`, `watch`, `migrate-ibis`, `kdp …` | Stubs (later milestones) |
+| `build`, `pdf`, `epub`, `html`, `sample`, `sort`, `sizes`, `watch`, `migrate-ibis`, `kdp …` | Not yet implemented |
+
+Convert Markdown chapters programmatically:
+
+```php
+$project = Milon\Papyrus\Config\Project::load($bookDir);
+$book = $project->bookConverter()->convertDirectory($project->contentDir);
+```
 
 ## Tests
 
@@ -53,10 +60,6 @@ composer test
 composer lint   # Pint
 composer format # Pint --write
 ```
-
-## Plan
-
-See `local-docs/ibis-replacement.md` for milestones M0–M9.
 
 ## License
 

@@ -11,7 +11,7 @@ final class BuildCommand extends NotImplementedCommand
 {
     public function __construct()
     {
-        parent::__construct('build', 'M6');
+        parent::__construct('build');
     }
 }
 
@@ -20,7 +20,7 @@ final class PdfCommand extends NotImplementedCommand
 {
     public function __construct()
     {
-        parent::__construct('pdf', 'M2');
+        parent::__construct('pdf');
     }
 }
 
@@ -29,7 +29,7 @@ final class EpubCommand extends NotImplementedCommand
 {
     public function __construct()
     {
-        parent::__construct('epub', 'M3');
+        parent::__construct('epub');
     }
 }
 
@@ -38,7 +38,7 @@ final class HtmlCommand extends NotImplementedCommand
 {
     public function __construct()
     {
-        parent::__construct('html', 'M3');
+        parent::__construct('html');
     }
 }
 
@@ -47,7 +47,7 @@ final class SampleCommand extends NotImplementedCommand
 {
     public function __construct()
     {
-        parent::__construct('sample', 'M6');
+        parent::__construct('sample');
     }
 }
 
@@ -56,7 +56,7 @@ final class SortCommand extends NotImplementedCommand
 {
     public function __construct()
     {
-        parent::__construct('sort', 'M9');
+        parent::__construct('sort');
     }
 }
 
@@ -65,7 +65,7 @@ final class SizesCommand extends NotImplementedCommand
 {
     public function __construct()
     {
-        parent::__construct('sizes', 'M9');
+        parent::__construct('sizes');
     }
 }
 
@@ -74,7 +74,7 @@ final class WatchCommand extends NotImplementedCommand
 {
     public function __construct()
     {
-        parent::__construct('watch', 'M9');
+        parent::__construct('watch');
     }
 }
 
@@ -83,6 +83,6 @@ final class MigrateIbisCommand extends NotImplementedCommand
 {
     public function __construct()
     {
-        parent::__construct('migrate-ibis', 'M8');
+        parent::__construct('migrate-ibis');
     }
 }
