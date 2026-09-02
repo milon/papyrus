@@ -7,6 +7,7 @@ namespace Milon\Papyrus\Render\Pdf;
 use Milon\Papyrus\Book\Chapter;
 use Milon\Papyrus\Config\DocumentSize;
 use Milon\Papyrus\Config\Project;
+use Milon\Papyrus\Render\VendorNotices;
 use Milon\Papyrus\Theme\Theme;
 use Milon\Papyrus\Theme\ThemeException;
 use Mpdf\Mpdf;
@@ -23,6 +24,17 @@ final class PdfRenderer
         ?string $outputPath = null,
         ?DocumentSize $documentSize = null,
         bool $skipCover = false,
+    ): string {
+        return VendorNotices::silence(
+            fn (): string => $this->write($themeName, $outputPath, $documentSize, $skipCover),
+        );
+    }
+
+    private function write(
+        string $themeName,
+        ?string $outputPath,
+        ?DocumentSize $documentSize,
+        bool $skipCover,
     ): string {
         $themePath = $this->project->assetsDir.'/theme-'.$themeName.'.html';
 

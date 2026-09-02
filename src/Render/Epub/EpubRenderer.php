@@ -6,6 +6,7 @@ namespace Milon\Papyrus\Render\Epub;
 
 use Milon\Papyrus\Book\Chapter;
 use Milon\Papyrus\Config\Project;
+use Milon\Papyrus\Render\VendorNotices;
 use PHPePub\Core\EPub;
 
 final class EpubRenderer
@@ -15,6 +16,13 @@ final class EpubRenderer
     ) {}
 
     public function render(?string $outputPath = null, ?EpubOptions $options = null): string
+    {
+        return VendorNotices::silence(
+            fn (): string => $this->write($outputPath, $options),
+        );
+    }
+
+    private function write(?string $outputPath, ?EpubOptions $options): string
     {
         $options ??= new EpubOptions;
 

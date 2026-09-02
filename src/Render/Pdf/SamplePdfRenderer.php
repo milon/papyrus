@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Milon\Papyrus\Render\Pdf;
 
 use Milon\Papyrus\Config\Project;
+use Milon\Papyrus\Render\VendorNotices;
 use Mpdf\MpdfException;
 
 final class SamplePdfRenderer
@@ -14,6 +15,13 @@ final class SamplePdfRenderer
     ) {}
 
     public function render(string $themeName, ?string $outputPath = null): string
+    {
+        return VendorNotices::silence(
+            fn (): string => $this->write($themeName, $outputPath),
+        );
+    }
+
+    private function write(string $themeName, ?string $outputPath): string
     {
         $sample = $this->project->sampleConfig();
 

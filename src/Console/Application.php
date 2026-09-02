@@ -20,6 +20,7 @@ use Milon\Papyrus\Commands\PdfCommand;
 use Milon\Papyrus\Commands\SampleCommand;
 use Milon\Papyrus\Commands\SizesCommand;
 use Milon\Papyrus\Commands\WatchCommand;
+use Milon\Papyrus\Render\VendorNotices;
 use Symfony\Component\Console\Application as SymfonyApplication;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -57,7 +58,27 @@ final class Application extends SymfonyApplication
             $output->writeln('');
         }
 
-        return parent::doRun($input, $output);
+        $exitCode = parent::doRun($input, $output);
+
+        $this->reportVendorNotices($output);
+
+        return $exitCode;
+    }
+
+    private function reportVendorNotices(OutputInterface $output): void
+    {
+        $notices = VendorNotices::flush();
+
+        if ($notices === [] || ! $output->isVerbose()) {
+            return;
+        }
+
+        $output->writeln('');
+        $output->writeln('<comment>Notices from third-party libraries (suppressed):</comment>');
+
+        foreach ($notices as $notice) {
+            $output->writeln('  '.$notice);
+        }
     }
 
     private function shouldRenderBanner(InputInterface $input): bool

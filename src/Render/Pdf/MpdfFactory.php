@@ -45,6 +45,12 @@ final class MpdfFactory
         $scriptRules = $registry->applicableScriptRules();
 
         if ($scriptRules !== []) {
+            // mPDF only asks languageToFont for a face once the text carries a
+            // language tag, and it only tags runs by script when both switches
+            // are on. Without them the rules never fire and non-Latin passages
+            // fall through to the default font as tofu.
+            $options['autoScriptToLang'] = true;
+            $options['autoLangToFont'] = true;
             $options['languageToFont'] = new ScriptLanguageToFont($scriptRules);
         }
 
