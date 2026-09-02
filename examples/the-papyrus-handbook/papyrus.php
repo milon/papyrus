@@ -59,7 +59,8 @@ return [
     ],
 
     'mermaid' => [
-        'enabled' => false,
+        'enabled' => true,
+        // theme defaults to auto (book colours; HTML/site embed light+dark)
         'format' => 'svg',
         'theme' => 'auto',
         'max_width_mm' => 130,

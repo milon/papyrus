@@ -41,14 +41,25 @@ final class MermaidCliCommand implements MermaidCli
         return $matches[1];
     }
 
-    public function render(string $inputPath, string $outputPath, string $theme): void
+    public function render(string $inputPath, string $outputPath, ?string $theme = null, ?string $configPath = null): void
     {
-        $this->run([
+        $arguments = [
             '-i', $inputPath,
             '-o', $outputPath,
-            '-t', $theme,
             '-b', 'transparent',
-        ], mustSucceed: true, outputPath: $outputPath);
+        ];
+
+        if ($theme !== null) {
+            $arguments[] = '-t';
+            $arguments[] = $theme;
+        }
+
+        if ($configPath !== null) {
+            $arguments[] = '-c';
+            $arguments[] = $configPath;
+        }
+
+        $this->run($arguments, mustSucceed: true, outputPath: $outputPath);
     }
 
     /**

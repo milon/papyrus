@@ -31,7 +31,11 @@ final class MermaidConfig
             $format = 'svg';
         }
 
-        $theme = is_string($mermaid['theme'] ?? null) ? $mermaid['theme'] : 'auto';
+        $theme = is_string($mermaid['theme'] ?? null) ? trim($mermaid['theme']) : 'auto';
+
+        if ($theme === '') {
+            $theme = 'auto';
+        }
 
         $maxWidth = $mermaid['max_width_mm'] ?? 130;
 
@@ -46,12 +50,41 @@ final class MermaidConfig
         );
     }
 
+    /**
+     * When true, diagrams use book-matched colours (Catppuccin light/dark)
+     * instead of Mermaid stock themes. This is the default (`theme` = `auto`).
+     */
+    public function usesBookPalette(): bool
+    {
+        return $this->theme === 'auto';
+    }
+
+    /**
+     * HTML / site builds toggle light and dark; embed both diagram variants.
+     * Default for `theme` = `auto` (and therefore for omitted `theme`).
+     */
+    public function isDualExport(string $exportTheme): bool
+    {
+        return $this->usesBookPalette() && $exportTheme === 'html';
+    }
+
+    /**
+     * Book palette variant (`light` / `dark`) when theme is `auto`.
+     */
+    public function bookVariant(string $exportTheme): string
+    {
+        return $exportTheme === 'dark' ? 'dark' : 'light';
+    }
+
+    /**
+     * Mermaid CLI `-t` theme when not using the book palette.
+     */
     public function resolvedTheme(string $exportTheme): string
     {
-        if ($this->theme !== 'auto') {
+        if (! $this->usesBookPalette()) {
             return $this->theme;
         }
 
-        return $exportTheme === 'dark' ? 'dark' : 'default';
+        return $this->bookVariant($exportTheme);
     }
 }

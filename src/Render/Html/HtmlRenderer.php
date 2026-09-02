@@ -30,7 +30,7 @@ final class HtmlRenderer
             throw new HtmlException(sprintf('Unable to read HTML theme: %s', $templatePath));
         }
 
-        $book = $this->project->bookWithFigures(breakLevel: 1, exportTheme: 'default');
+        $book = $this->project->bookWithFigures(breakLevel: 1, exportTheme: 'html');
 
         $body = '';
 

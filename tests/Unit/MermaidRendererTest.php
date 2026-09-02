@@ -64,6 +64,55 @@ PHP);
             $this->assertStringContainsString('<figure class="mermaid"', $html);
             $this->assertStringContainsString('<svg', $html);
             $this->assertStringNotContainsString('language-mermaid', $html);
+            $this->assertStringNotContainsString('mermaid-light', $html);
+        } finally {
+            $this->removeDirectory($dir);
+        }
+    }
+
+    #[Test]
+    public function it_embeds_light_and_dark_variants_for_html_export(): void
+    {
+        $dir = sys_get_temp_dir().'/papyrus-mermaid-dual-'.uniqid('', true);
+        mkdir($dir);
+        mkdir($dir.'/content');
+        mkdir($dir.'/assets');
+
+        $markdown = "```mermaid\nflowchart TD\n  A --> B\n```\n";
+        file_put_contents($dir.'/content/chapter.md', $markdown);
+        file_put_contents($dir.'/papyrus.php', <<<'PHP'
+<?php
+
+return [
+    'title' => 'Dual',
+    'mermaid' => [
+        'enabled' => true,
+        'format' => 'svg',
+        'theme' => 'auto',
+    ],
+];
+PHP);
+
+        try {
+            $project = Project::load($dir);
+            $book = $project->bookConverter()->convertDirectory($project->contentDir);
+            $cli = new FakeMermaidCli;
+            $renderer = new MermaidRenderer(
+                project: $project,
+                cli: $cli,
+                cache: new MermaidCache($dir.'/.papyrus/cache/mermaid'),
+                config: MermaidConfig::fromConfig($project->config),
+            );
+
+            $processed = $renderer->processBook($book, 'html');
+            $html = $processed->chapters[0]->html;
+
+            $this->assertSame(2, $cli->renderCount);
+            $this->assertStringContainsString('class="mermaid-light"', $html);
+            $this->assertStringContainsString('class="mermaid-dark"', $html);
+            $this->assertStringContainsString('<figure class="mermaid">', $html);
+            $this->assertStringNotContainsString('max-width: 130mm', $html);
+            $this->assertSame(2, substr_count($html, '<svg'));
         } finally {
             $this->removeDirectory($dir);
         }
@@ -184,10 +233,10 @@ final class FakeMermaidCli implements MermaidCli
         return '11.0.0';
     }
 
-    public function render(string $inputPath, string $outputPath, string $theme): void
+    public function render(string $inputPath, string $outputPath, ?string $theme = null, ?string $configPath = null): void
     {
         $this->renderCount++;
-        file_put_contents($outputPath, '<svg xmlns="http://www.w3.org/2000/svg"><text>Diagram</text></svg>');
+        file_put_contents($outputPath, '<svg id="my-svg" xmlns="http://www.w3.org/2000/svg"><text>Diagram</text></svg>');
     }
 }
 
@@ -208,7 +257,7 @@ final class FailingMermaidCli implements MermaidCli
         return '11.0.0';
     }
 
-    public function render(string $inputPath, string $outputPath, string $theme): void
+    public function render(string $inputPath, string $outputPath, ?string $theme = null, ?string $configPath = null): void
     {
         throw new MermaidException('invalid diagram');
     }

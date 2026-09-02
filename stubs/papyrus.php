@@ -63,6 +63,8 @@ return [
     'mermaid' => [
         'enabled' => true,
         'format' => 'svg',
+        // Default: book colours for PDF light/dark; HTML/site embed both variants.
+        // Set to default|dark|forest|neutral for Mermaid stock themes instead.
         'theme' => 'auto',
         'max_width_mm' => 130,
     ],

@@ -144,7 +144,7 @@ body {
 }
 
 h1, h2, h3 {
-    font-family: "Times New Roman", Times, Georgia, serif;
+    font-family: "Linux Libertine", "Libertinus Serif", Georgia, serif;
     font-weight: bold;
     color: var(--heading);
 }
@@ -226,6 +226,33 @@ code {
 .mermaid-diagram { margin: 0 0 1.875em 0; text-align: center; }
 .mermaid-diagram img { max-width: 100%; height: auto; }
 
+figure.mermaid {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto 1.875em;
+    text-align: center;
+}
+
+figure.mermaid svg,
+figure.mermaid img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+}
+
+figure.mermaid .mermaid-dark {
+    display: none;
+}
+
+html[data-theme="dark"] figure.mermaid .mermaid-light {
+    display: none;
+}
+
+html[data-theme="dark"] figure.mermaid .mermaid-dark {
+    display: block;
+}
+
 table {
     border-collapse: collapse;
     width: 100%;
@@ -301,13 +328,13 @@ div[style*="page-break"] { display: none; }
     color: var(--heading);
 }
 .title-page .book-subtitle {
-    font-family: "Times New Roman", Times, Georgia, serif;
+    font-family: "Linux Libertine", "Libertinus Serif", Georgia, serif;
     font-size: 1.0625em;
     margin: 1.5em 0 0 0;
     color: var(--muted);
 }
 .title-page .book-author {
-    font-family: "Times New Roman", Times, Georgia, serif;
+    font-family: "Linux Libertine", "Libertinus Serif", Georgia, serif;
     font-size: 1.375em;
     margin: 3.5em 0 0 0;
     color: var(--heading);
@@ -388,7 +415,7 @@ html[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
 
 .sidebar-brand {
     display: block;
-    font-family: "Times New Roman", Times, Georgia, serif;
+    font-family: "Linux Libertine", "Libertinus Serif", Georgia, serif;
     font-size: 1.15rem;
     font-weight: bold;
     color: var(--heading);
@@ -460,7 +487,7 @@ html[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
 .topbar-title {
     flex: 1 1 auto;
     margin: 0;
-    font-family: "Times New Roman", Times, Georgia, serif;
+    font-family: "Linux Libertine", "Libertinus Serif", Georgia, serif;
     font-size: 1rem;
     font-weight: bold;
     color: var(--heading);
@@ -477,9 +504,9 @@ html[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
 
 .content {
     width: 100%;
-    max-width: 52em;
     margin: 0 auto;
-    padding: 1.75rem clamp(1.25rem, 4vw, 2.5rem) 4rem;
+    padding: 1.75rem 1rem 4rem;
+    box-sizing: border-box;
 }
 
 .chapter-nav {
@@ -515,7 +542,7 @@ html[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
     border: 1px solid var(--toggle-border);
     color: var(--heading);
     text-decoration: none;
-    font-family: "Times New Roman", Times, Georgia, serif;
+    font-family: "Linux Libertine", "Libertinus Serif", Georgia, serif;
 }
 
 .start-reading:hover {
@@ -554,6 +581,44 @@ html[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
     .content {
         padding-top: 2.5rem;
     }
+}
+
+@media (min-width: 640px) {
+    .content { padding-left: 1.5rem; padding-right: 1.5rem; }
+}
+
+@media (min-width: 1024px) {
+    .content { padding-left: 2rem; padding-right: 2rem; }
+}
+
+CSS
+            .self::readingColumnMaxWidthCss('.content');
+    }
+
+    /**
+     * Tailwind default screens as a centered container max-width ladder
+     * (sm 640 / md 768 / lg 1024 / xl 1280 / 2xl 1536).
+     *
+     * @see https://tailwindcss.com/docs/responsive-design
+     */
+    public static function readingColumnMaxWidthCss(string $selector): string
+    {
+        return <<<CSS
+/* Tailwind screen breakpoints as container max-widths */
+@media (min-width: 640px) {
+    {$selector} { max-width: 640px; }
+}
+@media (min-width: 768px) {
+    {$selector} { max-width: 768px; }
+}
+@media (min-width: 1024px) {
+    {$selector} { max-width: 1024px; }
+}
+@media (min-width: 1280px) {
+    {$selector} { max-width: 1280px; }
+}
+@media (min-width: 1536px) {
+    {$selector} { max-width: 1536px; }
 }
 CSS;
     }

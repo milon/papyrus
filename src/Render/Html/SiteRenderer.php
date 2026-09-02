@@ -15,7 +15,7 @@ final class SiteRenderer
 
     public function render(?string $outputDir = null): string
     {
-        $book = $this->project->bookWithFigures(breakLevel: 1, exportTheme: 'default');
+        $book = $this->project->bookWithFigures(breakLevel: 1, exportTheme: 'html');
         $chapters = $book->chapters;
 
         if ($chapters === []) {

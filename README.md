@@ -4,17 +4,42 @@
   <img src="assets/papyrus-banner.jpg" alt="Papyrus — Markdown to Book (PDF, EPUB, HTML, and KDP)" width="100%">
 </p>
 
-PHP CLI for Markdown book projects — PDF, EPUB, HTML, and KDP exports.
+PHP CLI for Markdown book projects — PDF, EPUB, HTML, Hosted Site, and KDP exports.
 
 Built from scratch with heavy influence from [ibis-next](https://github.com/Hi-Folks/ibis-next). Book projects use `papyrus.php`, `content/`, and `assets/`.
+
+## Host your book as a website
+
+`build:site` turns the same Markdown chapters into a multi-page static site you can deploy anywhere (GitHub Pages, Netlify, S3, …):
+
+```bash
+papyrus build:site
+# → export/<slug>-site/
+```
+
+What you get:
+
+- One HTML page per chapter, plus a Home index
+- Chapter sidebar (collapsible on mobile)
+- Light and dark mode (same palette as single-file HTML)
+- Prev / Next navigation between chapters
+- Shared `assets/site.css` and `assets/site.js` — no CDN required
+
+Example — this repo’s handbook site:
+
+**[Browse The Papyrus Handbook site](docs/the-papyrus-handbook-site/)**
+
+```bash
+papyrus build:site -d examples/the-papyrus-handbook -e docs
+```
 
 ## Handbook
 
 The sample book **The Papyrus Handbook** lives in [`examples/the-papyrus-handbook/`](examples/the-papyrus-handbook/). Prebuilt how-to exports:
 
+- [Site](docs/the-papyrus-handbook-site/) — multi-page, sidebar, light/dark mode
+- [HTML](docs/the-papyrus-handbook.html) — single file, light/dark mode toggle
 - [PDF](docs/the-papyrus-handbook-light.pdf)
-- [HTML](docs/the-papyrus-handbook.html) (light and dark mode toggle)
-- [Site](docs/the-papyrus-handbook-site/) (multi-page, sidebar, light/dark mode)
 
 Rebuild those exports with:
 
@@ -22,8 +47,7 @@ Rebuild those exports with:
 composer build:handbook
 ```
 
-That runs `build:pdf` / `build:html` / `build:site` with `-d examples/the-papyrus-handbook` and
-`-e docs` so artifacts land directly in `docs/`.
+That runs `build:pdf`, `build:html`, and `build:site` with `-d examples/the-papyrus-handbook -e docs`.
 
 ## Requirements
 
@@ -58,6 +82,7 @@ Or add Composer scripts (example):
     "build:pdf": "papyrus build:pdf --theme light,dark",
     "build:epub": "papyrus build:epub",
     "build:html": "papyrus build:html",
+    "build:site": "papyrus build:site",
     "build:sample": "papyrus build:sample",
     "build:kdp": "papyrus kdp"
   }
@@ -66,6 +91,7 @@ Or add Composer scripts (example):
 
 ```bash
 composer build
+composer build:site
 ```
 
 ### Global CLI
@@ -97,6 +123,7 @@ Scaffold a new book in the current directory:
 ```bash
 papyrus init
 papyrus doctor
+papyrus build:site
 ```
 
 Or in a new folder:
@@ -104,7 +131,10 @@ Or in a new folder:
 ```bash
 mkdir my-book && papyrus init -d my-book
 papyrus doctor -d my-book
+papyrus build:site -d my-book
 ```
+
+Open `export/<slug>-site/index.html` in a browser, or deploy that folder as a static site.
 
 ## Commands
 
@@ -114,8 +144,8 @@ papyrus doctor -d my-book
 | `doctor`       | Validate config and project paths                                     |
 | `build`        | Build all PDF themes, EPUB, HTML, and enabled KDP outputs             |
 | `build:pdf`    | Build PDF themes (`--theme light,dark`, `--parallel` for multi-theme) |
-| `build:html`   | Build single-file HTML from `assets/theme-html.html` (light/dark mode) |
 | `build:site`   | Build multi-page HTML site with chapter sidebar (light/dark mode)     |
+| `build:html`   | Build single-file HTML from `assets/theme-html.html` (light/dark mode) |
 | `build:epub`   | Build EPUB3 with CSS and embedded images                              |
 | `build:sample` | Build sample PDF from `sample.ranges` page ranges                     |
 | `kdp`          | Build all enabled KDP outputs (eBook, print, cover, metadata)         |

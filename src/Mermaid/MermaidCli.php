@@ -12,5 +12,5 @@ interface MermaidCli
 
     public function version(): ?string;
 
-    public function render(string $inputPath, string $outputPath, string $theme): void;
+    public function render(string $inputPath, string $outputPath, ?string $theme = null, ?string $configPath = null): void;
 }

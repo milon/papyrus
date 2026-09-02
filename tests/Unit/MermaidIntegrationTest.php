@@ -47,6 +47,8 @@ final class MermaidIntegrationTest extends TestCase
             $html = file_get_contents($htmlPath);
             $this->assertIsString($html);
             $this->assertStringContainsString('<figure class="mermaid"', $html);
+            $this->assertStringContainsString('class="mermaid-light"', $html);
+            $this->assertStringContainsString('class="mermaid-dark"', $html);
 
             if (class_exists(ZipArchive::class)) {
                 $zip = new ZipArchive;

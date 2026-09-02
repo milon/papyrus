@@ -64,25 +64,88 @@ A warning aside.
 
 ### Mermaid
 
+Write a `mermaid` fence in your chapter. Papyrus runs `mmdc` at build time and
+replaces the fence with an SVG (or PNG) figure in PDF, EPUB, HTML, and site
+exports.
+
+Source:
+
 ````markdown
 ```mermaid
-flowchart TD
-  A[Markdown] --> B[Build]
+flowchart TB
+  subgraph Authoring
+    MD[Markdown chapters]
+    CFG[papyrus.php]
+    ASSETS[Themes and fonts]
+  end
+
+  subgraph Papyrus
+    CONVERT[BookConverter]
+    MERMAID[MermaidRenderer]
+    PDF[build:pdf]
+    EPUB[build:epub]
+    HTML[build:html]
+    SITE[build:site]
+  end
+
+  MD --> CONVERT
+  CFG --> CONVERT
+  ASSETS --> PDF
+  ASSETS --> HTML
+  ASSETS --> SITE
+  CONVERT --> MERMAID
+  MERMAID --> PDF
+  MERMAID --> EPUB
+  MERMAID --> HTML
+  MERMAID --> SITE
 ```
 ````
 
-Enable in `papyrus.php`:
+Rendered output:
+
+```mermaid
+flowchart TB
+  subgraph Authoring
+    MD[Markdown chapters]
+    CFG[papyrus.php]
+    ASSETS[Themes and fonts]
+  end
+
+  subgraph Papyrus
+    CONVERT[BookConverter]
+    MERMAID[MermaidRenderer]
+    PDF[build:pdf]
+    EPUB[build:epub]
+    HTML[build:html]
+    SITE[build:site]
+  end
+
+  MD --> CONVERT
+  CFG --> CONVERT
+  ASSETS --> PDF
+  ASSETS --> HTML
+  ASSETS --> SITE
+  CONVERT --> MERMAID
+  MERMAID --> PDF
+  MERMAID --> EPUB
+  MERMAID --> HTML
+  MERMAID --> SITE
+```
+
+Enable in `papyrus.php` (theme defaults to `auto` — book colours; HTML and
+site embeds both light and dark variants):
 
 ```php
 'mermaid' => [
     'enabled' => true,
-    'format' => 'svg',
-    'theme' => 'auto',
-    'max_width_mm' => 130,
 ],
 ```
 
-Requires `mmdc` on `PATH`. Diagrams cache under `.papyrus/cache/mermaid`.
+Optional knobs: `format` (`svg` / `png`), `theme` (`auto` or a Mermaid stock
+theme like `default` / `dark` / `forest`), `max_width_mm`.
+
+Requires `@mermaid-js/mermaid-cli` (`mmdc`) on `PATH`.
+Diagrams cache under `.papyrus/cache/mermaid`.
 
 ## PHP fence linting
 
