@@ -30,6 +30,7 @@ final class Banner
         }
 
         $output->writeln('');
-        Styles::header($output, 'Papyrus', self::TAGLINE);
+        $output->writeln('<info>Papyrus</info>');
+        $output->writeln('<comment>'.OutputFormatter::escape(self::TAGLINE).'</comment>');
     }
 }

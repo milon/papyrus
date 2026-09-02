@@ -34,7 +34,7 @@ final class BannerTest extends TestCase
         $this->assertStringContainsString('___', $display);
         $this->assertStringContainsString('Papyrus', $display);
         $this->assertStringContainsString(Banner::TAGLINE, $display);
-        $this->assertStringContainsString('╭', $display);
+        $this->assertStringContainsString('Available commands:', $display);
     }
 
     #[Test]
