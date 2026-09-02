@@ -12,9 +12,9 @@
     <aside class="sidebar" id="sidebar" aria-label="Chapters">
         <div class="sidebar-header">
             <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
-            <p class="sidebar-subtitle">Markdown to Book — PDF, EPUB, HTML, and KDP</p>
+            <p class="sidebar-subtitle">Markdown to PDF, EPUB, HTML sites, and KDP</p>
         </div>
-        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-copyright.html">Copyright</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a href="03-configuration.html">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a class="is-active" href="05-themes-and-assets.html" aria-current="page">Themes and assets</a></li><li><a href="06-building-exports.html">Building exports</a></li><li><a href="07-samples-and-kdp.html">Samples and KDP</a></li><li><a href="08-migration-and-ci.html">Migration and CI</a></li><li><a href="09-command-reference.html">Command reference</a></li></ul></nav>
+        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-welcome.html">Welcome</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a href="03-configuration.html">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a class="is-active" href="05-themes-and-assets.html" aria-current="page">Themes and assets</a></li><li><a href="06-build.html">build</a></li><li><a href="07-build-pdf.html">build:pdf</a></li><li><a href="08-build-epub.html">build:epub</a></li><li><a href="09-build-html.html">build:html</a></li><li><a href="10-build-site.html">build:site</a></li><li><a href="11-build-sample.html">build:sample</a></li><li><a href="12-kdp.html">kdp</a></li><li><a href="13-kdp-ebook.html">kdp:ebook</a></li><li><a href="14-kdp-print.html">kdp:print</a></li><li><a href="15-kdp-cover.html">kdp:cover</a></li><li><a href="16-kdp-metadata.html">kdp:metadata</a></li><li><a href="17-migration-and-ci.html">Migration and CI</a></li><li><a href="18-command-reference.html">Command reference</a></li></ul></nav>
     </aside>
     <div class="layout">
         <header class="topbar">
@@ -39,9 +39,9 @@
         <main class="content">
             <div style="page-break-after: always;"></div><h1>Themes and assets</h1>
 <p>Everything visual lives under <code>assets/</code>. New projects from <code>papyrus init</code> ship
-the same PDF theme used by <em>The Filament Playbook</em> (Libre Libertine body,
-Times headings, 0xProto code, github-gist highlight colors, notice/tip/caution
-asides) plus matching font files under <code>assets/fonts/</code>.</p>
+a Filament Playbook–inspired theme: Linux Libertine for body and headings,
+0xProto for code, github-gist highlight colors, and notice / tip / caution
+asides, plus matching font files under <code>assets/fonts/</code>.</p>
 <h2>PDF themes</h2>
 <p>For each name in <code>themes</code>, provide <code>assets/theme-{name}.html</code>. Split the theme
 on the TOC marker:</p>
@@ -58,24 +58,27 @@ colors, title page, and running header styles (often paired with
 <code>{{$title}}</code>, <code>{{$subtitle}}</code>, <code>{{$author}}</code>, and <code>{{$body}}</code>. The default
 template mirrors the light PDF theme (same typefaces, colors, code blocks,
 and callouts), with a fixed moon/sun icon toggle that switches to the dark
-PDF palette. The reading column is <code>52em</code> wide (a bit wider than the PDF
-measure). <code>@font-face</code> rules in the theme use <code>../assets/fonts/</code>; at build
-time Papyrus rewrites those URLs relative to the HTML output directory (so
-<code>-e docs</code> still finds the book’s fonts).</p>
+PDF palette. The reading column follows Tailwind screen widths (640 → 1536px).
+<code>@font-face</code> rules in the theme use <code>../assets/fonts/</code>; at build time Papyrus
+rewrites those URLs relative to the HTML output directory (so <code>-e docs</code> still
+finds the book’s fonts).</p>
 <pre><code class="language-bash hljs bash" data-lang="bash">papyrus build:html
 papyrus build:site
 </code></pre>
 <p><code>build:site</code> writes <code>export/&lt;slug&gt;-site/</code> with one HTML page per chapter, a
-Home index, shared CSS/JS, a collapsible chapter sidebar (Docsify-style),
-and the same light/dark toggle as the single-file HTML export.</p>
+Home index, shared CSS/JS (fonts copied into the site), a collapsible chapter
+sidebar, and the same light/dark toggle as the single-file HTML export. That
+folder is what this handbook deploys to GitHub Pages.</p>
 <h2>EPUB styles</h2>
 <p><code>assets/style.css</code> (and optional <code>highlight.codeblock.min.css</code>) ship inside
 the EPUB. Prefer simple <code>pre</code>/<code>code</code> rules for e-ink readers.</p>
 <h2>Covers and fonts</h2>
 <p>Place cover images and font files under <code>assets/</code> (fonts usually in
 <code>assets/fonts/</code>). Reference them from <code>cover</code> and <code>fonts.faces</code> in
-<code>papyrus.php</code>.</p>
-<nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="04-writing-content.html"><span class="label">Previous</span>Writing content</a><a class="next" href="06-building-exports.html"><span class="label">Next</span>Building exports</a></nav>
+<code>papyrus.php</code>. This handbook’s cover is <code>assets/cover.jpg</code>; the wide banner
+used on the Welcome page is published from the Papyrus repo at
+<a href="https://github.com/milon/papyrus/blob/master/assets/papyrus-banner.jpg">assets/papyrus-banner.jpg</a>.</p>
+<nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="04-writing-content.html"><span class="label">Previous</span>Writing content</a><a class="next" href="06-build.html"><span class="label">Next</span>build</a></nav>
         </main>
     </div>
 </body>

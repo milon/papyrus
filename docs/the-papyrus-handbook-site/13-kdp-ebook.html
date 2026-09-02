@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>kdp:ebook — The Papyrus Handbook</title>
+    <link rel="stylesheet" href="assets/site.css">
+    <script src="assets/site.js"></script>
+</head>
+<body>
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+    <aside class="sidebar" id="sidebar" aria-label="Chapters">
+        <div class="sidebar-header">
+            <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
+            <p class="sidebar-subtitle">Markdown to PDF, EPUB, HTML sites, and KDP</p>
+        </div>
+        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-welcome.html">Welcome</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a href="03-configuration.html">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li><li><a href="06-build.html">build</a></li><li><a href="07-build-pdf.html">build:pdf</a></li><li><a href="08-build-epub.html">build:epub</a></li><li><a href="09-build-html.html">build:html</a></li><li><a href="10-build-site.html">build:site</a></li><li><a href="11-build-sample.html">build:sample</a></li><li><a href="12-kdp.html">kdp</a></li><li><a class="is-active" href="13-kdp-ebook.html" aria-current="page">kdp:ebook</a></li><li><a href="14-kdp-print.html">kdp:print</a></li><li><a href="15-kdp-cover.html">kdp:cover</a></li><li><a href="16-kdp-metadata.html">kdp:metadata</a></li><li><a href="17-migration-and-ci.html">Migration and CI</a></li><li><a href="18-command-reference.html">Command reference</a></li></ul></nav>
+    </aside>
+    <div class="layout">
+        <header class="topbar">
+            <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Open chapter list" title="Chapters">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M4 7h16M4 12h16M4 17h16"/>
+                </svg>
+            </button>
+            <p class="topbar-title">kdp:ebook</p>
+            <div class="topbar-actions">
+                <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Dark mode">
+                    <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                    <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+        <main class="content">
+            <div style="page-break-after: always;"></div><h1>kdp:ebook</h1>
+<p>Build a Kindle-oriented EPUB for Amazon KDP upload.</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus kdp:ebook
+papyrus kdp:ebook -d /path/to/book -e /path/to/out
+</code></pre>
+<p>Requires <code>kdp.ebook.enabled =&gt; true</code>.</p>
+<h2>Options</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dir</code></td>
+<td><code>-d</code></td>
+<td>current directory</td>
+<td>Book root</td>
+</tr>
+<tr>
+<td><code>--export</code></td>
+<td><code>-e</code></td>
+<td><code>export/</code></td>
+<td>Output directory</td>
+</tr>
+</tbody>
+</table>
+<h2>Output</h2>
+<pre><code class="language-text">export/&lt;slug&gt;-kdp.epub
+</code></pre>
+<p>Papyrus runs an internal KDP-oriented check and, when available on <code>PATH</code>,
+<code>epubcheck</code>.</p>
+<h2>Cover</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'kdp'</span> =&gt; [
+    <span class="hljs-string">'ebook'</span> =&gt; [
+        <span class="hljs-string">'enabled'</span> =&gt; <span class="hljs-keyword">true</span>,
+        <span class="hljs-string">'cover'</span> =&gt; <span class="hljs-string">'cover-ebook.jpg'</span>, <span class="hljs-comment">// under assets/</span>
+    ],
+],
+</code></pre>
+<p>If <code>kdp.ebook.cover</code> is unset, Papyrus falls back to the light theme cover
+(<code>cover.light</code> or <code>cover.image</code>).</p>
+<h2>Metadata</h2>
+<p>Description falls back to <code>&quot;{title} - {author}&quot;</code> when
+<code>kdp.metadata.description</code> is empty. Language uses
+<code>kdp.metadata.language</code> when set, otherwise project <code>language</code> (default
+<code>en</code>).</p>
+<h2>Versus build:epub</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>build:epub</code></th>
+<th><code>kdp:ebook</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Filename</td>
+<td><code>&lt;slug&gt;.epub</code></td>
+<td><code>&lt;slug&gt;-kdp.epub</code></td>
+</tr>
+<tr>
+<td>Enable flag</td>
+<td>always</td>
+<td><code>kdp.ebook.enabled</code></td>
+</tr>
+<tr>
+<td>Validation</td>
+<td>packaging only</td>
+<td>KDP checks + optional epubcheck</td>
+</tr>
+<tr>
+<td>Cover preference</td>
+<td>theme cover</td>
+<td><code>kdp.ebook.cover</code> first</td>
+</tr>
+</tbody>
+</table>
+<nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="12-kdp.html"><span class="label">Previous</span>kdp</a><a class="next" href="14-kdp-print.html"><span class="label">Next</span>kdp:print</a></nav>
+        </main>
+    </div>
+</body>
+</html>

@@ -43,6 +43,7 @@ final class SiteRenderer
         }
 
         $this->copyFontsIntoSite($assetsDir.'/fonts');
+        $this->copySiteBanner($assetsDir);
 
         $css = WebTheme::fontFaceCss('fonts/')
             ."\n"
@@ -89,11 +90,34 @@ final class SiteRenderer
         $firstFile = htmlspecialchars($first['file'], ENT_QUOTES | ENT_HTML5);
         $firstTitle = htmlspecialchars($first['title'], ENT_QUOTES | ENT_HTML5);
 
+        $bannerHtml = '';
+        $banner = $this->project->siteBanner();
+
+        if ($banner !== null && is_file($this->project->assetsDir.'/'.$banner)) {
+            $bannerHtml = sprintf(
+                '<p class="book-banner"><img src="assets/%s" alt="%s"/></p>',
+                htmlspecialchars($banner, ENT_QUOTES | ENT_HTML5),
+                $title,
+            );
+        }
+
+        $leadHtml = '';
+        $lead = $this->project->siteLead();
+
+        if ($lead !== null) {
+            $leadHtml = '<p class="book-lead">'.htmlspecialchars($lead, ENT_QUOTES | ENT_HTML5).'</p>';
+        }
+
+        $linksHtml = $this->homeLinksHtml();
+
         $body = <<<HTML
 <div class="title-page">
+    {$bannerHtml}
     <h1 class="book-title">{$title}</h1>
     <p class="book-subtitle">{$subtitle}</p>
+    {$leadHtml}
     <p class="book-author">{$author}</p>
+    {$linksHtml}
     <a class="start-reading" href="{$firstFile}">Start reading — {$firstTitle}</a>
 </div>
 HTML;
@@ -105,6 +129,28 @@ HTML;
             body: $body,
             topbarTitle: $this->project->title(),
         );
+    }
+
+    private function homeLinksHtml(): string
+    {
+        $repository = $this->project->siteRepository();
+
+        if ($repository === null) {
+            return '';
+        }
+
+        $repoUrl = htmlspecialchars($repository, ENT_QUOTES | ENT_HTML5);
+        $items = sprintf('<a href="%s">Source on GitHub</a>', $repoUrl);
+
+        if (preg_match('#github\.com/([^/]+/[^/]+?)(?:\.git)?/?$#', $repository, $matches) === 1) {
+            $slug = $matches[1];
+            $packagist = htmlspecialchars('https://packagist.org/packages/'.$slug, ENT_QUOTES | ENT_HTML5);
+            $issues = htmlspecialchars(rtrim($repository, '/').'/issues', ENT_QUOTES | ENT_HTML5);
+            $items .= sprintf('<a href="%s">Packagist</a>', $packagist);
+            $items .= sprintf('<a href="%s">Issues</a>', $issues);
+        }
+
+        return '<p class="home-links">'.$items.'</p>';
     }
 
     /**
@@ -240,6 +286,27 @@ HTML;
         }
 
         return '<nav class="sidebar-nav"><ul>'.$items.'</ul></nav>';
+    }
+
+    private function copySiteBanner(string $assetsDir): void
+    {
+        $banner = $this->project->siteBanner();
+
+        if ($banner === null) {
+            return;
+        }
+
+        $source = $this->project->assetsDir.'/'.$banner;
+
+        if (! is_file($source)) {
+            return;
+        }
+
+        $destination = $assetsDir.'/'.basename($banner);
+
+        if (! copy($source, $destination)) {
+            throw new HtmlException(sprintf('Unable to copy site banner: %s', $banner));
+        }
     }
 
     private function copyFontsIntoSite(string $destinationDir): void

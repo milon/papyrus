@@ -5,7 +5,8 @@ title: Writing content
 # Writing content
 
 Chapters are Markdown under `content/`, loaded in natural filename order
-(`00-…`, `01-…`, `10-…`).
+(`00-…`, `01-…`, `10-…`). This handbook’s Welcome page is a pretoc chapter;
+everything after Introduction is body content for the PDF table of contents.
 
 ## Front matter
 
@@ -152,4 +153,11 @@ Diagrams cache under `.papyrus/cache/mermaid`.
 ```bash
 papyrus lint
 papyrus lint --fix
+papyrus lint --max-width=66
 ```
+
+| Option | Short | Default | Meaning |
+|--------|-------|---------|---------|
+| `--fix` | `-f` | off | Apply auto-fixes for open tags and comment runs |
+| `--max-width` | — | `66` | Maximum line width for PHP fences |
+| `--dir` / `--export` | `-d` / `-e` | book defaults | Shared book options (`--export` unused for lint) |

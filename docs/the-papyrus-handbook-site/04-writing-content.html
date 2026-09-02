@@ -12,9 +12,9 @@
     <aside class="sidebar" id="sidebar" aria-label="Chapters">
         <div class="sidebar-header">
             <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
-            <p class="sidebar-subtitle">Markdown to Book — PDF, EPUB, HTML, and KDP</p>
+            <p class="sidebar-subtitle">Markdown to PDF, EPUB, HTML sites, and KDP</p>
         </div>
-        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-copyright.html">Copyright</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a href="03-configuration.html">Configuration</a></li><li><a class="is-active" href="04-writing-content.html" aria-current="page">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li><li><a href="06-building-exports.html">Building exports</a></li><li><a href="07-samples-and-kdp.html">Samples and KDP</a></li><li><a href="08-migration-and-ci.html">Migration and CI</a></li><li><a href="09-command-reference.html">Command reference</a></li></ul></nav>
+        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-welcome.html">Welcome</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a href="03-configuration.html">Configuration</a></li><li><a class="is-active" href="04-writing-content.html" aria-current="page">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li><li><a href="06-build.html">build</a></li><li><a href="07-build-pdf.html">build:pdf</a></li><li><a href="08-build-epub.html">build:epub</a></li><li><a href="09-build-html.html">build:html</a></li><li><a href="10-build-site.html">build:site</a></li><li><a href="11-build-sample.html">build:sample</a></li><li><a href="12-kdp.html">kdp</a></li><li><a href="13-kdp-ebook.html">kdp:ebook</a></li><li><a href="14-kdp-print.html">kdp:print</a></li><li><a href="15-kdp-cover.html">kdp:cover</a></li><li><a href="16-kdp-metadata.html">kdp:metadata</a></li><li><a href="17-migration-and-ci.html">Migration and CI</a></li><li><a href="18-command-reference.html">Command reference</a></li></ul></nav>
     </aside>
     <div class="layout">
         <header class="topbar">
@@ -39,7 +39,8 @@
         <main class="content">
             <div style="page-break-after: always;"></div><h1>Writing content</h1>
 <p>Chapters are Markdown under <code>content/</code>, loaded in natural filename order
-(<code>00-…</code>, <code>01-…</code>, <code>10-…</code>).</p>
+(<code>00-…</code>, <code>01-…</code>, <code>10-…</code>). This handbook’s Welcome page is a pretoc chapter;
+everything after Introduction is body content for the PDF table of contents.</p>
 <h2>Front matter</h2>
 <pre><code class="language-markdown hljs markdown" data-lang="markdown">---
 title: My chapter
@@ -141,7 +142,38 @@ Diagrams cache under <code>.papyrus/cache/mermaid</code>.</p>
 <h2>PHP fence linting</h2>
 <pre><code class="language-bash hljs bash" data-lang="bash">papyrus lint
 papyrus lint --fix
+papyrus lint --max-width=66
 </code></pre>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--fix</code></td>
+<td><code>-f</code></td>
+<td>off</td>
+<td>Apply auto-fixes for open tags and comment runs</td>
+</tr>
+<tr>
+<td><code>--max-width</code></td>
+<td>—</td>
+<td><code>66</code></td>
+<td>Maximum line width for PHP fences</td>
+</tr>
+<tr>
+<td><code>--dir</code> / <code>--export</code></td>
+<td><code>-d</code> / <code>-e</code></td>
+<td>book defaults</td>
+<td>Shared book options (<code>--export</code> unused for lint)</td>
+</tr>
+</tbody>
+</table>
 <nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="03-configuration.html"><span class="label">Previous</span>Configuration</a><a class="next" href="05-themes-and-assets.html"><span class="label">Next</span>Themes and assets</a></nav>
         </main>
     </div>

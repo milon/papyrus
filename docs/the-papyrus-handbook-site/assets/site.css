@@ -355,7 +355,16 @@ blockquote.warning strong, blockquote.danger strong, blockquote.danger div.title
 
 div[style*="page-break"] { display: none; }
 
-.title-page { text-align: center; padding: 3em 0 2em; }
+.title-page { text-align: center; padding: 2em 0 2.5em; }
+.title-page .book-banner {
+    margin: 0 0 2em;
+}
+.title-page .book-banner img {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+}
 .title-page .book-title {
     font-size: 2.5em;
     margin: 0;
@@ -365,14 +374,35 @@ div[style*="page-break"] { display: none; }
 .title-page .book-subtitle {
     font-family: "Linux Libertine", "Libertinus Serif", Georgia, serif;
     font-size: 1.0625em;
-    margin: 1.5em 0 0 0;
+    margin: 1.25em 0 0 0;
     color: var(--muted);
+}
+.title-page .book-lead {
+    max-width: 36em;
+    margin: 1.5em auto 0;
+    font-size: 1.05em;
+    line-height: 1.5;
+    color: var(--fg);
 }
 .title-page .book-author {
     font-family: "Linux Libertine", "Libertinus Serif", Georgia, serif;
     font-size: 1.375em;
-    margin: 3.5em 0 0 0;
+    margin: 2.5em 0 0 0;
     color: var(--heading);
+}
+.title-page .home-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem 1.5rem;
+    margin: 2em 0 0;
+}
+.title-page .home-links a {
+    color: var(--link);
+    text-decoration: none;
+}
+.title-page .home-links a:hover {
+    text-decoration: underline;
 }
 .theme-toggle,
 .nav-toggle {

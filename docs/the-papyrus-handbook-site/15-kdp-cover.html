@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>kdp:cover — The Papyrus Handbook</title>
+    <link rel="stylesheet" href="assets/site.css">
+    <script src="assets/site.js"></script>
+</head>
+<body>
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+    <aside class="sidebar" id="sidebar" aria-label="Chapters">
+        <div class="sidebar-header">
+            <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
+            <p class="sidebar-subtitle">Markdown to PDF, EPUB, HTML sites, and KDP</p>
+        </div>
+        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-welcome.html">Welcome</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a href="03-configuration.html">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li><li><a href="06-build.html">build</a></li><li><a href="07-build-pdf.html">build:pdf</a></li><li><a href="08-build-epub.html">build:epub</a></li><li><a href="09-build-html.html">build:html</a></li><li><a href="10-build-site.html">build:site</a></li><li><a href="11-build-sample.html">build:sample</a></li><li><a href="12-kdp.html">kdp</a></li><li><a href="13-kdp-ebook.html">kdp:ebook</a></li><li><a href="14-kdp-print.html">kdp:print</a></li><li><a class="is-active" href="15-kdp-cover.html" aria-current="page">kdp:cover</a></li><li><a href="16-kdp-metadata.html">kdp:metadata</a></li><li><a href="17-migration-and-ci.html">Migration and CI</a></li><li><a href="18-command-reference.html">Command reference</a></li></ul></nav>
+    </aside>
+    <div class="layout">
+        <header class="topbar">
+            <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Open chapter list" title="Chapters">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M4 7h16M4 12h16M4 17h16"/>
+                </svg>
+            </button>
+            <p class="topbar-title">kdp:cover</p>
+            <div class="topbar-actions">
+                <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Dark mode">
+                    <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                    <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+        <main class="content">
+            <div style="page-break-after: always;"></div><h1>kdp:cover</h1>
+<p>Copy configured cover images from <code>assets/</code> into <code>export/</code> with KDP-oriented
+filenames. No enable flag — safe to run anytime.</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus kdp:cover
+papyrus kdp:cover -d /path/to/book -e /path/to/out
+</code></pre>
+<h2>Options</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dir</code></td>
+<td><code>-d</code></td>
+<td>current directory</td>
+<td>Book root</td>
+</tr>
+<tr>
+<td><code>--export</code></td>
+<td><code>-e</code></td>
+<td><code>export/</code></td>
+<td>Output directory</td>
+</tr>
+</tbody>
+</table>
+<h2>Sources and outputs</h2>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Export name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kdp.ebook.cover</code> → <code>assets/&lt;file&gt;</code></td>
+<td><code>&lt;slug&gt;-kdp-ebook-cover.&lt;ext&gt;</code></td>
+</tr>
+<tr>
+<td><code>cover[&lt;theme&gt;]</code> or <code>cover.image</code></td>
+<td><code>&lt;slug&gt;-kdp-print-cover-&lt;theme&gt;.&lt;ext&gt;</code> (one per theme)</td>
+</tr>
+</tbody>
+</table>
+<p>Missing source files are skipped (no error). If nothing is copied, the
+command still succeeds with a comment.</p>
+<h2>Example</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'cover'</span> =&gt; [
+    <span class="hljs-string">'image'</span> =&gt; <span class="hljs-string">'cover.png'</span>,
+    <span class="hljs-string">'light'</span> =&gt; <span class="hljs-string">'cover-light.png'</span>,
+],
+<span class="hljs-string">'kdp'</span> =&gt; [
+    <span class="hljs-string">'ebook'</span> =&gt; [
+        <span class="hljs-string">'cover'</span> =&gt; <span class="hljs-string">'cover-ebook.jpg'</span>,
+    ],
+],
+</code></pre>
+<p>With themes <code>light</code> and <code>dark</code>, a typical export folder might contain:</p>
+<pre><code class="language-text">export/my-book-kdp-ebook-cover.jpg
+export/my-book-kdp-print-cover-light.png
+export/my-book-kdp-print-cover-dark.png   # if dark cover resolves
+</code></pre>
+<p>Papyrus copies files as-is — it does not generate a full wraparound print
+cover. Use Amazon’s cover calculator for spine width and bleed on the
+print jacket.</p>
+<nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="14-kdp-print.html"><span class="label">Previous</span>kdp:print</a><a class="next" href="16-kdp-metadata.html"><span class="label">Next</span>kdp:metadata</a></nav>
+        </main>
+    </div>
+</body>
+</html>

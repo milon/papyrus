@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 return [
     'title' => 'The Papyrus Handbook',
-    'subtitle' => 'Markdown to Book — PDF, EPUB, HTML, and KDP',
-    'author' => 'Papyrus',
+    'subtitle' => 'Markdown to PDF, EPUB, HTML sites, and KDP',
+    'author' => 'Nuruzzaman Milon',
     'themes' => ['light'],
 
     'document' => [
@@ -28,6 +28,12 @@ return [
 
     'cover' => [
         'image' => 'cover.jpg',
+    ],
+
+    'site' => [
+        'banner' => 'banner.jpg',
+        'repository' => 'https://github.com/milon/papyrus',
+        'lead' => 'Official handbook for milon/papyrus — the same Markdown chapters build the PDF, HTML file, and this site.',
     ],
 
     'fonts' => [
@@ -72,7 +78,7 @@ return [
         ],
     ],
 
-    'sample_notice' => 'This is a sample from The Papyrus Handbook.',
+    'sample_notice' => 'This is a sample from The Papyrus Handbook — https://github.com/milon/papyrus',
 
     'kdp' => [
         'ebook' => [
@@ -82,8 +88,8 @@ return [
             'enabled' => false,
         ],
         'metadata' => [
-            'description' => 'Official handbook for milon/papyrus — turn Markdown into PDF, EPUB, HTML, and Amazon KDP exports.',
-            'keywords' => ['papyrus', 'markdown', 'ebook', 'pdf', 'kdp'],
+            'description' => 'Official handbook for milon/papyrus — turn Markdown into PDF, EPUB, HTML sites, and Amazon KDP exports. https://github.com/milon/papyrus',
+            'keywords' => ['papyrus', 'markdown', 'ebook', 'pdf', 'kdp', 'static-site'],
             'language' => 'en',
         ],
     ],

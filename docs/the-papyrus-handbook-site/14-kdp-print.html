@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>kdp:print — The Papyrus Handbook</title>
+    <link rel="stylesheet" href="assets/site.css">
+    <script src="assets/site.js"></script>
+</head>
+<body>
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+    <aside class="sidebar" id="sidebar" aria-label="Chapters">
+        <div class="sidebar-header">
+            <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
+            <p class="sidebar-subtitle">Markdown to PDF, EPUB, HTML sites, and KDP</p>
+        </div>
+        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-welcome.html">Welcome</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a href="03-configuration.html">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li><li><a href="06-build.html">build</a></li><li><a href="07-build-pdf.html">build:pdf</a></li><li><a href="08-build-epub.html">build:epub</a></li><li><a href="09-build-html.html">build:html</a></li><li><a href="10-build-site.html">build:site</a></li><li><a href="11-build-sample.html">build:sample</a></li><li><a href="12-kdp.html">kdp</a></li><li><a href="13-kdp-ebook.html">kdp:ebook</a></li><li><a class="is-active" href="14-kdp-print.html" aria-current="page">kdp:print</a></li><li><a href="15-kdp-cover.html">kdp:cover</a></li><li><a href="16-kdp-metadata.html">kdp:metadata</a></li><li><a href="17-migration-and-ci.html">Migration and CI</a></li><li><a href="18-command-reference.html">Command reference</a></li></ul></nav>
+    </aside>
+    <div class="layout">
+        <header class="topbar">
+            <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Open chapter list" title="Chapters">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M4 7h16M4 12h16M4 17h16"/>
+                </svg>
+            </button>
+            <p class="topbar-title">kdp:print</p>
+            <div class="topbar-actions">
+                <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Dark mode">
+                    <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                    <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+        <main class="content">
+            <div style="page-break-after: always;"></div><h1>kdp:print</h1>
+<p>Build a <strong>print interior</strong> PDF sized for Amazon KDP: no cover page, KDP
+margin presets, and bleed applied around the project trim.</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus kdp:<span class="hljs-built_in">print</span>
+papyrus kdp:<span class="hljs-built_in">print</span> --theme light
+papyrus kdp:<span class="hljs-built_in">print</span> -t dark -e /path/to/out
+</code></pre>
+<p>Requires <code>kdp.print.enabled =&gt; true</code>.</p>
+<h2>Options</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dir</code></td>
+<td><code>-d</code></td>
+<td>current directory</td>
+<td>Book root</td>
+</tr>
+<tr>
+<td><code>--export</code></td>
+<td><code>-e</code></td>
+<td><code>export/</code></td>
+<td>Output directory</td>
+</tr>
+<tr>
+<td><code>--theme</code></td>
+<td><code>-t</code></td>
+<td>first configured theme</td>
+<td>PDF theme for interior layout</td>
+</tr>
+</tbody>
+</table>
+<h2>Output</h2>
+<pre><code class="language-text">export/&lt;slug&gt;-kdp-print.pdf
+</code></pre>
+<h2>Print config</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'kdp'</span> =&gt; [
+    <span class="hljs-string">'print'</span> =&gt; [
+        <span class="hljs-string">'enabled'</span> =&gt; <span class="hljs-keyword">true</span>,
+        <span class="hljs-string">'bleed_mm'</span> =&gt; <span class="hljs-number">3</span>,
+        <span class="hljs-string">'margin_preset'</span> =&gt; <span class="hljs-string">'recommended'</span>, <span class="hljs-comment">// or 'minimum'</span>
+        <span class="hljs-string">'paper'</span> =&gt; <span class="hljs-string">'white'</span>,               <span class="hljs-comment">// cream, etc. — metadata only</span>
+    ],
+],
+</code></pre>
+<h3>Bleed</h3>
+<p>Bleed expands the page and margins:</p>
+<ul>
+<li>Page width / height each increase by <code>2 × bleed_mm</code></li>
+<li>Every margin increases by <code>bleed_mm</code></li>
+</ul>
+<p>Default <code>bleed_mm</code> is <code>3</code>.</p>
+<h3>Margin presets (mm, before bleed)</h3>
+<table>
+<thead>
+<tr>
+<th>Preset</th>
+<th>Left</th>
+<th>Right</th>
+<th>Top</th>
+<th>Bottom</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>recommended</code></td>
+<td>12.7</td>
+<td>9.525</td>
+<td>12.7</td>
+<td>12.7</td>
+</tr>
+<tr>
+<td><code>minimum</code></td>
+<td>9.525</td>
+<td>6.35</td>
+<td>9.525</td>
+<td>9.525</td>
+</tr>
+</tbody>
+</table>
+<p>Unknown preset names fall back to <code>recommended</code>.</p>
+<h3>Paper</h3>
+<p><code>print.paper</code> is written into the KDP metadata sidecar. It does not change
+PDF colour or stock — choose white vs cream in the KDP dashboard to match.</p>
+<h2>Trim size</h2>
+<p>Uses the same <code>document.size</code> / <code>document.format</code> as your regular PDFs.
+<code>papyrus doctor</code> warns when trim falls outside KDP bounds
+(width 101.6–215.9 mm, height 152.4–279.4 mm). List presets with
+<code>papyrus sizes</code>.</p>
+<h2>Cover</h2>
+<p>The print PDF <strong>omits</strong> the cover page. Export wraparound / ebook cover
+files with <code>kdp:cover</code>.</p>
+<nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="13-kdp-ebook.html"><span class="label">Previous</span>kdp:ebook</a><a class="next" href="15-kdp-cover.html"><span class="label">Next</span>kdp:cover</a></nav>
+        </main>
+    </div>
+</body>
+</html>

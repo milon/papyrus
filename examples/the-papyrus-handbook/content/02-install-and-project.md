@@ -24,7 +24,7 @@ vendor/bin/papyrus init
 vendor/bin/papyrus doctor
 ```
 
-Wire Composer scripts:
+Wire Composer scripts (example):
 
 ```json
 {
@@ -33,12 +33,15 @@ Wire Composer scripts:
     "build:pdf": "papyrus build:pdf --theme light,dark",
     "build:epub": "papyrus build:epub",
     "build:html": "papyrus build:html",
+    "build:site": "papyrus build:site",
     "build:sample": "papyrus build:sample",
     "build:kdp": "papyrus kdp",
     "doctor": "papyrus doctor"
   }
 }
 ```
+
+Package page: [packagist.org/packages/milon/papyrus](https://packagist.org/packages/milon/papyrus).
 
 ## Install globally
 
@@ -74,5 +77,9 @@ artifacts are written with `-e` / `--export` (default: `<book>/export`):
 ```bash
 papyrus doctor -d /path/to/book
 papyrus build --dir /path/to/book
-papyrus build:html -d /path/to/book -e /path/to/out
+papyrus build:site -d /path/to/book -e /path/to/out
 ```
+
+Browse the Papyrus source on
+[GitHub](https://github.com/milon/papyrus) if you want to follow along with
+this handbook’s own project under `examples/the-papyrus-handbook/`.

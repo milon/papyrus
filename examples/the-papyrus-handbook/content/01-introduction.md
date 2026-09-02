@@ -5,32 +5,42 @@ title: Introduction
 # Introduction
 
 Papyrus is a Composer package and CLI for authors who write books in Markdown
-and need print-ready PDF, EPUB, single-file HTML, and Amazon KDP outputs from
-one project layout.
+and need more than one delivery format from a single tree of chapters.
 
-This handbook is itself a Papyrus book. The source lives in
-`examples/the-papyrus-handbook/`; rendered PDF and HTML are checked into
-`docs/` so you can read without building.
+One project layout yields:
 
-## What you get
+- **PDF** — print interiors and shareable digital books
+- **EPUB** — stores, e-readers, and Kindle upload
+- **HTML** — a single file with light / dark mode
+- **Site** — a multi-page static website (this handbook)
+- **KDP helpers** — Kindle EPUB, print PDF, covers, metadata JSON
 
-| Format | Typical use |
-|--------|-------------|
-| PDF | Print interiors, digital reading, sample PDFs |
-| EPUB | Stores, e-readers, KDP Kindle upload |
-| HTML | Online reading, sharing a single file |
-| KDP | Kindle EPUB, print PDF, cover export, metadata JSON |
+This handbook is itself a Papyrus book. The Markdown source lives in
+[`examples/the-papyrus-handbook/`](https://github.com/milon/papyrus/tree/master/examples/the-papyrus-handbook)
+on GitHub. Prebuilt PDF, HTML, and site outputs are published from that
+example so you can read without installing anything.
+
+## Who it is for
+
+- Authors shipping a technical or long-form book from Markdown
+- Teams migrating off [ibis-next](https://github.com/Hi-Folks/ibis-next)
+- Anyone who wants PDF and a hosted docs site from the same chapters
 
 ## Project shape
 
 Every book is a directory with:
 
-- `papyrus.php` — title, trim, themes, Mermaid, sample ranges, KDP
-- `content/` — Markdown chapters (natural filename order)
-- `assets/` — PDF themes, HTML theme, EPUB CSS, covers, fonts
-- `export/` — build outputs (usually gitignored)
+| Path | Role |
+|------|------|
+| `papyrus.php` | Title, trim, themes, Mermaid, samples, KDP |
+| `content/` | Markdown chapters (natural filename order) |
+| `assets/` | PDF / HTML themes, covers, fonts, CSS |
+| `export/` | Build outputs (usually gitignored) |
 
 ## Next steps
 
-Install Papyrus, scaffold or copy this sample, run `papyrus doctor`, then
-`papyrus build`. The chapters that follow cover each step in detail.
+Install Papyrus (next chapter), run `papyrus doctor`, then `papyrus build` or
+`papyrus build:site`. Later chapters document every build and KDP command and
+the full `papyrus.php` option set.
+
+Source and releases: [github.com/milon/papyrus](https://github.com/milon/papyrus).

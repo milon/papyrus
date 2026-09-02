@@ -697,57 +697,86 @@
     <main class="book">
         <div class="title-page">
             <h1 class="book-title">The Papyrus Handbook</h1>
-            <p class="book-subtitle">Markdown to Book — PDF, EPUB, HTML, and KDP</p>
-            <p class="book-author">Papyrus</p>
+            <p class="book-subtitle">Markdown to PDF, EPUB, HTML sites, and KDP</p>
+            <p class="book-author">Nuruzzaman Milon</p>
         </div>
-        <p>Copyright © 2026 <a href="https://github.com/milon/papyrus">Papyrus</a>.</p>
-<p>This handbook is the companion guide for <strong>milon/papyrus</strong> — a PHP CLI that
-turns a Markdown book project into PDF, EPUB, HTML, and Amazon KDP exports.</p>
+        <h1>Welcome</h1>
+<p>Thanks for opening <strong>The Papyrus Handbook</strong>. Use the sidebar to browse chapters,
+or continue from Introduction. The home page has the project banner and links
+to GitHub and Packagist.</p>
+<p>This guide is the companion for <strong><a href="https://github.com/milon/papyrus">milon/papyrus</a></strong> —
+a PHP CLI that turns Markdown into PDF, EPUB, HTML, a multi-page site, and
+Amazon KDP exports. You are reading those same chapters as a Papyrus site.</p>
+<h2>How to use this guide</h2>
+<ol>
+<li><strong>Introduction</strong> — what Papyrus is and the project layout</li>
+<li><strong>Install</strong> — Composer setup and <code>papyrus init</code></li>
+<li><strong>Configuration</strong> — every <code>papyrus.php</code> option</li>
+<li><strong>Writing</strong> — Markdown, asides, Mermaid, linting</li>
+<li><strong>Themes</strong> — PDF / HTML themes and fonts</li>
+<li><strong>build</strong> — all-in-one export, watch, caches</li>
+<li><strong>build:pdf</strong> / <strong>epub</strong> / <strong>html</strong> / <strong>site</strong> / <strong>sample</strong> — one chapter each</li>
+<li><strong>kdp</strong> and <strong>kdp:*</strong> — Kindle, print, covers, metadata</li>
+<li><strong>Migration and CI</strong> — ibis-next migration and GitHub Actions</li>
+<li><strong>Command reference</strong> — full CLI tables</li>
+</ol>
+<p>Copyright © 2026 <a href="https://github.com/milon">Nuruzzaman Milon</a> /
+<a href="https://github.com/milon/papyrus">Papyrus</a>. Released under the same terms as
+the Papyrus project (<a href="https://github.com/milon/papyrus/blob/master/LICENSE">MIT</a>).</p>
 <h1>Introduction</h1>
 <p>Papyrus is a Composer package and CLI for authors who write books in Markdown
-and need print-ready PDF, EPUB, single-file HTML, and Amazon KDP outputs from
-one project layout.</p>
-<p>This handbook is itself a Papyrus book. The source lives in
-<code>examples/the-papyrus-handbook/</code>; rendered PDF and HTML are checked into
-<code>docs/</code> so you can read without building.</p>
-<h2>What you get</h2>
+and need more than one delivery format from a single tree of chapters.</p>
+<p>One project layout yields:</p>
+<ul>
+<li><strong>PDF</strong> — print interiors and shareable digital books</li>
+<li><strong>EPUB</strong> — stores, e-readers, and Kindle upload</li>
+<li><strong>HTML</strong> — a single file with light / dark mode</li>
+<li><strong>Site</strong> — a multi-page static website (this handbook)</li>
+<li><strong>KDP helpers</strong> — Kindle EPUB, print PDF, covers, metadata JSON</li>
+</ul>
+<p>This handbook is itself a Papyrus book. The Markdown source lives in
+<a href="https://github.com/milon/papyrus/tree/master/examples/the-papyrus-handbook"><code>examples/the-papyrus-handbook/</code></a>
+on GitHub. Prebuilt PDF, HTML, and site outputs are published from that
+example so you can read without installing anything.</p>
+<h2>Who it is for</h2>
+<ul>
+<li>Authors shipping a technical or long-form book from Markdown</li>
+<li>Teams migrating off <a href="https://github.com/Hi-Folks/ibis-next">ibis-next</a></li>
+<li>Anyone who wants PDF and a hosted docs site from the same chapters</li>
+</ul>
+<h2>Project shape</h2>
+<p>Every book is a directory with:</p>
 <table>
 <thead>
 <tr>
-<th>Format</th>
-<th>Typical use</th>
+<th>Path</th>
+<th>Role</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PDF</td>
-<td>Print interiors, digital reading, sample PDFs</td>
+<td><code>papyrus.php</code></td>
+<td>Title, trim, themes, Mermaid, samples, KDP</td>
 </tr>
 <tr>
-<td>EPUB</td>
-<td>Stores, e-readers, KDP Kindle upload</td>
+<td><code>content/</code></td>
+<td>Markdown chapters (natural filename order)</td>
 </tr>
 <tr>
-<td>HTML</td>
-<td>Online reading, sharing a single file</td>
+<td><code>assets/</code></td>
+<td>PDF / HTML themes, covers, fonts, CSS</td>
 </tr>
 <tr>
-<td>KDP</td>
-<td>Kindle EPUB, print PDF, cover export, metadata JSON</td>
+<td><code>export/</code></td>
+<td>Build outputs (usually gitignored)</td>
 </tr>
 </tbody>
 </table>
-<h2>Project shape</h2>
-<p>Every book is a directory with:</p>
-<ul>
-<li><code>papyrus.php</code> — title, trim, themes, Mermaid, sample ranges, KDP</li>
-<li><code>content/</code> — Markdown chapters (natural filename order)</li>
-<li><code>assets/</code> — PDF themes, HTML theme, EPUB CSS, covers, fonts</li>
-<li><code>export/</code> — build outputs (usually gitignored)</li>
-</ul>
 <h2>Next steps</h2>
-<p>Install Papyrus, scaffold or copy this sample, run <code>papyrus doctor</code>, then
-<code>papyrus build</code>. The chapters that follow cover each step in detail.</p>
+<p>Install Papyrus (next chapter), run <code>papyrus doctor</code>, then <code>papyrus build</code> or
+<code>papyrus build:site</code>. Later chapters document every build and KDP command and
+the full <code>papyrus.php</code> option set.</p>
+<p>Source and releases: <a href="https://github.com/milon/papyrus">github.com/milon/papyrus</a>.</p>
 <div style="page-break-after: always;"></div><h1>Install and project layout</h1>
 <h2>Requirements</h2>
 <ul>
@@ -763,19 +792,21 @@ one project layout.</p>
 vendor/bin/papyrus init
 vendor/bin/papyrus doctor
 </code></pre>
-<p>Wire Composer scripts:</p>
+<p>Wire Composer scripts (example):</p>
 <pre><code class="language-json hljs json" data-lang="json">{
   <span class="hljs-attr">"scripts"</span>: {
     <span class="hljs-attr">"build"</span>: <span class="hljs-string">"papyrus build"</span>,
     <span class="hljs-attr">"build:pdf"</span>: <span class="hljs-string">"papyrus build:pdf --theme light,dark"</span>,
     <span class="hljs-attr">"build:epub"</span>: <span class="hljs-string">"papyrus build:epub"</span>,
     <span class="hljs-attr">"build:html"</span>: <span class="hljs-string">"papyrus build:html"</span>,
+    <span class="hljs-attr">"build:site"</span>: <span class="hljs-string">"papyrus build:site"</span>,
     <span class="hljs-attr">"build:sample"</span>: <span class="hljs-string">"papyrus build:sample"</span>,
     <span class="hljs-attr">"build:kdp"</span>: <span class="hljs-string">"papyrus kdp"</span>,
     <span class="hljs-attr">"doctor"</span>: <span class="hljs-string">"papyrus doctor"</span>
   }
 }
 </code></pre>
+<p>Package page: <a href="https://packagist.org/packages/milon/papyrus">packagist.org/packages/milon/papyrus</a>.</p>
 <h2>Install globally</h2>
 <pre><code class="language-bash hljs bash" data-lang="bash">composer global require milon/papyrus
 <span class="hljs-built_in">export</span> PATH=<span class="hljs-string">"<span class="hljs-variable">$(composer global config bin-dir --absolute)</span>:<span class="hljs-variable">$PATH</span>"</span>
@@ -822,21 +853,79 @@ to overwrite.</p>
 artifacts are written with <code>-e</code> / <code>--export</code> (default: <code>&lt;book&gt;/export</code>):</p>
 <pre><code class="language-bash hljs bash" data-lang="bash">papyrus doctor -d /path/to/book
 papyrus build --dir /path/to/book
-papyrus build:html -d /path/to/book -e /path/to/out
+papyrus build:site -d /path/to/book -e /path/to/out
 </code></pre>
+<p>Browse the Papyrus source on
+<a href="https://github.com/milon/papyrus">GitHub</a> if you want to follow along with
+this handbook’s own project under <code>examples/the-papyrus-handbook/</code>.</p>
 <div style="page-break-after: always;"></div><h1>Configuration</h1>
 <p>All settings live in <code>papyrus.php</code>, which returns a PHP array.</p>
-<h2>Identity</h2>
+<h2>Identity and paths</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-keyword">return</span> [
     <span class="hljs-string">'title'</span> =&gt; <span class="hljs-string">'My Book'</span>,
     <span class="hljs-string">'subtitle'</span> =&gt; <span class="hljs-string">'A short subtitle'</span>,
     <span class="hljs-string">'author'</span> =&gt; <span class="hljs-string">'Author Name'</span>,
+    <span class="hljs-string">'language'</span> =&gt; <span class="hljs-string">'en'</span>,
     <span class="hljs-string">'themes'</span> =&gt; [<span class="hljs-string">'light'</span>, <span class="hljs-string">'dark'</span>],
+
+    <span class="hljs-string">'content_dir'</span> =&gt; <span class="hljs-string">'content'</span>,
+    <span class="hljs-string">'assets_dir'</span> =&gt; <span class="hljs-string">'assets'</span>,
+    <span class="hljs-string">'export_dir'</span> =&gt; <span class="hljs-string">'export'</span>,
 ];
 </code></pre>
-<p><code>themes</code> lists PDF theme names. Each needs <code>assets/theme-{name}.html</code>.</p>
-<p>The export filename slug comes from the title (lowercased, hyphenated). This
-handbook is <em>The Papyrus Handbook</em>, so outputs look like
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td><code>Untitled</code></td>
+<td>Drives the export filename slug</td>
+</tr>
+<tr>
+<td><code>subtitle</code></td>
+<td><code>''</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>author</code></td>
+<td><code>''</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>language</code></td>
+<td><code>en</code></td>
+<td>EPUB / KDP metadata fallback</td>
+</tr>
+<tr>
+<td><code>themes</code></td>
+<td><code>['light', 'dark']</code></td>
+<td>Each needs <code>assets/theme-{name}.html</code></td>
+</tr>
+<tr>
+<td><code>content_dir</code></td>
+<td><code>content</code></td>
+<td>Relative to the book root</td>
+</tr>
+<tr>
+<td><code>assets_dir</code></td>
+<td><code>assets</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>export_dir</code></td>
+<td><code>export</code></td>
+<td>Overridden by <code>-e</code> / <code>--export</code></td>
+</tr>
+</tbody>
+</table>
+<p>The slug is the title lowercased with non-alphanumeric runs turned into <code>-</code>.
+This handbook is <em>The Papyrus Handbook</em>, so outputs look like
 <code>the-papyrus-handbook-light.pdf</code>.</p>
 <h2>Page size and margins</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'document'</span> =&gt; [
@@ -866,10 +955,12 @@ exclude).</p>
     <span class="hljs-string">'image'</span> =&gt; <span class="hljs-string">'cover.png'</span>,
     <span class="hljs-string">'light'</span> =&gt; <span class="hljs-string">'cover-light.png'</span>,
     <span class="hljs-string">'dark'</span> =&gt; <span class="hljs-string">'cover-dark.png'</span>,
+    <span class="hljs-comment">// 'width' =&gt; 188.976,  // mm; defaults to page width</span>
+    <span class="hljs-comment">// 'height' =&gt; 246.126, // mm; defaults to page height</span>
 ],
 </code></pre>
 <p>Paths are relative to <code>assets/</code>. Missing per-theme covers fall back to
-<code>cover.image</code>.</p>
+<code>cover.image</code>. KDP print PDFs omit the cover page entirely.</p>
 <h2>Running header</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'header'</span> =&gt; [
     <span class="hljs-string">'style'</span> =&gt; <span class="hljs-string">'font-style: italic; text-align: right; border-bottom: solid 1px #808080;'</span>,
@@ -956,19 +1047,131 @@ face is registered.</p>
 <blockquote class='notice'><p><strong>Notice:</strong> Without both a registered face and a matching <code>script</code> rule,
 non-Latin runs often show as tofu (missing glyphs) in the default font.</p>
 </blockquote>
+<h2>Site home (<code>build:site</code>)</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'site'</span> =&gt; [
+    <span class="hljs-string">'banner'</span> =&gt; <span class="hljs-string">'banner.jpg'</span>,
+    <span class="hljs-string">'repository'</span> =&gt; <span class="hljs-string">'https://github.com/you/your-book'</span>,
+    <span class="hljs-string">'lead'</span> =&gt; <span class="hljs-string">'A one-line pitch for the home page.'</span>,
+],
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>banner</code></td>
+<td>auto <code>banner.jpg</code> / <code>banner.png</code> if present</td>
+<td>Under <code>assets/</code></td>
+</tr>
+<tr>
+<td><code>repository</code></td>
+<td>unset</td>
+<td>Repo URL; GitHub hosts also surface Packagist / Issues links</td>
+</tr>
+<tr>
+<td><code>lead</code></td>
+<td>unset</td>
+<td>Home page pitch</td>
+</tr>
+</tbody>
+</table>
+<h2>Mermaid</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'mermaid'</span> =&gt; [
+    <span class="hljs-string">'enabled'</span> =&gt; <span class="hljs-keyword">true</span>,
+    <span class="hljs-string">'format'</span> =&gt; <span class="hljs-string">'svg'</span>,          <span class="hljs-comment">// svg | png</span>
+    <span class="hljs-string">'theme'</span> =&gt; <span class="hljs-string">'auto'</span>,          <span class="hljs-comment">// auto = book colours; or default|dark|forest|neutral</span>
+    <span class="hljs-string">'max_width_mm'</span> =&gt; <span class="hljs-number">130</span>,
+    <span class="hljs-comment">// 'command' =&gt; '/usr/local/bin/mmdc', // optional override</span>
+],
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td><code>false</code></td>
+<td>Requires <code>mmdc</code> on <code>PATH</code> (or <code>command</code>)</td>
+</tr>
+<tr>
+<td><code>format</code></td>
+<td><code>svg</code></td>
+<td>Anything other than <code>png</code> becomes <code>svg</code></td>
+</tr>
+<tr>
+<td><code>theme</code></td>
+<td><code>auto</code></td>
+<td>Book-matched palettes for PDF; HTML/site embed light + dark</td>
+</tr>
+<tr>
+<td><code>max_width_mm</code></td>
+<td><code>130</code></td>
+<td>PDF figure width cap</td>
+</tr>
+<tr>
+<td><code>command</code></td>
+<td>auto-resolve <code>mmdc</code></td>
+<td>Explicit CLI path</td>
+</tr>
+</tbody>
+</table>
+<h2>Sample PDF</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'sample'</span> =&gt; [
+    <span class="hljs-string">'ranges'</span> =&gt; [
+        [<span class="hljs-string">'from'</span> =&gt; <span class="hljs-number">1</span>, <span class="hljs-string">'to'</span> =&gt; <span class="hljs-number">3</span>],
+    ],
+],
+<span class="hljs-string">'sample_notice'</span> =&gt; <span class="hljs-string">'This is a sample from My Book.'</span>,
+</code></pre>
+<p>Ranges are 1-based inclusive pages of the finished theme PDF. Notice text
+also accepts <code>sample.notice</code> / <code>sample.text</code> as fallbacks. See the
+<code>build:sample</code> chapter.</p>
+<h2>KDP</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'kdp'</span> =&gt; [
+    <span class="hljs-string">'ebook'</span> =&gt; [
+        <span class="hljs-string">'enabled'</span> =&gt; <span class="hljs-keyword">true</span>,
+        <span class="hljs-string">'cover'</span> =&gt; <span class="hljs-string">'cover-ebook.jpg'</span>,
+    ],
+    <span class="hljs-string">'print'</span> =&gt; [
+        <span class="hljs-string">'enabled'</span> =&gt; <span class="hljs-keyword">true</span>,
+        <span class="hljs-string">'bleed_mm'</span> =&gt; <span class="hljs-number">3</span>,
+        <span class="hljs-string">'margin_preset'</span> =&gt; <span class="hljs-string">'recommended'</span>, <span class="hljs-comment">// or minimum</span>
+        <span class="hljs-string">'paper'</span> =&gt; <span class="hljs-string">'white'</span>,
+    ],
+    <span class="hljs-string">'metadata'</span> =&gt; [
+        <span class="hljs-string">'description'</span> =&gt; <span class="hljs-string">'Bookstore blurb…'</span>,
+        <span class="hljs-string">'keywords'</span> =&gt; [<span class="hljs-string">'laravel'</span>, <span class="hljs-string">'filament'</span>],
+        <span class="hljs-string">'language'</span> =&gt; <span class="hljs-string">'en'</span>,
+    ],
+],
+</code></pre>
+<p>Full option tables live in the <code>kdp</code> and <code>kdp:*</code> chapters. <code>papyrus build</code>
+only runs KDP when ebook or print is enabled; <code>papyrus kdp</code> errors if neither
+is.</p>
 <h2>Break level</h2>
-<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'breakLevel'</span> =&gt; <span class="hljs-number">2</span>,
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'break_level'</span> =&gt; <span class="hljs-number">2</span>,
 </code></pre>
 <p>Automatic page breaks before headings (<code>1</code> = H1, <code>2</code> = H1 and H2). Explicit
 <code>[break]</code> markers always insert a break.</p>
 <h2>CommonMark hook</h2>
-<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'configure_commonmark'</span> =&gt; [
-    <span class="hljs-comment">// callable(s) receiving the Environment</span>
-],
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'configure_commonmark'</span> =&gt; <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(\League\CommonMark\Environment\Environment $environment)</span>: <span class="hljs-title">void</span> </span>{
+    <span class="hljs-comment">// register custom extensions</span>
+},
 </code></pre>
 <div style="page-break-after: always;"></div><h1>Writing content</h1>
 <p>Chapters are Markdown under <code>content/</code>, loaded in natural filename order
-(<code>00-…</code>, <code>01-…</code>, <code>10-…</code>).</p>
+(<code>00-…</code>, <code>01-…</code>, <code>10-…</code>). This handbook’s Welcome page is a pretoc chapter;
+everything after Introduction is body content for the PDF table of contents.</p>
 <h2>Front matter</h2>
 <pre><code class="language-markdown hljs markdown" data-lang="markdown">---
 title: My chapter
@@ -1070,12 +1273,43 @@ Diagrams cache under <code>.papyrus/cache/mermaid</code>.</p>
 <h2>PHP fence linting</h2>
 <pre><code class="language-bash hljs bash" data-lang="bash">papyrus lint
 papyrus lint --fix
+papyrus lint --max-width=66
 </code></pre>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--fix</code></td>
+<td><code>-f</code></td>
+<td>off</td>
+<td>Apply auto-fixes for open tags and comment runs</td>
+</tr>
+<tr>
+<td><code>--max-width</code></td>
+<td>—</td>
+<td><code>66</code></td>
+<td>Maximum line width for PHP fences</td>
+</tr>
+<tr>
+<td><code>--dir</code> / <code>--export</code></td>
+<td><code>-d</code> / <code>-e</code></td>
+<td>book defaults</td>
+<td>Shared book options (<code>--export</code> unused for lint)</td>
+</tr>
+</tbody>
+</table>
 <div style="page-break-after: always;"></div><h1>Themes and assets</h1>
 <p>Everything visual lives under <code>assets/</code>. New projects from <code>papyrus init</code> ship
-the same PDF theme used by <em>The Filament Playbook</em> (Libre Libertine body,
-Times headings, 0xProto code, github-gist highlight colors, notice/tip/caution
-asides) plus matching font files under <code>assets/fonts/</code>.</p>
+a Filament Playbook–inspired theme: Linux Libertine for body and headings,
+0xProto for code, github-gist highlight colors, and notice / tip / caution
+asides, plus matching font files under <code>assets/fonts/</code>.</p>
 <h2>PDF themes</h2>
 <p>For each name in <code>themes</code>, provide <code>assets/theme-{name}.html</code>. Split the theme
 on the TOC marker:</p>
@@ -1092,97 +1326,652 @@ colors, title page, and running header styles (often paired with
 <code>{{$title}}</code>, <code>{{$subtitle}}</code>, <code>{{$author}}</code>, and <code>{{$body}}</code>. The default
 template mirrors the light PDF theme (same typefaces, colors, code blocks,
 and callouts), with a fixed moon/sun icon toggle that switches to the dark
-PDF palette. The reading column is <code>52em</code> wide (a bit wider than the PDF
-measure). <code>@font-face</code> rules in the theme use <code>../examples/the-papyrus-handbook/assets/fonts/</code>; at build
-time Papyrus rewrites those URLs relative to the HTML output directory (so
-<code>-e docs</code> still finds the book’s fonts).</p>
+PDF palette. The reading column follows Tailwind screen widths (640 → 1536px).
+<code>@font-face</code> rules in the theme use <code>../examples/the-papyrus-handbook/assets/fonts/</code>; at build time Papyrus
+rewrites those URLs relative to the HTML output directory (so <code>-e docs</code> still
+finds the book’s fonts).</p>
 <pre><code class="language-bash hljs bash" data-lang="bash">papyrus build:html
 papyrus build:site
 </code></pre>
 <p><code>build:site</code> writes <code>export/&lt;slug&gt;-site/</code> with one HTML page per chapter, a
-Home index, shared CSS/JS, a collapsible chapter sidebar (Docsify-style),
-and the same light/dark toggle as the single-file HTML export.</p>
+Home index, shared CSS/JS (fonts copied into the site), a collapsible chapter
+sidebar, and the same light/dark toggle as the single-file HTML export. That
+folder is what this handbook deploys to GitHub Pages.</p>
 <h2>EPUB styles</h2>
 <p><code>assets/style.css</code> (and optional <code>highlight.codeblock.min.css</code>) ship inside
 the EPUB. Prefer simple <code>pre</code>/<code>code</code> rules for e-ink readers.</p>
 <h2>Covers and fonts</h2>
 <p>Place cover images and font files under <code>assets/</code> (fonts usually in
 <code>assets/fonts/</code>). Reference them from <code>cover</code> and <code>fonts.faces</code> in
-<code>papyrus.php</code>.</p>
-<div style="page-break-after: always;"></div><h1>Building exports</h1>
-<p>Validate first, then build.</p>
-<pre><code class="language-bash hljs bash" data-lang="bash">papyrus doctor
-papyrus build
+<code>papyrus.php</code>. This handbook’s cover is <code>assets/cover.jpg</code>; the wide banner
+used on the Welcome page is published from the Papyrus repo at
+<a href="https://github.com/milon/papyrus/blob/master/assets/papyrus-banner.jpg">assets/papyrus-banner.jpg</a>.</p>
+<div style="page-break-after: always;"></div><h1>build</h1>
+<p><code>papyrus build</code> is the all-in-one export command. From the book root (or with
+<code>-d</code>), it runs every configured PDF theme, then EPUB, then single-file HTML,
+then every <strong>enabled</strong> KDP output.</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus build
+papyrus build -d /path/to/book
+papyrus build -d examples/the-papyrus-handbook -e docs
 </code></pre>
-<p><code>build</code> runs every configured PDF theme, then EPUB, HTML, and any enabled KDP
-outputs.</p>
-<h2>Individual formats</h2>
-<pre><code class="language-bash hljs bash" data-lang="bash">papyrus build:pdf
-papyrus build:pdf --theme light
-papyrus build:pdf --theme light,dark --parallel
-papyrus build:epub
-papyrus build:html
-papyrus build:site
-papyrus build:sample
-</code></pre>
+<h2>Options</h2>
 <table>
 <thead>
 <tr>
-<th>Command</th>
-<th>Output (slug from title)</th>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>build:pdf</code></td>
-<td><code>export/&lt;slug&gt;-&lt;theme&gt;.pdf</code></td>
+<td><code>--dir</code></td>
+<td><code>-d</code></td>
+<td>current directory</td>
+<td>Book root (must contain <code>papyrus.php</code>)</td>
 </tr>
 <tr>
-<td><code>build:epub</code></td>
-<td><code>export/&lt;slug&gt;.epub</code></td>
-</tr>
-<tr>
-<td><code>build:html</code></td>
-<td><code>export/&lt;slug&gt;.html</code></td>
-</tr>
-<tr>
-<td><code>build:site</code></td>
-<td><code>export/&lt;slug&gt;-site/</code> (multi-page site + sidebar)</td>
-</tr>
-<tr>
-<td><code>build:sample</code></td>
-<td><code>export/sample-&lt;slug&gt;-&lt;theme&gt;.pdf</code></td>
+<td><code>--export</code></td>
+<td><code>-e</code></td>
+<td><code>export_dir</code> from config (<code>export</code>)</td>
+<td>Where artifacts are written</td>
 </tr>
 </tbody>
 </table>
-<p>Use <code>-e</code> / <code>--export</code> to write somewhere other than <code>export/</code> (for example
-this repo’s handbook docs: <code>-d examples/the-papyrus-handbook -e docs</code>).</p>
-<p><code>--parallel</code> / <code>-p</code> builds each PDF theme in its own process.</p>
+<p>Global Symfony options also apply (<code>-v</code> / <code>--verbose</code>, <code>-q</code>, <code>--no-ansi</code>, …).
+With <code>-v</code>, Papyrus prints third-party notices from mPDF and the EPUB zipper.</p>
+<h2>What it builds</h2>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Always?</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PDF (each <code>themes</code> entry)</td>
+<td>yes</td>
+<td><code>export/&lt;slug&gt;-&lt;theme&gt;.pdf</code></td>
+</tr>
+<tr>
+<td>EPUB</td>
+<td>yes</td>
+<td><code>export/&lt;slug&gt;.epub</code></td>
+</tr>
+<tr>
+<td>HTML</td>
+<td>yes</td>
+<td><code>export/&lt;slug&gt;.html</code></td>
+</tr>
+<tr>
+<td>KDP ebook / print / covers / metadata</td>
+<td>only if <code>kdp.ebook.enabled</code> or <code>kdp.print.enabled</code></td>
+<td>see KDP chapters</td>
+</tr>
+</tbody>
+</table>
+<p>Slug comes from <code>title</code> (lowercased, non-alphanumeric → <code>-</code>).</p>
+<h2>What it does <em>not</em> build</h2>
+<p>These need their own commands:</p>
+<ul>
+<li><code>build:site</code> — multi-page static site</li>
+<li><code>build:sample</code> — sample PDF from page ranges</li>
+</ul>
+<p><code>watch</code> also invokes <code>build</code> only (not site or sample).</p>
+<h2>Failures</h2>
+<p>Each step is independent. If one format fails, Papyrus continues with the
+others and exits non-zero if any step failed. When no KDP outputs are
+enabled, the KDP block is skipped silently (unlike <code>papyrus kdp</code>, which
+errors).</p>
+<h2>Validate first</h2>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus doctor
+papyrus build
+</code></pre>
 <h2>Watch mode</h2>
+<p>Rebuild on changes to <code>papyrus.php</code>, <code>content/</code>, and <code>assets/</code>:</p>
 <pre><code class="language-bash hljs bash" data-lang="bash">papyrus watch
 papyrus watch --interval 3
 </code></pre>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--interval</code></td>
+<td><code>-i</code></td>
+<td><code>2</code></td>
+<td>Poll interval in seconds (minimum <code>1</code>)</td>
+</tr>
+<tr>
+<td><code>--dir</code> / <code>--export</code></td>
+<td><code>-d</code> / <code>-e</code></td>
+<td>same as <code>build</code></td>
+<td>Passed through to each rebuild</td>
+</tr>
+</tbody>
+</table>
 <h2>Caching</h2>
 <p>Chapter HTML caches under <code>.papyrus/cache/markdown</code>. Mermaid figures use
 <code>.papyrus/cache/mermaid</code>. Delete <code>.papyrus/</code> for a cold rebuild.</p>
-<h2>Vendor noise</h2>
-<p>mPDF and the EPUB zipper sometimes emit PHP warnings. Papyrus collects
-third-party notices and only prints them with <code>-v</code> / <code>--verbose</code>.</p>
-<div style="page-break-after: always;"></div><h1>Samples and KDP</h1>
-<h2>Sample PDF</h2>
-<p>Carve page ranges from a full theme PDF:</p>
+<h2>Related chapters</h2>
+<p>The next chapters cover each <code>build:*</code> command and every KDP command in turn.</p>
+<div style="page-break-after: always;"></div><h1>build:pdf</h1>
+<p>Build one PDF per theme (or a subset). Each theme needs
+<code>assets/theme-{name}.html</code> and an entry in <code>themes</code>.</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus build:pdf
+papyrus build:pdf --theme light
+papyrus build:pdf --theme light,dark --parallel
+papyrus build:pdf -d /path/to/book -e /path/to/out
+</code></pre>
+<h2>Options</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dir</code></td>
+<td><code>-d</code></td>
+<td>current directory</td>
+<td>Book root</td>
+</tr>
+<tr>
+<td><code>--export</code></td>
+<td><code>-e</code></td>
+<td><code>export/</code></td>
+<td>Output directory</td>
+</tr>
+<tr>
+<td><code>--theme</code></td>
+<td><code>-t</code></td>
+<td>all configured themes</td>
+<td>Comma-separated theme names</td>
+</tr>
+<tr>
+<td><code>--parallel</code></td>
+<td><code>-p</code></td>
+<td>off</td>
+<td>One process per theme</td>
+</tr>
+</tbody>
+</table>
+<h2>Output</h2>
+<pre><code class="language-text">export/&lt;slug&gt;-&lt;theme&gt;.pdf
+</code></pre>
+<p>Example for this handbook: <code>the-papyrus-handbook-light.pdf</code>.</p>
+<h2>Config that affects PDF</h2>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>themes</code></td>
+<td>Which theme names to build by default</td>
+</tr>
+<tr>
+<td><code>document.size</code> / <code>document.format</code></td>
+<td>Trim size</td>
+</tr>
+<tr>
+<td><code>document.margin_*</code></td>
+<td>Margins in millimetres</td>
+</tr>
+<tr>
+<td><code>cover</code></td>
+<td>Cover image(s) under <code>assets/</code></td>
+</tr>
+<tr>
+<td><code>header.style</code></td>
+<td>Running header CSS</td>
+</tr>
+<tr>
+<td><code>toc</code></td>
+<td>Which heading levels enter the TOC</td>
+</tr>
+<tr>
+<td><code>break_level</code></td>
+<td>Auto page breaks before headings</td>
+</tr>
+<tr>
+<td><code>fonts</code></td>
+<td>Faces and script routing</td>
+</tr>
+<tr>
+<td><code>mermaid</code></td>
+<td>Diagram rendering</td>
+</tr>
+</tbody>
+</table>
+<p>List trim presets with <code>papyrus sizes</code>. Custom trim:</p>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'document'</span> =&gt; [
+    <span class="hljs-string">'format'</span> =&gt; [<span class="hljs-number">152.4</span>, <span class="hljs-number">228.6</span>], <span class="hljs-comment">// width_mm, height_mm</span>
+],
+</code></pre>
+<h2>Parallel builds</h2>
+<p><code>--parallel</code> / <code>-p</code> spawns one PHP process per theme. Useful when
+<code>themes</code> has both <code>light</code> and <code>dark</code>. Sequential is the default (and what
+<code>papyrus build</code> uses).</p>
+<h2>Covers</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'cover'</span> =&gt; [
+    <span class="hljs-string">'image'</span> =&gt; <span class="hljs-string">'cover.png'</span>,       <span class="hljs-comment">// fallback for every theme</span>
+    <span class="hljs-string">'light'</span> =&gt; <span class="hljs-string">'cover-light.png'</span>, <span class="hljs-comment">// optional per-theme</span>
+    <span class="hljs-string">'dark'</span> =&gt; <span class="hljs-string">'cover-dark.png'</span>,
+    <span class="hljs-comment">// 'width' / 'height' — mm; default to page size</span>
+],
+</code></pre>
+<p>Paths are relative to <code>assets/</code>. Missing per-theme covers fall back to
+<code>cover.image</code>.</p>
+<div style="page-break-after: always;"></div><h1>build:epub</h1>
+<p>Build an EPUB3 package from the same Markdown chapters as PDF and HTML.</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus build:epub
+papyrus build:epub -d /path/to/book
+papyrus build:epub -e /path/to/out
+</code></pre>
+<h2>Options</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dir</code></td>
+<td><code>-d</code></td>
+<td>current directory</td>
+<td>Book root</td>
+</tr>
+<tr>
+<td><code>--export</code></td>
+<td><code>-e</code></td>
+<td><code>export/</code></td>
+<td>Output directory</td>
+</tr>
+</tbody>
+</table>
+<h2>Output</h2>
+<pre><code class="language-text">export/&lt;slug&gt;.epub
+</code></pre>
+<h2>What goes in the package</h2>
+<ul>
+<li>Chapter HTML derived from <code>content/</code></li>
+<li><code>assets/style.css</code> and optional <code>highlight.codeblock.min.css</code></li>
+<li>Embedded images referenced from chapters</li>
+<li>Cover from <code>cover</code> (theme fallback → <code>cover.image</code>)</li>
+<li>Metadata from <code>title</code>, <code>subtitle</code>, <code>author</code>, and <code>language</code></li>
+</ul>
+<h2>Config that affects EPUB</h2>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code>, <code>subtitle</code>, <code>author</code></td>
+<td>Package identity</td>
+</tr>
+<tr>
+<td><code>language</code></td>
+<td>EPUB language (default <code>en</code>)</td>
+</tr>
+<tr>
+<td><code>cover</code></td>
+<td>Cover image under <code>assets/</code></td>
+</tr>
+<tr>
+<td><code>mermaid</code></td>
+<td>Pre-rendered figures</td>
+</tr>
+<tr>
+<td><code>fonts</code></td>
+<td>Faces are PDF-oriented; EPUB relies on CSS</td>
+</tr>
+</tbody>
+</table>
+<p>Prefer simple <code>pre</code> / <code>code</code> rules in <code>assets/style.css</code> for e-ink readers.</p>
+<h2>Kindle upload</h2>
+<p>For Amazon KDP’s Kindle pipeline, prefer <code>kdp:ebook</code> (validates and names
+the file for upload). <code>build:epub</code> is the general-purpose store / archive
+build.</p>
+<div style="page-break-after: always;"></div><h1>build:html</h1>
+<p>Build a <strong>single-file</strong> HTML book with light / dark mode.</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus build:html
+papyrus build:html -d /path/to/book -e docs
+</code></pre>
+<h2>Options</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dir</code></td>
+<td><code>-d</code></td>
+<td>current directory</td>
+<td>Book root</td>
+</tr>
+<tr>
+<td><code>--export</code></td>
+<td><code>-e</code></td>
+<td><code>export/</code></td>
+<td>Output directory</td>
+</tr>
+</tbody>
+</table>
+<h2>Output</h2>
+<pre><code class="language-text">export/&lt;slug&gt;.html
+</code></pre>
+<p>Requires <code>assets/theme-html.html</code>. Placeholders in the theme:</p>
+<table>
+<thead>
+<tr>
+<th>Placeholder</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>{{$title}}</code></td>
+<td><code>title</code></td>
+</tr>
+<tr>
+<td><code>{{$subtitle}}</code></td>
+<td><code>subtitle</code></td>
+</tr>
+<tr>
+<td><code>{{$author}}</code></td>
+<td><code>author</code></td>
+</tr>
+<tr>
+<td><code>{{$body}}</code></td>
+<td>Rendered chapters</td>
+</tr>
+</tbody>
+</table>
+<p>The default stub theme mirrors the light PDF palette, with a moon/sun
+toggle that switches to the dark PDF colours. The reading column follows
+Tailwind screen widths (640 → 1536px).</p>
+<p><code>@font-face</code> URLs that point at <code>../examples/the-papyrus-handbook/assets/fonts/</code> are rewritten at build
+time so <code>-e docs</code> (or any export override) still finds the book’s fonts.</p>
+<h2>Config that affects HTML</h2>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code>, <code>subtitle</code>, <code>author</code></td>
+<td>Document chrome</td>
+</tr>
+<tr>
+<td><code>mermaid</code></td>
+<td>Figures; <code>theme =&gt; auto</code> embeds light + dark SVGs</td>
+</tr>
+<tr>
+<td><code>fonts</code></td>
+<td>Loaded via the HTML theme’s <code>@font-face</code> rules</td>
+</tr>
+</tbody>
+</table>
+<h2>Site vs HTML</h2>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>build:html</code></td>
+<td>One self-contained <code>.html</code> file</td>
+</tr>
+<tr>
+<td><code>build:site</code></td>
+<td>Multi-page folder with sidebar, Home, shared CSS/JS</td>
+</tr>
+</tbody>
+</table>
+<p>Use <code>build:html</code> for emailing or archiving a single document; use
+<code>build:site</code> for hosting.</p>
+<div style="page-break-after: always;"></div><h1>build:site</h1>
+<p>Build a multi-page static site: Home index, one HTML page per chapter,
+sidebar navigation, light / dark mode, and Prev / Next links.</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus build:site
+papyrus build:site -d examples/the-papyrus-handbook -e docs
+</code></pre>
+<p><code>papyrus build</code> does <strong>not</strong> run this command — site output is opt-in.</p>
+<h2>Options</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dir</code></td>
+<td><code>-d</code></td>
+<td>current directory</td>
+<td>Book root</td>
+</tr>
+<tr>
+<td><code>--export</code></td>
+<td><code>-e</code></td>
+<td><code>export/</code></td>
+<td>Parent directory for the site folder</td>
+</tr>
+</tbody>
+</table>
+<h2>Output</h2>
+<pre><code class="language-text">export/&lt;slug&gt;-site/
+  index.html
+  &lt;chapter-slug&gt;.html
+  .nojekyll
+  assets/site.css
+  assets/site.js
+  assets/fonts/…
+  assets/&lt;banner&gt;   # when configured
+</code></pre>
+<p>Point any static host (GitHub Pages, Netlify, S3, …) at that folder.
+<code>.nojekyll</code> tells GitHub Pages not to run Jekyll.</p>
+<h2>Site config</h2>
+<p>Optional <code>site</code> block in <code>papyrus.php</code>:</p>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'site'</span> =&gt; [
+    <span class="hljs-string">'banner'</span> =&gt; <span class="hljs-string">'banner.jpg'</span>,           <span class="hljs-comment">// under assets/; auto-detects banner.jpg / banner.png</span>
+    <span class="hljs-string">'repository'</span> =&gt; <span class="hljs-string">'https://github.com/you/your-book'</span>,
+    <span class="hljs-string">'lead'</span> =&gt; <span class="hljs-string">'A one-line pitch for the home page.'</span>,
+],
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>banner</code></td>
+<td><code>banner.jpg</code> then <code>banner.png</code> if present</td>
+<td>Hero image on Home</td>
+</tr>
+<tr>
+<td><code>repository</code></td>
+<td>unset</td>
+<td>Repo URL; GitHub hosts also get Packagist / Issues links when detected</td>
+</tr>
+<tr>
+<td><code>lead</code></td>
+<td>unset</td>
+<td>Short pitch under the title on Home</td>
+</tr>
+</tbody>
+</table>
+<h2>Hosting this handbook</h2>
+<p>In the Papyrus repository, pushes to <code>main</code> rebuild the handbook site and
+publish it to <code>gh-pages</code> via <code>.github/workflows/pages.yml</code>. Locally:</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">composer build:handbook
+<span class="hljs-comment"># or just:</span>
+papyrus build:site -d examples/the-papyrus-handbook -e docs
+</code></pre>
+<h2>Mermaid on the site</h2>
+<p>With <code>mermaid.theme =&gt; auto</code>, each diagram embeds light and dark SVG
+variants; CSS swaps them with <code>data-theme</code>. Diagrams stay within the
+reading column (same max-width ladder as the HTML theme).</p>
+<div style="page-break-after: always;"></div><h1>build:sample</h1>
+<p>Carve page ranges from a finished theme PDF into a <strong>sample</strong> PDF — useful
+for marketing downloads or review copies.</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus build:sample
+papyrus build:sample --theme light
+papyrus build:sample -t light,dark
+</code></pre>
+<p><code>papyrus build</code> does <strong>not</strong> run this command.</p>
+<h2>Options</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dir</code></td>
+<td><code>-d</code></td>
+<td>current directory</td>
+<td>Book root</td>
+</tr>
+<tr>
+<td><code>--export</code></td>
+<td><code>-e</code></td>
+<td><code>export/</code></td>
+<td>Output directory</td>
+</tr>
+<tr>
+<td><code>--theme</code></td>
+<td><code>-t</code></td>
+<td>all configured themes</td>
+<td>Comma-separated theme names</td>
+</tr>
+</tbody>
+</table>
+<h2>Config</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'sample'</span> =&gt; [
     <span class="hljs-string">'ranges'</span> =&gt; [
         [<span class="hljs-string">'from'</span> =&gt; <span class="hljs-number">1</span>, <span class="hljs-string">'to'</span> =&gt; <span class="hljs-number">4</span>],
         [<span class="hljs-string">'from'</span> =&gt; <span class="hljs-number">10</span>, <span class="hljs-string">'to'</span> =&gt; <span class="hljs-number">12</span>],
     ],
+    <span class="hljs-comment">// Optional notice text (also accepted as sample.notice / sample.text):</span>
+    <span class="hljs-comment">// 'notice' =&gt; 'This is a sample…',</span>
 ],
+
 <span class="hljs-string">'sample_notice'</span> =&gt; <span class="hljs-string">'This is a sample from My Book.'</span>,
 </code></pre>
-<pre><code class="language-bash hljs bash" data-lang="bash">papyrus build:sample --theme light
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sample.ranges</code></td>
+<td>List of <code>{from, to}</code> <strong>1-based inclusive</strong> page ranges against the finished PDF</td>
+</tr>
+<tr>
+<td><code>sample_notice</code></td>
+<td>Prefixed notice page (preferred)</td>
+</tr>
+<tr>
+<td><code>sample.notice</code> / <code>sample.text</code></td>
+<td>Fallbacks if <code>sample_notice</code> is empty</td>
+</tr>
+</tbody>
+</table>
+<p>Invalid ranges are dropped. <code>build:sample</code> requires at least one valid range
+or it fails.</p>
+<h2>Output</h2>
+<pre><code class="language-text">export/sample-&lt;slug&gt;-&lt;theme&gt;.pdf
 </code></pre>
-<p>Pages are 1-based inclusive ranges against the finished PDF.</p>
-<h2>Amazon KDP</h2>
+<p>Papyrus builds the full theme PDF first, then extracts the configured
+pages. When a notice is set, it appears as the first page of the sample.</p>
+<div style="page-break-after: always;"></div><h1>kdp</h1>
+<p><code>papyrus kdp</code> builds every <strong>enabled</strong> Amazon KDP artifact in one shot:
+Kindle EPUB (if enabled), print interior PDF (if enabled), cover asset
+copies, and the metadata JSON sidecar.</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus kdp
+papyrus kdp -d /path/to/book -e /path/to/out
+</code></pre>
+<p>Unlike <code>papyrus build</code>, this command <strong>fails</strong> when neither
+<code>kdp.ebook.enabled</code> nor <code>kdp.print.enabled</code> is true.</p>
+<h2>Options</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dir</code></td>
+<td><code>-d</code></td>
+<td>current directory</td>
+<td>Book root</td>
+</tr>
+<tr>
+<td><code>--export</code></td>
+<td><code>-e</code></td>
+<td><code>export/</code></td>
+<td>Output directory</td>
+</tr>
+</tbody>
+</table>
+<p>Print uses the <strong>first</strong> configured theme (same as <code>kdp:print</code> without
+<code>--theme</code>).</p>
+<h2>Enable flags</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'kdp'</span> =&gt; [
     <span class="hljs-string">'ebook'</span> =&gt; [
         <span class="hljs-string">'enabled'</span> =&gt; <span class="hljs-keyword">true</span>,
@@ -1191,60 +1980,477 @@ third-party notices and only prints them with <code>-v</code> / <code>--verbose<
     <span class="hljs-string">'print'</span> =&gt; [
         <span class="hljs-string">'enabled'</span> =&gt; <span class="hljs-keyword">true</span>,
         <span class="hljs-string">'bleed_mm'</span> =&gt; <span class="hljs-number">3</span>,
-        <span class="hljs-string">'margin_preset'</span> =&gt; <span class="hljs-string">'recommended'</span>,
-        <span class="hljs-string">'paper'</span> =&gt; <span class="hljs-string">'white'</span>,
+        <span class="hljs-string">'margin_preset'</span> =&gt; <span class="hljs-string">'recommended'</span>, <span class="hljs-comment">// or minimum</span>
+        <span class="hljs-string">'paper'</span> =&gt; <span class="hljs-string">'white'</span>,               <span class="hljs-comment">// metadata only (e.g. cream)</span>
     ],
     <span class="hljs-string">'metadata'</span> =&gt; [
         <span class="hljs-string">'description'</span> =&gt; <span class="hljs-string">'Bookstore blurb…'</span>,
-        <span class="hljs-string">'keywords'</span> =&gt; [<span class="hljs-string">'laravel'</span>, <span class="hljs-string">'filament'</span>],
+        <span class="hljs-string">'keywords'</span> =&gt; [<span class="hljs-string">'papyrus'</span>, <span class="hljs-string">'markdown'</span>],
         <span class="hljs-string">'language'</span> =&gt; <span class="hljs-string">'en'</span>,
     ],
 ],
 </code></pre>
-<pre><code class="language-bash hljs bash" data-lang="bash">papyrus kdp
-papyrus kdp:ebook
-papyrus kdp:<span class="hljs-built_in">print</span> --theme light
-papyrus kdp:cover
-papyrus kdp:metadata
-</code></pre>
 <table>
 <thead>
 <tr>
-<th>Command</th>
-<th>Typical artifact</th>
+<th>Key</th>
+<th>Default</th>
+<th>Notes</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>kdp:ebook</code></td>
-<td><code>export/&lt;slug&gt;-kdp.epub</code></td>
+<td><code>ebook.enabled</code></td>
+<td><code>false</code></td>
+<td>Gates ebook EPUB</td>
 </tr>
 <tr>
-<td><code>kdp:print</code></td>
-<td><code>export/&lt;slug&gt;-kdp-print.pdf</code></td>
+<td><code>ebook.cover</code></td>
+<td>unset</td>
+<td>Asset under <code>assets/</code></td>
 </tr>
 <tr>
-<td><code>kdp:cover</code></td>
-<td>cover assets under <code>export/</code></td>
+<td><code>print.enabled</code></td>
+<td><code>false</code></td>
+<td>Gates print PDF</td>
 </tr>
 <tr>
-<td><code>kdp:metadata</code></td>
-<td><code>export/&lt;slug&gt;-kdp-metadata.json</code></td>
+<td><code>print.bleed_mm</code></td>
+<td><code>3</code></td>
+<td>Added to trim and each margin</td>
+</tr>
+<tr>
+<td><code>print.margin_preset</code></td>
+<td><code>recommended</code></td>
+<td><code>recommended</code> or <code>minimum</code></td>
+</tr>
+<tr>
+<td><code>print.paper</code></td>
+<td><code>white</code></td>
+<td>Recorded in metadata only</td>
+</tr>
+<tr>
+<td><code>metadata.*</code></td>
+<td>see metadata chapter</td>
+<td>Sidecar + EPUB description fallback</td>
 </tr>
 </tbody>
 </table>
-<p>Confirm trim and margins with <code>papyrus sizes</code> and Amazon’s current KDP print
-specs before uploading.</p>
+<h2>Typical artifacts</h2>
+<table>
+<thead>
+<tr>
+<th>Artifact</th>
+<th>Filename</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kindle EPUB</td>
+<td><code>&lt;slug&gt;-kdp.epub</code></td>
+</tr>
+<tr>
+<td>Print PDF</td>
+<td><code>&lt;slug&gt;-kdp-print.pdf</code></td>
+</tr>
+<tr>
+<td>Ebook cover copy</td>
+<td><code>&lt;slug&gt;-kdp-ebook-cover.&lt;ext&gt;</code></td>
+</tr>
+<tr>
+<td>Print cover copies</td>
+<td><code>&lt;slug&gt;-kdp-print-cover-&lt;theme&gt;.&lt;ext&gt;</code></td>
+</tr>
+<tr>
+<td>Metadata</td>
+<td><code>&lt;slug&gt;-kdp-metadata.json</code></td>
+</tr>
+</tbody>
+</table>
+<p>Confirm trim with <code>papyrus sizes</code> and Amazon’s current KDP print specs
+before uploading. The next chapters document each <code>kdp:*</code> command.</p>
+<div style="page-break-after: always;"></div><h1>kdp:ebook</h1>
+<p>Build a Kindle-oriented EPUB for Amazon KDP upload.</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus kdp:ebook
+papyrus kdp:ebook -d /path/to/book -e /path/to/out
+</code></pre>
+<p>Requires <code>kdp.ebook.enabled =&gt; true</code>.</p>
+<h2>Options</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dir</code></td>
+<td><code>-d</code></td>
+<td>current directory</td>
+<td>Book root</td>
+</tr>
+<tr>
+<td><code>--export</code></td>
+<td><code>-e</code></td>
+<td><code>export/</code></td>
+<td>Output directory</td>
+</tr>
+</tbody>
+</table>
+<h2>Output</h2>
+<pre><code class="language-text">export/&lt;slug&gt;-kdp.epub
+</code></pre>
+<p>Papyrus runs an internal KDP-oriented check and, when available on <code>PATH</code>,
+<code>epubcheck</code>.</p>
+<h2>Cover</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'kdp'</span> =&gt; [
+    <span class="hljs-string">'ebook'</span> =&gt; [
+        <span class="hljs-string">'enabled'</span> =&gt; <span class="hljs-keyword">true</span>,
+        <span class="hljs-string">'cover'</span> =&gt; <span class="hljs-string">'cover-ebook.jpg'</span>, <span class="hljs-comment">// under assets/</span>
+    ],
+],
+</code></pre>
+<p>If <code>kdp.ebook.cover</code> is unset, Papyrus falls back to the light theme cover
+(<code>cover.light</code> or <code>cover.image</code>).</p>
+<h2>Metadata</h2>
+<p>Description falls back to <code>&quot;{title} - {author}&quot;</code> when
+<code>kdp.metadata.description</code> is empty. Language uses
+<code>kdp.metadata.language</code> when set, otherwise project <code>language</code> (default
+<code>en</code>).</p>
+<h2>Versus build:epub</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th><code>build:epub</code></th>
+<th><code>kdp:ebook</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Filename</td>
+<td><code>&lt;slug&gt;.epub</code></td>
+<td><code>&lt;slug&gt;-kdp.epub</code></td>
+</tr>
+<tr>
+<td>Enable flag</td>
+<td>always</td>
+<td><code>kdp.ebook.enabled</code></td>
+</tr>
+<tr>
+<td>Validation</td>
+<td>packaging only</td>
+<td>KDP checks + optional epubcheck</td>
+</tr>
+<tr>
+<td>Cover preference</td>
+<td>theme cover</td>
+<td><code>kdp.ebook.cover</code> first</td>
+</tr>
+</tbody>
+</table>
+<div style="page-break-after: always;"></div><h1>kdp:print</h1>
+<p>Build a <strong>print interior</strong> PDF sized for Amazon KDP: no cover page, KDP
+margin presets, and bleed applied around the project trim.</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus kdp:<span class="hljs-built_in">print</span>
+papyrus kdp:<span class="hljs-built_in">print</span> --theme light
+papyrus kdp:<span class="hljs-built_in">print</span> -t dark -e /path/to/out
+</code></pre>
+<p>Requires <code>kdp.print.enabled =&gt; true</code>.</p>
+<h2>Options</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dir</code></td>
+<td><code>-d</code></td>
+<td>current directory</td>
+<td>Book root</td>
+</tr>
+<tr>
+<td><code>--export</code></td>
+<td><code>-e</code></td>
+<td><code>export/</code></td>
+<td>Output directory</td>
+</tr>
+<tr>
+<td><code>--theme</code></td>
+<td><code>-t</code></td>
+<td>first configured theme</td>
+<td>PDF theme for interior layout</td>
+</tr>
+</tbody>
+</table>
+<h2>Output</h2>
+<pre><code class="language-text">export/&lt;slug&gt;-kdp-print.pdf
+</code></pre>
+<h2>Print config</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'kdp'</span> =&gt; [
+    <span class="hljs-string">'print'</span> =&gt; [
+        <span class="hljs-string">'enabled'</span> =&gt; <span class="hljs-keyword">true</span>,
+        <span class="hljs-string">'bleed_mm'</span> =&gt; <span class="hljs-number">3</span>,
+        <span class="hljs-string">'margin_preset'</span> =&gt; <span class="hljs-string">'recommended'</span>, <span class="hljs-comment">// or 'minimum'</span>
+        <span class="hljs-string">'paper'</span> =&gt; <span class="hljs-string">'white'</span>,               <span class="hljs-comment">// cream, etc. — metadata only</span>
+    ],
+],
+</code></pre>
+<h3>Bleed</h3>
+<p>Bleed expands the page and margins:</p>
+<ul>
+<li>Page width / height each increase by <code>2 × bleed_mm</code></li>
+<li>Every margin increases by <code>bleed_mm</code></li>
+</ul>
+<p>Default <code>bleed_mm</code> is <code>3</code>.</p>
+<h3>Margin presets (mm, before bleed)</h3>
+<table>
+<thead>
+<tr>
+<th>Preset</th>
+<th>Left</th>
+<th>Right</th>
+<th>Top</th>
+<th>Bottom</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>recommended</code></td>
+<td>12.7</td>
+<td>9.525</td>
+<td>12.7</td>
+<td>12.7</td>
+</tr>
+<tr>
+<td><code>minimum</code></td>
+<td>9.525</td>
+<td>6.35</td>
+<td>9.525</td>
+<td>9.525</td>
+</tr>
+</tbody>
+</table>
+<p>Unknown preset names fall back to <code>recommended</code>.</p>
+<h3>Paper</h3>
+<p><code>print.paper</code> is written into the KDP metadata sidecar. It does not change
+PDF colour or stock — choose white vs cream in the KDP dashboard to match.</p>
+<h2>Trim size</h2>
+<p>Uses the same <code>document.size</code> / <code>document.format</code> as your regular PDFs.
+<code>papyrus doctor</code> warns when trim falls outside KDP bounds
+(width 101.6–215.9 mm, height 152.4–279.4 mm). List presets with
+<code>papyrus sizes</code>.</p>
+<h2>Cover</h2>
+<p>The print PDF <strong>omits</strong> the cover page. Export wraparound / ebook cover
+files with <code>kdp:cover</code>.</p>
+<div style="page-break-after: always;"></div><h1>kdp:cover</h1>
+<p>Copy configured cover images from <code>assets/</code> into <code>export/</code> with KDP-oriented
+filenames. No enable flag — safe to run anytime.</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus kdp:cover
+papyrus kdp:cover -d /path/to/book -e /path/to/out
+</code></pre>
+<h2>Options</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dir</code></td>
+<td><code>-d</code></td>
+<td>current directory</td>
+<td>Book root</td>
+</tr>
+<tr>
+<td><code>--export</code></td>
+<td><code>-e</code></td>
+<td><code>export/</code></td>
+<td>Output directory</td>
+</tr>
+</tbody>
+</table>
+<h2>Sources and outputs</h2>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Export name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kdp.ebook.cover</code> → <code>assets/&lt;file&gt;</code></td>
+<td><code>&lt;slug&gt;-kdp-ebook-cover.&lt;ext&gt;</code></td>
+</tr>
+<tr>
+<td><code>cover[&lt;theme&gt;]</code> or <code>cover.image</code></td>
+<td><code>&lt;slug&gt;-kdp-print-cover-&lt;theme&gt;.&lt;ext&gt;</code> (one per theme)</td>
+</tr>
+</tbody>
+</table>
+<p>Missing source files are skipped (no error). If nothing is copied, the
+command still succeeds with a comment.</p>
+<h2>Example</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'cover'</span> =&gt; [
+    <span class="hljs-string">'image'</span> =&gt; <span class="hljs-string">'cover.png'</span>,
+    <span class="hljs-string">'light'</span> =&gt; <span class="hljs-string">'cover-light.png'</span>,
+],
+<span class="hljs-string">'kdp'</span> =&gt; [
+    <span class="hljs-string">'ebook'</span> =&gt; [
+        <span class="hljs-string">'cover'</span> =&gt; <span class="hljs-string">'cover-ebook.jpg'</span>,
+    ],
+],
+</code></pre>
+<p>With themes <code>light</code> and <code>dark</code>, a typical export folder might contain:</p>
+<pre><code class="language-text">export/my-book-kdp-ebook-cover.jpg
+export/my-book-kdp-print-cover-light.png
+export/my-book-kdp-print-cover-dark.png   # if dark cover resolves
+</code></pre>
+<p>Papyrus copies files as-is — it does not generate a full wraparound print
+cover. Use Amazon’s cover calculator for spine width and bleed on the
+print jacket.</p>
+<div style="page-break-after: always;"></div><h1>kdp:metadata</h1>
+<p>Emit a JSON sidecar you can keep next to KDP uploads or feed into your own
+publishing scripts. Always writes — no enable flag.</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus kdp:metadata
+papyrus kdp:metadata -d /path/to/book -e /path/to/out
+</code></pre>
+<h2>Options</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dir</code></td>
+<td><code>-d</code></td>
+<td>current directory</td>
+<td>Book root</td>
+</tr>
+<tr>
+<td><code>--export</code></td>
+<td><code>-e</code></td>
+<td><code>export/</code></td>
+<td>Output directory</td>
+</tr>
+</tbody>
+</table>
+<h2>Output</h2>
+<pre><code class="language-text">export/&lt;slug&gt;-kdp-metadata.json
+</code></pre>
+<h2>Config</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'language'</span> =&gt; <span class="hljs-string">'en'</span>,
+
+<span class="hljs-string">'kdp'</span> =&gt; [
+    <span class="hljs-string">'print'</span> =&gt; [
+        <span class="hljs-string">'paper'</span> =&gt; <span class="hljs-string">'white'</span>,
+        <span class="hljs-string">'bleed_mm'</span> =&gt; <span class="hljs-number">3</span>,
+        <span class="hljs-string">'margin_preset'</span> =&gt; <span class="hljs-string">'recommended'</span>,
+    ],
+    <span class="hljs-string">'metadata'</span> =&gt; [
+        <span class="hljs-string">'description'</span> =&gt; <span class="hljs-string">'Bookstore blurb…'</span>,
+        <span class="hljs-string">'keywords'</span> =&gt; [<span class="hljs-string">'papyrus'</span>, <span class="hljs-string">'markdown'</span>, <span class="hljs-string">'ebook'</span>],
+        <span class="hljs-string">'language'</span> =&gt; <span class="hljs-string">'en'</span>, <span class="hljs-comment">// optional; else project language</span>
+    ],
+],
+</code></pre>
+<h2>JSON shape</h2>
+<pre><code class="language-json hljs json" data-lang="json">{
+  <span class="hljs-attr">"title"</span>: <span class="hljs-string">"…"</span>,
+  <span class="hljs-attr">"subtitle"</span>: <span class="hljs-string">"…"</span>,
+  <span class="hljs-attr">"author"</span>: <span class="hljs-string">"…"</span>,
+  <span class="hljs-attr">"language"</span>: <span class="hljs-string">"en"</span>,
+  <span class="hljs-attr">"description"</span>: <span class="hljs-string">"…"</span>,
+  <span class="hljs-attr">"keywords"</span>: [<span class="hljs-string">"…"</span>],
+  <span class="hljs-attr">"print"</span>: {
+    <span class="hljs-attr">"paper"</span>: <span class="hljs-string">"white"</span>,
+    <span class="hljs-attr">"bleed_mm"</span>: <span class="hljs-number">3</span>,
+    <span class="hljs-attr">"margin_preset"</span>: <span class="hljs-string">"recommended"</span>
+  }
+}
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code> / <code>subtitle</code> / <code>author</code></td>
+<td>Project identity</td>
+</tr>
+<tr>
+<td><code>language</code></td>
+<td><code>kdp.metadata.language</code> → <code>language</code> → <code>en</code></td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td><code>kdp.metadata.description</code> (may be empty)</td>
+</tr>
+<tr>
+<td><code>keywords</code></td>
+<td><code>kdp.metadata.keywords</code> (string list)</td>
+</tr>
+<tr>
+<td><code>print.*</code></td>
+<td>Current <code>kdp.print</code> settings</td>
+</tr>
+</tbody>
+</table>
+<p>This file is a helper for your workflow — it is not uploaded automatically
+to Amazon.</p>
 <div style="page-break-after: always;"></div><h1>Migration and CI</h1>
 <h2>Migrating from ibis-next</h2>
 <pre><code class="language-bash hljs bash" data-lang="bash">papyrus migrate-ibis
 papyrus migrate-ibis -d /path/to/book
+papyrus migrate-ibis --force
 </code></pre>
-<p>This writes <code>papyrus.php</code> and updates theme TOC markers to
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dir</code></td>
+<td><code>-d</code></td>
+<td>Book root</td>
+</tr>
+<tr>
+<td><code>--force</code></td>
+<td><code>-f</code></td>
+<td>Overwrite an existing <code>papyrus.php</code></td>
+</tr>
+</tbody>
+</table>
+<p>This writes <code>papyrus.php</code> from <code>ibis.php</code> and updates theme TOC markers to
 <code>&lt;!-- PAPYRUS:TOC --&gt;</code>. After migration:</p>
 <ol>
 <li>Remove <code>hi-folks/ibis-next</code> and any Composer patches for ibis/mPDF.</li>
-<li>Point scripts at <code>papyrus</code> (<code>build</code>, <code>build:pdf</code>, …).</li>
+<li>Point scripts at <code>papyrus</code> (<code>build</code>, <code>build:pdf</code>, <code>build:site</code>, …).</li>
 <li>Run <code>papyrus doctor</code> and a full <code>papyrus build</code>.</li>
 </ol>
 <h2>Continuous integration</h2>
@@ -1253,6 +2459,10 @@ papyrus migrate-ibis -d /path/to/book
 <p>A typical book job installs PHP with <code>dom</code>, <code>gd</code>, <code>mbstring</code>, <code>zip</code>, <code>zlib</code>,
 runs <code>composer install</code>, <code>papyrus doctor</code>, optional <code>papyrus lint</code>, then
 <code>composer build</code>.</p>
+<p>To publish a <code>build:site</code> output on GitHub Pages, add a job that runs
+<code>papyrus build:site</code> and deploys the site directory to a <code>gh-pages</code> branch
+(see <a href="https://github.com/milon/papyrus/blob/master/.github/workflows/pages.yml">pages.yml</a>
+in this repository for a working example, including Chromium for Mermaid).</p>
 <h2>Programmatic use</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-keyword">use</span> <span class="hljs-title">Milon</span>\<span class="hljs-title">Papyrus</span>\<span class="hljs-title">Config</span>\<span class="hljs-title">Project</span>;
 
@@ -1263,98 +2473,213 @@ $book = $project-&gt;bookConverter()-&gt;convertDirectory($project-&gt;contentDi
 <ol>
 <li><code>papyrus doctor</code> is clean</li>
 <li><code>papyrus build</code> succeeds for every theme</li>
-<li>Sample ranges still make sense after reflows</li>
+<li><code>papyrus build:site</code> looks right on phone and desktop (try light and dark)</li>
+<li>Sample ranges still make sense after reflows (<code>build:sample</code>)</li>
 <li>KDP EPUB opens in Kindle Previewer; print PDF matches trim/bleed</li>
-<li>HTML export readable on phone and desktop</li>
 <li>Pin a Papyrus version in the book’s <code>composer.json</code></li>
 </ol>
+<p>Report problems at
+<a href="https://github.com/milon/papyrus/issues">github.com/milon/papyrus/issues</a>.</p>
 <div style="page-break-after: always;"></div><h1>Command reference</h1>
+<h2>Build</h2>
 <table>
 <thead>
 <tr>
 <th>Command</th>
 <th>Purpose</th>
+<th>Notable options</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>build</code></td>
+<td>PDF themes, EPUB, HTML, enabled KDP</td>
+<td><code>-d</code>, <code>-e</code></td>
+</tr>
+<tr>
+<td><code>build:pdf</code></td>
+<td>PDF themes</td>
+<td><code>--theme</code>, <code>--parallel</code></td>
+</tr>
+<tr>
+<td><code>build:epub</code></td>
+<td>EPUB3</td>
+<td><code>-d</code>, <code>-e</code></td>
+</tr>
+<tr>
+<td><code>build:html</code></td>
+<td>Single-file HTML</td>
+<td><code>-d</code>, <code>-e</code></td>
+</tr>
+<tr>
+<td><code>build:site</code></td>
+<td>Multi-page HTML site</td>
+<td><code>-d</code>, <code>-e</code></td>
+</tr>
+<tr>
+<td><code>build:sample</code></td>
+<td>Sample PDF from <code>sample.ranges</code></td>
+<td><code>--theme</code></td>
+</tr>
+</tbody>
+</table>
+<h2>KDP</h2>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+<th>Notable options</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kdp</code></td>
+<td>All enabled KDP outputs</td>
+<td><code>-d</code>, <code>-e</code></td>
+</tr>
+<tr>
+<td><code>kdp:ebook</code></td>
+<td>Kindle EPUB</td>
+<td>requires <code>kdp.ebook.enabled</code></td>
+</tr>
+<tr>
+<td><code>kdp:print</code></td>
+<td>Print interior PDF</td>
+<td><code>--theme</code>; requires <code>kdp.print.enabled</code></td>
+</tr>
+<tr>
+<td><code>kdp:cover</code></td>
+<td>Copy cover assets to <code>export/</code></td>
+<td>no enable flag</td>
+</tr>
+<tr>
+<td><code>kdp:metadata</code></td>
+<td>Metadata JSON sidecar</td>
+<td>no enable flag</td>
+</tr>
+</tbody>
+</table>
+<h2>Project tooling</h2>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+<th>Notable options</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>init</code></td>
 <td>Scaffold <code>papyrus.php</code>, <code>content/</code>, <code>assets/</code></td>
+<td><code>--force</code></td>
 </tr>
 <tr>
 <td><code>doctor</code></td>
-<td>Validate config, paths, and optional Mermaid</td>
-</tr>
-<tr>
-<td><code>build</code></td>
-<td>All PDF themes, EPUB, HTML, enabled KDP</td>
-</tr>
-<tr>
-<td><code>build:pdf</code></td>
-<td>PDF themes (<code>--theme</code>, <code>--parallel</code>)</td>
-</tr>
-<tr>
-<td><code>build:epub</code></td>
-<td>EPUB3</td>
-</tr>
-<tr>
-<td><code>build:html</code></td>
-<td>Single-file HTML</td>
-</tr>
-<tr>
-<td><code>build:site</code></td>
-<td>Multi-page HTML site with chapter sidebar</td>
-</tr>
-<tr>
-<td><code>build:sample</code></td>
-<td>Sample PDF from <code>sample.ranges</code></td>
-</tr>
-<tr>
-<td><code>kdp</code></td>
-<td>All enabled KDP outputs</td>
-</tr>
-<tr>
-<td><code>kdp:ebook</code></td>
-<td>Kindle EPUB</td>
-</tr>
-<tr>
-<td><code>kdp:print</code></td>
-<td>Print interior PDF</td>
-</tr>
-<tr>
-<td><code>kdp:cover</code></td>
-<td>Cover assets under <code>export/</code></td>
-</tr>
-<tr>
-<td><code>kdp:metadata</code></td>
-<td>Metadata JSON sidecar</td>
+<td>Validate config, paths, Mermaid, KDP trim</td>
+<td><code>-d</code></td>
 </tr>
 <tr>
 <td><code>sizes</code></td>
-<td>List page-size presets</td>
+<td>List page-size presets (+ KDP in-bounds)</td>
+<td>(no <code>-d</code> / <code>-e</code>)</td>
+</tr>
+<tr>
+<td><code>lint</code></td>
+<td>Lint PHP fences in <code>content/</code></td>
+<td><code>--fix</code>, <code>--max-width=66</code></td>
+</tr>
+<tr>
+<td><code>watch</code></td>
+<td>Rebuild via <code>build</code> on file changes</td>
+<td><code>--interval</code></td>
 </tr>
 <tr>
 <td><code>migrate-ibis</code></td>
 <td><code>ibis.php</code> → <code>papyrus.php</code></td>
-</tr>
-<tr>
-<td><code>lint</code></td>
-<td>Lint PHP fences (<code>--fix</code>)</td>
-</tr>
-<tr>
-<td><code>watch</code></td>
-<td>Rebuild on changes (<code>--interval</code>)</td>
+<td><code>--force</code></td>
 </tr>
 </tbody>
 </table>
-<p>Common options:</p>
-<ul>
-<li><code>-d</code> / <code>--dir</code> — book root (default: current directory)</li>
-<li><code>-e</code> / <code>--export</code> — override export directory (default: <code>&lt;book&gt;/export</code>)</li>
-<li><code>-v</code> / <code>--verbose</code> — include third-party vendor notices</li>
-</ul>
-<p>Packagist: <code>milon/papyrus</code>. Source:
-<a href="https://github.com/milon/papyrus">github.com/milon/papyrus</a>.</p>
+<h2>Shared book options</h2>
+<p>Most book commands accept:</p>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dir</code></td>
+<td><code>-d</code></td>
+<td>current directory</td>
+<td>Book root (contains <code>papyrus.php</code>)</td>
+</tr>
+<tr>
+<td><code>--export</code></td>
+<td><code>-e</code></td>
+<td><code>&lt;book&gt;/export</code></td>
+<td>Override export directory</td>
+</tr>
+</tbody>
+</table>
+<p>Also useful globally: <code>-v</code> / <code>--verbose</code> (include third-party vendor notices),
+<code>-q</code> / <code>--quiet</code>, <code>--no-ansi</code>.</p>
+<h2>Output filenames</h2>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Path under export</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>build:pdf</code></td>
+<td><code>&lt;slug&gt;-&lt;theme&gt;.pdf</code></td>
+</tr>
+<tr>
+<td><code>build:html</code></td>
+<td><code>&lt;slug&gt;.html</code></td>
+</tr>
+<tr>
+<td><code>build:epub</code></td>
+<td><code>&lt;slug&gt;.epub</code></td>
+</tr>
+<tr>
+<td><code>build:site</code></td>
+<td><code>&lt;slug&gt;-site/</code></td>
+</tr>
+<tr>
+<td><code>build:sample</code></td>
+<td><code>sample-&lt;slug&gt;-&lt;theme&gt;.pdf</code></td>
+</tr>
+<tr>
+<td><code>kdp:ebook</code></td>
+<td><code>&lt;slug&gt;-kdp.epub</code></td>
+</tr>
+<tr>
+<td><code>kdp:print</code></td>
+<td><code>&lt;slug&gt;-kdp-print.pdf</code></td>
+</tr>
+<tr>
+<td><code>kdp:cover</code></td>
+<td><code>&lt;slug&gt;-kdp-ebook-cover.*</code>, <code>&lt;slug&gt;-kdp-print-cover-&lt;theme&gt;.*</code></td>
+</tr>
+<tr>
+<td><code>kdp:metadata</code></td>
+<td><code>&lt;slug&gt;-kdp-metadata.json</code></td>
+</tr>
+</tbody>
+</table>
+<p>Packagist: <a href="https://packagist.org/packages/milon/papyrus"><code>milon/papyrus</code></a>.
+Source: <a href="https://github.com/milon/papyrus">github.com/milon/papyrus</a>.
+Releases: <a href="https://github.com/milon/papyrus/releases">github.com/milon/papyrus/releases</a>.</p>
 
     </main>
 </body>

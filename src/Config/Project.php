@@ -235,6 +235,55 @@ final class Project
         return null;
     }
 
+    /**
+     * Optional site home banner filename under assets/ (e.g. banner.jpg).
+     * Falls back to assets/banner.jpg when present.
+     */
+    public function siteBanner(): ?string
+    {
+        $site = $this->config['site'] ?? [];
+
+        if (is_array($site) && isset($site['banner']) && is_string($site['banner']) && $site['banner'] !== '') {
+            return $site['banner'];
+        }
+
+        if (is_file($this->assetsDir.'/banner.jpg')) {
+            return 'banner.jpg';
+        }
+
+        if (is_file($this->assetsDir.'/banner.png')) {
+            return 'banner.png';
+        }
+
+        return null;
+    }
+
+    public function siteRepository(): ?string
+    {
+        $site = $this->config['site'] ?? [];
+
+        if (! is_array($site)) {
+            return null;
+        }
+
+        $repository = $site['repository'] ?? null;
+
+        return is_string($repository) && $repository !== '' ? $repository : null;
+    }
+
+    public function siteLead(): ?string
+    {
+        $site = $this->config['site'] ?? [];
+
+        if (! is_array($site)) {
+            return null;
+        }
+
+        $lead = $site['lead'] ?? null;
+
+        return is_string($lead) && $lead !== '' ? $lead : null;
+    }
+
     public function outputSlug(): string
     {
         $slug = strtolower(trim($this->title()));

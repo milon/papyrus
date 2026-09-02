@@ -12,9 +12,9 @@
     <aside class="sidebar" id="sidebar" aria-label="Chapters">
         <div class="sidebar-header">
             <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
-            <p class="sidebar-subtitle">Markdown to Book — PDF, EPUB, HTML, and KDP</p>
+            <p class="sidebar-subtitle">Markdown to PDF, EPUB, HTML sites, and KDP</p>
         </div>
-        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-copyright.html">Copyright</a></li><li><a class="is-active" href="01-introduction.html" aria-current="page">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a href="03-configuration.html">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li><li><a href="06-building-exports.html">Building exports</a></li><li><a href="07-samples-and-kdp.html">Samples and KDP</a></li><li><a href="08-migration-and-ci.html">Migration and CI</a></li><li><a href="09-command-reference.html">Command reference</a></li></ul></nav>
+        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-welcome.html">Welcome</a></li><li><a class="is-active" href="01-introduction.html" aria-current="page">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a href="03-configuration.html">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li><li><a href="06-build.html">build</a></li><li><a href="07-build-pdf.html">build:pdf</a></li><li><a href="08-build-epub.html">build:epub</a></li><li><a href="09-build-html.html">build:html</a></li><li><a href="10-build-site.html">build:site</a></li><li><a href="11-build-sample.html">build:sample</a></li><li><a href="12-kdp.html">kdp</a></li><li><a href="13-kdp-ebook.html">kdp:ebook</a></li><li><a href="14-kdp-print.html">kdp:print</a></li><li><a href="15-kdp-cover.html">kdp:cover</a></li><li><a href="16-kdp-metadata.html">kdp:metadata</a></li><li><a href="17-migration-and-ci.html">Migration and CI</a></li><li><a href="18-command-reference.html">Command reference</a></li></ul></nav>
     </aside>
     <div class="layout">
         <header class="topbar">
@@ -39,50 +39,59 @@
         <main class="content">
             <h1>Introduction</h1>
 <p>Papyrus is a Composer package and CLI for authors who write books in Markdown
-and need print-ready PDF, EPUB, single-file HTML, and Amazon KDP outputs from
-one project layout.</p>
-<p>This handbook is itself a Papyrus book. The source lives in
-<code>examples/the-papyrus-handbook/</code>; rendered PDF and HTML are checked into
-<code>docs/</code> so you can read without building.</p>
-<h2>What you get</h2>
+and need more than one delivery format from a single tree of chapters.</p>
+<p>One project layout yields:</p>
+<ul>
+<li><strong>PDF</strong> — print interiors and shareable digital books</li>
+<li><strong>EPUB</strong> — stores, e-readers, and Kindle upload</li>
+<li><strong>HTML</strong> — a single file with light / dark mode</li>
+<li><strong>Site</strong> — a multi-page static website (this handbook)</li>
+<li><strong>KDP helpers</strong> — Kindle EPUB, print PDF, covers, metadata JSON</li>
+</ul>
+<p>This handbook is itself a Papyrus book. The Markdown source lives in
+<a href="https://github.com/milon/papyrus/tree/master/examples/the-papyrus-handbook"><code>examples/the-papyrus-handbook/</code></a>
+on GitHub. Prebuilt PDF, HTML, and site outputs are published from that
+example so you can read without installing anything.</p>
+<h2>Who it is for</h2>
+<ul>
+<li>Authors shipping a technical or long-form book from Markdown</li>
+<li>Teams migrating off <a href="https://github.com/Hi-Folks/ibis-next">ibis-next</a></li>
+<li>Anyone who wants PDF and a hosted docs site from the same chapters</li>
+</ul>
+<h2>Project shape</h2>
+<p>Every book is a directory with:</p>
 <table>
 <thead>
 <tr>
-<th>Format</th>
-<th>Typical use</th>
+<th>Path</th>
+<th>Role</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>PDF</td>
-<td>Print interiors, digital reading, sample PDFs</td>
+<td><code>papyrus.php</code></td>
+<td>Title, trim, themes, Mermaid, samples, KDP</td>
 </tr>
 <tr>
-<td>EPUB</td>
-<td>Stores, e-readers, KDP Kindle upload</td>
+<td><code>content/</code></td>
+<td>Markdown chapters (natural filename order)</td>
 </tr>
 <tr>
-<td>HTML</td>
-<td>Online reading, sharing a single file</td>
+<td><code>assets/</code></td>
+<td>PDF / HTML themes, covers, fonts, CSS</td>
 </tr>
 <tr>
-<td>KDP</td>
-<td>Kindle EPUB, print PDF, cover export, metadata JSON</td>
+<td><code>export/</code></td>
+<td>Build outputs (usually gitignored)</td>
 </tr>
 </tbody>
 </table>
-<h2>Project shape</h2>
-<p>Every book is a directory with:</p>
-<ul>
-<li><code>papyrus.php</code> — title, trim, themes, Mermaid, sample ranges, KDP</li>
-<li><code>content/</code> — Markdown chapters (natural filename order)</li>
-<li><code>assets/</code> — PDF themes, HTML theme, EPUB CSS, covers, fonts</li>
-<li><code>export/</code> — build outputs (usually gitignored)</li>
-</ul>
 <h2>Next steps</h2>
-<p>Install Papyrus, scaffold or copy this sample, run <code>papyrus doctor</code>, then
-<code>papyrus build</code>. The chapters that follow cover each step in detail.</p>
-<nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="00-copyright.html"><span class="label">Previous</span>Copyright</a><a class="next" href="02-install-and-project.html"><span class="label">Next</span>Install and project layout</a></nav>
+<p>Install Papyrus (next chapter), run <code>papyrus doctor</code>, then <code>papyrus build</code> or
+<code>papyrus build:site</code>. Later chapters document every build and KDP command and
+the full <code>papyrus.php</code> option set.</p>
+<p>Source and releases: <a href="https://github.com/milon/papyrus">github.com/milon/papyrus</a>.</p>
+<nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="00-welcome.html"><span class="label">Previous</span>Welcome</a><a class="next" href="02-install-and-project.html"><span class="label">Next</span>Install and project layout</a></nav>
         </main>
     </div>
 </body>

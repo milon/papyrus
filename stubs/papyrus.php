@@ -28,6 +28,13 @@ return [
         'dark' => 'cover-dark.png',
     ],
 
+    // Optional site home extras for `build:site` (banner under assets/).
+    // 'site' => [
+    //     'banner' => 'banner.jpg',
+    //     'repository' => 'https://github.com/you/your-book',
+    //     'lead' => 'A one-line pitch for the home page.',
+    // ],
+
     'header' => [
         'style' => 'font-style: italic; text-align: right; border-bottom: solid 1px #808080;',
     ],

@@ -25,12 +25,12 @@ What you get:
 - Prev / Next navigation between chapters
 - Shared `assets/site.css` and `assets/site.js` — no CDN required
 
-Example — this repo’s handbook site:
+Example — this repo’s handbook is hosted on GitHub Pages:
 
-**[Browse The Papyrus Handbook site](docs/the-papyrus-handbook-site/)**
+**[Browse The Papyrus Handbook](https://milon.im/papyrus)**
 
 On push to `main`/`master`, [`.github/workflows/pages.yml`](.github/workflows/pages.yml) rebuilds
-that site and publishes it to the `gh-pages` branch (enable GitHub Pages → Deploy from branch → `gh-pages` / `/`).
+that site and publishes it to the `gh-pages` branch (custom domain: [milon.im/papyrus](https://milon.im/papyrus)).
 
 ```bash
 papyrus build:site -d examples/the-papyrus-handbook -e docs
@@ -38,9 +38,9 @@ papyrus build:site -d examples/the-papyrus-handbook -e docs
 
 ## Handbook
 
-The sample book **The Papyrus Handbook** lives in [`examples/the-papyrus-handbook/`](examples/the-papyrus-handbook/). Prebuilt how-to exports:
+The sample book **The Papyrus Handbook** lives in [`examples/the-papyrus-handbook/`](examples/the-papyrus-handbook/). Read it online or from the prebuilt exports in `docs/`:
 
-- [Site](docs/the-papyrus-handbook-site/) — multi-page, sidebar, light/dark mode
+- [Site](https://milon.im/papyrus) — GitHub Pages (multi-page, sidebar, light/dark mode)
 - [HTML](docs/the-papyrus-handbook.html) — single file, light/dark mode toggle
 - [PDF](docs/the-papyrus-handbook-light.pdf)
 

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>build:site — The Papyrus Handbook</title>
+    <link rel="stylesheet" href="assets/site.css">
+    <script src="assets/site.js"></script>
+</head>
+<body>
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+    <aside class="sidebar" id="sidebar" aria-label="Chapters">
+        <div class="sidebar-header">
+            <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
+            <p class="sidebar-subtitle">Markdown to PDF, EPUB, HTML sites, and KDP</p>
+        </div>
+        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-welcome.html">Welcome</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a href="03-configuration.html">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li><li><a href="06-build.html">build</a></li><li><a href="07-build-pdf.html">build:pdf</a></li><li><a href="08-build-epub.html">build:epub</a></li><li><a href="09-build-html.html">build:html</a></li><li><a class="is-active" href="10-build-site.html" aria-current="page">build:site</a></li><li><a href="11-build-sample.html">build:sample</a></li><li><a href="12-kdp.html">kdp</a></li><li><a href="13-kdp-ebook.html">kdp:ebook</a></li><li><a href="14-kdp-print.html">kdp:print</a></li><li><a href="15-kdp-cover.html">kdp:cover</a></li><li><a href="16-kdp-metadata.html">kdp:metadata</a></li><li><a href="17-migration-and-ci.html">Migration and CI</a></li><li><a href="18-command-reference.html">Command reference</a></li></ul></nav>
+    </aside>
+    <div class="layout">
+        <header class="topbar">
+            <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Open chapter list" title="Chapters">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M4 7h16M4 12h16M4 17h16"/>
+                </svg>
+            </button>
+            <p class="topbar-title">build:site</p>
+            <div class="topbar-actions">
+                <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Dark mode">
+                    <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                    <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+        <main class="content">
+            <div style="page-break-after: always;"></div><h1>build:site</h1>
+<p>Build a multi-page static site: Home index, one HTML page per chapter,
+sidebar navigation, light / dark mode, and Prev / Next links.</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus build:site
+papyrus build:site -d examples/the-papyrus-handbook -e docs
+</code></pre>
+<p><code>papyrus build</code> does <strong>not</strong> run this command — site output is opt-in.</p>
+<h2>Options</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dir</code></td>
+<td><code>-d</code></td>
+<td>current directory</td>
+<td>Book root</td>
+</tr>
+<tr>
+<td><code>--export</code></td>
+<td><code>-e</code></td>
+<td><code>export/</code></td>
+<td>Parent directory for the site folder</td>
+</tr>
+</tbody>
+</table>
+<h2>Output</h2>
+<pre><code class="language-text">export/&lt;slug&gt;-site/
+  index.html
+  &lt;chapter-slug&gt;.html
+  .nojekyll
+  assets/site.css
+  assets/site.js
+  assets/fonts/…
+  assets/&lt;banner&gt;   # when configured
+</code></pre>
+<p>Point any static host (GitHub Pages, Netlify, S3, …) at that folder.
+<code>.nojekyll</code> tells GitHub Pages not to run Jekyll.</p>
+<h2>Site config</h2>
+<p>Optional <code>site</code> block in <code>papyrus.php</code>:</p>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'site'</span> =&gt; [
+    <span class="hljs-string">'banner'</span> =&gt; <span class="hljs-string">'banner.jpg'</span>,           <span class="hljs-comment">// under assets/; auto-detects banner.jpg / banner.png</span>
+    <span class="hljs-string">'repository'</span> =&gt; <span class="hljs-string">'https://github.com/you/your-book'</span>,
+    <span class="hljs-string">'lead'</span> =&gt; <span class="hljs-string">'A one-line pitch for the home page.'</span>,
+],
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>banner</code></td>
+<td><code>banner.jpg</code> then <code>banner.png</code> if present</td>
+<td>Hero image on Home</td>
+</tr>
+<tr>
+<td><code>repository</code></td>
+<td>unset</td>
+<td>Repo URL; GitHub hosts also get Packagist / Issues links when detected</td>
+</tr>
+<tr>
+<td><code>lead</code></td>
+<td>unset</td>
+<td>Short pitch under the title on Home</td>
+</tr>
+</tbody>
+</table>
+<h2>Hosting this handbook</h2>
+<p>In the Papyrus repository, pushes to <code>main</code> rebuild the handbook site and
+publish it to <code>gh-pages</code> via <code>.github/workflows/pages.yml</code>. Locally:</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">composer build:handbook
+<span class="hljs-comment"># or just:</span>
+papyrus build:site -d examples/the-papyrus-handbook -e docs
+</code></pre>
+<h2>Mermaid on the site</h2>
+<p>With <code>mermaid.theme =&gt; auto</code>, each diagram embeds light and dark SVG
+variants; CSS swaps them with <code>data-theme</code>. Diagrams stay within the
+reading column (same max-width ladder as the HTML theme).</p>
+<nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="09-build-html.html"><span class="label">Previous</span>build:html</a><a class="next" href="11-build-sample.html"><span class="label">Next</span>build:sample</a></nav>
+        </main>
+    </div>
+</body>
+</html>

@@ -5,9 +5,9 @@ title: Themes and assets
 # Themes and assets
 
 Everything visual lives under `assets/`. New projects from `papyrus init` ship
-the same PDF theme used by *The Filament Playbook* (Libre Libertine body,
-Times headings, 0xProto code, github-gist highlight colors, notice/tip/caution
-asides) plus matching font files under `assets/fonts/`.
+a Filament Playbook–inspired theme: Linux Libertine for body and headings,
+0xProto for code, github-gist highlight colors, and notice / tip / caution
+asides, plus matching font files under `assets/fonts/`.
 
 ## PDF themes
 
@@ -32,10 +32,10 @@ colors, title page, and running header styles (often paired with
 `{{$title}}`, `{{$subtitle}}`, `{{$author}}`, and `{{$body}}`. The default
 template mirrors the light PDF theme (same typefaces, colors, code blocks,
 and callouts), with a fixed moon/sun icon toggle that switches to the dark
-PDF palette. The reading column is `52em` wide (a bit wider than the PDF
-measure). `@font-face` rules in the theme use `../assets/fonts/`; at build
-time Papyrus rewrites those URLs relative to the HTML output directory (so
-`-e docs` still finds the book’s fonts).
+PDF palette. The reading column follows Tailwind screen widths (640 → 1536px).
+`@font-face` rules in the theme use `../assets/fonts/`; at build time Papyrus
+rewrites those URLs relative to the HTML output directory (so `-e docs` still
+finds the book’s fonts).
 
 ```bash
 papyrus build:html
@@ -43,8 +43,9 @@ papyrus build:site
 ```
 
 `build:site` writes `export/<slug>-site/` with one HTML page per chapter, a
-Home index, shared CSS/JS, a collapsible chapter sidebar (Docsify-style),
-and the same light/dark toggle as the single-file HTML export.
+Home index, shared CSS/JS (fonts copied into the site), a collapsible chapter
+sidebar, and the same light/dark toggle as the single-file HTML export. That
+folder is what this handbook deploys to GitHub Pages.
 
 ## EPUB styles
 
@@ -55,4 +56,6 @@ the EPUB. Prefer simple `pre`/`code` rules for e-ink readers.
 
 Place cover images and font files under `assets/` (fonts usually in
 `assets/fonts/`). Reference them from `cover` and `fonts.faces` in
-`papyrus.php`.
+`papyrus.php`. This handbook’s cover is `assets/cover.jpg`; the wide banner
+used on the Welcome page is published from the Papyrus repo at
+[assets/papyrus-banner.jpg](https://github.com/milon/papyrus/blob/master/assets/papyrus-banner.jpg).

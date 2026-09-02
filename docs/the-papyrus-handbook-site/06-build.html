@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>build — The Papyrus Handbook</title>
+    <link rel="stylesheet" href="assets/site.css">
+    <script src="assets/site.js"></script>
+</head>
+<body>
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+    <aside class="sidebar" id="sidebar" aria-label="Chapters">
+        <div class="sidebar-header">
+            <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
+            <p class="sidebar-subtitle">Markdown to PDF, EPUB, HTML sites, and KDP</p>
+        </div>
+        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-welcome.html">Welcome</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a href="03-configuration.html">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li><li><a class="is-active" href="06-build.html" aria-current="page">build</a></li><li><a href="07-build-pdf.html">build:pdf</a></li><li><a href="08-build-epub.html">build:epub</a></li><li><a href="09-build-html.html">build:html</a></li><li><a href="10-build-site.html">build:site</a></li><li><a href="11-build-sample.html">build:sample</a></li><li><a href="12-kdp.html">kdp</a></li><li><a href="13-kdp-ebook.html">kdp:ebook</a></li><li><a href="14-kdp-print.html">kdp:print</a></li><li><a href="15-kdp-cover.html">kdp:cover</a></li><li><a href="16-kdp-metadata.html">kdp:metadata</a></li><li><a href="17-migration-and-ci.html">Migration and CI</a></li><li><a href="18-command-reference.html">Command reference</a></li></ul></nav>
+    </aside>
+    <div class="layout">
+        <header class="topbar">
+            <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Open chapter list" title="Chapters">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M4 7h16M4 12h16M4 17h16"/>
+                </svg>
+            </button>
+            <p class="topbar-title">build</p>
+            <div class="topbar-actions">
+                <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Dark mode">
+                    <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                    <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+        <main class="content">
+            <div style="page-break-after: always;"></div><h1>build</h1>
+<p><code>papyrus build</code> is the all-in-one export command. From the book root (or with
+<code>-d</code>), it runs every configured PDF theme, then EPUB, then single-file HTML,
+then every <strong>enabled</strong> KDP output.</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus build
+papyrus build -d /path/to/book
+papyrus build -d examples/the-papyrus-handbook -e docs
+</code></pre>
+<h2>Options</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dir</code></td>
+<td><code>-d</code></td>
+<td>current directory</td>
+<td>Book root (must contain <code>papyrus.php</code>)</td>
+</tr>
+<tr>
+<td><code>--export</code></td>
+<td><code>-e</code></td>
+<td><code>export_dir</code> from config (<code>export</code>)</td>
+<td>Where artifacts are written</td>
+</tr>
+</tbody>
+</table>
+<p>Global Symfony options also apply (<code>-v</code> / <code>--verbose</code>, <code>-q</code>, <code>--no-ansi</code>, …).
+With <code>-v</code>, Papyrus prints third-party notices from mPDF and the EPUB zipper.</p>
+<h2>What it builds</h2>
+<table>
+<thead>
+<tr>
+<th>Step</th>
+<th>Always?</th>
+<th>Output</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PDF (each <code>themes</code> entry)</td>
+<td>yes</td>
+<td><code>export/&lt;slug&gt;-&lt;theme&gt;.pdf</code></td>
+</tr>
+<tr>
+<td>EPUB</td>
+<td>yes</td>
+<td><code>export/&lt;slug&gt;.epub</code></td>
+</tr>
+<tr>
+<td>HTML</td>
+<td>yes</td>
+<td><code>export/&lt;slug&gt;.html</code></td>
+</tr>
+<tr>
+<td>KDP ebook / print / covers / metadata</td>
+<td>only if <code>kdp.ebook.enabled</code> or <code>kdp.print.enabled</code></td>
+<td>see KDP chapters</td>
+</tr>
+</tbody>
+</table>
+<p>Slug comes from <code>title</code> (lowercased, non-alphanumeric → <code>-</code>).</p>
+<h2>What it does <em>not</em> build</h2>
+<p>These need their own commands:</p>
+<ul>
+<li><code>build:site</code> — multi-page static site</li>
+<li><code>build:sample</code> — sample PDF from page ranges</li>
+</ul>
+<p><code>watch</code> also invokes <code>build</code> only (not site or sample).</p>
+<h2>Failures</h2>
+<p>Each step is independent. If one format fails, Papyrus continues with the
+others and exits non-zero if any step failed. When no KDP outputs are
+enabled, the KDP block is skipped silently (unlike <code>papyrus kdp</code>, which
+errors).</p>
+<h2>Validate first</h2>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus doctor
+papyrus build
+</code></pre>
+<h2>Watch mode</h2>
+<p>Rebuild on changes to <code>papyrus.php</code>, <code>content/</code>, and <code>assets/</code>:</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus watch
+papyrus watch --interval 3
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--interval</code></td>
+<td><code>-i</code></td>
+<td><code>2</code></td>
+<td>Poll interval in seconds (minimum <code>1</code>)</td>
+</tr>
+<tr>
+<td><code>--dir</code> / <code>--export</code></td>
+<td><code>-d</code> / <code>-e</code></td>
+<td>same as <code>build</code></td>
+<td>Passed through to each rebuild</td>
+</tr>
+</tbody>
+</table>
+<h2>Caching</h2>
+<p>Chapter HTML caches under <code>.papyrus/cache/markdown</code>. Mermaid figures use
+<code>.papyrus/cache/mermaid</code>. Delete <code>.papyrus/</code> for a cold rebuild.</p>
+<h2>Related chapters</h2>
+<p>The next chapters cover each <code>build:*</code> command and every KDP command in turn.</p>
+<nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="05-themes-and-assets.html"><span class="label">Previous</span>Themes and assets</a><a class="next" href="07-build-pdf.html"><span class="label">Next</span>build:pdf</a></nav>
+        </main>
+    </div>
+</body>
+</html>

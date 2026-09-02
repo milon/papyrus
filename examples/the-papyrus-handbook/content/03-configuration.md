@@ -6,23 +6,36 @@ title: Configuration
 
 All settings live in `papyrus.php`, which returns a PHP array.
 
-## Identity
+## Identity and paths
 
 ```php
 return [
     'title' => 'My Book',
     'subtitle' => 'A short subtitle',
     'author' => 'Author Name',
+    'language' => 'en',
     'themes' => ['light', 'dark'],
+
+    'content_dir' => 'content',
+    'assets_dir' => 'assets',
+    'export_dir' => 'export',
 ];
 ```
 
-`themes` lists PDF theme names. Each needs `assets/theme-{name}.html`.
+| Key | Default | Notes |
+|-----|---------|-------|
+| `title` | `Untitled` | Drives the export filename slug |
+| `subtitle` | `''` | |
+| `author` | `''` | |
+| `language` | `en` | EPUB / KDP metadata fallback |
+| `themes` | `['light', 'dark']` | Each needs `assets/theme-{name}.html` |
+| `content_dir` | `content` | Relative to the book root |
+| `assets_dir` | `assets` | |
+| `export_dir` | `export` | Overridden by `-e` / `--export` |
 
-The export filename slug comes from the title (lowercased, hyphenated). This
-handbook is *The Papyrus Handbook*, so outputs look like
+The slug is the title lowercased with non-alphanumeric runs turned into `-`.
+This handbook is *The Papyrus Handbook*, so outputs look like
 `the-papyrus-handbook-light.pdf`.
-
 ## Page size and margins
 
 ```php
@@ -36,6 +49,7 @@ handbook is *The Papyrus Handbook*, so outputs look like
 ```
 
 List presets with `papyrus sizes`. Custom trim:
+
 
 ```php
 'document' => [
@@ -63,12 +77,13 @@ exclude).
     'image' => 'cover.png',
     'light' => 'cover-light.png',
     'dark' => 'cover-dark.png',
+    // 'width' => 188.976,  // mm; defaults to page width
+    // 'height' => 246.126, // mm; defaults to page height
 ],
 ```
 
 Paths are relative to `assets/`. Missing per-theme covers fall back to
-`cover.image`.
-
+`cover.image`. KDP print PDFs omit the cover page entirely.
 ## Running header
 
 ```php
@@ -152,10 +167,87 @@ face is registered.
 > {notice} Without both a registered face and a matching `script` rule,
 > non-Latin runs often show as tofu (missing glyphs) in the default font.
 
+## Site home (`build:site`)
+
+```php
+'site' => [
+    'banner' => 'banner.jpg',
+    'repository' => 'https://github.com/you/your-book',
+    'lead' => 'A one-line pitch for the home page.',
+],
+```
+
+| Key | Default | Notes |
+|-----|---------|-------|
+| `banner` | auto `banner.jpg` / `banner.png` if present | Under `assets/` |
+| `repository` | unset | Repo URL; GitHub hosts also surface Packagist / Issues links |
+| `lead` | unset | Home page pitch |
+
+## Mermaid
+
+```php
+'mermaid' => [
+    'enabled' => true,
+    'format' => 'svg',          // svg | png
+    'theme' => 'auto',          // auto = book colours; or default|dark|forest|neutral
+    'max_width_mm' => 130,
+    // 'command' => '/usr/local/bin/mmdc', // optional override
+],
+```
+
+| Key | Default | Notes |
+|-----|---------|-------|
+| `enabled` | `false` | Requires `mmdc` on `PATH` (or `command`) |
+| `format` | `svg` | Anything other than `png` becomes `svg` |
+| `theme` | `auto` | Book-matched palettes for PDF; HTML/site embed light + dark |
+| `max_width_mm` | `130` | PDF figure width cap |
+| `command` | auto-resolve `mmdc` | Explicit CLI path |
+
+## Sample PDF
+
+```php
+'sample' => [
+    'ranges' => [
+        ['from' => 1, 'to' => 3],
+    ],
+],
+'sample_notice' => 'This is a sample from My Book.',
+```
+
+Ranges are 1-based inclusive pages of the finished theme PDF. Notice text
+also accepts `sample.notice` / `sample.text` as fallbacks. See the
+`build:sample` chapter.
+
+## KDP
+
+```php
+'kdp' => [
+    'ebook' => [
+        'enabled' => true,
+        'cover' => 'cover-ebook.jpg',
+    ],
+    'print' => [
+        'enabled' => true,
+        'bleed_mm' => 3,
+        'margin_preset' => 'recommended', // or minimum
+        'paper' => 'white',
+    ],
+    'metadata' => [
+        'description' => 'Bookstore blurb…',
+        'keywords' => ['laravel', 'filament'],
+        'language' => 'en',
+    ],
+],
+```
+
+Full option tables live in the `kdp` and `kdp:*` chapters. `papyrus build`
+only runs KDP when ebook or print is enabled; `papyrus kdp` errors if neither
+is.
+
 ## Break level
 
 ```php
-'breakLevel' => 2,
+'break_level' => 2,
 ```
 
 Automatic page breaks before headings (`1` = H1, `2` = H1 and H2). Explicit
@@ -164,7 +256,7 @@ Automatic page breaks before headings (`1` = H1, `2` = H1 and H2). Explicit
 ## CommonMark hook
 
 ```php
-'configure_commonmark' => [
-    // callable(s) receiving the Environment
-],
+'configure_commonmark' => function (\League\CommonMark\Environment\Environment $environment): void {
+    // register custom extensions
+},
 ```
