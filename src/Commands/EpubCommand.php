@@ -13,7 +13,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'epub', description: 'Build EPUB')]
+#[AsCommand(name: 'build:epub', description: 'Build EPUB')]
 final class EpubCommand extends BookCommand
 {
     protected function execute(InputInterface $input, OutputInterface $output): int

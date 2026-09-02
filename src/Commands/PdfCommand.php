@@ -16,7 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'pdf', description: 'Build PDF themes')]
+#[AsCommand(name: 'build:pdf', description: 'Build PDF themes')]
 final class PdfCommand extends BookCommand
 {
     protected function configure(): void

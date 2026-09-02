@@ -13,7 +13,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'html', description: 'Build single-file HTML')]
+#[AsCommand(name: 'build:html', description: 'Build single-file HTML')]
 final class HtmlCommand extends BookCommand
 {
     protected function execute(InputInterface $input, OutputInterface $output): int

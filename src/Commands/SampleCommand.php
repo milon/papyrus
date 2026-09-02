@@ -16,7 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'sample', description: 'Build sample PDF from configured page ranges')]
+#[AsCommand(name: 'build:sample', description: 'Build sample PDF from configured page ranges')]
 final class SampleCommand extends BookCommand
 {
     protected function configure(): void

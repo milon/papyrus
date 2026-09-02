@@ -25,7 +25,7 @@ final class ParallelPdfRenderer
             $command = [
                 PHP_BINARY,
                 $this->papyrusBinary,
-                'pdf',
+                'build:pdf',
                 '--dir',
                 $this->project->dir,
                 '--theme',

@@ -19,7 +19,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'build', description: 'Build PDF, EPUB, and HTML')]
+#[AsCommand(name: 'build', description: 'Build PDF, EPUB, HTML, and KDP')]
 final class BuildCommand extends BookCommand
 {
     protected function execute(InputInterface $input, OutputInterface $output): int
