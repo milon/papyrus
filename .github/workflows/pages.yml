@@ -26,13 +26,13 @@ jobs:
           coverage: none
           tools: composer:v2
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v5
         with:
           node-version: "22"
 
       - name: Install Chromium for Mermaid
         id: setup-chrome
-        uses: browser-actions/setup-chrome@v1
+        uses: browser-actions/setup-chrome@v2
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist
