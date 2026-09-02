@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Command reference — The Papyrus Handbook</title>
+    <link rel="stylesheet" href="assets/site.css">
+    <script src="assets/site.js"></script>
+</head>
+<body>
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+    <aside class="sidebar" id="sidebar" aria-label="Chapters">
+        <div class="sidebar-header">
+            <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
+            <p class="sidebar-subtitle">Markdown to Book — PDF, EPUB, HTML, and KDP</p>
+        </div>
+        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-copyright.html">Copyright</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a href="03-configuration.html">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li><li><a href="06-building-exports.html">Building exports</a></li><li><a href="07-samples-and-kdp.html">Samples and KDP</a></li><li><a href="08-migration-and-ci.html">Migration and CI</a></li><li><a class="is-active" href="09-command-reference.html" aria-current="page">Command reference</a></li></ul></nav>
+    </aside>
+    <div class="layout">
+        <header class="topbar">
+            <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Open chapter list" title="Chapters">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M4 7h16M4 12h16M4 17h16"/>
+                </svg>
+            </button>
+            <p class="topbar-title">Command reference</p>
+            <div class="topbar-actions">
+                <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Dark mode">
+                    <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                    <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+        <main class="content">
+            <div style="page-break-after: always;"></div><h1>Command reference</h1>
+<table>
+<thead>
+<tr>
+<th>Command</th>
+<th>Purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>init</code></td>
+<td>Scaffold <code>papyrus.php</code>, <code>content/</code>, <code>assets/</code></td>
+</tr>
+<tr>
+<td><code>doctor</code></td>
+<td>Validate config, paths, and optional Mermaid</td>
+</tr>
+<tr>
+<td><code>build</code></td>
+<td>All PDF themes, EPUB, HTML, enabled KDP</td>
+</tr>
+<tr>
+<td><code>build:pdf</code></td>
+<td>PDF themes (<code>--theme</code>, <code>--parallel</code>)</td>
+</tr>
+<tr>
+<td><code>build:epub</code></td>
+<td>EPUB3</td>
+</tr>
+<tr>
+<td><code>build:html</code></td>
+<td>Single-file HTML</td>
+</tr>
+<tr>
+<td><code>build:site</code></td>
+<td>Multi-page HTML site with chapter sidebar</td>
+</tr>
+<tr>
+<td><code>build:sample</code></td>
+<td>Sample PDF from <code>sample.ranges</code></td>
+</tr>
+<tr>
+<td><code>kdp</code></td>
+<td>All enabled KDP outputs</td>
+</tr>
+<tr>
+<td><code>kdp:ebook</code></td>
+<td>Kindle EPUB</td>
+</tr>
+<tr>
+<td><code>kdp:print</code></td>
+<td>Print interior PDF</td>
+</tr>
+<tr>
+<td><code>kdp:cover</code></td>
+<td>Cover assets under <code>export/</code></td>
+</tr>
+<tr>
+<td><code>kdp:metadata</code></td>
+<td>Metadata JSON sidecar</td>
+</tr>
+<tr>
+<td><code>sizes</code></td>
+<td>List page-size presets</td>
+</tr>
+<tr>
+<td><code>migrate-ibis</code></td>
+<td><code>ibis.php</code> → <code>papyrus.php</code></td>
+</tr>
+<tr>
+<td><code>lint</code></td>
+<td>Lint PHP fences (<code>--fix</code>)</td>
+</tr>
+<tr>
+<td><code>watch</code></td>
+<td>Rebuild on changes (<code>--interval</code>)</td>
+</tr>
+</tbody>
+</table>
+<p>Common options:</p>
+<ul>
+<li><code>-d</code> / <code>--dir</code> — book root (default: current directory)</li>
+<li><code>-e</code> / <code>--export</code> — override export directory (default: <code>&lt;book&gt;/export</code>)</li>
+<li><code>-v</code> / <code>--verbose</code> — include third-party vendor notices</li>
+</ul>
+<p>Packagist: <code>milon/papyrus</code>. Source:
+<a href="https://github.com/milon/papyrus">github.com/milon/papyrus</a>.</p>
+<nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="08-migration-and-ci.html"><span class="label">Previous</span>Migration and CI</a></nav>
+        </main>
+    </div>
+</body>
+</html>

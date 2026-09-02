@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Themes and assets — The Papyrus Handbook</title>
+    <link rel="stylesheet" href="assets/site.css">
+    <script src="assets/site.js"></script>
+</head>
+<body>
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+    <aside class="sidebar" id="sidebar" aria-label="Chapters">
+        <div class="sidebar-header">
+            <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
+            <p class="sidebar-subtitle">Markdown to Book — PDF, EPUB, HTML, and KDP</p>
+        </div>
+        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-copyright.html">Copyright</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a href="03-configuration.html">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a class="is-active" href="05-themes-and-assets.html" aria-current="page">Themes and assets</a></li><li><a href="06-building-exports.html">Building exports</a></li><li><a href="07-samples-and-kdp.html">Samples and KDP</a></li><li><a href="08-migration-and-ci.html">Migration and CI</a></li><li><a href="09-command-reference.html">Command reference</a></li></ul></nav>
+    </aside>
+    <div class="layout">
+        <header class="topbar">
+            <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Open chapter list" title="Chapters">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M4 7h16M4 12h16M4 17h16"/>
+                </svg>
+            </button>
+            <p class="topbar-title">Themes and assets</p>
+            <div class="topbar-actions">
+                <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Dark mode">
+                    <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                    <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+        <main class="content">
+            <div style="page-break-after: always;"></div><h1>Themes and assets</h1>
+<p>Everything visual lives under <code>assets/</code>. New projects from <code>papyrus init</code> ship
+the same PDF theme used by <em>The Filament Playbook</em> (Libre Libertine body,
+Times headings, 0xProto code, github-gist highlight colors, notice/tip/caution
+asides) plus matching font files under <code>assets/fonts/</code>.</p>
+<h2>PDF themes</h2>
+<p>For each name in <code>themes</code>, provide <code>assets/theme-{name}.html</code>. Split the theme
+on the TOC marker:</p>
+<pre><code class="language-html hljs xml" data-lang="html"><span class="hljs-comment">&lt;!-- PAPYRUS:TOC --&gt;</span>
+</code></pre>
+<p>Papyrus writes pretoc chapters, then the TOC, then body chapters around that
+marker. A legacy <code>&lt;!-- IBIS:TOC --&gt;</code> marker is still recognized after
+<code>migrate-ibis</code>.</p>
+<p>Typical theme responsibilities: <code>@page</code> / typography, code blocks, callout
+colors, title page, and running header styles (often paired with
+<code>header.style</code> in config).</p>
+<h2>HTML theme</h2>
+<p><code>assets/theme-html.html</code> is a full HTML document with placeholders
+<code>{{$title}}</code>, <code>{{$subtitle}}</code>, <code>{{$author}}</code>, and <code>{{$body}}</code>. The default
+template mirrors the light PDF theme (same typefaces, colors, code blocks,
+and callouts), with a fixed moon/sun icon toggle that switches to the dark
+PDF palette. The reading column is <code>52em</code> wide (a bit wider than the PDF
+measure). <code>@font-face</code> rules in the theme use <code>../assets/fonts/</code>; at build
+time Papyrus rewrites those URLs relative to the HTML output directory (so
+<code>-e docs</code> still finds the book’s fonts).</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus build:html
+papyrus build:site
+</code></pre>
+<p><code>build:site</code> writes <code>export/&lt;slug&gt;-site/</code> with one HTML page per chapter, a
+Home index, shared CSS/JS, a collapsible chapter sidebar (Docsify-style),
+and the same light/dark toggle as the single-file HTML export.</p>
+<h2>EPUB styles</h2>
+<p><code>assets/style.css</code> (and optional <code>highlight.codeblock.min.css</code>) ship inside
+the EPUB. Prefer simple <code>pre</code>/<code>code</code> rules for e-ink readers.</p>
+<h2>Covers and fonts</h2>
+<p>Place cover images and font files under <code>assets/</code> (fonts usually in
+<code>assets/fonts/</code>). Reference them from <code>cover</code> and <code>fonts.faces</code> in
+<code>papyrus.php</code>.</p>
+<nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="04-writing-content.html"><span class="label">Previous</span>Writing content</a><a class="next" href="06-building-exports.html"><span class="label">Next</span>Building exports</a></nav>
+        </main>
+    </div>
+</body>
+</html>

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Configuration — The Papyrus Handbook</title>
+    <link rel="stylesheet" href="assets/site.css">
+    <script src="assets/site.js"></script>
+</head>
+<body>
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+    <aside class="sidebar" id="sidebar" aria-label="Chapters">
+        <div class="sidebar-header">
+            <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
+            <p class="sidebar-subtitle">Markdown to Book — PDF, EPUB, HTML, and KDP</p>
+        </div>
+        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-copyright.html">Copyright</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a class="is-active" href="03-configuration.html" aria-current="page">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li><li><a href="06-building-exports.html">Building exports</a></li><li><a href="07-samples-and-kdp.html">Samples and KDP</a></li><li><a href="08-migration-and-ci.html">Migration and CI</a></li><li><a href="09-command-reference.html">Command reference</a></li></ul></nav>
+    </aside>
+    <div class="layout">
+        <header class="topbar">
+            <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Open chapter list" title="Chapters">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M4 7h16M4 12h16M4 17h16"/>
+                </svg>
+            </button>
+            <p class="topbar-title">Configuration</p>
+            <div class="topbar-actions">
+                <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Dark mode">
+                    <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                    <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+        <main class="content">
+            <div style="page-break-after: always;"></div><h1>Configuration</h1>
+<p>All settings live in <code>papyrus.php</code>, which returns a PHP array.</p>
+<h2>Identity</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-keyword">return</span> [
+    <span class="hljs-string">'title'</span> =&gt; <span class="hljs-string">'My Book'</span>,
+    <span class="hljs-string">'subtitle'</span> =&gt; <span class="hljs-string">'A short subtitle'</span>,
+    <span class="hljs-string">'author'</span> =&gt; <span class="hljs-string">'Author Name'</span>,
+    <span class="hljs-string">'themes'</span> =&gt; [<span class="hljs-string">'light'</span>, <span class="hljs-string">'dark'</span>],
+];
+</code></pre>
+<p><code>themes</code> lists PDF theme names. Each needs <code>assets/theme-{name}.html</code>.</p>
+<p>The export filename slug comes from the title (lowercased, hyphenated). This
+handbook is <em>The Papyrus Handbook</em>, so outputs look like
+<code>the-papyrus-handbook-light.pdf</code>.</p>
+<h2>Page size and margins</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'document'</span> =&gt; [
+    <span class="hljs-string">'size'</span> =&gt; <span class="hljs-string">'crown-quarto'</span>,
+    <span class="hljs-string">'margin_left'</span> =&gt; <span class="hljs-number">27</span>,
+    <span class="hljs-string">'margin_right'</span> =&gt; <span class="hljs-number">27</span>,
+    <span class="hljs-string">'margin_top'</span> =&gt; <span class="hljs-number">14</span>,
+    <span class="hljs-string">'margin_bottom'</span> =&gt; <span class="hljs-number">14</span>,
+],
+</code></pre>
+<p>List presets with <code>papyrus sizes</code>. Custom trim:</p>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'document'</span> =&gt; [
+    <span class="hljs-string">'format'</span> =&gt; [<span class="hljs-number">152.4</span>, <span class="hljs-number">228.6</span>], <span class="hljs-comment">// width_mm, height_mm</span>
+],
+</code></pre>
+<h2>Table of contents</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'toc'</span> =&gt; [
+    <span class="hljs-string">'h1'</span> =&gt; <span class="hljs-number">0</span>,
+    <span class="hljs-string">'h2'</span> =&gt; <span class="hljs-number">0</span>,
+    <span class="hljs-string">'h3'</span> =&gt; <span class="hljs-number">1</span>,
+],
+</code></pre>
+<p>Values follow mPDF <code>h2toc</code> conventions used by Papyrus (<code>0</code> include, <code>1</code>
+exclude).</p>
+<h2>Cover images</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'cover'</span> =&gt; [
+    <span class="hljs-string">'image'</span> =&gt; <span class="hljs-string">'cover.png'</span>,
+    <span class="hljs-string">'light'</span> =&gt; <span class="hljs-string">'cover-light.png'</span>,
+    <span class="hljs-string">'dark'</span> =&gt; <span class="hljs-string">'cover-dark.png'</span>,
+],
+</code></pre>
+<p>Paths are relative to <code>assets/</code>. Missing per-theme covers fall back to
+<code>cover.image</code>.</p>
+<h2>Running header</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'header'</span> =&gt; [
+    <span class="hljs-string">'style'</span> =&gt; <span class="hljs-string">'font-style: italic; text-align: right; border-bottom: solid 1px #808080;'</span>,
+],
+</code></pre>
+<p>Pretoc chapters suppress folios differently from body chapters.</p>
+<h2>Fonts</h2>
+<p>Declare faces under <code>assets/fonts/</code> and optional <strong>script routing</strong> (PDF only).
+First matching <code>script</code> rule wins.</p>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'fonts'</span> =&gt; [
+    <span class="hljs-string">'default'</span> =&gt; <span class="hljs-string">'librelibertine'</span>, <span class="hljs-comment">// optional; else first face, else mPDF default</span>
+    <span class="hljs-string">'faces'</span> =&gt; [
+        [
+            <span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'librelibertine'</span>,
+            <span class="hljs-string">'regular'</span> =&gt; <span class="hljs-string">'LinLibertine_R.ttf'</span>,
+            <span class="hljs-string">'bold'</span> =&gt; <span class="hljs-string">'LinLibertine_RB.ttf'</span>,
+            <span class="hljs-string">'italic'</span> =&gt; <span class="hljs-string">'LinLibertine_RI.ttf'</span>,
+            <span class="hljs-string">'bold_italic'</span> =&gt; <span class="hljs-string">'LinLibertine_RBI.ttf'</span>,
+        ],
+        [
+            <span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'notosansbengali'</span>,
+            <span class="hljs-string">'regular'</span> =&gt; <span class="hljs-string">'NotoSansBengali-Regular.ttf'</span>,
+            <span class="hljs-string">'otl'</span> =&gt; <span class="hljs-keyword">true</span>, <span class="hljs-comment">// OpenType layout — needed for complex scripts</span>
+        ],
+    ],
+    <span class="hljs-string">'script'</span> =&gt; [
+        <span class="hljs-comment">// When mPDF tags a run as Bengali, use this face instead of the default</span>
+        [<span class="hljs-string">'match'</span> =&gt; [<span class="hljs-string">'bn'</span>, <span class="hljs-string">'ben'</span>, <span class="hljs-string">'bengali'</span>], <span class="hljs-string">'face'</span> =&gt; <span class="hljs-string">'notosansbengali'</span>],
+    ],
+],
+</code></pre>
+<h3>Faces</h3>
+<p>Each face needs a <code>name</code> and a <code>regular</code> file that exists under <code>assets/fonts/</code>.
+Optional keys: <code>bold</code>, <code>italic</code>, <code>bold_italic</code>, and <code>otl</code> (sets mPDF
+<code>useOTL</code> when true — common for code fonts and Indic / Arabic scripts).</p>
+<p>Papyrus merges these into mPDF’s <code>fontdata</code> when building PDF
+(<code>FontRegistry</code> → <code>MpdfFactory</code>).</p>
+<h3>Script rules</h3>
+<p><code>fonts.script</code> is a list of <code>{ match, face }</code> rules used only for <strong>PDF</strong>.
+They do not change EPUB or HTML typography.</p>
+<p>When any applicable rule exists, Papyrus turns on mPDF’s
+<code>autoScriptToLang</code> and <code>autoLangToFont</code>, and installs a custom
+<code>languageToFont</code> resolver (<code>ScriptLanguageToFont</code>). mPDF then:</p>
+<ol>
+<li>Detects script runs in the HTML (e.g. Bengali glyphs).</li>
+<li>Tags them with a language / script code (e.g. <code>bn</code>, or <code>*-beng</code>).</li>
+<li>Asks Papyrus which face to use; the first rule whose <code>match</code> list hits
+that code wins.</li>
+</ol>
+<p><code>match</code> aliases are lowercased. Built-in aliases include:</p>
+<table>
+<thead>
+<tr>
+<th>Aliases you can list</th>
+<th>Resolves as</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bn</code>, <code>ben</code>, <code>beng</code>, <code>bengali</code></td>
+<td>Bengali</td>
+</tr>
+<tr>
+<td><code>ar</code>, <code>arab</code>, <code>arabic</code></td>
+<td>Arabic</td>
+</tr>
+<tr>
+<td><code>hi</code>, <code>hin</code>, <code>deva</code>, <code>devanagari</code>, <code>hindi</code></td>
+<td>Devanagari</td>
+</tr>
+<tr>
+<td>any 4-letter ISO script code</td>
+<td>that script as-is</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>face</code> string must be a name from <code>fonts.faces</code> <strong>and</strong> that face must
+actually load (regular file present). Rules pointing at a missing face are
+skipped (<code>FontRegistry::applicableScriptRules()</code>). Unmatched languages fall
+through to mPDF’s built-in <code>LanguageToFont</code>.</p>
+<p>Example: body text in Latin uses <code>librelibertine</code>; a paragraph containing
+<code>বন্ধন</code> is auto-tagged Bengali and rendered with <code>notosansbengali</code> if that
+face is registered.</p>
+<blockquote class='notice'><p><strong>Notice:</strong> Without both a registered face and a matching <code>script</code> rule,
+non-Latin runs often show as tofu (missing glyphs) in the default font.</p>
+</blockquote>
+<h2>Break level</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'breakLevel'</span> =&gt; <span class="hljs-number">2</span>,
+</code></pre>
+<p>Automatic page breaks before headings (<code>1</code> = H1, <code>2</code> = H1 and H2). Explicit
+<code>[break]</code> markers always insert a break.</p>
+<h2>CommonMark hook</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'configure_commonmark'</span> =&gt; [
+    <span class="hljs-comment">// callable(s) receiving the Environment</span>
+],
+</code></pre>
+<nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="02-install-and-project.html"><span class="label">Previous</span>Install and project layout</a><a class="next" href="04-writing-content.html"><span class="label">Next</span>Writing content</a></nav>
+        </main>
+    </div>
+</body>
+</html>

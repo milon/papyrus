@@ -40,7 +40,8 @@
         "format": "pint",
         "build:handbook": [
             "@php bin/papyrus build:pdf --theme light -d examples/the-papyrus-handbook -e docs",
-            "@php bin/papyrus build:html -d examples/the-papyrus-handbook -e docs"
+            "@php bin/papyrus build:html -d examples/the-papyrus-handbook -e docs",
+            "@php bin/papyrus build:site -d examples/the-papyrus-handbook -e docs"
         ]
     },
     "minimum-stability": "stable",

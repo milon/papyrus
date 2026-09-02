@@ -14,6 +14,7 @@ The sample book **The Papyrus Handbook** lives in [`examples/the-papyrus-handboo
 
 - [PDF](docs/the-papyrus-handbook-light.pdf)
 - [HTML](docs/the-papyrus-handbook.html) (light and dark mode toggle)
+- [Site](docs/the-papyrus-handbook-site/) (multi-page, sidebar, light/dark mode)
 
 Rebuild those exports with:
 
@@ -21,7 +22,7 @@ Rebuild those exports with:
 composer build:handbook
 ```
 
-That runs `build:pdf` / `build:html` with `-d examples/the-papyrus-handbook` and
+That runs `build:pdf` / `build:html` / `build:site` with `-d examples/the-papyrus-handbook` and
 `-e docs` so artifacts land directly in `docs/`.
 
 ## Requirements
@@ -114,6 +115,7 @@ papyrus doctor -d my-book
 | `build`        | Build all PDF themes, EPUB, HTML, and enabled KDP outputs             |
 | `build:pdf`    | Build PDF themes (`--theme light,dark`, `--parallel` for multi-theme) |
 | `build:html`   | Build single-file HTML from `assets/theme-html.html` (light/dark mode) |
+| `build:site`   | Build multi-page HTML site with chapter sidebar (light/dark mode)     |
 | `build:epub`   | Build EPUB3 with CSS and embedded images                              |
 | `build:sample` | Build sample PDF from `sample.ranges` page ranges                     |
 | `kdp`          | Build all enabled KDP outputs (eBook, print, cover, metadata)         |

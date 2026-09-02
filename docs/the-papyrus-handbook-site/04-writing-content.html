@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Writing content — The Papyrus Handbook</title>
+    <link rel="stylesheet" href="assets/site.css">
+    <script src="assets/site.js"></script>
+</head>
+<body>
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+    <aside class="sidebar" id="sidebar" aria-label="Chapters">
+        <div class="sidebar-header">
+            <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
+            <p class="sidebar-subtitle">Markdown to Book — PDF, EPUB, HTML, and KDP</p>
+        </div>
+        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-copyright.html">Copyright</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a href="03-configuration.html">Configuration</a></li><li><a class="is-active" href="04-writing-content.html" aria-current="page">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li><li><a href="06-building-exports.html">Building exports</a></li><li><a href="07-samples-and-kdp.html">Samples and KDP</a></li><li><a href="08-migration-and-ci.html">Migration and CI</a></li><li><a href="09-command-reference.html">Command reference</a></li></ul></nav>
+    </aside>
+    <div class="layout">
+        <header class="topbar">
+            <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Open chapter list" title="Chapters">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M4 7h16M4 12h16M4 17h16"/>
+                </svg>
+            </button>
+            <p class="topbar-title">Writing content</p>
+            <div class="topbar-actions">
+                <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Dark mode">
+                    <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                    <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+        <main class="content">
+            <div style="page-break-after: always;"></div><h1>Writing content</h1>
+<p>Chapters are Markdown under <code>content/</code>, loaded in natural filename order
+(<code>00-…</code>, <code>01-…</code>, <code>10-…</code>).</p>
+<h2>Front matter</h2>
+<pre><code class="language-markdown hljs markdown" data-lang="markdown">---
+title: My chapter
+<span class="hljs-section">pretoc: true
+---</span>
+
+Body starts here.
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td>Chapter title for EPUB / internal use</td>
+</tr>
+<tr>
+<td><code>pretoc</code></td>
+<td><code>true</code> places the chapter before the PDF TOC</td>
+</tr>
+</tbody>
+</table>
+<h2>Markdown features</h2>
+<p>CommonMark + GFM, fenced code highlighting, and book extras.</p>
+<h3>Emphasis and code</h3>
+<pre><code class="language-markdown hljs markdown" data-lang="markdown">Hello, <span class="hljs-strong">**world**</span>.
+
+<span class="hljs-code">`inline code`</span>
+
+<span class="hljs-code">```php
+$user = User::factory()-&gt;create();
+```</span>
+</code></pre>
+<h3>Callouts</h3>
+<pre><code class="language-markdown hljs markdown" data-lang="markdown"><span class="hljs-quote">&gt; {notice} Something helpful.</span>
+<span class="hljs-quote">&gt; {warning} Something risky.</span>
+</code></pre>
+<pre><code class="language-markdown hljs markdown" data-lang="markdown">:::note
+A note aside.
+:::
+
+:::warning
+A warning aside.
+:::
+</code></pre>
+<h3>Page breaks</h3>
+<pre><code class="language-markdown hljs markdown" data-lang="markdown">[break]
+</code></pre>
+<h3>Mermaid</h3>
+<pre><code class="language-markdown hljs markdown" data-lang="markdown"><span class="hljs-code">```mermaid
+flowchart TD
+  A[Markdown] --&gt; B[Build]
+```</span>
+</code></pre>
+<p>Enable in <code>papyrus.php</code>:</p>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'mermaid'</span> =&gt; [
+    <span class="hljs-string">'enabled'</span> =&gt; <span class="hljs-keyword">true</span>,
+    <span class="hljs-string">'format'</span> =&gt; <span class="hljs-string">'svg'</span>,
+    <span class="hljs-string">'theme'</span> =&gt; <span class="hljs-string">'auto'</span>,
+    <span class="hljs-string">'max_width_mm'</span> =&gt; <span class="hljs-number">130</span>,
+],
+</code></pre>
+<p>Requires <code>mmdc</code> on <code>PATH</code>. Diagrams cache under <code>.papyrus/cache/mermaid</code>.</p>
+<h2>PHP fence linting</h2>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus lint
+papyrus lint --fix
+</code></pre>
+<nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="03-configuration.html"><span class="label">Previous</span>Configuration</a><a class="next" href="05-themes-and-assets.html"><span class="label">Next</span>Themes and assets</a></nav>
+        </main>
+    </div>
+</body>
+</html>

@@ -12,6 +12,7 @@ title: Command reference
 | `build:pdf` | PDF themes (`--theme`, `--parallel`) |
 | `build:epub` | EPUB3 |
 | `build:html` | Single-file HTML |
+| `build:site` | Multi-page HTML site with chapter sidebar |
 | `build:sample` | Sample PDF from `sample.ranges` |
 | `kdp` | All enabled KDP outputs |
 | `kdp:ebook` | Kindle EPUB |

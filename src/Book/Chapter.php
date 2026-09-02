@@ -24,6 +24,30 @@ final class Chapter
         return is_string($title) ? $title : '';
     }
 
+    public function displayTitle(): string
+    {
+        $title = $this->title();
+
+        if ($title !== '') {
+            return $title;
+        }
+
+        if (preg_match('/<h1[^>]*>(.*?)<\/h1>/si', $this->html, $matches) === 1) {
+            $fromHeading = trim(html_entity_decode(strip_tags($matches[1]), ENT_QUOTES | ENT_HTML5, 'UTF-8'));
+
+            if ($fromHeading !== '') {
+                return $fromHeading;
+            }
+        }
+
+        return pathinfo($this->source, PATHINFO_FILENAME);
+    }
+
+    public function webSlug(): string
+    {
+        return pathinfo($this->source, PATHINFO_FILENAME);
+    }
+
     /**
      * @return list<string>
      */

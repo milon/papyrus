@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Migration and CI — The Papyrus Handbook</title>
+    <link rel="stylesheet" href="assets/site.css">
+    <script src="assets/site.js"></script>
+</head>
+<body>
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+    <aside class="sidebar" id="sidebar" aria-label="Chapters">
+        <div class="sidebar-header">
+            <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
+            <p class="sidebar-subtitle">Markdown to Book — PDF, EPUB, HTML, and KDP</p>
+        </div>
+        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-copyright.html">Copyright</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a href="03-configuration.html">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li><li><a href="06-building-exports.html">Building exports</a></li><li><a href="07-samples-and-kdp.html">Samples and KDP</a></li><li><a class="is-active" href="08-migration-and-ci.html" aria-current="page">Migration and CI</a></li><li><a href="09-command-reference.html">Command reference</a></li></ul></nav>
+    </aside>
+    <div class="layout">
+        <header class="topbar">
+            <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Open chapter list" title="Chapters">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M4 7h16M4 12h16M4 17h16"/>
+                </svg>
+            </button>
+            <p class="topbar-title">Migration and CI</p>
+            <div class="topbar-actions">
+                <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Dark mode">
+                    <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                    <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+        <main class="content">
+            <div style="page-break-after: always;"></div><h1>Migration and CI</h1>
+<h2>Migrating from ibis-next</h2>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus migrate-ibis
+papyrus migrate-ibis -d /path/to/book
+</code></pre>
+<p>This writes <code>papyrus.php</code> and updates theme TOC markers to
+<code>&lt;!-- PAPYRUS:TOC --&gt;</code>. After migration:</p>
+<ol>
+<li>Remove <code>hi-folks/ibis-next</code> and any Composer patches for ibis/mPDF.</li>
+<li>Point scripts at <code>papyrus</code> (<code>build</code>, <code>build:pdf</code>, …).</li>
+<li>Run <code>papyrus doctor</code> and a full <code>papyrus build</code>.</li>
+</ol>
+<h2>Continuous integration</h2>
+<p>Copy the stub workflow from the Papyrus package:</p>
+<p><code>stubs/github/workflows/book-build.yml</code></p>
+<p>A typical book job installs PHP with <code>dom</code>, <code>gd</code>, <code>mbstring</code>, <code>zip</code>, <code>zlib</code>,
+runs <code>composer install</code>, <code>papyrus doctor</code>, optional <code>papyrus lint</code>, then
+<code>composer build</code>.</p>
+<h2>Programmatic use</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-keyword">use</span> <span class="hljs-title">Milon</span>\<span class="hljs-title">Papyrus</span>\<span class="hljs-title">Config</span>\<span class="hljs-title">Project</span>;
+
+$project = Project::load($bookDir);
+$book = $project-&gt;bookConverter()-&gt;convertDirectory($project-&gt;contentDir);
+</code></pre>
+<h2>Checklist before release</h2>
+<ol>
+<li><code>papyrus doctor</code> is clean</li>
+<li><code>papyrus build</code> succeeds for every theme</li>
+<li>Sample ranges still make sense after reflows</li>
+<li>KDP EPUB opens in Kindle Previewer; print PDF matches trim/bleed</li>
+<li>HTML export readable on phone and desktop</li>
+<li>Pin a Papyrus version in the book’s <code>composer.json</code></li>
+</ol>
+<nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="07-samples-and-kdp.html"><span class="label">Previous</span>Samples and KDP</a><a class="next" href="09-command-reference.html"><span class="label">Next</span>Command reference</a></nav>
+        </main>
+    </div>
+</body>
+</html>

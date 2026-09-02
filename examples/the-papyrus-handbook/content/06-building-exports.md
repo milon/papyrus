@@ -22,6 +22,7 @@ papyrus build:pdf --theme light
 papyrus build:pdf --theme light,dark --parallel
 papyrus build:epub
 papyrus build:html
+papyrus build:site
 papyrus build:sample
 ```
 
@@ -30,6 +31,7 @@ papyrus build:sample
 | `build:pdf` | `export/<slug>-<theme>.pdf` |
 | `build:epub` | `export/<slug>.epub` |
 | `build:html` | `export/<slug>.html` |
+| `build:site` | `export/<slug>-site/` (multi-page site + sidebar) |
 | `build:sample` | `export/sample-<slug>-<theme>.pdf` |
 
 Use `-e` / `--export` to write somewhere other than `export/` (for example

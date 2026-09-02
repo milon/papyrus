@@ -39,7 +39,12 @@ time Papyrus rewrites those URLs relative to the HTML output directory (so
 
 ```bash
 papyrus build:html
+papyrus build:site
 ```
+
+`build:site` writes `export/<slug>-site/` with one HTML page per chapter, a
+Home index, shared CSS/JS, a collapsible chapter sidebar (Docsify-style),
+and the same light/dark toggle as the single-file HTML export.
 
 ## EPUB styles
 
