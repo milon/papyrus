@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class Banner
 {
-    public const string TAGLINE = 'Markdown to Book (PDF, EPUB, HTML, and KDP)';
+    public const TAGLINE = 'Markdown to Book (PDF, EPUB, HTML, and KDP)';
 
     /**
      * @return list<string>
