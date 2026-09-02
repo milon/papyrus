@@ -15,15 +15,60 @@ Built from scratch with heavy influence from [ibis-next](https://github.com/Hi-F
 - PHP extensions: `dom`, `gd`, `mbstring`, `zip`, `zlib` (PDF via mPDF; EPUB packaging)
 - Node: `@mermaid-js/mermaid-cli` (`mmdc`) when Mermaid diagrams are enabled
 
-## Install (development)
+## Install
+
+### Per project (recommended)
+
+In your book repository:
+
+```bash
+composer require milon/papyrus
+```
+
+Then run via Composer’s binary path:
+
+```bash
+vendor/bin/papyrus --version
+vendor/bin/papyrus init
+```
+
+Or add Composer scripts (example):
+
+```json
+{
+  "scripts": {
+    "build": "papyrus build",
+    "build:pdf": "papyrus build:pdf --theme light,dark",
+    "build:epub": "papyrus build:epub",
+    "build:html": "papyrus build:html",
+    "build:sample": "papyrus build:sample",
+    "build:kdp": "papyrus kdp"
+  }
+}
+```
+
+```bash
+composer build
+```
+
+### Global CLI
+
+```bash
+composer global require milon/papyrus
+```
+
+Ensure Composer’s global `bin` directory is on your `PATH` (typical locations: `~/.composer/vendor/bin` or `~/.config/composer/vendor/bin`):
+
+```bash
+export PATH="$(composer global config bin-dir --absolute):$PATH"
+papyrus --version
+papyrus list
+```
+
+### From this repository (development)
 
 ```bash
 composer install
-```
-
-Run the CLI:
-
-```bash
 ./bin/papyrus --version
 ./bin/papyrus list
 ```
@@ -33,15 +78,15 @@ Run the CLI:
 Scaffold a new book in the current directory:
 
 ```bash
-./bin/papyrus init
-./bin/papyrus doctor
+papyrus init
+papyrus doctor
 ```
 
 Or in a new folder:
 
 ```bash
-mkdir my-book && ./bin/papyrus init -d my-book
-./bin/papyrus doctor -d my-book
+mkdir my-book && papyrus init -d my-book
+papyrus doctor -d my-book
 ```
 
 ## Commands
@@ -81,6 +126,8 @@ composer format # Pint --write
 ```
 
 CI runs lint, PHPUnit, and a mini-book `papyrus build` smoke on push/PR (see `.github/workflows/ci.yml`). Book repos can copy `stubs/github/workflows/book-build.yml`.
+
+Packagist ([milon/papyrus](https://packagist.org/packages/milon/papyrus)) is notified on every push/tag by `.github/workflows/packagist.yml` (requires `PACKAGIST_USERNAME` and `PACKAGIST_TOKEN` repository secrets from [your Packagist profile](https://packagist.org/profile/)). Publish versions by tagging releases, e.g. `git tag v0.1.0 && git push origin v0.1.0`.
 
 ## License
 
