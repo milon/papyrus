@@ -125,10 +125,6 @@ composer lint   # Pint
 composer format # Pint --write
 ```
 
-CI runs lint, PHPUnit, and a mini-book `papyrus build` smoke on push/PR (see `.github/workflows/ci.yml`). Book repos can copy `stubs/github/workflows/book-build.yml`.
-
-Packagist ([milon/papyrus](https://packagist.org/packages/milon/papyrus)) is notified on every push/tag by `.github/workflows/packagist.yml` (requires `PACKAGIST_USERNAME` and `PACKAGIST_TOKEN` repository secrets from [your Packagist profile](https://packagist.org/profile/)). Publish versions by tagging releases, e.g. `git tag v0.1.0 && git push origin v0.1.0`.
-
 ## License
 
 MIT — see [LICENSE](LICENSE).
