@@ -1,7 +1,7 @@
 # Papyrus
 
 <p align="center">
-  <img src="assets/papyrus-banner.jpg" alt="Papyrus — Markdown books to PDF, EPUB, and HTML" width="100%">
+  <img src="assets/papyrus-banner.jpg" alt="Papyrus — Markdown to Book (PDF, EPUB, HTML, and KDP)" width="100%">
 </p>
 
 PHP CLI for Markdown book projects — PDF, EPUB, HTML, and KDP exports.
