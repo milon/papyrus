@@ -41,8 +41,9 @@ papyrus build:site -d examples/the-papyrus-handbook -e docs
 The sample book **The Papyrus Handbook** lives in [`examples/the-papyrus-handbook/`](examples/the-papyrus-handbook/). Read it online or from the prebuilt exports in `docs/`:
 
 - [Site](https://milon.im/papyrus) — GitHub Pages (multi-page, sidebar, light/dark mode)
+- [Downloads](https://milon.im/papyrus/19-downloads.html) — light / dark PDF previews from GitHub
 - [HTML](docs/the-papyrus-handbook.html) — single file, light/dark mode toggle
-- [PDF](docs/the-papyrus-handbook-light.pdf)
+- [PDF (light)](docs/the-papyrus-handbook-light.pdf) · [PDF (dark)](docs/the-papyrus-handbook-dark.pdf)
 
 Rebuild those exports with:
 
@@ -54,10 +55,59 @@ That runs `build:pdf`, `build:html`, and `build:site` with `-d examples/the-papy
 
 ## Requirements
 
-- PHP 8.2+
+**Required**
+
+- PHP 8.2+ with extensions `dom`, `gd`, `mbstring`, `zip`, and `zlib` (PDF via mPDF; EPUB packaging)
 - Composer
-- PHP extensions: `dom`, `gd`, `mbstring`, `zip`, `zlib` (PDF via mPDF; EPUB packaging)
-- Node: `@mermaid-js/mermaid-cli` (`mmdc`) when Mermaid diagrams are enabled
+
+**Optional** (features work without them; Papyrus skips or warns when missing)
+
+| Tool | Used by | Notes |
+|------|---------|--------|
+| `@mermaid-js/mermaid-cli` (`mmdc`) | Mermaid diagrams | Needs a Chrome/Chromium binary for Puppeteer |
+| Chrome or Chromium | Mermaid CLI | Set `PUPPETEER_EXECUTABLE_PATH` if the bundled browser is missing |
+| `epubcheck` | `kdp:ebook` | Extra EPUB validation; skipped with a warning when absent |
+
+### Install optional tooling (macOS / Homebrew)
+
+```bash
+brew install php composer
+brew install mermaid-cli          # provides mmdc
+brew install --cask google-chrome # Puppeteer browser for Mermaid
+brew install epubcheck            # optional KDP EPUB checks (pulls OpenJDK)
+```
+
+Point Mermaid at system Chrome when needed:
+
+```bash
+export PUPPETEER_EXECUTABLE_PATH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+```
+
+### Install optional tooling (npm / Linux)
+
+```bash
+# Mermaid CLI (global, or use npx - Papyrus also tries `npx -y @mermaid-js/mermaid-cli`)
+npm install -g @mermaid-js/mermaid-cli
+
+# Browser for Puppeteer (pick one)
+# Debian/Ubuntu:
+sudo apt-get install -y chromium-browser
+# or Google Chrome from Google’s .deb
+
+export PUPPETEER_EXECUTABLE_PATH="$(command -v chromium-browser || command -v google-chrome || command -v chromium)"
+
+# epubcheck — Homebrew on macOS, or download from
+# https://github.com/w3c/epubcheck/releases and put `epubcheck` on PATH
+```
+
+Verify:
+
+```bash
+php -m | grep -E 'dom|gd|mbstring|zip|zlib'
+mmdc --version
+epubcheck --version
+papyrus doctor
+```
 
 ## Install
 

@@ -6,9 +6,52 @@ title: Install and project layout
 
 ## Requirements
 
+**Required**
+
 - PHP 8.2+ with extensions `dom`, `gd`, `mbstring`, `zip`, and `zlib`
 - Composer
-- Optional: Node.js and `@mermaid-js/mermaid-cli` (`mmdc`) when Mermaid is enabled
+
+**Optional**
+
+| Tool | Used by | Notes |
+|------|---------|--------|
+| `mmdc` (`@mermaid-js/mermaid-cli` or Homebrew `mermaid-cli`) | Mermaid diagrams | Needs Chrome/Chromium for Puppeteer |
+| Chrome or Chromium | Mermaid CLI | Set `PUPPETEER_EXECUTABLE_PATH` if needed |
+| `epubcheck` | `kdp:ebook` | Extra validation; skipped with a warning when absent |
+
+### macOS (Homebrew)
+
+```bash
+brew install php composer
+brew install mermaid-cli
+brew install --cask google-chrome
+brew install epubcheck
+```
+
+```bash
+export PUPPETEER_EXECUTABLE_PATH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+```
+
+### npm / Linux
+
+```bash
+npm install -g @mermaid-js/mermaid-cli
+# Debian/Ubuntu example:
+sudo apt-get install -y chromium-browser
+export PUPPETEER_EXECUTABLE_PATH="$(command -v chromium-browser || command -v google-chrome || command -v chromium)"
+```
+
+Install [epubcheck](https://github.com/w3c/epubcheck/releases) and put it on
+`PATH`, or use `brew install epubcheck` on macOS.
+
+### Check the toolchain
+
+```bash
+php -m | grep -E 'dom|gd|mbstring|zip|zlib'
+mmdc --version
+epubcheck --version
+papyrus doctor
+```
 
 ## Install per project
 

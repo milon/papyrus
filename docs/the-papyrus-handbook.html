@@ -702,8 +702,9 @@
         </div>
         <h1>Welcome</h1>
 <p>Thanks for opening <strong>The Papyrus Handbook</strong>. Use the sidebar to browse chapters,
-or continue from Introduction. The home page has the project banner and links
-to GitHub and Packagist.</p>
+or continue from Introduction. The home page has the project banner, a
+<strong>Downloads</strong> link for PDF previews from GitHub, and links to GitHub and
+Packagist.</p>
 <p>This guide is the companion for <strong><a href="https://github.com/milon/papyrus">milon/papyrus</a></strong> —
 a PHP CLI that turns Markdown into PDF, EPUB, HTML, a multi-page site, and
 Amazon KDP exports. You are reading those same chapters as a Papyrus site.</p>
@@ -719,6 +720,7 @@ Amazon KDP exports. You are reading those same chapters as a Papyrus site.</p>
 <li><strong>kdp</strong> and <strong>kdp:*</strong> — Kindle, print, covers, metadata</li>
 <li><strong>Migration and CI</strong> — ibis-next migration and GitHub Actions</li>
 <li><strong>Command reference</strong> — full CLI tables</li>
+<li><strong>Downloads</strong> — light and dark PDF previews from GitHub</li>
 </ol>
 <p>Copyright © 2026 <a href="https://github.com/milon">Nuruzzaman Milon</a> /
 <a href="https://github.com/milon/papyrus">Papyrus</a>. Released under the same terms as
@@ -779,11 +781,60 @@ the full <code>papyrus.php</code> option set.</p>
 <p>Source and releases: <a href="https://github.com/milon/papyrus">github.com/milon/papyrus</a>.</p>
 <div style="page-break-after: always;"></div><h1>Install and project layout</h1>
 <h2>Requirements</h2>
+<p><strong>Required</strong></p>
 <ul>
 <li>PHP 8.2+ with extensions <code>dom</code>, <code>gd</code>, <code>mbstring</code>, <code>zip</code>, and <code>zlib</code></li>
 <li>Composer</li>
-<li>Optional: Node.js and <code>@mermaid-js/mermaid-cli</code> (<code>mmdc</code>) when Mermaid is enabled</li>
 </ul>
+<p><strong>Optional</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Used by</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mmdc</code> (<code>@mermaid-js/mermaid-cli</code> or Homebrew <code>mermaid-cli</code>)</td>
+<td>Mermaid diagrams</td>
+<td>Needs Chrome/Chromium for Puppeteer</td>
+</tr>
+<tr>
+<td>Chrome or Chromium</td>
+<td>Mermaid CLI</td>
+<td>Set <code>PUPPETEER_EXECUTABLE_PATH</code> if needed</td>
+</tr>
+<tr>
+<td><code>epubcheck</code></td>
+<td><code>kdp:ebook</code></td>
+<td>Extra validation; skipped with a warning when absent</td>
+</tr>
+</tbody>
+</table>
+<h3>macOS (Homebrew)</h3>
+<pre><code class="language-bash hljs bash" data-lang="bash">brew install php composer
+brew install mermaid-cli
+brew install --cask google-chrome
+brew install epubcheck
+</code></pre>
+<pre><code class="language-bash hljs bash" data-lang="bash"><span class="hljs-built_in">export</span> PUPPETEER_EXECUTABLE_PATH=<span class="hljs-string">"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"</span>
+</code></pre>
+<h3>npm / Linux</h3>
+<pre><code class="language-bash hljs bash" data-lang="bash">npm install -g @mermaid-js/mermaid-cli
+<span class="hljs-comment"># Debian/Ubuntu example:</span>
+sudo apt-get install -y chromium-browser
+<span class="hljs-built_in">export</span> PUPPETEER_EXECUTABLE_PATH=<span class="hljs-string">"<span class="hljs-variable">$(command -v chromium-browser || command -v google-chrome || command -v chromium)</span>"</span>
+</code></pre>
+<p>Install <a href="https://github.com/w3c/epubcheck/releases">epubcheck</a> and put it on
+<code>PATH</code>, or use <code>brew install epubcheck</code> on macOS.</p>
+<h3>Check the toolchain</h3>
+<pre><code class="language-bash hljs bash" data-lang="bash">php -m | grep -E <span class="hljs-string">'dom|gd|mbstring|zip|zlib'</span>
+mmdc --version
+epubcheck --version
+papyrus doctor
+</code></pre>
 <h2>Install per project</h2>
 <p>In your book repository:</p>
 <pre><code class="language-bash hljs bash" data-lang="bash">composer require milon/papyrus
@@ -2104,7 +2155,8 @@ papyrus kdp:ebook -d /path/to/book -e /path/to/out
 <pre><code class="language-text">export/&lt;slug&gt;-kdp.epub
 </code></pre>
 <p>Papyrus runs an internal KDP-oriented check and, when available on <code>PATH</code>,
-<code>epubcheck</code>.</p>
+<code>epubcheck</code> (install with <code>brew install epubcheck</code>, or from
+<a href="https://github.com/w3c/epubcheck/releases">w3c/epubcheck</a>).</p>
 <h2>Cover</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'kdp'</span> =&gt; [
     <span class="hljs-string">'ebook'</span> =&gt; [
@@ -2680,6 +2732,57 @@ $book = $project-&gt;bookConverter()-&gt;convertDirectory($project-&gt;contentDi
 <p>Packagist: <a href="https://packagist.org/packages/milon/papyrus"><code>milon/papyrus</code></a>.
 Source: <a href="https://github.com/milon/papyrus">github.com/milon/papyrus</a>.
 Releases: <a href="https://github.com/milon/papyrus/releases">github.com/milon/papyrus/releases</a>.</p>
+<div style="page-break-after: always;"></div><h1>Downloads</h1>
+<p>Preview this handbook as a PDF without building locally. The files live in the
+Papyrus repository under <a href="https://github.com/milon/papyrus/tree/master/docs"><code>docs/</code></a>
+and update when the handbook is rebuilt.</p>
+<h2>PDF</h2>
+<table>
+<thead>
+<tr>
+<th>Theme</th>
+<th>Download</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Light</td>
+<td><a href="https://github.com/milon/papyrus/raw/master/docs/the-papyrus-handbook-light.pdf">the-papyrus-handbook-light.pdf</a></td>
+</tr>
+<tr>
+<td>Dark</td>
+<td><a href="https://github.com/milon/papyrus/raw/master/docs/the-papyrus-handbook-dark.pdf">the-papyrus-handbook-dark.pdf</a></td>
+</tr>
+</tbody>
+</table>
+<p>Open the link to download from GitHub, or use <strong>View raw</strong> / <strong>Download</strong> on
+the file page:</p>
+<ul>
+<li><a href="https://github.com/milon/papyrus/blob/master/docs/the-papyrus-handbook-light.pdf">Light PDF on GitHub</a></li>
+<li><a href="https://github.com/milon/papyrus/blob/master/docs/the-papyrus-handbook-dark.pdf">Dark PDF on GitHub</a></li>
+</ul>
+<h2>Other previews</h2>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Link</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>This site</td>
+<td><a href="https://milon.im/papyrus">milon.im/papyrus</a></td>
+</tr>
+<tr>
+<td>Single-file HTML</td>
+<td><a href="https://github.com/milon/papyrus/raw/master/docs/the-papyrus-handbook.html">the-papyrus-handbook.html</a></td>
+</tr>
+</tbody>
+</table>
+<p>Rebuild everything from the Papyrus repo with:</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">composer build:handbook
+</code></pre>
 
     </main>
 </body>

@@ -108,7 +108,7 @@ final class SiteRenderer
             $leadHtml = '<p class="book-lead">'.htmlspecialchars($lead, ENT_QUOTES | ENT_HTML5).'</p>';
         }
 
-        $linksHtml = $this->homeLinksHtml();
+        $linksHtml = $this->homeLinksHtml($pages);
 
         $body = <<<HTML
 <div class="title-page">
@@ -131,23 +131,42 @@ HTML;
         );
     }
 
-    private function homeLinksHtml(): string
+    /**
+     * @param  list<array{chapter: Chapter, file: string, title: string}>  $pages
+     */
+    private function homeLinksHtml(array $pages): string
     {
-        $repository = $this->project->siteRepository();
+        $items = '';
 
-        if ($repository === null) {
-            return '';
+        foreach ($pages as $page) {
+            if (strcasecmp($page['title'], 'Downloads') !== 0) {
+                continue;
+            }
+
+            $items .= sprintf(
+                '<a href="%s">Downloads</a>',
+                htmlspecialchars($page['file'], ENT_QUOTES | ENT_HTML5),
+            );
+            break;
         }
 
-        $repoUrl = htmlspecialchars($repository, ENT_QUOTES | ENT_HTML5);
-        $items = sprintf('<a href="%s">Source on GitHub</a>', $repoUrl);
+        $repository = $this->project->siteRepository();
 
-        if (preg_match('#github\.com/([^/]+/[^/]+?)(?:\.git)?/?$#', $repository, $matches) === 1) {
-            $slug = $matches[1];
-            $packagist = htmlspecialchars('https://packagist.org/packages/'.$slug, ENT_QUOTES | ENT_HTML5);
-            $issues = htmlspecialchars(rtrim($repository, '/').'/issues', ENT_QUOTES | ENT_HTML5);
-            $items .= sprintf('<a href="%s">Packagist</a>', $packagist);
-            $items .= sprintf('<a href="%s">Issues</a>', $issues);
+        if ($repository !== null) {
+            $repoUrl = htmlspecialchars($repository, ENT_QUOTES | ENT_HTML5);
+            $items .= sprintf('<a href="%s">Source on GitHub</a>', $repoUrl);
+
+            if (preg_match('#github\.com/([^/]+/[^/]+?)(?:\.git)?/?$#', $repository, $matches) === 1) {
+                $slug = $matches[1];
+                $packagist = htmlspecialchars('https://packagist.org/packages/'.$slug, ENT_QUOTES | ENT_HTML5);
+                $issues = htmlspecialchars(rtrim($repository, '/').'/issues', ENT_QUOTES | ENT_HTML5);
+                $items .= sprintf('<a href="%s">Packagist</a>', $packagist);
+                $items .= sprintf('<a href="%s">Issues</a>', $issues);
+            }
+        }
+
+        if ($items === '') {
+            return '';
         }
 
         return '<p class="home-links">'.$items.'</p>';

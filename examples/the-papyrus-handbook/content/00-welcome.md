@@ -6,8 +6,9 @@ pretoc: true
 # Welcome
 
 Thanks for opening **The Papyrus Handbook**. Use the sidebar to browse chapters,
-or continue from Introduction. The home page has the project banner and links
-to GitHub and Packagist.
+or continue from Introduction. The home page has the project banner, a
+**Downloads** link for PDF previews from GitHub, and links to GitHub and
+Packagist.
 
 This guide is the companion for **[milon/papyrus](https://github.com/milon/papyrus)** —
 a PHP CLI that turns Markdown into PDF, EPUB, HTML, a multi-page site, and
@@ -25,6 +26,7 @@ Amazon KDP exports. You are reading those same chapters as a Papyrus site.
 8. **kdp** and **kdp:\*** — Kindle, print, covers, metadata
 9. **Migration and CI** — ibis-next migration and GitHub Actions
 10. **Command reference** — full CLI tables
+11. **Downloads** — light and dark PDF previews from GitHub
 
 Copyright © 2026 [Nuruzzaman Milon](https://github.com/milon) /
 [Papyrus](https://github.com/milon/papyrus). Released under the same terms as

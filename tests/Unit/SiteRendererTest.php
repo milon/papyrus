@@ -107,6 +107,46 @@ PHP);
         }
     }
 
+    #[Test]
+    public function site_index_links_to_downloads_chapter_when_present(): void
+    {
+        $bookDir = sys_get_temp_dir().'/papyrus-site-downloads-'.uniqid('', true);
+        $export = sys_get_temp_dir().'/papyrus-site-downloads-export-'.uniqid('', true);
+        mkdir($bookDir.'/content', 0755, true);
+        mkdir($bookDir.'/assets', 0755, true);
+        mkdir($export);
+
+        file_put_contents($bookDir.'/content/01.md', "---\ntitle: One\n---\n\nHello.\n");
+        file_put_contents($bookDir.'/content/19-downloads.md', "---\ntitle: Downloads\n---\n\nPDFs here.\n");
+        file_put_contents($bookDir.'/papyrus.php', <<<'PHP'
+<?php
+
+return [
+    'title' => 'Downloads Book',
+    'author' => 'Author',
+    'themes' => ['light'],
+    'site' => [
+        'repository' => 'https://github.com/milon/papyrus',
+    ],
+    'mermaid' => ['enabled' => false],
+];
+PHP);
+        file_put_contents($bookDir.'/assets/theme-html.html', '<html><body>{{$body}}</body></html>');
+
+        try {
+            $project = Project::load($bookDir)->withExportDir($export);
+            $siteDir = (new SiteRenderer($project))->render();
+            $index = file_get_contents($siteDir.'/index.html');
+            $this->assertIsString($index);
+            $this->assertFileExists($siteDir.'/19-downloads.html');
+            $this->assertStringContainsString('href="19-downloads.html">Downloads</a>', $index);
+            $this->assertStringContainsString('Source on GitHub', $index);
+        } finally {
+            $this->removeDir($bookDir);
+            $this->removeDir($export);
+        }
+    }
+
     private function removeDir(string $dir): void
     {
         if (! is_dir($dir)) {

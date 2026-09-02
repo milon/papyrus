@@ -27,7 +27,8 @@ export/<slug>-kdp.epub
 ```
 
 Papyrus runs an internal KDP-oriented check and, when available on `PATH`,
-`epubcheck`.
+`epubcheck` (install with `brew install epubcheck`, or from
+[w3c/epubcheck](https://github.com/w3c/epubcheck/releases)).
 
 ## Cover
 

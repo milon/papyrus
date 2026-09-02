@@ -6,7 +6,7 @@ return [
     'title' => 'The Papyrus Handbook',
     'subtitle' => 'Markdown to PDF, EPUB, HTML sites, and KDP',
     'author' => 'Nuruzzaman Milon',
-    'themes' => ['light'],
+    'themes' => ['light', 'dark'],
 
     'document' => [
         'size' => 'crown-quarto',
