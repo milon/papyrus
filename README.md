@@ -29,6 +29,9 @@ Example — this repo’s handbook site:
 
 **[Browse The Papyrus Handbook site](docs/the-papyrus-handbook-site/)**
 
+On push to `main`/`master`, [`.github/workflows/pages.yml`](.github/workflows/pages.yml) rebuilds
+that site and publishes it to the `gh-pages` branch (enable GitHub Pages → Deploy from branch → `gh-pages` / `/`).
+
 ```bash
 papyrus build:site -d examples/the-papyrus-handbook -e docs
 ```

@@ -42,12 +42,9 @@ final class SiteRenderer
             throw new HtmlException(sprintf('Unable to create site assets directory: %s', $assetsDir));
         }
 
-        $fontsPrefix = Project::relativePath($assetsDir, $this->project->assetsDir.'/fonts');
-        if ($fontsPrefix === '.') {
-            $fontsPrefix = '';
-        }
+        $this->copyFontsIntoSite($assetsDir.'/fonts');
 
-        $css = WebTheme::fontFaceCss($fontsPrefix === '' ? '' : rtrim($fontsPrefix, '/').'/')
+        $css = WebTheme::fontFaceCss('fonts/')
             ."\n"
             .WebTheme::contentCss()
             ."\n"
@@ -55,6 +52,7 @@ final class SiteRenderer
 
         $this->writeFile($assetsDir.'/site.css', $css);
         $this->writeFile($assetsDir.'/site.js', WebTheme::themeScript());
+        $this->writeFile($siteDir.'/.nojekyll', '');
 
         /** @var list<array{chapter: Chapter, file: string, title: string}> $pages */
         $pages = [];
@@ -242,6 +240,43 @@ HTML;
         }
 
         return '<nav class="sidebar-nav"><ul>'.$items.'</ul></nav>';
+    }
+
+    private function copyFontsIntoSite(string $destinationDir): void
+    {
+        $sourceDir = $this->project->assetsDir.'/fonts';
+
+        if (! is_dir($sourceDir)) {
+            return;
+        }
+
+        if (! is_dir($destinationDir) && ! mkdir($destinationDir, 0755, true) && ! is_dir($destinationDir)) {
+            throw new HtmlException(sprintf('Unable to create site fonts directory: %s', $destinationDir));
+        }
+
+        $files = scandir($sourceDir);
+
+        if ($files === false) {
+            return;
+        }
+
+        foreach ($files as $file) {
+            if ($file === '.' || $file === '..') {
+                continue;
+            }
+
+            $source = $sourceDir.'/'.$file;
+
+            if (! is_file($source)) {
+                continue;
+            }
+
+            $destination = $destinationDir.'/'.$file;
+
+            if (! copy($source, $destination)) {
+                throw new HtmlException(sprintf('Unable to copy font into site: %s', $file));
+            }
+        }
     }
 
     private function writeFile(string $path, string $contents): void

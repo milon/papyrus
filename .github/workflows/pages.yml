@@ -1,0 +1,64 @@
+name: pages
+
+on:
+  push:
+    branches: [main, master]
+  workflow_dispatch:
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: dom, gd, mbstring, zip, zlib
+          coverage: none
+          tools: composer:v2
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Install Chromium for Mermaid
+        id: setup-chrome
+        uses: browser-actions/setup-chrome@v1
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Build handbook site
+        env:
+          PUPPETEER_EXECUTABLE_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
+        run: |
+          if [[ -z "${PUPPETEER_EXECUTABLE_PATH}" ]]; then
+            for candidate in google-chrome chrome chromium chromium-browser; do
+              if command -v "$candidate" >/dev/null 2>&1; then
+                export PUPPETEER_EXECUTABLE_PATH="$(command -v "$candidate")"
+                break
+              fi
+            done
+          fi
+          echo "Using Chrome at: ${PUPPETEER_EXECUTABLE_PATH:-not set}"
+          ./bin/papyrus build:site -d examples/the-papyrus-handbook -e docs
+          test -f docs/the-papyrus-handbook-site/index.html
+          test -f docs/the-papyrus-handbook-site/.nojekyll
+          test -f docs/the-papyrus-handbook-site/assets/fonts/LinLibertine_R.ttf
+
+      - name: Deploy to gh-pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs/the-papyrus-handbook-site
+          force_orphan: true
+          commit_message: "Deploy handbook site"
