@@ -80,6 +80,8 @@ composer lint   # Pint
 composer format # Pint --write
 ```
 
+CI runs lint, PHPUnit, and a mini-book `papyrus build` smoke on push/PR (see `.github/workflows/ci.yml`). Book repos can copy `stubs/github/workflows/book-build.yml`.
+
 ## License
 
 MIT — see [LICENSE](LICENSE).
