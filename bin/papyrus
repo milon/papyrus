@@ -3,7 +3,25 @@
 
 declare(strict_types=1);
 
-require __DIR__.'/../vendor/autoload.php';
+$autoloadCandidates = [
+    __DIR__.'/../../../autoload.php', // composer dependency: vendor/milon/papyrus/bin
+    __DIR__.'/../vendor/autoload.php', // package checkout
+];
+
+$autoload = null;
+foreach ($autoloadCandidates as $candidate) {
+    if (is_file($candidate)) {
+        $autoload = $candidate;
+        break;
+    }
+}
+
+if ($autoload === null) {
+    fwrite(STDERR, "Unable to find Composer autoloader.\n");
+    exit(1);
+}
+
+require $autoload;
 
 use Milon\Papyrus\Console\Application;
 
