@@ -73,8 +73,9 @@ HTML);
         $html = file_get_contents($path);
 
         $this->assertIsString($html);
-        $this->assertStringContainsString('@page', $html);
-        $this->assertStringContainsString('background-color: #1a1a1a', $html);
+        $this->assertStringContainsString('background-color: #24273a', $html);
+        $this->assertStringContainsString('font-family: librelibertine', $html);
         $this->assertStringContainsString('{{$subtitle}}', $html);
+        $this->assertStringContainsString('<!-- PAPYRUS:TOC -->', $html);
     }
 }

@@ -1,79 +1,409 @@
 <header>
   <style>
-    @page {
-      background-color: #1a1a1a;
-    }
-
     body {
-      font-family: librelibertine, sans-serif;
-      font-size: 12pt;
+      font-family: librelibertine;
+      font-size: 16px;
       line-height: 1.4;
-      color: #e8e8e8;
+      background-color: #24273a;
+      color: #c1d4ea;
     }
 
-    h1 {
-      font-size: 24pt;
-      padding-bottom: 20px;
-      color: #ffffff;
-    }
-
-    h2 {
-      font-size: 18pt;
-      padding-bottom: 12px;
-      color: #ffffff;
+    h1, h2 {
+      font-family: times;
+      color: #fff;
     }
 
     h3 {
-      font-size: 14pt;
-      color: #f0f0f0;
+      font-family: times;
+      color: #fff;
+      font-weight: bold;
     }
 
-    pre,
-    code {
-      font-family: oxproto, monospace;
+    h1 {
+      font-size: 35px;
+      padding-top: 0;
+      padding-bottom: 70px;
+    }
+
+    h2 {
+      text-align: left;
+      font-size: 24px;
+      padding-top: 0;
+      padding-bottom: 30px;
+    }
+
+    h3 {
+      text-align: left;
+      font-size: 19px;
+      padding-top: 20px;
+      padding-bottom: 0;
+    }
+
+    p, ul, ol {
+      margin-bottom: 20px;
     }
 
     pre {
+      line-height: 20px;
       page-break-inside: avoid;
-      border-left: solid 4px #555555;
-      background-color: #2a2a2a;
-      padding: 12px 16px;
-      margin-bottom: 20px;
-      color: #e8e8e8;
+      border-left: solid 4px #dd7878;
+      background-color: #1e1e2e;
+      padding-top: 15px;
+      padding-bottom: 15px;
+      padding-left: 20px;
+      margin-bottom: 30px;
     }
 
-    blockquote.notice,
-    blockquote.warning,
-    blockquote.caution,
-    blockquote.tip,
-    blockquote.danger {
-      border-left: solid 4px #888888;
-      background-color: #2a2a2a;
-      padding: 12px 16px;
-      margin: 20px 0;
+    .mermaid-diagram {
+      page-break-inside: avoid;
+      margin: 0 0 30px 0;
+      text-align: center;
     }
+
+    .mermaid-diagram img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    a {
+      color: #abe9ef;
+    }
+
+    pre code {
+      background: none;
+      font-family: oxproto;
+      /*
+       * Sized to the Crown Quarto trim in papyrus.php: at 27mm margins this
+       * fits 66 monospace characters, which is the hard limit code
+       * listings are written to. Raising it re-introduces wrapped,
+       * unindented code.
+       */
+      font-size: 12px;
+      color: #abe9ef;
+    }
+
+    code {
+      font-family: oxproto;
+      font-size: 14px;
+      color: #e64553;
+    }
+
+    /*
+     * highlight.js "sunburst" theme, inlined verbatim.
+     * Code is highlighted at build time into `hljs-*` spans. mPDF does not
+     * fetch remote <link> stylesheets during the PDF build, so the CDN link
+     * this replaces produced un-colored code blocks. The upstream theme's
+     * `.hljs { background: #000 }` rule is intentionally omitted so the
+     * theme's own `pre` background is preserved.
+     */
+    .hljs-comment, .hljs-quote { color: #aeaeae; font-style: italic; }
+    .hljs-keyword, .hljs-selector-tag, .hljs-type { color: #e28964; }
+    .hljs-string { color: #65b042; }
+    .hljs-subst { color: #daefa3; }
+    .hljs-regexp, .hljs-link { color: #e9c062; }
+    .hljs-title, .hljs-section, .hljs-tag, .hljs-name { color: #89bdff; }
+    .hljs-class .hljs-title, .hljs-doctag { text-decoration: underline; }
+    .hljs-symbol, .hljs-bullet, .hljs-number { color: #3387cc; }
+    .hljs-params, .hljs-variable, .hljs-template-variable { color: #3e87e3; }
+    .hljs-attribute { color: #cda869; }
+    .hljs-meta { color: #8996a8; }
+    .hljs-formula { background-color: #0e2231; color: #f8f8f8; font-style: italic; }
+    .hljs-addition { background-color: #253b22; color: #f8f8f8; }
+    .hljs-deletion { background-color: #420e09; color: #f8f8f8; }
+    .hljs-selector-class { color: #9b703f; }
+    .hljs-selector-id { color: #8b98ab; }
+    .hljs-emphasis { font-style: italic; }
+    .hljs-strong { font-weight: bold; }
 
     .mpdf_toc {
-      font-family: sans-serif;
-      color: #e8e8e8;
+      font-family: librelibertine;
+      color: #c1d4ea;
     }
 
-    figure.mermaid {
+    div.mpdf_toc_level_0 {
+      padding-top: 30px;
+      line-height: 30px;
+    }
+
+    div.mpdf_toc_level_1 {
+      line-height: 30px;
+    }
+
+    div.mpdf_toc_level_2 {
+      line-height: 30px;
+    }
+
+    span.mpdf_toc_t_level_0, span.mpdf_toc_p_level_0 {
+      color: #c1d4ea;
+      font-family: librelibertine;
+      font-weight: bold;
+      font-style: normal;
+    }
+
+    span.mpdf_toc_t_level_1, span.mpdf_toc_p_level_1 {
+      color: #c1d4ea;
+      font-family: librelibertine;
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    span.mpdf_toc_t_level_2, span.mpdf_toc_p_level_2 {
+      color: #c1d4ea;
+      font-family: librelibertine;
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    #toc-title {
+      font-weight: bold;
+      font-size: 45px;
+      padding-top: 0;
+      padding-bottom: 10px;
       text-align: center;
-      margin: 20px 0;
+    }
+
+    blockquote {
+      margin-top: 0;
+      margin-right: 0;
+      margin-bottom: 30px;
+      margin-left: 0;
       page-break-inside: avoid;
     }
+
+    blockquote p {
+      margin-top: 0;
+      margin-bottom: 0;
+    }
+
+    blockquote.quote {
+      padding-top: 20px;
+      padding-bottom: 20px;
+      padding-left: 20px;
+      padding-right: 20px;
+      font-style: italic;
+    }
+
+    blockquote.notice {
+      border-left: solid 4px #5b87dd;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    blockquote.notice strong {
+      color: #5b87dd;
+    }
+
+    blockquote.warning {
+      border-left: solid 4px #dd787d;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    blockquote.warning strong {
+      color: #dd787d;
+    }
+
+    blockquote.notice {
+
+      border-left: solid 4px #5b87dd;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    blockquote.note strong {
+      color: #5b87dd;
+    }
+
+    blockquote.note {
+
+      border-left: solid 4px #5b87dd;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    blockquote.note div.title {
+      color: #5b87dd;
+      font-weight: bold;
+    }
+
+    blockquote.notice strong {
+      color: #5b87dd;
+    }
+
+    blockquote.tip {
+
+      border-left: solid 4px #ab11f1;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    blockquote.tip div.title {
+      color: #ab11f1;
+      font-weight: bold;
+    }
+    blockquote.tip strong {
+      color: #ab11f1;
+      font-weight: bold;
+    }
+
+    blockquote.caution {
+
+      border-left: solid 4px #f1ae2f;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    blockquote.caution div.title {
+      color: #f1ae2f;
+      font-weight: bold;
+    }
+
+    blockquote.caution strong {
+      color: #f1ae2f;
+    }
+
+    blockquote.danger {
+
+      border-left: solid 4px #dd787d;
+      padding-top: 20px;
+      padding-bottom: 20px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+    blockquote.danger div.title {
+      color: #dd787d;
+      font-weight: bold;
+    }
+
+    blockquote.danger strong {
+      color: #dd787d;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+      margin-bottom: 25px;
+    }
+
+    td, th {
+      border: none;
+      border-bottom: 1px solid #2c4159;
+      padding: 12px 15px;
+      text-align: left;
+      color: #c1d4ea;
+    }
+
+    td:first-child, th:first-child {
+      padding-left: 0;
+    }
+
+    td:last-child, th:last-child {
+      padding-right: 0;
+    }
+
+    th {
+      font-weight: bold;
+      color: #fff;
+    }
+
+    /*
+     * The copyright and dedication pages themselves live in
+     * content/00-front-matter/ as plain Markdown (so EPUB/HTML builds pick
+     * them up too) and are injected before this tocpagebreak by Papyrus
+     * pretoc handling. Only their theme-specific colors live
+     * here. The colophon reuses .colophon-table from the back matter
+     * (content/09-appendix/).
+     */
+    .frontmatter-page {
+      page-break-after: always;
+      text-align: left;
+      padding-top: 300px;
+      font-family: librelibertine;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #8ba3c7;
+    }
+
+    .frontmatter-page .frontmatter-heading {
+      font-family: librelibertine;
+      font-weight: bold;
+      font-size: 15px;
+      color: #fff;
+      padding-bottom: 20px;
+    }
+
+    .colophon-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: librelibertine;
+      font-size: 12px;
+      line-height: 1.6;
+      color: #8ba3c7;
+    }
+
+    .colophon-table td {
+      border: none;
+      padding: 0 0 20px 0;
+      vertical-align: top;
+      font-family: librelibertine;
+      font-size: 12px;
+      color: #8ba3c7;
+    }
+
+    .colophon-table td.colophon-label {
+      font-weight: bold;
+      width: 130px;
+      padding-right: 20px;
+      white-space: nowrap;
+    }
+
+    /*
+     * No page-break-after here, unlike the EPUB and HTML stylesheets: the
+     * dedication is the last pretoc chapter, and the blank verso markup
+     * below ends its page instead. Breaking here would open the blank page
+     * before the folio is suppressed, so it would print a page number.
+     */
+    .dedication-page {
+      text-align: left;
+      padding-top: 400px;
+    }
+
+    .dedication-page .dedication-text {
+      font-family: librelibertine;
+      font-style: italic;
+      font-size: 20px;
+      color: #fff;
+    }
   </style>
+
 </header>
 
-<div style="text-align: center; margin-top: 25mm;">
-  <h1>{{$title}}</h1>
-  <p>{{$subtitle}}</p>
-  <p>{{$author}}</p>
+<div style="page-break-after: always; text-align: center; padding-top: 320px;">
+  <div style="font-family: times; font-size: 40px; font-weight: bold; color: #fff;">{{$title}}</div>
+  <div style="font-family: times; font-size: 17px; padding-top: 25px; padding-bottom: 90px; color: #8ba3c7;">{{$subtitle}}</div>
+  <div style="font-family: times; font-size: 22px; color: #fff;">{{$author}}</div>
 </div>
 
 <!-- PAPYRUS:TOC -->
+<!--
+  The dedication is a recto, so the front matter closes on a blank verso
+  before the contents. The &nbsp; is what makes mPDF emit that page at all.
+  Page numbering, suppressed since the title page by Papyrus
+  front-matter handling, resumes here at the contents.
+-->
+<pagebreak />
+&nbsp;
+<pagebreak suppress="off" />
 <tocpagebreak links="on"
               toc-suppress="on"
-              toc-preHTML="&lt;h1&gt;Contents&lt;/h1&gt;"
+              toc-preHTML="&lt;h1 id=&quot;toc-title&quot;&gt;Table of Contents&lt;/h1&gt;"
               toc-bookmarkText="Contents">

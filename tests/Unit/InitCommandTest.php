@@ -23,6 +23,8 @@ final class InitCommandTest extends TestCase
         $this->assertFileExists($target.'/content/01-introduction.md');
         $this->assertFileExists($target.'/assets/theme-light.html');
         $this->assertFileExists($target.'/assets/theme-html.html');
+        $this->assertFileExists($target.'/assets/fonts/LinLibertine_R.ttf');
+        $this->assertFileExists($target.'/assets/fonts/0xProto-Regular.ttf');
 
         $this->removeDir($target);
     }

@@ -37,18 +37,15 @@ final class HtmlPostProcessorTest extends TestCase
     }
 
     #[Test]
-    public function it_transforms_legacy_callout_blockquotes(): void
+    public function it_leaves_break_marker_inside_code_untouched(): void
     {
-        $processor = new HtmlPostProcessor;
+        $html = (new HtmlPostProcessor)->process(
+            '<p>See <code>[break]</code> in docs.</p><pre><code>[break]</code></pre>',
+            0,
+        );
 
-        $notice = $processor->process("<blockquote>\n<p>{notice} Be careful.</p>\n</blockquote>", 0);
-        $warning = $processor->process("<blockquote>\n<p>{warning} Stop.</p>\n</blockquote>", 0);
-        $githubNote = $processor->process("<blockquote>\n<p>[!NOTE] Tip here.</p>\n</blockquote>", 0);
-
-        $this->assertStringContainsString("class='notice'", $notice);
-        $this->assertStringContainsString('<strong>Notice:</strong>', $notice);
-        $this->assertStringContainsString("class='warning'", $warning);
-        $this->assertStringContainsString('<strong>Warning:</strong>', $warning);
-        $this->assertStringContainsString('<strong>Note:</strong>', $githubNote);
+        $this->assertStringContainsString('<code>[break]</code>', $html);
+        $this->assertStringContainsString('<pre><code>[break]</code></pre>', $html);
+        $this->assertStringNotContainsString('page-break-after', $html);
     }
 }

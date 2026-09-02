@@ -4,7 +4,10 @@ title: Themes and assets
 
 # Themes and assets
 
-Everything visual lives under `assets/`.
+Everything visual lives under `assets/`. New projects from `papyrus init` ship
+the same PDF theme used by *The Filament Playbook* (Libre Libertine body,
+Times headings, 0xProto code, github-gist highlight colors, notice/tip/caution
+asides) plus matching font files under `assets/fonts/`.
 
 ## PDF themes
 

@@ -8,6 +8,13 @@ PHP CLI for Markdown book projects — PDF, EPUB, HTML, and KDP exports.
 
 Built from scratch with heavy influence from [ibis-next](https://github.com/Hi-Folks/ibis-next). Book projects use `papyrus.php`, `content/`, and `assets/`.
 
+## Handbook
+
+The sample book **The Papyrus Handbook** lives in [`examples/the-papyrus-handbook/`](examples/the-papyrus-handbook/). Prebuilt how-to exports:
+
+- [PDF](docs/the-papyrus-handbook.pdf)
+- [HTML](docs/the-papyrus-handbook.html)
+
 ## Requirements
 
 - PHP 8.2+

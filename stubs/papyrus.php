@@ -33,7 +33,28 @@ return [
     ],
 
     'fonts' => [
-        'faces' => [],
+        'faces' => [
+            [
+                'name' => 'librelibertine',
+                'regular' => 'LinLibertine_R.ttf',
+                'bold' => 'LinLibertine_RB.ttf',
+                'italic' => 'LinLibertine_RI.ttf',
+                'bold_italic' => 'LinLibertine_RBI.ttf',
+            ],
+            [
+                'name' => 'oxproto',
+                'regular' => '0xProto-Regular.ttf',
+                'bold' => '0xProto-Bold.ttf',
+                'italic' => '0xProto-Italic.ttf',
+                'otl' => true,
+            ],
+            [
+                'name' => 'notosansbengali',
+                'regular' => 'NotoSansBengali-Regular.ttf',
+                'bold' => 'NotoSansBengali-Bold.ttf',
+                'otl' => true,
+            ],
+        ],
         'script' => [
             ['match' => ['bn', 'ben', 'bengali'], 'face' => 'notosansbengali'],
         ],
