@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{$title}}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/styles/github-gist.min.css">
+    <style>
+        :root {
+            --ink: #3b2a1a;
+            --parchment: #f3e6c8;
+            --rule: #a67c52;
+        }
+        body {
+            background: linear-gradient(180deg, #efe0bc 0%, var(--parchment) 40%, #e8d4a8 100%);
+            color: var(--ink);
+            min-height: 100vh;
+        }
+        main.container {
+            max-width: 48rem;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 2.5rem clamp(1.5rem, 5vw, 3.5rem) 4rem;
+        }
+        h1, h2, h3 { color: var(--ink); font-family: Georgia, "Times New Roman", serif; }
+        pre {
+            background: #faf6eb;
+            border-left: 4px solid var(--rule);
+        }
+        code { background: #faf6eb; }
+        a { color: #6b4423; }
+        hr { border-color: var(--rule); }
+        .cover {
+            display: block;
+            max-width: 14rem;
+            margin: 0 auto 1.5rem;
+            border: 1px solid var(--rule);
+            box-shadow: 0 8px 24px rgba(59, 42, 26, 0.18);
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <img class="cover" src="cover.jpg" alt="The Papyrus Handbook cover">
+        <div class="row">
+            <div class="column"><h1>{{$title}}</h1></div>
+        </div>
+        <div class="row">
+            <div class="column"><p>{{$subtitle}}</p></div>
+        </div>
+        <div class="row">
+            <div class="column"><h2>{{$author}}</h2></div>
+        </div>
+        {{$body}}
+    </main>
+</body>
+</html>

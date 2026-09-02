@@ -2,8 +2,10 @@
 /composer.lock
 /.phpunit.cache/
 /.papyrus/
+/examples/**/.papyrus/
 /export/
 *.pdf
+!docs/**/*.pdf
 *.epub
 
 .DS_Store

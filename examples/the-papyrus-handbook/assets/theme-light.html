@@ -1,0 +1,70 @@
+<header>
+  <style>
+    body {
+      font-family: librelibertine, sans-serif;
+      font-size: 12pt;
+      line-height: 1.4;
+      color: #252525;
+    }
+
+    h1 {
+      font-size: 24pt;
+      padding-bottom: 20px;
+    }
+
+    h2 {
+      font-size: 18pt;
+      padding-bottom: 12px;
+    }
+
+    h3 {
+      font-size: 14pt;
+    }
+
+    pre,
+    code {
+      font-family: oxproto, monospace;
+    }
+
+    pre {
+      page-break-inside: avoid;
+      border-left: solid 4px #c8c8c8;
+      background-color: #f9f9fb;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+    }
+
+    blockquote.notice,
+    blockquote.warning,
+    blockquote.caution,
+    blockquote.tip,
+    blockquote.danger {
+      border-left: solid 4px #808080;
+      padding-left: 15px;
+      margin: 20px 0;
+    }
+
+    .mpdf_toc {
+      font-family: sans-serif;
+      color: #252525;
+    }
+
+    figure.mermaid {
+      text-align: center;
+      margin: 20px 0;
+      page-break-inside: avoid;
+    }
+  </style>
+</header>
+
+<div style="text-align: center; margin-top: 25mm;">
+  <h1>{{$title}}</h1>
+  <p>{{$subtitle}}</p>
+  <p>{{$author}}</p>
+</div>
+
+<!-- PAPYRUS:TOC -->
+<tocpagebreak links="on"
+              toc-suppress="on"
+              toc-preHTML="&lt;h1&gt;Contents&lt;/h1&gt;"
+              toc-bookmarkText="Contents">
