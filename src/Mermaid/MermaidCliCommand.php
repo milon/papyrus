@@ -59,7 +59,43 @@ final class MermaidCliCommand implements MermaidCli
             $arguments[] = $configPath;
         }
 
-        $this->run($arguments, mustSucceed: true, outputPath: $outputPath);
+        $puppeteerConfigPath = $this->writePuppeteerConfig();
+        $arguments[] = '-p';
+        $arguments[] = $puppeteerConfigPath;
+
+        try {
+            $this->run($arguments, mustSucceed: true, outputPath: $outputPath);
+        } finally {
+            if (is_file($puppeteerConfigPath)) {
+                unlink($puppeteerConfigPath);
+            }
+        }
+    }
+
+    /**
+     * CI runners (and many containers) cannot use Chromium's sandbox.
+     * Same approach as the official mermaid-cli Docker image.
+     */
+    private function writePuppeteerConfig(): string
+    {
+        $config = [
+            'args' => [
+                '--no-sandbox',
+                '--disable-setuid-sandbox',
+                '--disable-dev-shm-usage',
+            ],
+        ];
+
+        $executable = getenv('PUPPETEER_EXECUTABLE_PATH');
+
+        if (is_string($executable) && $executable !== '' && is_file($executable)) {
+            $config['executablePath'] = $executable;
+        }
+
+        $path = sys_get_temp_dir().'/papyrus-puppeteer-'.uniqid('', true).'.json';
+        file_put_contents($path, json_encode($config, JSON_THROW_ON_ERROR | JSON_UNESCAPED_SLASHES));
+
+        return $path;
     }
 
     /**

@@ -37,12 +37,12 @@ final class ExportDirOverrideTest extends TestCase
     #[Test]
     public function html_build_rewrites_font_urls_for_custom_export_dir(): void
     {
-        $book = dirname(__DIR__, 2).'/examples/the-papyrus-handbook';
+        $bookDir = $this->prepareFontBook();
         $export = sys_get_temp_dir().'/papyrus-html-export-'.uniqid('', true);
         mkdir($export);
 
-        $project = Project::load($book)->withExportDir($export);
-        $htmlPath = $export.'/the-papyrus-handbook.html';
+        $project = Project::load($bookDir)->withExportDir($export);
+        $htmlPath = $export.'/font-book.html';
 
         try {
             $path = (new HtmlRenderer($project))->render($htmlPath);
@@ -59,6 +59,67 @@ final class ExportDirOverrideTest extends TestCase
             if (is_dir($export)) {
                 rmdir($export);
             }
+            $this->removeDirectory($bookDir);
         }
+    }
+
+    private function prepareFontBook(): string
+    {
+        $dir = sys_get_temp_dir().'/papyrus-font-book-'.uniqid('', true);
+        mkdir($dir.'/content', 0755, true);
+        mkdir($dir.'/assets/fonts', 0755, true);
+
+        file_put_contents($dir.'/content/01.md', "---\ntitle: One\n---\n\nHello.\n");
+        file_put_contents($dir.'/assets/fonts/Dummy.ttf', 'font');
+        file_put_contents($dir.'/papyrus.php', <<<'PHP'
+<?php
+
+return [
+    'title' => 'Font Book',
+    'author' => 'Papyrus',
+    'themes' => ['light'],
+    'mermaid' => ['enabled' => false],
+];
+PHP);
+        file_put_contents($dir.'/assets/theme-html.html', <<<'HTML'
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{{$title}}</title>
+    <style>
+        @font-face {
+            font-family: "Dummy";
+            src: url("../assets/fonts/Dummy.ttf") format("truetype");
+        }
+        body { font-family: "Dummy", serif; }
+    </style>
+</head>
+<body>
+    <h1>{{$title}}</h1>
+    {{$body}}
+</body>
+</html>
+HTML);
+
+        return $dir;
+    }
+
+    private function removeDirectory(string $dir): void
+    {
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::CHILD_FIRST,
+        );
+
+        foreach ($iterator as $file) {
+            if ($file->isDir()) {
+                rmdir($file->getPathname());
+            } else {
+                unlink($file->getPathname());
+            }
+        }
+
+        rmdir($dir);
     }
 }
