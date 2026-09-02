@@ -32,6 +32,9 @@ papyrus build:sample
 | `build:html` | `export/<slug>.html` |
 | `build:sample` | `export/sample-<slug>-<theme>.pdf` |
 
+Use `-e` / `--export` to write somewhere other than `export/` (for example
+this repo’s handbook docs: `-d examples/the-papyrus-handbook -e docs`).
+
 `--parallel` / `-p` builds each PDF theme in its own process.
 
 ## Watch mode

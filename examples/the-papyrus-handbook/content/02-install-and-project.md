@@ -68,9 +68,11 @@ to overwrite.
 | `export/` | Built artifacts |
 | `.papyrus/` | Incremental caches |
 
-Always run from the book root, or pass `-d` / `--dir`:
+Always run from the book root, or pass `-d` / `--dir`. Override where
+artifacts are written with `-e` / `--export` (default: `<book>/export`):
 
 ```bash
 papyrus doctor -d /path/to/book
 papyrus build --dir /path/to/book
+papyrus build:html -d /path/to/book -e /path/to/out
 ```

@@ -29,7 +29,13 @@ colors, title page, and running header styles (often paired with
 ## HTML theme
 
 `assets/theme-html.html` is a full HTML document with placeholders
-`{{$title}}`, `{{$subtitle}}`, `{{$author}}`, and `{{$body}}`.
+`{{$title}}`, `{{$subtitle}}`, `{{$author}}`, and `{{$body}}`. The default
+template mirrors the light PDF theme (same typefaces, colors, code blocks,
+and callouts), with a fixed moon/sun icon toggle that switches to the dark
+PDF palette. The reading column is `52em` wide (a bit wider than the PDF
+measure). `@font-face` rules in the theme use `../assets/fonts/`; at build
+time Papyrus rewrites those URLs relative to the HTML output directory (so
+`-e docs` still finds the book’s fonts).
 
 ```bash
 papyrus build:html

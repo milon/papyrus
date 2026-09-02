@@ -73,8 +73,15 @@ final class WatchCommand extends BookCommand
                 return Command::FAILURE;
             }
 
+            $buildArgs = ['--dir' => $project->dir];
+            $export = $input->getOption('export');
+
+            if (is_string($export) && $export !== '') {
+                $buildArgs['--export'] = $project->exportDir;
+            }
+
             $exitCode = $build->run(
-                new ArrayInput(['--dir' => $project->dir]),
+                new ArrayInput($buildArgs),
                 $output,
             );
 

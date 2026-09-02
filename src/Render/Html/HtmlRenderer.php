@@ -10,6 +10,8 @@ final class HtmlRenderer
 {
     private const TEMPLATE_FILE = 'theme-html.html';
 
+    private const FONT_URL_PLACEHOLDER = '../assets/fonts/';
+
     public function __construct(
         private readonly Project $project,
     ) {}
@@ -57,10 +59,26 @@ final class HtmlRenderer
             $this->project->outputSlug(),
         );
 
+        $html = $this->rewriteFontUrls($html, dirname($filename));
+
         if (file_put_contents($filename, $html) === false) {
             throw new HtmlException(sprintf('Unable to write HTML file: %s', $filename));
         }
 
         return $filename;
+    }
+
+    private function rewriteFontUrls(string $html, string $htmlDir): string
+    {
+        $fontsDir = $this->project->assetsDir.'/fonts';
+        $relative = Project::relativePath($htmlDir, $fontsDir);
+
+        if ($relative === '.') {
+            $relative = '';
+        }
+
+        $prefix = $relative === '' ? '' : rtrim($relative, '/').'/';
+
+        return str_replace(self::FONT_URL_PLACEHOLDER, $prefix, $html);
     }
 }

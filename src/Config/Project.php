@@ -34,6 +34,18 @@ final class Project
         public readonly string $exportDir,
     ) {}
 
+    public function withExportDir(string $exportDir): self
+    {
+        return new self(
+            dir: $this->dir,
+            configPath: $this->configPath,
+            config: $this->config,
+            contentDir: $this->contentDir,
+            assetsDir: $this->assetsDir,
+            exportDir: self::normalizePath($exportDir),
+        );
+    }
+
     public static function load(string $dir): self
     {
         $dir = self::normalizeDir($dir);
@@ -251,6 +263,62 @@ final class Project
     {
         $resolved = realpath($dir);
 
-        return $resolved !== false ? $resolved : rtrim($dir, '/');
+        return $resolved !== false ? $resolved : rtrim(str_replace('\\', '/', $dir), '/');
+    }
+
+    /**
+     * Resolve a path that may not exist yet (e.g. a fresh export directory).
+     */
+    public static function normalizePath(string $path): string
+    {
+        $path = str_replace('\\', '/', $path);
+        $resolved = realpath($path);
+
+        if ($resolved !== false) {
+            return $resolved;
+        }
+
+        $parent = realpath(dirname($path));
+
+        if ($parent !== false) {
+            return $parent.'/'.basename($path);
+        }
+
+        return rtrim($path, '/');
+    }
+
+    /**
+     * Relative URL/path from one directory to another (forward slashes).
+     */
+    public static function relativePath(string $fromDir, string $toPath): string
+    {
+        $from = self::normalizePath($fromDir);
+        $to = self::normalizePath($toPath);
+
+        $fromParts = array_values(array_filter(explode('/', $from), static fn (string $p): bool => $p !== ''));
+        $toParts = array_values(array_filter(explode('/', $to), static fn (string $p): bool => $p !== ''));
+
+        // Keep drive/root segment differences intact on Windows-style paths.
+        while ($fromParts !== [] && $toParts !== [] && $fromParts[0] === $toParts[0]) {
+            array_shift($fromParts);
+            array_shift($toParts);
+        }
+
+        $prefix = str_repeat('../', count($fromParts));
+        $suffix = implode('/', $toParts);
+
+        if ($prefix === '' && $suffix === '') {
+            return '.';
+        }
+
+        if ($prefix === '') {
+            return $suffix;
+        }
+
+        if ($suffix === '') {
+            return rtrim($prefix, '/');
+        }
+
+        return $prefix.$suffix;
     }
 }

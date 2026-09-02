@@ -28,6 +28,8 @@ final class ParallelPdfRenderer
                 'build:pdf',
                 '--dir',
                 $this->project->dir,
+                '--export',
+                $this->project->exportDir,
                 '--theme',
                 $theme,
             ];

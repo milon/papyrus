@@ -20,6 +20,13 @@ abstract class BookCommand extends Command
             'Book root directory (contains papyrus.php)',
             (string) getcwd(),
         );
+
+        $this->addOption(
+            'export',
+            'e',
+            InputOption::VALUE_REQUIRED,
+            'Override export directory (default: <book>/export)',
+        );
     }
 
     protected function projectDir(InputInterface $input): string
@@ -29,6 +36,31 @@ abstract class BookCommand extends Command
 
     protected function loadProject(InputInterface $input): Project
     {
-        return Project::load($this->projectDir($input));
+        $project = Project::load($this->projectDir($input));
+        $export = $input->getOption('export');
+
+        if (! is_string($export) || $export === '') {
+            return $project;
+        }
+
+        return $project->withExportDir($this->resolveExportDir($export));
+    }
+
+    protected function resolveExportDir(string $path): string
+    {
+        $path = str_replace('\\', '/', $path);
+
+        if ($this->isAbsolutePath($path)) {
+            return Project::normalizePath($path);
+        }
+
+        $cwd = getcwd() ?: '.';
+
+        return Project::normalizePath($cwd.'/'.$path);
+    }
+
+    private function isAbsolutePath(string $path): bool
+    {
+        return str_starts_with($path, '/') || (bool) preg_match('#^[A-Za-z]:/#', $path);
     }
 }

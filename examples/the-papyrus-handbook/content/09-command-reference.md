@@ -26,6 +26,7 @@ title: Command reference
 Common options:
 
 - `-d` / `--dir` — book root (default: current directory)
+- `-e` / `--export` — override export directory (default: `<book>/export`)
 - `-v` / `--verbose` — include third-party vendor notices
 
 Packagist: `milon/papyrus`. Source:

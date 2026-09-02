@@ -12,8 +12,17 @@ Built from scratch with heavy influence from [ibis-next](https://github.com/Hi-F
 
 The sample book **The Papyrus Handbook** lives in [`examples/the-papyrus-handbook/`](examples/the-papyrus-handbook/). Prebuilt how-to exports:
 
-- [PDF](docs/the-papyrus-handbook.pdf)
-- [HTML](docs/the-papyrus-handbook.html)
+- [PDF](docs/the-papyrus-handbook-light.pdf)
+- [HTML](docs/the-papyrus-handbook.html) (light and dark mode toggle)
+
+Rebuild those exports with:
+
+```bash
+composer build:handbook
+```
+
+That runs `build:pdf` / `build:html` with `-d examples/the-papyrus-handbook` and
+`-e docs` so artifacts land directly in `docs/`.
 
 ## Requirements
 
@@ -104,7 +113,7 @@ papyrus doctor -d my-book
 | `doctor`       | Validate config and project paths                                     |
 | `build`        | Build all PDF themes, EPUB, HTML, and enabled KDP outputs             |
 | `build:pdf`    | Build PDF themes (`--theme light,dark`, `--parallel` for multi-theme) |
-| `build:html`   | Build single-file HTML from `assets/theme-html.html`                  |
+| `build:html`   | Build single-file HTML from `assets/theme-html.html` (light/dark mode) |
 | `build:epub`   | Build EPUB3 with CSS and embedded images                              |
 | `build:sample` | Build sample PDF from `sample.ranges` page ranges                     |
 | `kdp`          | Build all enabled KDP outputs (eBook, print, cover, metadata)         |
@@ -116,6 +125,11 @@ papyrus doctor -d my-book
 | `migrate-ibis` | Migrate `ibis.php` to `papyrus.php` and update theme TOC markers      |
 | `lint`         | Lint PHP code fences in `content/` (`--fix` to auto-fix)              |
 | `watch`        | Rebuild on file changes (`--interval` seconds)                        |
+
+Common options on book commands:
+
+- `-d` / `--dir` — book root (default: current directory)
+- `-e` / `--export` — override export directory (default: `<book>/export`)
 
 Convert Markdown chapters programmatically:
 

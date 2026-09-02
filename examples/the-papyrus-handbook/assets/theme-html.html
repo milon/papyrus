@@ -4,54 +4,644 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{$title}}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.1/build/styles/github-gist.min.css">
+    <!--
+      HTML build template. Mirrors the light PDF theme by default; dark mode
+      mirrors assets/theme-dark.html (Catppuccin Mocha-style palette + sunburst
+      highlight colors). Fonts resolve relative to export/.
+    -->
     <style>
+        @font-face {
+            font-family: "Linux Libertine";
+            src: url("../assets/fonts/LinLibertine_R.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: "Linux Libertine";
+            src: url("../assets/fonts/LinLibertine_RB.ttf") format("truetype");
+            font-weight: bold;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: "Linux Libertine";
+            src: url("../assets/fonts/LinLibertine_RI.ttf") format("truetype");
+            font-weight: normal;
+            font-style: italic;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: "Linux Libertine";
+            src: url("../assets/fonts/LinLibertine_RBI.ttf") format("truetype");
+            font-weight: bold;
+            font-style: italic;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: "0xProto";
+            src: url("../assets/fonts/0xProto-Regular.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: "0xProto";
+            src: url("../assets/fonts/0xProto-Bold.ttf") format("truetype");
+            font-weight: bold;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: "0xProto";
+            src: url("../assets/fonts/0xProto-Italic.ttf") format("truetype");
+            font-weight: normal;
+            font-style: italic;
+            font-display: swap;
+        }
+
         :root {
-            --ink: #3b2a1a;
-            --parchment: #f3e6c8;
-            --rule: #a67c52;
+            color-scheme: light;
+            --bg: #ffffff;
+            --fg: #252525;
+            --heading: #252525;
+            --muted: #606c76;
+            --link: #1a1c3e;
+            --pre-bg: #eff1f5;
+            --pre-border: #dd7878;
+            --pre-fg: #2d2d2d;
+            --code-fg: #e64553;
+            --table-rule: #9ca0b0;
+            --notice-bg: #f0f5ff;
+            --notice-border: #5b87dd;
+            --notice-fg: #255ac0;
+            --tip-bg: #e7c4f8;
+            --tip-border: #ab11f1;
+            --tip-fg: #52007f;
+            --caution-bg: #fbe6b9;
+            --caution-border: #f1ae2f;
+            --caution-fg: #5f420d;
+            --warning-bg: #ffeced;
+            --warning-border: #dd787d;
+            --warning-fg: #c0262b;
+            --toggle-bg: #ffffff;
+            --toggle-fg: #252525;
+            --toggle-border: #9ca0b0;
+            --hl-comment: #969896;
+            --hl-variable: #df5000;
+            --hl-keyword: #d73a49;
+            --hl-literal: #0086b3;
+            --hl-section: #63a35c;
+            --hl-tag: #333333;
+            --hl-title: #6f42c1;
+            --hl-addition-fg: #55a532;
+            --hl-addition-bg: #eaffea;
+            --hl-deletion-fg: #bd2c00;
+            --hl-deletion-bg: #ffecec;
+            --hl-number: #005cc5;
+            --hl-string: #032f62;
+            --hl-meta: #969896;
+            --hl-quote: #df5000;
+            --hl-regexp: #df5000;
+            --hl-attr: #6f42c1;
+            --hl-symbol: #0086b3;
+            --hl-params: #df5000;
+            --hl-attribute: #0086b3;
+            --hl-selector-class: #6f42c1;
+            --hl-selector-id: #6f42c1;
+            --hl-formula-bg: transparent;
+            --hl-formula-fg: inherit;
         }
+
+        html[data-theme="dark"] {
+            color-scheme: dark;
+            --bg: #24273a;
+            --fg: #c1d4ea;
+            --heading: #ffffff;
+            --muted: #8ba3c7;
+            --link: #abe9ef;
+            --pre-bg: #1e1e2e;
+            --pre-border: #dd7878;
+            --pre-fg: #abe9ef;
+            --code-fg: #e64553;
+            --table-rule: #5b6478;
+            --notice-bg: transparent;
+            --notice-border: #5b87dd;
+            --notice-fg: #5b87dd;
+            --tip-bg: transparent;
+            --tip-border: #ab11f1;
+            --tip-fg: #ab11f1;
+            --caution-bg: transparent;
+            --caution-border: #f1ae2f;
+            --caution-fg: #f1ae2f;
+            --warning-bg: transparent;
+            --warning-border: #dd787d;
+            --warning-fg: #dd787d;
+            --toggle-bg: #1e1e2e;
+            --toggle-fg: #c1d4ea;
+            --toggle-border: #5b6478;
+            --hl-comment: #aeaeae;
+            --hl-variable: #3e87e3;
+            --hl-keyword: #e28964;
+            --hl-literal: #3387cc;
+            --hl-section: #89bdff;
+            --hl-tag: #89bdff;
+            --hl-title: #89bdff;
+            --hl-addition-fg: #f8f8f8;
+            --hl-addition-bg: #253b22;
+            --hl-deletion-fg: #f8f8f8;
+            --hl-deletion-bg: #420e09;
+            --hl-number: #3387cc;
+            --hl-string: #65b042;
+            --hl-meta: #8996a8;
+            --hl-quote: #aeaeae;
+            --hl-regexp: #e9c062;
+            --hl-attr: #cda869;
+            --hl-symbol: #3387cc;
+            --hl-params: #3e87e3;
+            --hl-attribute: #cda869;
+            --hl-selector-class: #9b703f;
+            --hl-selector-id: #8b98ab;
+            --hl-formula-bg: #0e2231;
+            --hl-formula-fg: #f8f8f8;
+        }
+
+        *,
+        *::before,
+        *::after {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            background: linear-gradient(180deg, #efe0bc 0%, var(--parchment) 40%, #e8d4a8 100%);
-            color: var(--ink);
-            min-height: 100vh;
+            margin: 0;
+            background-color: var(--bg);
+            font-family: "Linux Libertine", "Libertinus Serif", Georgia, serif;
+            font-size: 16px;
+            line-height: 1.4;
+            color: var(--fg);
+            -webkit-text-size-adjust: 100%;
+            transition: background-color 0.15s ease, color 0.15s ease;
         }
-        main.container {
-            max-width: 48rem;
-            margin-left: auto;
-            margin-right: auto;
-            padding: 2.5rem clamp(1.5rem, 5vw, 3.5rem) 4rem;
+
+        /*
+         * Slightly wider than the PDF measure (~44em) for comfortable
+         * on-screen reading while still keeping a book-like column.
+         */
+        .book {
+            max-width: 52em;
+            margin: 0 auto;
+            padding: 4em clamp(1.75em, 5vw, 3.5em) 6em;
         }
-        h1, h2, h3 { color: var(--ink); font-family: Georgia, "Times New Roman", serif; }
-        pre {
-            background: #faf6eb;
-            border-left: 4px solid var(--rule);
+
+        .theme-toggle {
+            position: fixed;
+            top: 1rem;
+            right: 1rem;
+            z-index: 20;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            margin: 0;
+            padding: 0;
+            border: 1px solid var(--toggle-border);
+            border-radius: 0;
+            background: var(--toggle-bg);
+            color: var(--toggle-fg);
+            line-height: 0;
+            cursor: pointer;
         }
-        code { background: #faf6eb; }
-        a { color: #6b4423; }
-        hr { border-color: var(--rule); }
-        .cover {
+
+        .theme-toggle:hover {
+            border-color: var(--fg);
+        }
+
+        .theme-toggle:focus-visible {
+            outline: 2px solid var(--link);
+            outline-offset: 2px;
+        }
+
+        .theme-toggle svg {
+            width: 1.25rem;
+            height: 1.25rem;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.75;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .theme-toggle .icon-sun {
+            display: none;
+        }
+
+        html[data-theme="dark"] .theme-toggle .icon-moon {
+            display: none;
+        }
+
+        html[data-theme="dark"] .theme-toggle .icon-sun {
             display: block;
-            max-width: 14rem;
-            margin: 0 auto 1.5rem;
-            border: 1px solid var(--rule);
-            box-shadow: 0 8px 24px rgba(59, 42, 26, 0.18);
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: "Times New Roman", Times, Georgia, serif;
+            font-weight: bold;
+            color: var(--heading);
+        }
+
+        h1 {
+            font-size: 2.1875em;
+            margin-top: 2.5em;
+            padding-top: 0;
+            padding-bottom: 2em;
+        }
+
+        h2 {
+            text-align: left;
+            font-size: 1.5em;
+            margin-top: 2em;
+            padding-top: 0;
+            padding-bottom: 1.25em;
+        }
+
+        h3 {
+            text-align: left;
+            font-size: 1.1875em;
+            margin-top: 1.6em;
+            padding-top: 1.05em;
+            padding-bottom: 0;
+        }
+
+        p,
+        ul,
+        ol {
+            margin-bottom: 1.25em;
+        }
+
+        a {
+            color: var(--link);
+        }
+
+        pre {
+            line-height: 1.3;
+            border-left: solid 4px var(--pre-border);
+            background-color: var(--pre-bg);
+            padding: 0.9375em 0.75em 0.9375em 1.25em;
+            margin-bottom: 1.875em;
+            overflow-x: auto;
+            font-family: "0xProto", "Courier New", Courier, monospace;
+            font-size: 0.75em;
+            color: var(--pre-fg);
+        }
+
+        pre code {
+            background: none;
+            font-family: inherit;
+            font-size: inherit;
+            color: inherit;
+        }
+
+        code {
+            font-family: "0xProto", "Courier New", Courier, monospace;
+            font-size: 0.875em;
+            color: var(--code-fg);
+        }
+
+        .hljs-comment,
+        .hljs-meta { color: var(--hl-comment); }
+        .hljs-quote { color: var(--hl-quote); font-style: italic; }
+        .hljs-variable,
+        .hljs-template-variable,
+        .hljs-strong,
+        .hljs-emphasis { color: var(--hl-variable); }
+        .hljs-keyword,
+        .hljs-selector-tag,
+        .hljs-type { color: var(--hl-keyword); }
+        .hljs-literal,
+        .hljs-symbol,
+        .hljs-bullet { color: var(--hl-literal); }
+        .hljs-attribute { color: var(--hl-attribute); }
+        .hljs-section,
+        .hljs-name { color: var(--hl-section); }
+        .hljs-tag { color: var(--hl-tag); }
+        .hljs-title,
+        .hljs-attr,
+        .hljs-selector-attr,
+        .hljs-selector-pseudo { color: var(--hl-title); }
+        .hljs-selector-class { color: var(--hl-selector-class); }
+        .hljs-selector-id { color: var(--hl-selector-id); }
+        .hljs-addition { color: var(--hl-addition-fg); background-color: var(--hl-addition-bg); }
+        .hljs-deletion { color: var(--hl-deletion-fg); background-color: var(--hl-deletion-bg); }
+        .hljs-link { text-decoration: underline; }
+        .hljs-number { color: var(--hl-number); }
+        .hljs-string { color: var(--hl-string); }
+        .hljs-regexp { color: var(--hl-regexp); }
+        .hljs-params { color: var(--hl-params); }
+        .hljs-meta { color: var(--hl-meta); }
+        .hljs-formula { background-color: var(--hl-formula-bg); color: var(--hl-formula-fg); font-style: italic; }
+        .hljs-class .hljs-title,
+        .hljs-doctag { text-decoration: underline; }
+        .hljs-emphasis { font-style: italic; }
+        .hljs-strong { font-weight: bold; }
+
+        .toc {
+            margin-bottom: 4em;
+        }
+
+        .toc h1 {
+            margin-top: 0;
+            padding-bottom: 0.75em;
+        }
+
+        .toc ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .toc a {
+            text-decoration: none;
+        }
+
+        .toc a:hover {
+            text-decoration: underline;
+        }
+
+        .toc .toc-parts > li {
+            margin-bottom: 1.25em;
+            font-weight: bold;
+        }
+
+        .toc .toc-chapters {
+            margin-top: 0.5em;
+            padding-left: 1.5em;
+            font-weight: normal;
+        }
+
+        .toc .toc-chapters > li {
+            margin-bottom: 0.4em;
+        }
+
+        .mermaid-diagram {
+            margin: 0 0 1.875em 0;
+            text-align: center;
+        }
+
+        .mermaid-diagram img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 1.5625em;
+        }
+
+        td,
+        th {
+            border: none;
+            border-bottom: 1px solid var(--table-rule);
+            padding: 0.75em 0.9375em;
+            text-align: left;
+        }
+
+        td:first-child,
+        th:first-child {
+            padding-left: 0;
+        }
+
+        td:last-child,
+        th:last-child {
+            padding-right: 0;
+        }
+
+        th {
+            font-weight: bold;
+        }
+
+        blockquote {
+            margin: 0 0 1.875em 0;
+        }
+
+        blockquote p {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+
+        blockquote.quote {
+            padding: 1.25em;
+            font-style: italic;
+        }
+
+        blockquote.notice,
+        blockquote.note {
+            background-color: var(--notice-bg);
+            border-left: solid 4px var(--notice-border);
+            padding: 1.25em;
+        }
+
+        blockquote.notice strong,
+        blockquote.note strong,
+        blockquote.note div.title {
+            color: var(--notice-fg);
+            font-weight: bold;
+        }
+
+        blockquote.tip {
+            background-color: var(--tip-bg);
+            border-left: solid 4px var(--tip-border);
+            padding: 1.25em;
+        }
+
+        blockquote.tip strong,
+        blockquote.tip div.title {
+            color: var(--tip-fg);
+            font-weight: bold;
+        }
+
+        blockquote.caution {
+            background-color: var(--caution-bg);
+            border-left: solid 4px var(--caution-border);
+            padding: 1.25em;
+        }
+
+        blockquote.caution strong,
+        blockquote.caution div.title {
+            color: var(--caution-fg);
+            font-weight: bold;
+        }
+
+        blockquote.warning,
+        blockquote.danger {
+            background-color: var(--warning-bg);
+            border-left: solid 4px var(--warning-border);
+            padding: 1.25em;
+        }
+
+        blockquote.warning strong,
+        blockquote.danger strong,
+        blockquote.danger div.title {
+            color: var(--warning-fg);
+            font-weight: bold;
+        }
+
+        .title-page {
+            text-align: center;
+            padding-bottom: 5em;
+        }
+
+        .title-page .book-title {
+            font-size: 2.5em;
+            margin: 0;
+            padding: 0;
+            color: var(--heading);
+        }
+
+        .title-page .book-subtitle {
+            font-family: "Times New Roman", Times, Georgia, serif;
+            font-size: 1.0625em;
+            margin: 1.5em 0 0 0;
+            color: var(--muted);
+        }
+
+        .title-page .book-author {
+            font-family: "Times New Roman", Times, Georgia, serif;
+            font-size: 1.375em;
+            margin: 3.5em 0 0 0;
+            color: var(--heading);
+        }
+
+        .frontmatter-page {
+            margin-bottom: 2.5em;
+            font-size: 0.75em;
+            line-height: 1.6;
+            color: var(--muted);
+        }
+
+        .frontmatter-page .frontmatter-heading {
+            font-weight: bold;
+            font-size: 1.25em;
+            color: var(--heading);
+            margin-bottom: 1.25em;
+        }
+
+        .colophon-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.75em;
+            line-height: 1.6;
+            color: var(--muted);
+        }
+
+        .colophon-table td {
+            border: none;
+            padding: 0 0 1.25em 0;
+            vertical-align: top;
+            color: var(--muted);
+        }
+
+        .colophon-table td.colophon-label {
+            font-weight: bold;
+            width: 30%;
+            padding-right: 1em;
+        }
+
+        .dedication-page {
+            margin-top: 2.5em;
+            margin-bottom: 2.5em;
+        }
+
+        .dedication-page .dedication-text {
+            font-style: italic;
+            font-size: 1.25em;
+            color: var(--heading);
+        }
+
+        @media (max-width: 48em) {
+            .book {
+                padding: 2em clamp(1.25em, 5vw, 1.75em) 4em;
+            }
+
+            h1 {
+                padding-bottom: 1em;
+            }
+
+            .theme-toggle {
+                top: 0.75rem;
+                right: 0.75rem;
+            }
         }
     </style>
+    <script>
+        (function () {
+            var key = "papyrus-html-theme";
+            var stored = null;
+            try {
+                stored = localStorage.getItem(key);
+            } catch (e) {}
+
+            var theme = stored === "dark" || stored === "light"
+                ? stored
+                : (window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+
+            document.documentElement.setAttribute("data-theme", theme);
+
+            document.addEventListener("DOMContentLoaded", function () {
+                var button = document.getElementById("theme-toggle");
+                if (!button) {
+                    return;
+                }
+
+                function syncLabel() {
+                    var dark = document.documentElement.getAttribute("data-theme") === "dark";
+                    button.setAttribute("aria-pressed", dark ? "true" : "false");
+                    button.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+                    button.setAttribute("title", dark ? "Light mode" : "Dark mode");
+                }
+
+                syncLabel();
+
+                button.addEventListener("click", function () {
+                    var next = document.documentElement.getAttribute("data-theme") === "dark" ? "light" : "dark";
+                    document.documentElement.setAttribute("data-theme", next);
+                    try {
+                        localStorage.setItem(key, next);
+                    } catch (e) {}
+                    syncLabel();
+                });
+            });
+        })();
+    </script>
 </head>
 <body>
-    <main class="container">
-        <img class="cover" src="cover.jpg" alt="The Papyrus Handbook cover">
-        <div class="row">
-            <div class="column"><h1>{{$title}}</h1></div>
-        </div>
-        <div class="row">
-            <div class="column"><p>{{$subtitle}}</p></div>
-        </div>
-        <div class="row">
-            <div class="column"><h2>{{$author}}</h2></div>
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Dark mode">
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+            <circle cx="12" cy="12" r="4"/>
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+        </svg>
+    </button>
+    <main class="book">
+        <div class="title-page">
+            <h1 class="book-title">{{$title}}</h1>
+            <p class="book-subtitle">{{$subtitle}}</p>
+            <p class="book-author">{{$author}}</p>
         </div>
         {{$body}}
     </main>
