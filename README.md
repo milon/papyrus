@@ -46,25 +46,24 @@ mkdir my-book && ./bin/papyrus init -d my-book
 
 ## Commands
 
-| Command | Status |
-|---------|--------|
-| `init` | Scaffold `papyrus.php`, `content/`, `assets/` |
-| `doctor` | Validate config and project paths |
-| `pdf` | Build PDF themes (`--theme light,dark`, `--parallel` for multi-theme) |
-| `html` | Build single-file HTML from `assets/theme-html.html` |
-| `epub` | Build EPUB3 with CSS and embedded images |
-| `build` | Build all PDF themes, EPUB, HTML, and enabled KDP outputs |
-| `sample` | Build sample PDF from `sample.ranges` page ranges |
-| `kdp` | Build all enabled KDP outputs (eBook, print, cover, metadata) |
-| `kdp:ebook` | KDP-ready Kindle EPUB (`export/<slug>-kdp.epub`) |
-| `kdp:print` | Print interior PDF with KDP margin/bleed presets |
-| `kdp:cover` | Export KDP cover assets to `export/` |
-| `kdp:metadata` | Emit KDP metadata sidecar JSON |
-| `sizes` | List KDP page-size presets |
-| `migrate-ibis` | Migrate `ibis.php` to `papyrus.php` and update theme TOC markers |
-| `lint` | Lint PHP code fences in `content/` (`--fix` to auto-fix) |
-| `watch` | Rebuild on file changes (`--interval` seconds) |
-| `sort` | Not yet implemented |
+| Command        | Description                                                           |
+|----------------|-----------------------------------------------------------------------|
+| `init`         | Scaffold `papyrus.php`, `content/`, `assets/`                         |
+| `doctor`       | Validate config and project paths                                     |
+| `build`        | Build all PDF themes, EPUB, HTML, and enabled KDP outputs             |
+| `build:pdf`    | Build PDF themes (`--theme light,dark`, `--parallel` for multi-theme) |
+| `build:html`   | Build single-file HTML from `assets/theme-html.html`                  |
+| `build:epub`   | Build EPUB3 with CSS and embedded images                              |
+| `build:sample` | Build sample PDF from `sample.ranges` page ranges                     |
+| `kdp`          | Build all enabled KDP outputs (eBook, print, cover, metadata)         |
+| `kdp:ebook`    | KDP-ready Kindle EPUB (`export/<slug>-kdp.epub`)                      |
+| `kdp:print`    | Print interior PDF with KDP margin/bleed presets                      |
+| `kdp:cover`    | Export KDP cover assets to `export/`                                  |
+| `kdp:metadata` | Emit KDP metadata sidecar JSON                                        |
+| `sizes`        | List KDP page-size presets                                            |
+| `migrate-ibis` | Migrate `ibis.php` to `papyrus.php` and update theme TOC markers      |
+| `lint`         | Lint PHP code fences in `content/` (`--fix` to auto-fix)              |
+| `watch`        | Rebuild on file changes (`--interval` seconds)                        |
 
 Convert Markdown chapters programmatically:
 

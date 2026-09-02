@@ -19,7 +19,6 @@ use Milon\Papyrus\Commands\MigrateIbisCommand;
 use Milon\Papyrus\Commands\PdfCommand;
 use Milon\Papyrus\Commands\SampleCommand;
 use Milon\Papyrus\Commands\SizesCommand;
-use Milon\Papyrus\Commands\SortCommand;
 use Milon\Papyrus\Commands\WatchCommand;
 use Symfony\Component\Console\Application as SymfonyApplication;
 use Symfony\Component\Console\Input\InputInterface;
@@ -40,7 +39,6 @@ final class Application extends SymfonyApplication
             new HtmlCommand,
             new SampleCommand,
             new LintCommand,
-            new SortCommand,
             new SizesCommand,
             new WatchCommand,
             new MigrateIbisCommand,

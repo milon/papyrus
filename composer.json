@@ -24,10 +24,7 @@
     "autoload": {
         "psr-4": {
             "Milon\\Papyrus\\": "src/"
-        },
-        "classmap": [
-            "src/Commands/DeferredCommands.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
