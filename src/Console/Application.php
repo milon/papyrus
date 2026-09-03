@@ -20,6 +20,7 @@ use Milon\Papyrus\Commands\LintCommand;
 use Milon\Papyrus\Commands\MigrateIbisCommand;
 use Milon\Papyrus\Commands\PdfCommand;
 use Milon\Papyrus\Commands\SampleCommand;
+use Milon\Papyrus\Commands\ServeCommand;
 use Milon\Papyrus\Commands\SiteCommand;
 use Milon\Papyrus\Commands\SizesCommand;
 use Milon\Papyrus\Commands\WatchCommand;
@@ -43,6 +44,7 @@ final class Application extends SymfonyApplication
             new EpubCommand,
             new HtmlCommand,
             new SiteCommand,
+            new ServeCommand,
             new SampleCommand,
             new LintCommand,
             new SizesCommand,

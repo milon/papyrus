@@ -18,7 +18,7 @@ Same core idea — Markdown chapters to PDF, EPUB, and HTML — plus first-class
 - **Sample PDFs** — carve marketing / review PDFs from page ranges and/or whole chapters (`build:sample`)
 - **Multi-script fonts** — ordered script → face routing for PDF (e.g. Bengali alongside Latin, Hindi alongside German etc.)
 - **Parallel PDF themes** — `build:pdf --parallel` for light + dark in one go
-- **Tooling** — `doctor`, `watch`, PHP fence `lint`, page-size `sizes`, and `migrate-ibis` from `ibis.php`
+- **Tooling** — `doctor`, `watch`, `serve`, PHP fence `lint`, page-size `sizes`, and `migrate-ibis` from `ibis.php`
 - **Caches** — incremental chapter HTML and Mermaid figure caches under `.papyrus/`
 - **Export override** — `-e` / `--export` to write artifacts outside the book tree (CI / `docs/`)
 
@@ -31,6 +31,9 @@ See the [handbook](https://papyrus.milon.im/) for the full option set.
 ```bash
 papyrus build:site
 # → export/<slug>-site/
+papyrus serve
+# → http://127.0.0.1:8000/  (sidebar search needs a real HTTP origin)
+papyrus serve -s docs/the-papyrus-handbook-site
 ```
 
 What you get:
@@ -222,6 +225,7 @@ papyrus asset:publish --only=themes
 | `build`        | Build PDF/EPUB/HTML/KDP; optional `--with-site` / `--with-sample`     |
 | `build:pdf`    | Build PDF themes (`--theme light,dark`, `--parallel` for multi-theme) |
 | `build:site`   | Build multi-page HTML site with chapter sidebar (light/dark mode)     |
+| `serve`        | Serve the site locally with `php -S` (`--host`, `--port`, `--build`, `--site`) |
 | `build:html`   | Build single-file HTML from `assets/theme-html.html` (light/dark mode) |
 | `build:epub`   | Build EPUB3 with CSS and embedded images                              |
 | `build:sample` | Build sample PDF from `sample.ranges` and/or `sample.chapters`        |

@@ -35,6 +35,7 @@ title: Command reference
 | `sizes` | List page-size presets (+ KDP in-bounds) | (no `-d` / `-e`) |
 | `lint` | Lint PHP fences in `content/` | `--fix`, `--max-width=66` |
 | `watch` | Rebuild via `build` on file changes | `--interval`, `--with-site`, `--with-sample` |
+| `serve` | Preview the generated site in a browser | `--host`, `-p`/`--port`, `--build`, `-s`/`--site` |
 | `migrate-ibis` | `ibis.php` → `papyrus.php`; TOC markers in local `assets/theme*.html` only | `--force` |
 
 ## Shared book options

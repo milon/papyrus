@@ -1,0 +1,16 @@
+/* Tailwind screen breakpoints as container max-widths */
+@media (min-width: 640px) {
+    {{selector}} { max-width: 640px; }
+}
+@media (min-width: 768px) {
+    {{selector}} { max-width: 768px; }
+}
+@media (min-width: 1024px) {
+    {{selector}} { max-width: 1024px; }
+}
+@media (min-width: 1280px) {
+    {{selector}} { max-width: 1280px; }
+}
+@media (min-width: 1536px) {
+    {{selector}} { max-width: 1536px; }
+}

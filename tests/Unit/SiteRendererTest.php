@@ -56,6 +56,15 @@ final class SiteRendererTest extends TestCase
             $this->assertFileExists($siteDir.'/.nojekyll');
             $this->assertFileDoesNotExist($siteDir.'/CNAME');
             $this->assertFileExists($siteDir.'/404.html');
+            $this->assertFileExists($siteDir.'/sitemap.xml');
+            $this->assertFileExists($siteDir.'/robots.txt');
+            $this->assertFileExists($siteDir.'/assets/search.json');
+            $this->assertStringContainsString('id="site-search-input"', $index);
+
+            $sitemap = file_get_contents($siteDir.'/sitemap.xml');
+            $this->assertIsString($sitemap);
+            $this->assertStringContainsString('<loc>/index.html</loc>', $sitemap);
+            $this->assertStringContainsString('<loc>/01-chapter-one.html</loc>', $sitemap);
 
             $notFound = file_get_contents($siteDir.'/404.html');
             $this->assertIsString($notFound);
@@ -117,6 +126,12 @@ PHP);
             $this->assertStringNotContainsString('Source on GitHub', $index);
             $this->assertFileExists($siteDir.'/CNAME');
             $this->assertSame("docs.example.com\n", file_get_contents($siteDir.'/CNAME'));
+            $sitemap = file_get_contents($siteDir.'/sitemap.xml');
+            $this->assertIsString($sitemap);
+            $this->assertStringContainsString('<loc>https://docs.example.com/index.html</loc>', $sitemap);
+            $robots = file_get_contents($siteDir.'/robots.txt');
+            $this->assertIsString($robots);
+            $this->assertStringContainsString('Sitemap: https://docs.example.com/sitemap.xml', $robots);
         } finally {
             $this->removeDir($bookDir);
             $this->removeDir($export);
@@ -197,6 +212,9 @@ PHP);
             $this->assertIsString($index);
             $this->assertStringContainsString('<base href="/docs/book/">', $index);
             $this->assertSame('/docs/book', $project->siteBasePath());
+            $sitemap = file_get_contents($siteDir.'/sitemap.xml');
+            $this->assertIsString($sitemap);
+            $this->assertStringContainsString('<loc>/docs/book/index.html</loc>', $sitemap);
         } finally {
             $this->removeDir($bookDir);
             $this->removeDir($export);

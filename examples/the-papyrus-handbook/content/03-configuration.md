@@ -187,8 +187,8 @@ face is registered.
 |-----|---------|-------|
 | `banner` | auto `banner.jpg` / `banner.png` if present | Under `assets/` |
 | `lead` | unset | Home page pitch |
-| `cname` | unset | Custom domain; writes a `CNAME` file in the site root for GitHub Pages |
-| `base_path` | unset (site at `/`) | Path prefix for project GitHub Pages (e.g. `/my-repo`); injects `<base href>` |
+| `cname` | unset | Custom domain; writes a `CNAME` file in the site root for GitHub Pages; absolute `sitemap.xml` / `robots.txt` Sitemap URL |
+| `base_path` | unset (site at `/`) | Path prefix for project GitHub Pages (e.g. `/my-repo`); injects `<base href>`; also prefixes sitemap locs |
 | `links` | unset | Explicit home-page links; each item needs `label` plus either `url` or `chapter` |
 
 `chapter` matches a chapter source name like `19-downloads.md`, `19-downloads`,

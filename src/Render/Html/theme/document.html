@@ -3,8 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Page not found — The Papyrus Handbook</title>
-    <meta name="robots" content="noindex">
+    <title>{{pageTitle}}</title>{{baseHref}}{{headExtra}}
     <link rel="stylesheet" href="assets/site.css">
     <script src="assets/site.js"></script>
 </head>
@@ -12,15 +11,15 @@
     <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
     <aside class="sidebar" id="sidebar" aria-label="Chapters">
         <div class="sidebar-header">
-            <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
-            <p class="sidebar-subtitle">Markdown to PDF, EPUB, HTML sites, and KDP</p>
+            <a class="sidebar-brand" href="index.html">{{bookTitle}}</a>
+            <p class="sidebar-subtitle">{{bookSubtitle}}</p>
             <div class="site-search">
                 <label class="visually-hidden" for="site-search-input">Search chapters</label>
                 <input id="site-search-input" type="search" placeholder="Search" autocomplete="off">
                 <ul class="site-search-results" id="site-search-results" hidden></ul>
             </div>
         </div>
-        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-welcome.html">Welcome</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a href="03-configuration.html">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li><li><a href="06-build.html">build</a></li><li><a href="07-build-pdf.html">build:pdf</a></li><li><a href="08-build-epub.html">build:epub</a></li><li><a href="09-build-html.html">build:html</a></li><li><a href="10-build-site.html">build:site</a></li><li><a href="11-build-sample.html">build:sample</a></li><li><a href="12-kdp.html">kdp</a></li><li><a href="13-kdp-ebook.html">kdp:ebook</a></li><li><a href="14-kdp-print.html">kdp:print</a></li><li><a href="15-kdp-cover.html">kdp:cover</a></li><li><a href="16-kdp-metadata.html">kdp:metadata</a></li><li><a href="17-migration-and-ci.html">Migration and CI</a></li><li><a href="18-command-reference.html">Command reference</a></li><li><a href="19-downloads.html">Downloads</a></li></ul></nav>
+        {{sidebar}}
     </aside>
     <div class="layout">
         <header class="topbar">
@@ -29,7 +28,7 @@
                     <path d="M4 7h16M4 12h16M4 17h16"/>
                 </svg>
             </button>
-            <p class="topbar-title">Page not found</p>
+            <p class="topbar-title">{{topbarTitle}}</p>
             <div class="topbar-actions">
                 <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Dark mode">
                     <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
@@ -43,12 +42,7 @@
             </div>
         </header>
         <main class="content">
-            <div class="not-found">
-    <p class="not-found-code">404</p>
-    <h1>Page not found</h1>
-    <p>This URL is not part of The Papyrus Handbook.</p>
-    <a class="start-reading" href="index.html">Back to home</a>
-</div>
+            {{body}}
         </main>
     </div>
 </body>

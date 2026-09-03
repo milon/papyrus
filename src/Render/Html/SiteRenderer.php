@@ -77,6 +77,10 @@ final class SiteRenderer
             $this->writeFile($siteDir.'/'.$page['file'], $html);
         }
 
+        $this->writeSearchIndex($assetsDir, $pages);
+        $this->writeSitemap($siteDir, $pages);
+        $this->writeRobots($siteDir);
+
         return $siteDir;
     }
 
@@ -305,52 +309,29 @@ HTML;
         $headExtra = $extraHead !== '' ? "\n    ".$extraHead : '';
         $baseHref = $this->baseHrefTag();
 
-        return <<<HTML
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{$title}</title>{$baseHref}{$headExtra}
-    <link rel="stylesheet" href="assets/site.css">
-    <script src="assets/site.js"></script>
-</head>
-<body>
-    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
-    <aside class="sidebar" id="sidebar" aria-label="Chapters">
-        <div class="sidebar-header">
-            <a class="sidebar-brand" href="index.html">{$bookTitle}</a>
-            <p class="sidebar-subtitle">{$bookSubtitle}</p>
-        </div>
-        {$sidebar}
-    </aside>
-    <div class="layout">
-        <header class="topbar">
-            <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Open chapter list" title="Chapters">
-                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                    <path d="M4 7h16M4 12h16M4 17h16"/>
-                </svg>
-            </button>
-            <p class="topbar-title">{$topbar}</p>
-            <div class="topbar-actions">
-                <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Dark mode">
-                    <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-                    </svg>
-                    <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-                        <circle cx="12" cy="12" r="4"/>
-                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
-                    </svg>
-                </button>
-            </div>
-        </header>
-        <main class="content">
-            {$body}
-        </main>
-    </div>
-</body>
-</html>
-HTML;
+        return str_replace(
+            [
+                '{{pageTitle}}',
+                '{{baseHref}}',
+                '{{headExtra}}',
+                '{{bookTitle}}',
+                '{{bookSubtitle}}',
+                '{{sidebar}}',
+                '{{topbarTitle}}',
+                '{{body}}',
+            ],
+            [
+                $title,
+                $baseHref,
+                $headExtra,
+                $bookTitle,
+                $bookSubtitle,
+                $sidebar,
+                $topbar,
+                $body,
+            ],
+            WebTheme::documentHtml(),
+        );
     }
 
     private function baseHrefTag(): string
@@ -407,6 +388,97 @@ HTML;
         }
 
         $this->writeFile($cnamePath, $cname."\n");
+    }
+
+    /**
+     * @param  list<array{chapter: Chapter, file: string, title: string}>  $pages
+     */
+    private function writeSearchIndex(string $assetsDir, array $pages): void
+    {
+        $entries = [
+            [
+                'file' => 'index.html',
+                'title' => $this->project->title(),
+                'text' => $this->plainText($this->project->title().' '.$this->project->subtitle().' '.($this->project->siteLead() ?? '')),
+            ],
+        ];
+
+        foreach ($pages as $page) {
+            $entries[] = [
+                'file' => $page['file'],
+                'title' => $page['title'],
+                'text' => $this->plainText($page['title'].' '.$page['chapter']->html),
+            ];
+        }
+
+        $json = json_encode($entries, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+        if ($json === false) {
+            throw new HtmlException('Unable to encode site search index.');
+        }
+
+        $this->writeFile($assetsDir.'/search.json', $json."\n");
+    }
+
+    /**
+     * @param  list<array{chapter: Chapter, file: string, title: string}>  $pages
+     */
+    private function writeSitemap(string $siteDir, array $pages): void
+    {
+        $files = ['index.html'];
+
+        foreach ($pages as $page) {
+            $files[] = $page['file'];
+        }
+
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>'."\n"
+            .'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n";
+
+        foreach ($files as $file) {
+            $loc = htmlspecialchars($this->absolutePageUrl($file), ENT_XML1 | ENT_QUOTES, 'UTF-8');
+            $xml .= "  <url><loc>{$loc}</loc></url>\n";
+        }
+
+        $xml .= '</urlset>'."\n";
+
+        $this->writeFile($siteDir.'/sitemap.xml', $xml);
+    }
+
+    private function writeRobots(string $siteDir): void
+    {
+        $body = "User-agent: *\nAllow: /\n";
+        $cname = $this->project->siteCname();
+
+        if ($cname !== null) {
+            $body .= 'Sitemap: '.$this->absolutePageUrl('sitemap.xml')."\n";
+        }
+
+        $this->writeFile($siteDir.'/robots.txt', $body);
+    }
+
+    private function absolutePageUrl(string $file): string
+    {
+        $path = $this->project->siteBasePath().'/'.ltrim($file, '/');
+        $cname = $this->project->siteCname();
+
+        if ($cname !== null) {
+            return 'https://'.$cname.$path;
+        }
+
+        return $path;
+    }
+
+    private function plainText(string $html): string
+    {
+        $text = html_entity_decode(strip_tags($html), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+        $text = preg_replace('/\s+/u', ' ', $text) ?? $text;
+        $text = trim($text);
+
+        if (strlen($text) > 8000) {
+            return substr($text, 0, 8000);
+        }
+
+        return $text;
     }
 
     private function copySiteBanner(string $assetsDir): void

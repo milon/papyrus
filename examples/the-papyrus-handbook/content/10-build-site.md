@@ -15,6 +15,24 @@ papyrus build:site -d examples/the-papyrus-handbook -e docs
 `papyrus build` does **not** run this by default — pass `--with-site` on
 `build`, or call `build:site` directly.
 
+Preview the site (including sidebar search) with PHP's built-in server:
+
+```bash
+papyrus serve
+papyrus serve --build
+papyrus serve --port 8080
+papyrus serve -s docs/the-papyrus-handbook-site
+papyrus serve -d examples/the-papyrus-handbook -e docs --build
+```
+
+By default `serve` reads `export/<slug>-site/`. Pass `--site` / `-s` to point at
+another folder (for example the handbook under `docs/`) — no book project is
+required in that case. `--export` / `-e` still changes the default parent
+(`<export>/<slug>-site`). Pass `--build` to run `build:site` first (into that
+same site directory; needs `-d` / a book root). If `site.base_path` is set on a
+loaded project, the printed URL includes that prefix so `<base href>` and
+`assets/search.json` resolve correctly.
+
 ## Options
 
 | Option | Short | Default | Meaning |
@@ -29,10 +47,13 @@ export/<slug>-site/
   index.html
   404.html
   <chapter-slug>.html
+  sitemap.xml
+  robots.txt
   .nojekyll
   CNAME              # when site.cname is set
   assets/site.css
   assets/site.js
+  assets/search.json
   assets/fonts/…
   assets/<banner>   # when configured
 ```
@@ -40,7 +61,10 @@ export/<slug>-site/
 Point any static host (GitHub Pages, Netlify, S3, …) at that folder.
 `.nojekyll` tells GitHub Pages not to run Jekyll. `CNAME` (from `site.cname`)
 sets a custom domain. GitHub Pages and Netlify serve `404.html` for missing
-URLs.
+URLs. The sidebar includes client-side search (`/` focuses the box).
+`sitemap.xml` uses `https://{cname}` when `site.cname` is set, otherwise the
+`site.base_path` prefix. `robots.txt` points at the sitemap when a CNAME is
+configured.
 
 ## Site config
 
