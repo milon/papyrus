@@ -16,11 +16,11 @@ Requires `kdp.ebook.enabled => true`.
 
 ## Options
 
-| Option | Short | Default | Meaning |
-|--------|-------|---------|---------|
-| `--dir` | `-d` | current directory | Book root |
-| `--export` | `-e` | `export/` | Output directory |
-| `--require-epubcheck` | | off | Fail if `epubcheck` is not on `PATH` |
+| Option                | Short | Default           | Meaning                              |
+|-----------------------|-------|-------------------|--------------------------------------|
+| `--dir`               | `-d`  | current directory | Book root                            |
+| `--export`            | `-e`  | `export/`         | Output directory                     |
+| `--require-epubcheck` |       | off               | Fail if `epubcheck` is not on `PATH` |
 
 ## Output
 
@@ -57,12 +57,12 @@ Description falls back to `"{title} - {author}"` when
 
 ## Versus build:epub
 
-| | `build:epub` | `kdp:ebook` |
-|--|--------------|-------------|
-| Filename | `<slug>.epub` | `<slug>-kdp.epub` |
-| Enable flag | always | `kdp.ebook.enabled` |
-| Validation | packaging only | KDP checks + optional epubcheck |
-| Cover preference | theme cover | `kdp.ebook.cover` first |
+|                  | `build:epub`   | `kdp:ebook`                     |
+|------------------|----------------|---------------------------------|
+| Filename         | `<slug>.epub`  | `<slug>-kdp.epub`               |
+| Enable flag      | always         | `kdp.ebook.enabled`             |
+| Validation       | packaging only | KDP checks + optional epubcheck |
+| Cover preference | theme cover    | `kdp.ebook.cover` first         |
 
 Internal checks also warn on an empty `kdp.metadata.description` and on eBook
 cover images smaller than 1600 px on the shortest side (when GD can read the

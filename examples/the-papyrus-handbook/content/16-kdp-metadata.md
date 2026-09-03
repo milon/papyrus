@@ -14,10 +14,10 @@ papyrus kdp:metadata -d /path/to/book -e /path/to/out
 
 ## Options
 
-| Option | Short | Default | Meaning |
-|--------|-------|---------|---------|
-| `--dir` | `-d` | current directory | Book root |
-| `--export` | `-e` | `export/` | Output directory |
+| Option     | Short | Default           | Meaning          |
+|------------|-------|-------------------|------------------|
+| `--dir`    | `-d`  | current directory | Book root        |
+| `--export` | `-e`  | `export/`         | Output directory |
 
 ## Output
 
@@ -85,14 +85,14 @@ export/<slug>-kdp-metadata.json
 }
 ```
 
-| Field | Source |
-|-------|--------|
-| `title` / `subtitle` / `author` | Project identity |
-| `language` | `kdp.metadata.language` → `language` → `en` |
-| `description` | `kdp.metadata.description` (may be empty) |
-| `keywords` | `kdp.metadata.keywords` (string list) |
-| `ebook.*` / `print.*` | Enable flags, paper, bleed, margin preset, trim size; optional wrap `cover` estimate when print PDF exists |
-| `artifacts.*` | Expected export filenames for uploads |
+| Field                           | Source                                                                                                     |
+|---------------------------------|------------------------------------------------------------------------------------------------------------|
+| `title` / `subtitle` / `author` | Project identity                                                                                           |
+| `language`                      | `kdp.metadata.language` → `language` → `en`                                                                |
+| `description`                   | `kdp.metadata.description` (may be empty)                                                                  |
+| `keywords`                      | `kdp.metadata.keywords` (string list)                                                                      |
+| `ebook.*` / `print.*`           | Enable flags, paper, bleed, margin preset, trim size; optional wrap `cover` estimate when print PDF exists |
+| `artifacts.*`                   | Expected export filenames for uploads                                                                      |
 
 When `export/<slug>-kdp-print.pdf` exists, `print.cover` includes page count,
 spine width, and full wrap dimensions. Rebuild metadata after `kdp:print` to

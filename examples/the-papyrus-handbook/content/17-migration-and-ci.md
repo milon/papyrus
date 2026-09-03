@@ -12,10 +12,10 @@ papyrus migrate-ibis -d /path/to/book
 papyrus migrate-ibis --force
 ```
 
-| Option | Short | Meaning |
-|--------|-------|---------|
-| `--dir` | `-d` | Book root |
-| `--force` | `-f` | Overwrite an existing `papyrus.php` |
+| Option    | Short | Meaning                             |
+|-----------|-------|-------------------------------------|
+| `--dir`   | `-d`  | Book root                           |
+| `--force` | `-f`  | Overwrite an existing `papyrus.php` |
 
 This writes `papyrus.php` from `ibis.php`. If you still have custom
 `assets/theme*.html` files from ibis, it rewrites `<!-- IBIS:TOC -->` to

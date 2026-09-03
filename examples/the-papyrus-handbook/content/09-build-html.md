@@ -13,10 +13,10 @@ papyrus build:html -d /path/to/book -e docs
 
 ## Options
 
-| Option | Short | Default | Meaning |
-|--------|-------|---------|---------|
-| `--dir` | `-d` | current directory | Book root |
-| `--export` | `-e` | `export/` | Output directory |
+| Option     | Short | Default           | Meaning          |
+|------------|-------|-------------------|------------------|
+| `--dir`    | `-d`  | current directory | Book root        |
+| `--export` | `-e`  | `export/`         | Output directory |
 
 ## Output
 
@@ -27,12 +27,12 @@ export/<slug>.html
 Requires `theme-html.html` (project `assets/` or bundled default). Placeholders
 in the theme:
 
-| Placeholder | Source |
-|-------------|--------|
-| `{{$title}}` | `title` |
-| `{{$subtitle}}` | `subtitle` |
-| `{{$author}}` | `author` |
-| `{{$body}}` | Rendered chapters |
+| Placeholder     | Source            |
+|-----------------|-------------------|
+| `{{$title}}`    | `title`           |
+| `{{$subtitle}}` | `subtitle`        |
+| `{{$author}}`   | `author`          |
+| `{{$body}}`     | Rendered chapters |
 
 The default stub theme mirrors the light PDF palette, with a moon/sun
 toggle that switches to the dark PDF colours. The reading column follows
@@ -44,17 +44,17 @@ fonts come from Papyrus’s bundled defaults.
 
 ## Config that affects HTML
 
-| Key | Role |
-|-----|------|
-| `title`, `subtitle`, `author` | Document chrome |
-| `mermaid` | Figures; `theme => auto` embeds light + dark SVGs |
-| `fonts` | Loaded via the HTML theme’s `@font-face` rules |
+| Key                           | Role                                              |
+|-------------------------------|---------------------------------------------------|
+| `title`, `subtitle`, `author` | Document chrome                                   |
+| `mermaid`                     | Figures; `theme => auto` embeds light + dark SVGs |
+| `fonts`                       | Loaded via the HTML theme’s `@font-face` rules    |
 
 ## Site vs HTML
 
-| Command | Result |
-|---------|--------|
-| `build:html` | One self-contained `.html` file |
+| Command      | Result                                              |
+|--------------|-----------------------------------------------------|
+| `build:html` | One self-contained `.html` file                     |
 | `build:site` | Multi-page folder with sidebar, Home, shared CSS/JS |
 
 Use `build:html` for emailing or archiving a single document; use

@@ -18,11 +18,11 @@ pretoc: true
 Body starts here.
 ````
 
-| Key | Meaning |
-|-----|---------|
-| `title` | Chapter title for EPUB / site sidebar / running headers |
-| `pretoc` | `true` places the chapter **before** the PDF table of contents |
-| `draft` | `true` omits the chapter from PDF, EPUB, HTML, site, sample, and KDP builds |
+| Key      | Meaning                                                                     |
+|----------|-----------------------------------------------------------------------------|
+| `title`  | Chapter title for EPUB / site sidebar / running headers                     |
+| `pretoc` | `true` places the chapter **before** the PDF table of contents              |
+| `draft`  | `true` omits the chapter from PDF, EPUB, HTML, site, sample, and KDP builds |
 
 Accepted truthy values for `pretoc` and `draft`: `true`, `"true"`, `1`, `"1"`.
 
@@ -198,8 +198,8 @@ papyrus lint --fix
 papyrus lint --max-width=66
 ```
 
-| Option | Short | Default | Meaning |
-|--------|-------|---------|---------|
-| `--fix` | `-f` | off | Apply auto-fixes for open tags and comment runs |
-| `--max-width` | — | `66` | Maximum line width for PHP fences |
+| Option               | Short       | Default       | Meaning                                          |
+|----------------------|-------------|---------------|--------------------------------------------------|
+| `--fix`              | `-f`        | off           | Apply auto-fixes for open tags and comment runs  |
+| `--max-width`        | —           | `66`          | Maximum line width for PHP fences                |
 | `--dir` / `--export` | `-d` / `-e` | book defaults | Shared book options (`--export` unused for lint) |

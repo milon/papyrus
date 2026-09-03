@@ -18,11 +18,11 @@ call `build:sample` directly.
 
 ## Options
 
-| Option | Short | Default | Meaning |
-|--------|-------|---------|---------|
-| `--dir` | `-d` | current directory | Book root |
-| `--export` | `-e` | `export/` | Output directory |
-| `--theme` | `-t` | all configured themes | Comma-separated theme names |
+| Option     | Short | Default               | Meaning                     |
+|------------|-------|-----------------------|-----------------------------|
+| `--dir`    | `-d`  | current directory     | Book root                   |
+| `--export` | `-e`  | `export/`             | Output directory            |
+| `--theme`  | `-t`  | all configured themes | Comma-separated theme names |
 
 ## Config
 
@@ -43,9 +43,9 @@ call `build:sample` directly.
 'sample_notice' => 'This is a sample from My Book.',
 ```
 
-| Key | Meaning |
-|-----|---------|
-| `sample.ranges` | List of `{from, to}` **1-based inclusive** page ranges against the finished PDF |
+| Key               | Meaning                                                                                                                                                                                 |
+|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `sample.ranges`   | List of `{from, to}` **1-based inclusive** page ranges against the finished PDF                                                                                                         |
 | `sample.chapters` | Chapter files to include in full (config order). Match by source path, basename (`01-intro.md`), or stem (`01-intro`). Rendered as body pages only — no extra cover, title page, or TOC |
 
 | `sample_notice` | Extra notice page (preferred) |

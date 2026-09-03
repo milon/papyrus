@@ -94,11 +94,11 @@ That runs `build:pdf`, `build:sample`, `build:html`, and `build:site` with
 
 **Optional** (features work without them; Papyrus skips or warns when missing)
 
-| Tool | Used by | Notes |
-|------|---------|--------|
-| `@mermaid-js/mermaid-cli` (`mmdc`) | Mermaid diagrams | Needs a Chrome/Chromium binary for Puppeteer |
-| Chrome or Chromium | Mermaid CLI | Set `PUPPETEER_EXECUTABLE_PATH` if the bundled browser is missing |
-| `epubcheck` | `kdp:ebook` | Extra EPUB validation; skipped with a warning when absent |
+| Tool                               | Used by          | Notes                                                             |
+|------------------------------------|------------------|-------------------------------------------------------------------|
+| `@mermaid-js/mermaid-cli` (`mmdc`) | Mermaid diagrams | Needs a Chrome/Chromium binary for Puppeteer                      |
+| Chrome or Chromium                 | Mermaid CLI      | Set `PUPPETEER_EXECUTABLE_PATH` if the bundled browser is missing |
+| `epubcheck`                        | `kdp:ebook`      | Extra EPUB validation; skipped with a warning when absent         |
 
 ### Install optional tooling (macOS / Homebrew)
 
@@ -231,28 +231,28 @@ papyrus asset:publish --only=themes
 
 ## Commands
 
-| Command        | Description                                                           |
-|----------------|-----------------------------------------------------------------------|
-| `init`         | Scaffold `papyrus.php`, `content/`, and an empty `assets/`            |
-| `asset:publish`| Publish bundled themes, CSS, and fonts into `assets/` (`--only`, `--force`) |
-| `doctor`       | Validate config, assets, Mermaid, KDP readiness                       |
-| `build`        | Build PDF/EPUB/HTML/KDP; optional `--with-site` / `--with-sample`     |
-| `build:pdf`    | Build PDF themes (`--theme light,dark`, `--parallel` for multi-theme) |
-| `build:site`   | Multi-page HTML site (sidebar, search, sitemap, light/dark)           |
-| `serve`        | Serve the site locally with `php -S` (`--host`, `--port`, `--build`, `--site`) |
-| `build:html`   | Build single-file HTML from `assets/theme-html.html` (light/dark mode) |
-| `build:epub`   | Build EPUB3 with CSS and embedded images                              |
-| `build:sample` | Build sample PDF from `sample.ranges` and/or `sample.chapters`        |
-| `kdp`          | All enabled KDP outputs (`--require-epubcheck`, `--package`)          |
-| `kdp:ebook`    | KDP-ready Kindle EPUB (`export/<slug>-kdp.epub`)                      |
-| `kdp:print`    | Print interior PDF with KDP margin/bleed presets                      |
-| `kdp:cover`    | Export KDP cover assets (`--dimensions`, `--pages`)                   |
-| `kdp:metadata` | Emit KDP metadata sidecar JSON                                        |
-| `kdp:package`  | Zip enabled KDP artifacts with an upload checklist                    |
-| `sizes`        | List KDP page-size presets                                            |
-| `migrate-ibis` | Migrate `ibis.php` to `papyrus.php`; update TOC markers in local themes |
-| `lint`         | Lint PHP code fences in `content/` (`--fix` to auto-fix)              |
-| `watch`        | Rebuild on file changes (`--interval`, `--with-site`, `--with-sample`, `--include-drafts`) |
+| Command         | Description                                                                                |
+|-----------------|--------------------------------------------------------------------------------------------|
+| `init`          | Scaffold `papyrus.php`, `content/`, and an empty `assets/`                                 |
+| `asset:publish` | Publish bundled themes, CSS, and fonts into `assets/` (`--only`, `--force`)                |
+| `doctor`        | Validate config, assets, Mermaid, KDP readiness                                            |
+| `build`         | Build PDF/EPUB/HTML/KDP; optional `--with-site` / `--with-sample`                          |
+| `build:pdf`     | Build PDF themes (`--theme light,dark`, `--parallel` for multi-theme)                      |
+| `build:site`    | Multi-page HTML site (sidebar, search, sitemap, light/dark)                                |
+| `serve`         | Serve the site locally with `php -S` (`--host`, `--port`, `--build`, `--site`)             |
+| `build:html`    | Build single-file HTML from `assets/theme-html.html` (light/dark mode)                     |
+| `build:epub`    | Build EPUB3 with CSS and embedded images                                                   |
+| `build:sample`  | Build sample PDF from `sample.ranges` and/or `sample.chapters`                             |
+| `kdp`           | All enabled KDP outputs (`--require-epubcheck`, `--package`)                               |
+| `kdp:ebook`     | KDP-ready Kindle EPUB (`export/<slug>-kdp.epub`)                                           |
+| `kdp:print`     | Print interior PDF with KDP margin/bleed presets                                           |
+| `kdp:cover`     | Export KDP cover assets (`--dimensions`, `--pages`)                                        |
+| `kdp:metadata`  | Emit KDP metadata sidecar JSON                                                             |
+| `kdp:package`   | Zip enabled KDP artifacts with an upload checklist                                         |
+| `sizes`         | List KDP page-size presets                                                                 |
+| `migrate-ibis`  | Migrate `ibis.php` to `papyrus.php`; update TOC markers in local themes                    |
+| `lint`          | Lint PHP code fences in `content/` (`--fix` to auto-fix)                                   |
+| `watch`         | Rebuild on file changes (`--interval`, `--with-site`, `--with-sample`, `--include-drafts`) |
 
 Common options on book commands:
 

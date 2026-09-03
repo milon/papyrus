@@ -17,27 +17,27 @@ papyrus build -d examples/the-papyrus-handbook -e docs --with-site --with-sample
 
 ## Options
 
-| Option | Short | Default | Meaning |
-|--------|-------|---------|---------|
-| `--dir` | `-d` | current directory | Book root (must contain `papyrus.php`) |
-| `--export` | `-e` | `export_dir` from config (`export`) | Where artifacts are written |
-| `--with-site` | | off | Also run `build:site` |
-| `--with-sample` | | off | Also run `build:sample` for every theme |
-| `--include-drafts` | | off | Include chapters with `draft: true` |
+| Option             | Short | Default                             | Meaning                                 |
+|--------------------|-------|-------------------------------------|-----------------------------------------|
+| `--dir`            | `-d`  | current directory                   | Book root (must contain `papyrus.php`)  |
+| `--export`         | `-e`  | `export_dir` from config (`export`) | Where artifacts are written             |
+| `--with-site`      |       | off                                 | Also run `build:site`                   |
+| `--with-sample`    |       | off                                 | Also run `build:sample` for every theme |
+| `--include-drafts` |       | off                                 | Include chapters with `draft: true`     |
 
 Global Symfony options also apply (`-v` / `--verbose`, `-q`, `--no-ansi`, …).
 With `-v`, Papyrus prints third-party notices from mPDF and the EPUB zipper.
 
 ## What it builds
 
-| Step | Always? | Output |
-|------|---------|--------|
-| PDF (each `themes` entry) | yes | `export/<slug>-<theme>.pdf` |
-| EPUB | yes | `export/<slug>.epub` |
-| HTML | yes | `export/<slug>.html` |
-| KDP ebook / print / covers / metadata | only if `kdp.ebook.enabled` or `kdp.print.enabled` | see KDP chapters |
-| Site | only with `--with-site` | `export/<slug>-site/` |
-| Sample PDF | only with `--with-sample` | `export/sample-<slug>-<theme>.pdf` |
+| Step                                  | Always?                                            | Output                             |
+|---------------------------------------|----------------------------------------------------|------------------------------------|
+| PDF (each `themes` entry)             | yes                                                | `export/<slug>-<theme>.pdf`        |
+| EPUB                                  | yes                                                | `export/<slug>.epub`               |
+| HTML                                  | yes                                                | `export/<slug>.html`               |
+| KDP ebook / print / covers / metadata | only if `kdp.ebook.enabled` or `kdp.print.enabled` | see KDP chapters                   |
+| Site                                  | only with `--with-site`                            | `export/<slug>-site/`              |
+| Sample PDF                            | only with `--with-sample`                          | `export/sample-<slug>-<theme>.pdf` |
 
 Slug comes from `title` (lowercased, non-alphanumeric → `-`).
 
@@ -69,12 +69,12 @@ papyrus watch --interval 3
 papyrus watch --with-site --with-sample
 ```
 
-| Option | Short | Default | Meaning |
-|--------|-------|---------|---------|
-| `--interval` | `-i` | `2` | Poll interval in seconds (minimum `1`) |
-| `--dir` / `--export` | `-d` / `-e` | same as `build` | Passed through to each rebuild |
-| `--with-site` | | off | Also run `build:site` |
-| `--with-sample` | | off | Also run `build:sample` |
+| Option               | Short       | Default         | Meaning                                |
+|----------------------|-------------|-----------------|----------------------------------------|
+| `--interval`         | `-i`        | `2`             | Poll interval in seconds (minimum `1`) |
+| `--dir` / `--export` | `-d` / `-e` | same as `build` | Passed through to each rebuild         |
+| `--with-site`        |             | off             | Also run `build:site`                  |
+| `--with-sample`      |             | off             | Also run `build:sample`                |
 
 ## Caching
 

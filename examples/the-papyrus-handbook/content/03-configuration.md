@@ -22,16 +22,16 @@ return [
 ];
 ```
 
-| Key | Default | Notes |
-|-----|---------|-------|
-| `title` | `Untitled` | Drives the export filename slug |
-| `subtitle` | `''` | |
-| `author` | `''` | |
-| `language` | `en` | EPUB / KDP metadata fallback |
-| `themes` | `['light', 'dark']` | Each needs `assets/theme-{name}.html` |
-| `content_dir` | `content` | Relative to the book root |
-| `assets_dir` | `assets` | |
-| `export_dir` | `export` | Overridden by `-e` / `--export` |
+| Key           | Default             | Notes                                 |
+|---------------|---------------------|---------------------------------------|
+| `title`       | `Untitled`          | Drives the export filename slug       |
+| `subtitle`    | `''`                |                                       |
+| `author`      | `''`                |                                       |
+| `language`    | `en`                | EPUB / KDP metadata fallback          |
+| `themes`      | `['light', 'dark']` | Each needs `assets/theme-{name}.html` |
+| `content_dir` | `content`           | Relative to the book root             |
+| `assets_dir`  | `assets`            |                                       |
+| `export_dir`  | `export`            | Overridden by `-e` / `--export`       |
 
 The slug is the title lowercased with non-alphanumeric runs turned into `-`.
 This handbook is *The Papyrus Handbook*, so outputs look like
@@ -148,12 +148,12 @@ When any applicable rule exists, Papyrus turns on mPDF’s
 
 `match` aliases are lowercased. Built-in aliases include:
 
-| Aliases you can list | Resolves as |
-|----------------------|-------------|
-| `bn`, `ben`, `beng`, `bengali` | Bengali |
-| `ar`, `arab`, `arabic` | Arabic |
-| `hi`, `hin`, `deva`, `devanagari`, `hindi` | Devanagari |
-| any 4-letter ISO script code | that script as-is |
+| Aliases you can list                       | Resolves as       |
+|--------------------------------------------|-------------------|
+| `bn`, `ben`, `beng`, `bengali`             | Bengali           |
+| `ar`, `arab`, `arabic`                     | Arabic            |
+| `hi`, `hin`, `deva`, `devanagari`, `hindi` | Devanagari        |
+| any 4-letter ISO script code               | that script as-is |
 
 The `face` string must be a name from `fonts.faces` **and** that face must
 actually load (regular file present). Rules pointing at a missing face are
@@ -183,13 +183,13 @@ face is registered.
 ],
 ```
 
-| Key | Default | Notes |
-|-----|---------|-------|
-| `banner` | auto `banner.jpg` / `banner.png` if present | Under `assets/` |
-| `lead` | unset | Home page pitch |
-| `cname` | unset | Custom domain; writes a `CNAME` file in the site root for GitHub Pages; absolute `sitemap.xml` / `robots.txt` Sitemap URL |
-| `base_path` | unset (site at `/`) | Path prefix for project GitHub Pages (e.g. `/my-repo`); injects `<base href>`; also prefixes sitemap locs |
-| `links` | unset | Explicit home-page links; each item needs `label` plus either `url` or `chapter` |
+| Key         | Default                                     | Notes                                                                                                                     |
+|-------------|---------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| `banner`    | auto `banner.jpg` / `banner.png` if present | Under `assets/`                                                                                                           |
+| `lead`      | unset                                       | Home page pitch                                                                                                           |
+| `cname`     | unset                                       | Custom domain; writes a `CNAME` file in the site root for GitHub Pages; absolute `sitemap.xml` / `robots.txt` Sitemap URL |
+| `base_path` | unset (site at `/`)                         | Path prefix for project GitHub Pages (e.g. `/my-repo`); injects `<base href>`; also prefixes sitemap locs                 |
+| `links`     | unset                                       | Explicit home-page links; each item needs `label` plus either `url` or `chapter`                                          |
 
 `chapter` matches a chapter source name like `19-downloads.md`, `19-downloads`,
 or a full relative source path, and links to that generated page.
@@ -209,13 +209,13 @@ automatically; add them explicitly through `links`.
 ],
 ```
 
-| Key | Default | Notes |
-|-----|---------|-------|
-| `enabled` | `false` | Requires `mmdc` on `PATH` (or `command`) |
-| `format` | `svg` | Anything other than `png` becomes `svg` |
-| `theme` | `auto` | Book-matched palettes for PDF; HTML/site embed light + dark |
-| `max_width_mm` | `130` | PDF figure width cap |
-| `command` | auto-resolve `mmdc` | Explicit CLI path |
+| Key            | Default             | Notes                                                       |
+|----------------|---------------------|-------------------------------------------------------------|
+| `enabled`      | `false`             | Requires `mmdc` on `PATH` (or `command`)                    |
+| `format`       | `svg`               | Anything other than `png` becomes `svg`                     |
+| `theme`        | `auto`              | Book-matched palettes for PDF; HTML/site embed light + dark |
+| `max_width_mm` | `130`               | PDF figure width cap                                        |
+| `command`      | auto-resolve `mmdc` | Explicit CLI path                                           |
 
 ## Sample PDF
 

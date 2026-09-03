@@ -14,10 +14,10 @@ papyrus build:epub -e /path/to/out
 
 ## Options
 
-| Option | Short | Default | Meaning |
-|--------|-------|---------|---------|
-| `--dir` | `-d` | current directory | Book root |
-| `--export` | `-e` | `export/` | Output directory |
+| Option     | Short | Default           | Meaning          |
+|------------|-------|-------------------|------------------|
+| `--dir`    | `-d`  | current directory | Book root        |
+| `--export` | `-e`  | `export/`         | Output directory |
 
 ## Output
 
@@ -35,13 +35,13 @@ export/<slug>.epub
 
 ## Config that affects EPUB
 
-| Key | Role |
-|-----|------|
-| `title`, `subtitle`, `author` | Package identity |
-| `language` | EPUB language (default `en`) |
-| `cover` | Cover image under `assets/` |
-| `mermaid` | Pre-rendered figures |
-| `fonts` | Faces are PDF-oriented; EPUB relies on CSS |
+| Key                           | Role                                       |
+|-------------------------------|--------------------------------------------|
+| `title`, `subtitle`, `author` | Package identity                           |
+| `language`                    | EPUB language (default `en`)               |
+| `cover`                       | Cover image under `assets/`                |
+| `mermaid`                     | Pre-rendered figures                       |
+| `fonts`                       | Faces are PDF-oriented; EPUB relies on CSS |
 
 Prefer simple `pre` / `code` rules in `assets/style.css` for e-ink readers.
 

@@ -30,12 +30,12 @@ example so you can read without installing anything.
 
 Every book is a directory with:
 
-| Path | Role |
-|------|------|
-| `papyrus.php` | Title, trim, themes, Mermaid, samples, KDP |
-| `content/` | Markdown chapters (natural filename order) |
-| `assets/` | Your overrides (covers, banner, custom themes/fonts); bundled defaults used when absent |
-| `export/` | Build outputs (usually gitignored) |
+| Path          | Role                                                                                    |
+|---------------|-----------------------------------------------------------------------------------------|
+| `papyrus.php` | Title, trim, themes, Mermaid, samples, KDP                                              |
+| `content/`    | Markdown chapters (natural filename order)                                              |
+| `assets/`     | Your overrides (covers, banner, custom themes/fonts); bundled defaults used when absent |
+| `export/`     | Build outputs (usually gitignored)                                                      |
 
 ## Next steps
 

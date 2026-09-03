@@ -16,12 +16,12 @@ papyrus build:pdf -d /path/to/book -e /path/to/out
 
 ## Options
 
-| Option | Short | Default | Meaning |
-|--------|-------|---------|---------|
-| `--dir` | `-d` | current directory | Book root |
-| `--export` | `-e` | `export/` | Output directory |
-| `--theme` | `-t` | all configured themes | Comma-separated theme names |
-| `--parallel` | `-p` | off | One process per theme |
+| Option       | Short | Default               | Meaning                     |
+|--------------|-------|-----------------------|-----------------------------|
+| `--dir`      | `-d`  | current directory     | Book root                   |
+| `--export`   | `-e`  | `export/`             | Output directory            |
+| `--theme`    | `-t`  | all configured themes | Comma-separated theme names |
+| `--parallel` | `-p`  | off                   | One process per theme       |
 
 ## Output
 
@@ -33,17 +33,17 @@ Example for this handbook: `the-papyrus-handbook-light.pdf`.
 
 ## Config that affects PDF
 
-| Key | Role |
-|-----|------|
-| `themes` | Which theme names to build by default |
-| `document.size` / `document.format` | Trim size |
-| `document.margin_*` | Margins in millimetres |
-| `cover` | Cover image(s) under `assets/` |
-| `header.style` | Running header CSS |
-| `toc` | Which heading levels enter the TOC |
-| `break_level` | Auto page breaks before headings |
-| `fonts` | Faces and script routing |
-| `mermaid` | Diagram rendering |
+| Key                                 | Role                                  |
+|-------------------------------------|---------------------------------------|
+| `themes`                            | Which theme names to build by default |
+| `document.size` / `document.format` | Trim size                             |
+| `document.margin_*`                 | Margins in millimetres                |
+| `cover`                             | Cover image(s) under `assets/`        |
+| `header.style`                      | Running header CSS                    |
+| `toc`                               | Which heading levels enter the TOC    |
+| `break_level`                       | Auto page breaks before headings      |
+| `fonts`                             | Faces and script routing              |
+| `mermaid`                           | Diagram rendering                     |
 
 List trim presets with `papyrus sizes`. Custom trim:
 

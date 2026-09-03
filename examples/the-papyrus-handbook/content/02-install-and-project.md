@@ -13,11 +13,11 @@ title: Install and project layout
 
 **Optional**
 
-| Tool | Used by | Notes |
-|------|---------|--------|
-| `mmdc` (`@mermaid-js/mermaid-cli` or Homebrew `mermaid-cli`) | Mermaid diagrams | Needs Chrome/Chromium for Puppeteer |
-| Chrome or Chromium | Mermaid CLI | Set `PUPPETEER_EXECUTABLE_PATH` if needed |
-| `epubcheck` | `kdp:ebook` | Extra validation; skipped with a warning when absent |
+| Tool                                                         | Used by          | Notes                                                |
+|--------------------------------------------------------------|------------------|------------------------------------------------------|
+| `mmdc` (`@mermaid-js/mermaid-cli` or Homebrew `mermaid-cli`) | Mermaid diagrams | Needs Chrome/Chromium for Puppeteer                  |
+| Chrome or Chromium                                           | Mermaid CLI      | Set `PUPPETEER_EXECUTABLE_PATH` if needed            |
+| `epubcheck`                                                  | `kdp:ebook`      | Extra validation; skipped with a warning when absent |
 
 ### macOS (Homebrew)
 
@@ -116,13 +116,13 @@ Use `--force` / `-f` to overwrite files during `init`, or with
 
 ## Layout
 
-| Path | Role |
-|------|------|
-| `papyrus.php` | Book settings |
-| `content/` | Markdown chapters |
-| `assets/` | Your overrides: themes, CSS, covers, fonts, banner |
-| `export/` | Built artifacts |
-| `.papyrus/` | Incremental caches |
+| Path          | Role                                               |
+|---------------|----------------------------------------------------|
+| `papyrus.php` | Book settings                                      |
+| `content/`    | Markdown chapters                                  |
+| `assets/`     | Your overrides: themes, CSS, covers, fonts, banner |
+| `export/`     | Built artifacts                                    |
+| `.papyrus/`   | Incremental caches                                 |
 
 Always run from the book root, or pass `-d` / `--dir`. Override where
 artifacts are written with `-e` / `--export` (default: `<book>/export`):

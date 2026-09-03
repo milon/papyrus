@@ -10,10 +10,10 @@ and update when the handbook is rebuilt.
 
 ## Full PDF
 
-| Theme | Download |
-|-------|----------|
+| Theme | Download                                                                                                          |
+|-------|-------------------------------------------------------------------------------------------------------------------|
 | Light | [the-papyrus-handbook-light.pdf](https://github.com/milon/papyrus/raw/master/docs/the-papyrus-handbook-light.pdf) |
-| Dark | [the-papyrus-handbook-dark.pdf](https://github.com/milon/papyrus/raw/master/docs/the-papyrus-handbook-dark.pdf) |
+| Dark  | [the-papyrus-handbook-dark.pdf](https://github.com/milon/papyrus/raw/master/docs/the-papyrus-handbook-dark.pdf)   |
 
 On GitHub: [light](https://github.com/milon/papyrus/blob/master/docs/the-papyrus-handbook-light.pdf) ·
 [dark](https://github.com/milon/papyrus/blob/master/docs/the-papyrus-handbook-dark.pdf)
@@ -23,10 +23,10 @@ On GitHub: [light](https://github.com/milon/papyrus/blob/master/docs/the-papyrus
 A shorter preview built with `build:sample`: cover through Welcome (before the
 table of contents), then the **build:html** and **kdp:cover** chapters.
 
-| Theme | Download |
-|-------|----------|
+| Theme | Download                                                                                                                        |
+|-------|---------------------------------------------------------------------------------------------------------------------------------|
 | Light | [sample-the-papyrus-handbook-light.pdf](https://github.com/milon/papyrus/raw/master/docs/sample-the-papyrus-handbook-light.pdf) |
-| Dark | [sample-the-papyrus-handbook-dark.pdf](https://github.com/milon/papyrus/raw/master/docs/sample-the-papyrus-handbook-dark.pdf) |
+| Dark  | [sample-the-papyrus-handbook-dark.pdf](https://github.com/milon/papyrus/raw/master/docs/sample-the-papyrus-handbook-dark.pdf)   |
 
 Configured in this book’s `papyrus.php` as:
 
@@ -44,9 +44,9 @@ Configured in this book’s `papyrus.php` as:
 
 ## Other previews
 
-| Format | Link |
-|--------|------|
-| This site | [papyrus.milon.im](https://papyrus.milon.im/) |
+| Format           | Link                                                                                                    |
+|------------------|---------------------------------------------------------------------------------------------------------|
+| This site        | [papyrus.milon.im](https://papyrus.milon.im/)                                                           |
 | Single-file HTML | [the-papyrus-handbook.html](https://github.com/milon/papyrus/raw/master/docs/the-papyrus-handbook.html) |
 
 Rebuild everything from the Papyrus repo with:

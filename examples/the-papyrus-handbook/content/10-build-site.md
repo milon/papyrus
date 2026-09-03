@@ -35,10 +35,10 @@ loaded project, the printed URL includes that prefix so `<base href>` and
 
 ## Options
 
-| Option | Short | Default | Meaning |
-|--------|-------|---------|---------|
-| `--dir` | `-d` | current directory | Book root |
-| `--export` | `-e` | `export/` | Parent directory for the site folder |
+| Option     | Short | Default           | Meaning                              |
+|------------|-------|-------------------|--------------------------------------|
+| `--dir`    | `-d`  | current directory | Book root                            |
+| `--export` | `-e`  | `export/`         | Parent directory for the site folder |
 
 ## Output
 
@@ -85,13 +85,13 @@ Optional `site` block in `papyrus.php`:
 ],
 ```
 
-| Key | Default | Meaning |
-|-----|---------|---------|
-| `banner` | `banner.jpg` then `banner.png` if present | Hero image on Home |
-| `lead` | unset | Short pitch under the title on Home |
-| `cname` | unset | Writes `CNAME` in the site root for a GitHub Pages custom domain |
-| `base_path` | unset | URL prefix for project Pages (writes `<base href="/prefix/">`) |
-| `links` | unset | Home-page links; each item needs `label` plus either `url` or `chapter` |
+| Key         | Default                                   | Meaning                                                                 |
+|-------------|-------------------------------------------|-------------------------------------------------------------------------|
+| `banner`    | `banner.jpg` then `banner.png` if present | Hero image on Home                                                      |
+| `lead`      | unset                                     | Short pitch under the title on Home                                     |
+| `cname`     | unset                                     | Writes `CNAME` in the site root for a GitHub Pages custom domain        |
+| `base_path` | unset                                     | URL prefix for project Pages (writes `<base href="/prefix/">`)          |
+| `links`     | unset                                     | Home-page links; each item needs `label` plus either `url` or `chapter` |
 
 Nothing is inferred from chapter titles. If you want a Downloads link on Home,
 add it explicitly with `['label' => 'Downloads', 'chapter' => '19-downloads.md']`.
