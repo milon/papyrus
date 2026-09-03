@@ -34,6 +34,51 @@ final class AssetPublishCommandTest extends TestCase
         }
     }
 
+    #[Test]
+    public function it_can_publish_only_selected_asset_groups(): void
+    {
+        $target = sys_get_temp_dir().'/papyrus-assets-only-'.uniqid('', true);
+
+        try {
+            (new CommandTester(new InitCommand))->execute(['--dir' => $target]);
+
+            $tester = new CommandTester(new AssetPublishCommand);
+            $exitCode = $tester->execute([
+                '--dir' => $target,
+                '--only' => 'themes,css',
+            ]);
+
+            $this->assertSame(0, $exitCode);
+            $this->assertFileExists($target.'/assets/theme-light.html');
+            $this->assertFileExists($target.'/assets/theme-html.html');
+            $this->assertFileExists($target.'/assets/style.css');
+            $this->assertFileDoesNotExist($target.'/assets/fonts/LinLibertine_R.ttf');
+        } finally {
+            $this->removeDir($target);
+        }
+    }
+
+    #[Test]
+    public function it_rejects_unknown_only_groups(): void
+    {
+        $target = sys_get_temp_dir().'/papyrus-assets-bad-'.uniqid('', true);
+
+        try {
+            (new CommandTester(new InitCommand))->execute(['--dir' => $target]);
+
+            $tester = new CommandTester(new AssetPublishCommand);
+            $exitCode = $tester->execute([
+                '--dir' => $target,
+                '--only' => 'themes,images',
+            ]);
+
+            $this->assertSame(1, $exitCode);
+            $this->assertStringContainsString('Unknown asset group(s): images', $tester->getDisplay());
+        } finally {
+            $this->removeDir($target);
+        }
+    }
+
     private function removeDir(string $dir): void
     {
         if (! is_dir($dir)) {

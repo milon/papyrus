@@ -14,7 +14,11 @@ Publish the bundled assets into your project when you want to edit them:
 
 ```bash
 papyrus asset:publish
+papyrus asset:publish --only=themes,css
+papyrus asset:publish --only=fonts --force
 ```
+
+`--only` accepts `themes`, `css`, and/or `fonts`. Omit it to publish everything.
 
 ## PDF themes
 

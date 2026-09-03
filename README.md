@@ -209,6 +209,7 @@ fonts later:
 
 ```bash
 papyrus asset:publish
+papyrus asset:publish --only=themes
 ```
 
 ## Commands
@@ -216,7 +217,7 @@ papyrus asset:publish
 | Command        | Description                                                           |
 |----------------|-----------------------------------------------------------------------|
 | `init`         | Scaffold `papyrus.php`, `content/`, and an empty `assets/`            |
-| `asset:publish`| Publish bundled themes, CSS, and fonts into `assets/`                 |
+| `asset:publish`| Publish bundled themes, CSS, and fonts into `assets/` (`--only`, `--force`) |
 | `doctor`       | Validate config and project paths                                     |
 | `build`        | Build PDF/EPUB/HTML/KDP; optional `--with-site` / `--with-sample`     |
 | `build:pdf`    | Build PDF themes (`--theme light,dark`, `--parallel` for multi-theme) |

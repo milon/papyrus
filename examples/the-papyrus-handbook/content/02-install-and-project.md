@@ -107,10 +107,12 @@ into your project only when you want to customize them:
 
 ```bash
 papyrus asset:publish
+papyrus asset:publish --only=themes,css
 ```
 
 Use `--force` / `-f` to overwrite files during `init`, or with
-`asset:publish` to overwrite published assets.
+`asset:publish` to overwrite published assets. `--only` limits publishing to
+`themes`, `css`, and/or `fonts`.
 
 ## Layout
 
