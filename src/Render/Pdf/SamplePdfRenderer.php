@@ -6,6 +6,7 @@ namespace Milon\Papyrus\Render\Pdf;
 
 use Milon\Papyrus\Config\Project;
 use Milon\Papyrus\Render\VendorNotices;
+use Mpdf\Mpdf;
 use Mpdf\MpdfException;
 
 final class SamplePdfRenderer
@@ -25,47 +26,35 @@ final class SamplePdfRenderer
     {
         $sample = $this->project->sampleConfig();
 
-        if (! $sample->hasRanges()) {
-            throw new SampleException('No sample page ranges configured in papyrus.php (sample.ranges).');
+        if (! $sample->hasSelection()) {
+            throw new SampleException(
+                'No sample selection configured in papyrus.php (sample.ranges and/or sample.chapters).',
+            );
         }
 
-        $fullPath = tempnam(sys_get_temp_dir(), 'papyrus-full-');
-
-        if ($fullPath === false) {
-            throw new SampleException('Unable to create temporary PDF file.');
-        }
-
-        $fullPdfPath = $fullPath.'.pdf';
-        rename($fullPath, $fullPdfPath);
+        $temps = [];
 
         try {
-            (new PdfRenderer($this->project))->render($themeName, $fullPdfPath);
-
             $document = $this->project->documentSize();
             $pdf = MpdfFactory::create($this->project, $document);
-
-            $pageCount = $pdf->SetSourceFile($fullPdfPath);
-
-            if ($pageCount < 1) {
-                throw new SampleException('Full book PDF has no pages.');
-            }
-
             $imported = false;
 
-            foreach ($sample->ranges as $range) {
-                $from = max(1, $range['from']);
-                $to = min($range['to'], $pageCount);
+            if ($sample->hasRanges()) {
+                $fullPdf = $this->tempPdfPath('papyrus-sample-full-');
+                $temps[] = $fullPdf;
+                (new PdfRenderer($this->project))->render($themeName, $fullPdf);
+                $imported = $this->importPageRanges($pdf, $fullPdf, $sample->ranges) || $imported;
+            }
 
-                for ($page = $from; $page <= $to; $page++) {
-                    $pdf->AddPage();
-                    $templateId = $pdf->ImportPage($page);
-                    $pdf->UseTemplate($templateId);
-                    $imported = true;
-                }
+            if ($sample->hasChapters()) {
+                $chapterPdf = $this->tempPdfPath('papyrus-sample-chapters-');
+                $temps[] = $chapterPdf;
+                $this->renderChapterSelection($themeName, $sample->chapters, $chapterPdf);
+                $imported = $this->importAllPages($pdf, $chapterPdf) || $imported;
             }
 
             if (! $imported) {
-                throw new SampleException('Sample page ranges did not match any pages in the full PDF.');
+                throw new SampleException('Sample selection did not produce any PDF pages.');
             }
 
             if ($sample->notice !== '') {
@@ -93,9 +82,100 @@ final class SamplePdfRenderer
         } catch (MpdfException $e) {
             throw new SampleException($e->getMessage(), previous: $e);
         } finally {
-            if (is_file($fullPdfPath)) {
-                unlink($fullPdfPath);
+            foreach ($temps as $temp) {
+                if (is_file($temp)) {
+                    unlink($temp);
+                }
             }
         }
+    }
+
+    /**
+     * @param  list<string>  $chapterNames
+     */
+    private function renderChapterSelection(string $themeName, array $chapterNames, string $outputPath): void
+    {
+        $book = $this->project->bookWithFigures(breakLevel: null, exportTheme: $themeName);
+        $missing = $book->missingChapterNames($chapterNames);
+
+        if ($missing !== []) {
+            throw new SampleException(sprintf(
+                'Unknown sample chapter(s): %s',
+                implode(', ', $missing),
+            ));
+        }
+
+        $selected = $book->selectInOrder($chapterNames);
+
+        if ($selected->chapters === []) {
+            throw new SampleException('sample.chapters did not match any content files.');
+        }
+
+        (new PdfRenderer($this->project))->render(
+            themeName: $themeName,
+            outputPath: $outputPath,
+            skipCover: true,
+            book: $selected,
+            bodyOnly: true,
+        );
+    }
+
+    private function importAllPages(Mpdf $pdf, string $sourcePdf): bool
+    {
+        $pageCount = $pdf->SetSourceFile($sourcePdf);
+
+        if ($pageCount < 1) {
+            return false;
+        }
+
+        for ($page = 1; $page <= $pageCount; $page++) {
+            $pdf->AddPage();
+            $templateId = $pdf->ImportPage($page);
+            $pdf->UseTemplate($templateId);
+        }
+
+        return true;
+    }
+
+    /**
+     * @param  list<array{from: int, to: int}>  $ranges
+     */
+    private function importPageRanges(Mpdf $pdf, string $sourcePdf, array $ranges): bool
+    {
+        $pageCount = $pdf->SetSourceFile($sourcePdf);
+
+        if ($pageCount < 1) {
+            throw new SampleException('Full book PDF has no pages.');
+        }
+
+        $imported = false;
+
+        foreach ($ranges as $range) {
+            $from = max(1, $range['from']);
+            $to = min($range['to'], $pageCount);
+
+            for ($page = $from; $page <= $to; $page++) {
+                $pdf->AddPage();
+                $templateId = $pdf->ImportPage($page);
+                $pdf->UseTemplate($templateId);
+                $imported = true;
+            }
+        }
+
+        return $imported;
+    }
+
+    private function tempPdfPath(string $prefix): string
+    {
+        $fullPath = tempnam(sys_get_temp_dir(), $prefix);
+
+        if ($fullPath === false) {
+            throw new SampleException('Unable to create temporary PDF file.');
+        }
+
+        $pdfPath = $fullPath.'.pdf';
+        rename($fullPath, $pdfPath);
+
+        return $pdfPath;
     }
 }

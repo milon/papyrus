@@ -38,10 +38,10 @@
         </header>
         <main class="content">
             <div style="page-break-after: always;"></div><h1>Downloads</h1>
-<p>Preview this handbook as a PDF without building locally. The files live in the
-Papyrus repository under <a href="https://github.com/milon/papyrus/tree/master/docs"><code>docs/</code></a>
+<p>Preview this handbook without building locally. Files live in the Papyrus
+repository under <a href="https://github.com/milon/papyrus/tree/master/docs"><code>docs/</code></a>
 and update when the handbook is rebuilt.</p>
-<h2>PDF</h2>
+<h2>Full PDF</h2>
 <table>
 <thead>
 <tr>
@@ -60,12 +60,40 @@ and update when the handbook is rebuilt.</p>
 </tr>
 </tbody>
 </table>
-<p>Open the link to download from GitHub, or use <strong>View raw</strong> / <strong>Download</strong> on
-the file page:</p>
-<ul>
-<li><a href="https://github.com/milon/papyrus/blob/master/docs/the-papyrus-handbook-light.pdf">Light PDF on GitHub</a></li>
-<li><a href="https://github.com/milon/papyrus/blob/master/docs/the-papyrus-handbook-dark.pdf">Dark PDF on GitHub</a></li>
-</ul>
+<p>On GitHub: <a href="https://github.com/milon/papyrus/blob/master/docs/the-papyrus-handbook-light.pdf">light</a> ·
+<a href="https://github.com/milon/papyrus/blob/master/docs/the-papyrus-handbook-dark.pdf">dark</a></p>
+<h2>Sample PDF</h2>
+<p>A shorter preview built with <code>build:sample</code>: cover through Welcome (before the
+table of contents), then the <strong>build:html</strong> and <strong>kdp:cover</strong> chapters.</p>
+<table>
+<thead>
+<tr>
+<th>Theme</th>
+<th>Download</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Light</td>
+<td><a href="https://github.com/milon/papyrus/raw/master/docs/sample-the-papyrus-handbook-light.pdf">sample-the-papyrus-handbook-light.pdf</a></td>
+</tr>
+<tr>
+<td>Dark</td>
+<td><a href="https://github.com/milon/papyrus/raw/master/docs/sample-the-papyrus-handbook-dark.pdf">sample-the-papyrus-handbook-dark.pdf</a></td>
+</tr>
+</tbody>
+</table>
+<p>Configured in this book’s <code>papyrus.php</code> as:</p>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'sample'</span> =&gt; [
+    <span class="hljs-string">'ranges'</span> =&gt; [
+        [<span class="hljs-string">'from'</span> =&gt; <span class="hljs-number">1</span>, <span class="hljs-string">'to'</span> =&gt; <span class="hljs-number">5</span>], <span class="hljs-comment">// cover … Welcome (before TOC)</span>
+    ],
+    <span class="hljs-string">'chapters'</span> =&gt; [
+        <span class="hljs-string">'09-build-html.md'</span>,
+        <span class="hljs-string">'15-kdp-cover.md'</span>,
+    ],
+],
+</code></pre>
 <h2>Other previews</h2>
 <table>
 <thead>
@@ -77,7 +105,7 @@ the file page:</p>
 <tbody>
 <tr>
 <td>This site</td>
-<td><a href="https://milon.im/papyrus">milon.im/papyrus</a></td>
+<td><a href="https://papyrus.milon.im/">papyrus.milon.im</a></td>
 </tr>
 <tr>
 <td>Single-file HTML</td>

@@ -91,6 +91,7 @@ return [
         'ranges' => [
             ['from' => 1, 'to' => 3],
         ],
+        // 'chapters' => ['01-introduction.md'],
     ],
 
     'sample_notice' => 'This is a sample from My Book.',

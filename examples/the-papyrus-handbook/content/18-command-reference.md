@@ -13,7 +13,7 @@ title: Command reference
 | `build:epub` | EPUB3 | `-d`, `-e` |
 | `build:html` | Single-file HTML | `-d`, `-e` |
 | `build:site` | Multi-page HTML site | `-d`, `-e` |
-| `build:sample` | Sample PDF from `sample.ranges` | `--theme` |
+| `build:sample` | Sample PDF from `sample.ranges` and/or `sample.chapters` | `--theme` |
 
 ## KDP
 

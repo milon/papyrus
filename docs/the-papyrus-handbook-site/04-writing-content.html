@@ -39,8 +39,7 @@
         <main class="content">
             <div style="page-break-after: always;"></div><h1>Writing content</h1>
 <p>Chapters are Markdown under <code>content/</code>, loaded in natural filename order
-(<code>00-…</code>, <code>01-…</code>, <code>10-…</code>). This handbook’s Welcome page is a pretoc chapter;
-everything after Introduction is body content for the PDF table of contents.</p>
+(<code>00-…</code>, <code>01-…</code>, <code>10-…</code>).</p>
 <h2>Front matter</h2>
 <pre><code class="language-markdown hljs markdown" data-lang="markdown">---
 title: My chapter
@@ -59,14 +58,45 @@ Body starts here.
 <tbody>
 <tr>
 <td><code>title</code></td>
-<td>Chapter title for EPUB / internal use</td>
+<td>Chapter title for EPUB / site sidebar / running headers</td>
 </tr>
 <tr>
 <td><code>pretoc</code></td>
-<td><code>true</code> places the chapter before the PDF TOC</td>
+<td><code>true</code> places the chapter <strong>before</strong> the PDF table of contents</td>
 </tr>
 </tbody>
 </table>
+<p>Accepted truthy values for <code>pretoc</code>: <code>true</code>, <code>&quot;true&quot;</code>, <code>1</code>, <code>&quot;1&quot;</code>.</p>
+<h2>Pretoc chapters</h2>
+<p>In the PDF, Papyrus splits the book into three bands around the theme’s TOC
+marker (<code>&lt;!-- PAPYRUS:TOC --&gt;</code>):</p>
+<ol>
+<li><strong>Pretoc</strong> chapters (<code>pretoc: true</code>) — title page material, copyright,
+dedication, welcome, etc.</li>
+<li><strong>Table of contents</strong> — generated from body headings (see <code>toc</code> in config)</li>
+<li><strong>Body</strong> chapters — everything else, with folios and the running header</li>
+</ol>
+<p>Pretoc chapters:</p>
+<ul>
+<li>Appear in EPUB, HTML, and the site like any other chapter</li>
+<li>Do <strong>not</strong> get normal body folios the same way (front matter styling)</li>
+<li>Are omitted from the auto-generated PDF TOC as body entries</li>
+<li>Still sort by filename — use a low prefix such as <code>00-</code> so they come first</li>
+</ul>
+<p>This handbook’s Welcome page is the example:</p>
+<pre><code class="language-markdown hljs markdown" data-lang="markdown">---
+title: Welcome
+<span class="hljs-section">pretoc: true
+---</span>
+
+<span class="hljs-section"># Welcome</span>
+
+…
+</code></pre>
+<p>File: <code>content/00-welcome.md</code>. Introduction and later chapters omit <code>pretoc</code>
+(or set it false) so they sit after the TOC in the PDF.</p>
+<p>You can have several pretoc files (<code>00-copyright.md</code>, <code>00-dedication.md</code>,
+<code>00-welcome.md</code>); all of them render before the TOC, in filename order.</p>
 <h2>Markdown features</h2>
 <p>CommonMark + GFM, fenced code highlighting, and book extras.</p>
 <h3>Emphasis and code</h3>

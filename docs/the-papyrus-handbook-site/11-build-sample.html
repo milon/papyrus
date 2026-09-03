@@ -38,8 +38,8 @@
         </header>
         <main class="content">
             <div style="page-break-after: always;"></div><h1>build:sample</h1>
-<p>Carve page ranges from a finished theme PDF into a <strong>sample</strong> PDF — useful
-for marketing downloads or review copies.</p>
+<p>Build a <strong>sample</strong> PDF for marketing downloads or review copies. Select content
+with page ranges, whole chapters by filename, or both.</p>
 <pre><code class="language-bash hljs bash" data-lang="bash">papyrus build:sample
 papyrus build:sample --theme light
 papyrus build:sample -t light,dark
@@ -82,6 +82,10 @@ papyrus build:sample -t light,dark
         [<span class="hljs-string">'from'</span> =&gt; <span class="hljs-number">1</span>, <span class="hljs-string">'to'</span> =&gt; <span class="hljs-number">4</span>],
         [<span class="hljs-string">'from'</span> =&gt; <span class="hljs-number">10</span>, <span class="hljs-string">'to'</span> =&gt; <span class="hljs-number">12</span>],
     ],
+    <span class="hljs-string">'chapters'</span> =&gt; [
+        <span class="hljs-string">'01-introduction.md'</span>,
+        <span class="hljs-string">'04-writing-content'</span>, <span class="hljs-comment">// stem or basename also works</span>
+    ],
     <span class="hljs-comment">// Optional notice text (also accepted as sample.notice / sample.text):</span>
     <span class="hljs-comment">// 'notice' =&gt; 'This is a sample…',</span>
 ],
@@ -101,22 +105,21 @@ papyrus build:sample -t light,dark
 <td>List of <code>{from, to}</code> <strong>1-based inclusive</strong> page ranges against the finished PDF</td>
 </tr>
 <tr>
-<td><code>sample_notice</code></td>
-<td>Prefixed notice page (preferred)</td>
-</tr>
-<tr>
-<td><code>sample.notice</code> / <code>sample.text</code></td>
-<td>Fallbacks if <code>sample_notice</code> is empty</td>
+<td><code>sample.chapters</code></td>
+<td>Chapter files to include in full (config order). Match by source path, basename (<code>01-intro.md</code>), or stem (<code>01-intro</code>). Rendered as body pages only — no extra cover, title page, or TOC</td>
 </tr>
 </tbody>
 </table>
-<p>Invalid ranges are dropped. <code>build:sample</code> requires at least one valid range
-or it fails.</p>
+<p>| <code>sample_notice</code> | Extra notice page (preferred) |
+| <code>sample.notice</code> / <code>sample.text</code> | Fallbacks if <code>sample_notice</code> is empty |</p>
+<p>Invalid ranges are dropped. Unknown chapter names fail the build.
+<code>build:sample</code> requires at least one of <code>ranges</code> or <code>chapters</code>.</p>
+<p>When both are set, page-range slices from the full theme PDF come first, then
+chapter pages (in config order).</p>
 <h2>Output</h2>
 <pre><code class="language-text">export/sample-&lt;slug&gt;-&lt;theme&gt;.pdf
 </code></pre>
-<p>Papyrus builds the full theme PDF first, then extracts the configured
-pages. When a notice is set, it appears as the first page of the sample.</p>
+<p>When a notice is set, it is appended after the selected content.</p>
 <nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="10-build-site.html"><span class="label">Previous</span>build:site</a><a class="next" href="12-kdp.html"><span class="label">Next</span>kdp</a></nav>
         </main>
     </div>

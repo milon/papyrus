@@ -25,9 +25,31 @@ final class SampleConfigTest extends TestCase
         ]);
 
         $this->assertTrue($config->hasRanges());
+        $this->assertFalse($config->hasChapters());
+        $this->assertTrue($config->hasSelection());
         $this->assertCount(1, $config->ranges);
         $this->assertSame(1, $config->ranges[0]['from']);
         $this->assertSame(3, $config->ranges[0]['to']);
         $this->assertSame('Sample text', $config->notice);
+    }
+
+    #[Test]
+    public function it_parses_chapters_by_filename(): void
+    {
+        $config = SampleConfig::fromConfig([
+            'sample' => [
+                'chapters' => [
+                    '01-introduction.md',
+                    '  ',
+                    '04-writing-content',
+                    12,
+                ],
+            ],
+        ]);
+
+        $this->assertFalse($config->hasRanges());
+        $this->assertTrue($config->hasChapters());
+        $this->assertTrue($config->hasSelection());
+        $this->assertSame(['01-introduction.md', '04-writing-content'], $config->chapters);
     }
 }

@@ -20,5 +20,6 @@ if [[ -z "${PUPPETEER_EXECUTABLE_PATH:-}" ]]; then
 fi
 
 ./bin/papyrus build:pdf -d examples/the-papyrus-handbook -e docs
+./bin/papyrus build:sample -d examples/the-papyrus-handbook -e docs
 ./bin/papyrus build:html -d examples/the-papyrus-handbook -e docs
 ./bin/papyrus build:site -d examples/the-papyrus-handbook -e docs

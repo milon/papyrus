@@ -73,8 +73,14 @@ return [
     ],
 
     'sample' => [
+        // Cover, title page, and pretoc (Welcome) — stops before the TOC.
         'ranges' => [
-            ['from' => 1, 'to' => 4],
+            ['from' => 1, 'to' => 5],
+        ],
+        // Then whole chapters: build:html (09) and kdp:cover (15).
+        'chapters' => [
+            '09-build-html.md',
+            '15-kdp-cover.md',
         ],
     ],
 

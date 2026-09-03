@@ -8,9 +8,11 @@ final class SampleConfig
 {
     /**
      * @param  list<array{from: int, to: int}>  $ranges
+     * @param  list<string>  $chapters
      */
     public function __construct(
         public readonly array $ranges,
+        public readonly array $chapters,
         public readonly string $notice,
     ) {}
 
@@ -42,10 +44,30 @@ final class SampleConfig
             }
         }
 
+        $chapters = [];
+        $rawChapters = $sample['chapters'] ?? [];
+
+        if (is_array($rawChapters)) {
+            foreach ($rawChapters as $chapter) {
+                if (! is_string($chapter)) {
+                    continue;
+                }
+
+                $name = trim($chapter);
+
+                if ($name === '') {
+                    continue;
+                }
+
+                $chapters[] = $name;
+            }
+        }
+
         $notice = $config['sample_notice'] ?? $sample['notice'] ?? $sample['text'] ?? '';
 
         return new self(
             ranges: $ranges,
+            chapters: $chapters,
             notice: is_string($notice) ? $notice : '',
         );
     }
@@ -53,5 +75,15 @@ final class SampleConfig
     public function hasRanges(): bool
     {
         return $this->ranges !== [];
+    }
+
+    public function hasChapters(): bool
+    {
+        return $this->chapters !== [];
+    }
+
+    public function hasSelection(): bool
+    {
+        return $this->hasRanges() || $this->hasChapters();
     }
 }

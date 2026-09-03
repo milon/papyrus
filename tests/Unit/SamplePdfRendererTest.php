@@ -52,6 +52,104 @@ final class SamplePdfRendererTest extends TestCase
         }
     }
 
+    #[Test]
+    public function sample_pdf_can_include_chapters_by_filename(): void
+    {
+        if (! extension_loaded('gd')) {
+            $this->markTestSkipped('ext-gd is required for PDF sample tests');
+        }
+
+        $bookDir = sys_get_temp_dir().'/papyrus-sample-chapters-'.uniqid('', true);
+        $exportDir = $bookDir.'/export';
+        $this->copyMiniBook($bookDir);
+
+        file_put_contents($bookDir.'/papyrus.php', <<<'PHP'
+<?php
+
+return [
+    'title' => 'Chapter Sample Book',
+    'author' => 'Papyrus',
+    'themes' => ['light'],
+    'document' => [
+        'size' => 'crown-quarto',
+        'margin_left' => 27,
+        'margin_right' => 27,
+        'margin_top' => 14,
+        'margin_bottom' => 14,
+    ],
+    'cover' => [
+        'image' => 'cover.png',
+    ],
+    'mermaid' => ['enabled' => false],
+    'sample' => [
+        'chapters' => [
+            '01-chapter-one.md',
+        ],
+    ],
+    'sample_notice' => 'Chapter sample notice',
+];
+PHP);
+
+        try {
+            $project = Project::load($bookDir)->withExportDir($exportDir);
+            $path = (new SamplePdfRenderer($project))->render('light');
+
+            $this->assertFileExists($path);
+            $this->assertSame('%PDF-', file_get_contents($path, false, null, 0, 5));
+
+            $text = (string) shell_exec(sprintf('pdftotext %s - 2>/dev/null', escapeshellarg($path)));
+            $this->assertStringContainsString('Chapter sample notice', $text);
+            $this->assertStringNotContainsString('Table of Contents', $text);
+        } finally {
+            $this->removeDir($bookDir);
+        }
+    }
+
+    private function copyMiniBook(string $destination): void
+    {
+        $source = dirname(__DIR__).'/fixtures/mini-book';
+        mkdir($destination.'/content', 0755, true);
+        mkdir($destination.'/assets', 0755, true);
+
+        foreach (['00-copyright.md', '01-chapter-one.md'] as $file) {
+            copy($source.'/content/'.$file, $destination.'/content/'.$file);
+        }
+
+        foreach (scandir($source.'/assets') ?: [] as $file) {
+            if ($file === '.' || $file === '..') {
+                continue;
+            }
+
+            $from = $source.'/assets/'.$file;
+
+            if (is_file($from)) {
+                copy($from, $destination.'/assets/'.$file);
+            }
+        }
+    }
+
+    private function removeDir(string $dir): void
+    {
+        if (! is_dir($dir)) {
+            return;
+        }
+
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::CHILD_FIRST,
+        );
+
+        foreach ($iterator as $file) {
+            if ($file->isDir()) {
+                rmdir($file->getPathname());
+            } else {
+                unlink($file->getPathname());
+            }
+        }
+
+        rmdir($dir);
+    }
+
     /**
      * @return array{width: float, height: float}|null
      */

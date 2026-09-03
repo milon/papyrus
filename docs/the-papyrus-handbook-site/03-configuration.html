@@ -309,12 +309,15 @@ non-Latin runs often show as tofu (missing glyphs) in the default font.</p>
     <span class="hljs-string">'ranges'</span> =&gt; [
         [<span class="hljs-string">'from'</span> =&gt; <span class="hljs-number">1</span>, <span class="hljs-string">'to'</span> =&gt; <span class="hljs-number">3</span>],
     ],
+    <span class="hljs-string">'chapters'</span> =&gt; [
+        <span class="hljs-string">'01-introduction.md'</span>,
+    ],
 ],
 <span class="hljs-string">'sample_notice'</span> =&gt; <span class="hljs-string">'This is a sample from My Book.'</span>,
 </code></pre>
-<p>Ranges are 1-based inclusive pages of the finished theme PDF. Notice text
-also accepts <code>sample.notice</code> / <code>sample.text</code> as fallbacks. See the
-<code>build:sample</code> chapter.</p>
+<p>Ranges are 1-based inclusive pages of the finished theme PDF. <code>chapters</code> lists
+content filenames (or stems) to include in full. Notice text also accepts
+<code>sample.notice</code> / <code>sample.text</code> as fallbacks. See the <code>build:sample</code> chapter.</p>
 <h2>KDP</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'kdp'</span> =&gt; [
     <span class="hljs-string">'ebook'</span> =&gt; [

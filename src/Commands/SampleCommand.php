@@ -16,7 +16,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'build:sample', description: 'Build sample PDF from configured page ranges')]
+#[AsCommand(name: 'build:sample', description: 'Build sample PDF from configured page ranges and/or chapters')]
 final class SampleCommand extends BookCommand
 {
     protected function configure(): void
@@ -41,8 +41,8 @@ final class SampleCommand extends BookCommand
             return Command::FAILURE;
         }
 
-        if (! $project->sampleConfig()->hasRanges()) {
-            $output->writeln('<error>No sample page ranges configured (sample.ranges in papyrus.php).</error>');
+        if (! $project->sampleConfig()->hasSelection()) {
+            $output->writeln('<error>No sample selection configured (sample.ranges and/or sample.chapters in papyrus.php).</error>');
 
             return Command::FAILURE;
         }

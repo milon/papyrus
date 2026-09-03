@@ -8,6 +8,22 @@ PHP CLI for Markdown book projects — PDF, EPUB, HTML, Hosted Site, and KDP exp
 
 Built from scratch with heavy influence from [ibis-next](https://github.com/Hi-Folks/ibis-next). Book projects use `papyrus.php`, `content/`, and `assets/`.
 
+## Beyond ibis-next
+
+Same core idea — Markdown chapters to PDF, EPUB, and HTML — plus first-class extras that ibis-next does not ship:
+
+- **Multi-page site** — `build:site` with Home, chapter sidebar, Prev/Next, light/dark mode, banner, and `404.html` (ready for GitHub Pages / Netlify)
+- **Amazon KDP** — Kindle EPUB, print interior (bleed + margin presets), cover asset export, metadata JSON (`kdp` / `kdp:*`)
+- **Mermaid** — `mermaid` fences rendered at build time for PDF, EPUB, HTML, and site (`theme: auto` embeds light + dark on the web)
+- **Sample PDFs** — carve marketing / review PDFs from page ranges and/or whole chapters (`build:sample`)
+- **Multi-script fonts** — ordered script → face routing for PDF (e.g. Bengali alongside Latin, Hindi alongside German etc.)
+- **Parallel PDF themes** — `build:pdf --parallel` for light + dark in one go
+- **Tooling** — `doctor`, `watch`, PHP fence `lint`, page-size `sizes`, and `migrate-ibis` from `ibis.php`
+- **Caches** — incremental chapter HTML and Mermaid figure caches under `.papyrus/`
+- **Export override** — `-e` / `--export` to write artifacts outside the book tree (CI / `docs/`)
+
+See the [handbook](https://papyrus.milon.im/) for the full option set.
+
 ## Host your book as a website
 
 `build:site` turns the same Markdown chapters into a multi-page static site you can deploy anywhere (GitHub Pages, Netlify, S3, …):
@@ -27,10 +43,7 @@ What you get:
 
 Example — this repo’s handbook is hosted on GitHub Pages:
 
-**[Browse The Papyrus Handbook](https://milon.im/papyrus)**
-
-On push to `main`/`master`, [`.github/workflows/pages.yml`](.github/workflows/pages.yml) rebuilds
-that site and publishes it to the `gh-pages` branch (custom domain: [milon.im/papyrus](https://milon.im/papyrus)).
+**[Browse The Papyrus Handbook](https://papyrus.milon.im/)**
 
 ```bash
 papyrus build:site -d examples/the-papyrus-handbook -e docs
@@ -40,10 +53,11 @@ papyrus build:site -d examples/the-papyrus-handbook -e docs
 
 The sample book **The Papyrus Handbook** lives in [`examples/the-papyrus-handbook/`](examples/the-papyrus-handbook/). Read it online or from the prebuilt exports in `docs/`:
 
-- [Site](https://milon.im/papyrus) — GitHub Pages (multi-page, sidebar, light/dark mode)
-- [Downloads](https://milon.im/papyrus/19-downloads.html) — light / dark PDF previews from GitHub
+- [Site](https://papyrus.milon.im/) — GitHub Pages (multi-page, sidebar, light/dark mode)
+- [Downloads](https://papyrus.milon.im/19-downloads.html) — full and sample PDF previews from GitHub
 - [HTML](docs/the-papyrus-handbook.html) — single file, light/dark mode toggle
 - [PDF (light)](docs/the-papyrus-handbook-light.pdf) · [PDF (dark)](docs/the-papyrus-handbook-dark.pdf)
+- [Sample PDF (light)](docs/sample-the-papyrus-handbook-light.pdf) · [Sample PDF (dark)](docs/sample-the-papyrus-handbook-dark.pdf)
 
 Rebuild those exports with:
 
@@ -51,7 +65,8 @@ Rebuild those exports with:
 composer build:handbook
 ```
 
-That runs `build:pdf`, `build:html`, and `build:site` with `-d examples/the-papyrus-handbook -e docs`.
+That runs `build:pdf`, `build:sample`, `build:html`, and `build:site` with
+`-d examples/the-papyrus-handbook -e docs`.
 
 ## Requirements
 
@@ -200,7 +215,7 @@ Open `export/<slug>-site/index.html` in a browser, or deploy that folder as a st
 | `build:site`   | Build multi-page HTML site with chapter sidebar (light/dark mode)     |
 | `build:html`   | Build single-file HTML from `assets/theme-html.html` (light/dark mode) |
 | `build:epub`   | Build EPUB3 with CSS and embedded images                              |
-| `build:sample` | Build sample PDF from `sample.ranges` page ranges                     |
+| `build:sample` | Build sample PDF from `sample.ranges` and/or `sample.chapters`        |
 | `kdp`          | Build all enabled KDP outputs (eBook, print, cover, metadata)         |
 | `kdp:ebook`    | KDP-ready Kindle EPUB (`export/<slug>-kdp.epub`)                      |
 | `kdp:print`    | Print interior PDF with KDP margin/bleed presets                      |

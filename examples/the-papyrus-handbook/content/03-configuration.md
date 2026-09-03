@@ -210,13 +210,16 @@ face is registered.
     'ranges' => [
         ['from' => 1, 'to' => 3],
     ],
+    'chapters' => [
+        '01-introduction.md',
+    ],
 ],
 'sample_notice' => 'This is a sample from My Book.',
 ```
 
-Ranges are 1-based inclusive pages of the finished theme PDF. Notice text
-also accepts `sample.notice` / `sample.text` as fallbacks. See the
-`build:sample` chapter.
+Ranges are 1-based inclusive pages of the finished theme PDF. `chapters` lists
+content filenames (or stems) to include in full. Notice text also accepts
+`sample.notice` / `sample.text` as fallbacks. See the `build:sample` chapter.
 
 ## KDP
 

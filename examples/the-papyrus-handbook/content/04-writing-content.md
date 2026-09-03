@@ -5,8 +5,7 @@ title: Writing content
 # Writing content
 
 Chapters are Markdown under `content/`, loaded in natural filename order
-(`00-…`, `01-…`, `10-…`). This handbook’s Welcome page is a pretoc chapter;
-everything after Introduction is body content for the PDF table of contents.
+(`00-…`, `01-…`, `10-…`).
 
 ## Front matter
 
@@ -21,8 +20,46 @@ Body starts here.
 
 | Key | Meaning |
 |-----|---------|
-| `title` | Chapter title for EPUB / internal use |
-| `pretoc` | `true` places the chapter before the PDF TOC |
+| `title` | Chapter title for EPUB / site sidebar / running headers |
+| `pretoc` | `true` places the chapter **before** the PDF table of contents |
+
+Accepted truthy values for `pretoc`: `true`, `"true"`, `1`, `"1"`.
+
+## Pretoc chapters
+
+In the PDF, Papyrus splits the book into three bands around the theme’s TOC
+marker (`<!-- PAPYRUS:TOC -->`):
+
+1. **Pretoc** chapters (`pretoc: true`) — title page material, copyright,
+   dedication, welcome, etc.
+2. **Table of contents** — generated from body headings (see `toc` in config)
+3. **Body** chapters — everything else, with folios and the running header
+
+Pretoc chapters:
+
+- Appear in EPUB, HTML, and the site like any other chapter
+- Do **not** get normal body folios the same way (front matter styling)
+- Are omitted from the auto-generated PDF TOC as body entries
+- Still sort by filename — use a low prefix such as `00-` so they come first
+
+This handbook’s Welcome page is the example:
+
+````markdown
+---
+title: Welcome
+pretoc: true
+---
+
+# Welcome
+
+…
+````
+
+File: `content/00-welcome.md`. Introduction and later chapters omit `pretoc`
+(or set it false) so they sit after the TOC in the PDF.
+
+You can have several pretoc files (`00-copyright.md`, `00-dedication.md`,
+`00-welcome.md`); all of them render before the TOC, in filename order.
 
 ## Markdown features
 

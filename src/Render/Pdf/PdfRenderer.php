@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Milon\Papyrus\Render\Pdf;
 
+use Milon\Papyrus\Book\Book;
 use Milon\Papyrus\Book\Chapter;
 use Milon\Papyrus\Config\DocumentSize;
 use Milon\Papyrus\Config\Project;
@@ -24,9 +25,11 @@ final class PdfRenderer
         ?string $outputPath = null,
         ?DocumentSize $documentSize = null,
         bool $skipCover = false,
+        ?Book $book = null,
+        bool $bodyOnly = false,
     ): string {
         return VendorNotices::silence(
-            fn (): string => $this->write($themeName, $outputPath, $documentSize, $skipCover),
+            fn (): string => $this->write($themeName, $outputPath, $documentSize, $skipCover, $book, $bodyOnly),
         );
     }
 
@@ -35,6 +38,8 @@ final class PdfRenderer
         ?string $outputPath,
         ?DocumentSize $documentSize,
         bool $skipCover,
+        ?Book $book,
+        bool $bodyOnly,
     ): string {
         $themePath = $this->project->assetsDir.'/theme-'.$themeName.'.html';
 
@@ -44,7 +49,7 @@ final class PdfRenderer
             throw new PdfException($e->getMessage(), previous: $e);
         }
 
-        $book = $this->project->bookWithFigures(breakLevel: null, exportTheme: $themeName);
+        $book ??= $this->project->bookWithFigures(breakLevel: null, exportTheme: $themeName);
         $document = $documentSize ?? $this->project->documentSize();
 
         $pdf = MpdfFactory::create($this->project, $document);
@@ -68,32 +73,36 @@ final class PdfRenderer
 
         $headerStyle = htmlspecialchars($this->project->headerStyle(), ENT_QUOTES | ENT_HTML5);
 
-        $this->suppressFolios($pdf);
+        if ($bodyOnly) {
+            $this->writeBodyOnly($pdf, $theme, $book, $headerStyle);
+        } else {
+            $this->suppressFolios($pdf);
 
-        if (! $skipCover) {
-            $this->writeCover($pdf, $themeName, $document->widthMm, $document->heightMm);
-        }
+            if (! $skipCover) {
+                $this->writeCover($pdf, $themeName, $document->widthMm, $document->heightMm);
+            }
 
-        try {
-            $pdf->WriteHTML($theme->head);
-        } catch (MpdfException $e) {
-            throw new PdfException($e->getMessage(), previous: $e);
-        }
+            try {
+                $pdf->WriteHTML($theme->head);
+            } catch (MpdfException $e) {
+                throw new PdfException($e->getMessage(), previous: $e);
+            }
 
-        foreach ($book->preToc() as $chapter) {
-            $this->writeChapter($pdf, $chapter, $headerStyle, frontMatter: true);
-        }
+            foreach ($book->preToc() as $chapter) {
+                $this->writeChapter($pdf, $chapter, $headerStyle, frontMatter: true);
+            }
 
-        try {
-            $pdf->WriteHTML($theme->tail);
-        } catch (MpdfException $e) {
-            throw new PdfException($e->getMessage(), previous: $e);
-        }
+            try {
+                $pdf->WriteHTML($theme->tail);
+            } catch (MpdfException $e) {
+                throw new PdfException($e->getMessage(), previous: $e);
+            }
 
-        $this->enableFolios($pdf);
+            $this->enableFolios($pdf);
 
-        foreach ($book->body() as $chapter) {
-            $this->writeChapter($pdf, $chapter, $headerStyle, frontMatter: false);
+            foreach ($book->body() as $chapter) {
+                $this->writeChapter($pdf, $chapter, $headerStyle, frontMatter: false);
+            }
         }
 
         $pdf->SetHTMLHeader(sprintf(
@@ -120,6 +129,49 @@ final class PdfRenderer
         }
 
         return $filename;
+    }
+
+    /**
+     * Sample / excerpt mode: theme CSS only — no cover, title page, or TOC.
+     */
+    private function writeBodyOnly(Mpdf $pdf, Theme $theme, Book $book, string $headerStyle): void
+    {
+        $styles = $this->themeStyles($theme->head);
+
+        try {
+            $pdf->WriteHTML($styles !== '' ? $styles : $theme->head);
+        } catch (MpdfException $e) {
+            throw new PdfException($e->getMessage(), previous: $e);
+        }
+
+        $this->enableFolios($pdf);
+
+        foreach ($book->chapters as $index => $chapter) {
+            $html = $index === 0
+                ? $this->stripLeadingPageBreak($chapter->html)
+                : $chapter->html;
+
+            $this->writeChapterHtml($pdf, $chapter, $html, $headerStyle, frontMatter: false);
+        }
+    }
+
+    private function stripLeadingPageBreak(string $html): string
+    {
+        return (string) preg_replace(
+            '/^(?:\s*<div style="page-break-after:\s*always;?"><\/div>)+/i',
+            '',
+            $html,
+            1,
+        );
+    }
+
+    private function themeStyles(string $head): string
+    {
+        if (preg_match('/<header\b[^>]*>.*?<\/header>/is', $head, $matches) === 1) {
+            return $matches[0];
+        }
+
+        return '';
     }
 
     private function suppressFolios(Mpdf $pdf): void
@@ -174,6 +226,16 @@ final class PdfRenderer
 
     private function writeChapter(Mpdf $pdf, Chapter $chapter, string $headerStyle, bool $frontMatter): void
     {
+        $this->writeChapterHtml($pdf, $chapter, $chapter->html, $headerStyle, $frontMatter);
+    }
+
+    private function writeChapterHtml(
+        Mpdf $pdf,
+        Chapter $chapter,
+        string $html,
+        string $headerStyle,
+        bool $frontMatter,
+    ): void {
         if (! $frontMatter) {
             $title = $chapter->title() !== '' ? $chapter->title() : $this->project->title();
 
@@ -185,7 +247,7 @@ final class PdfRenderer
         }
 
         try {
-            $pdf->WriteHTML($chapter->html);
+            $pdf->WriteHTML($html);
         } catch (MpdfException $e) {
             throw new PdfException($e->getMessage(), previous: $e);
         }

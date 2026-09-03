@@ -19,7 +19,7 @@ Amazon KDP exports. You are reading those same chapters as a Papyrus site.
 1. **Introduction** — what Papyrus is and the project layout
 2. **Install** — Composer setup and `papyrus init`
 3. **Configuration** — every `papyrus.php` option
-4. **Writing** — Markdown, asides, Mermaid, linting
+4. **Writing** — Markdown, front matter, `pretoc`, asides, Mermaid, linting
 5. **Themes** — PDF / HTML themes and fonts
 6. **build** — all-in-one export, watch, caches
 7. **build:pdf** / **epub** / **html** / **site** / **sample** — one chapter each
