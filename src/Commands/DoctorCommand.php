@@ -8,6 +8,8 @@ use Milon\Papyrus\Config\ConfigException;
 use Milon\Papyrus\Config\DocumentSize;
 use Milon\Papyrus\Config\KdpTrimBounds;
 use Milon\Papyrus\Config\Project;
+use Milon\Papyrus\Kdp\PrintMarginPreset;
+use Milon\Papyrus\Kdp\Validation\EpubcheckRunner;
 use Milon\Papyrus\Mermaid\MermaidCliResolver;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -88,6 +90,7 @@ final class DoctorCommand extends BookCommand
         $this->reportSiteAssets($project, $output);
         $this->reportDraftChapters($project, $output);
         $this->reportSiteLinkChapters($project, $output);
+        $this->reportKdpReadiness($project, $output);
 
         if ($project->mermaidConfig()->enabled) {
             $cli = MermaidCliResolver::resolve($project->mermaidConfig()->command);
@@ -202,6 +205,62 @@ final class DoctorCommand extends BookCommand
 
         if ($cname !== null) {
             $output->writeln(sprintf('Site cname: %s', $cname));
+        }
+    }
+
+    private function reportKdpReadiness(Project $project, OutputInterface $output): void
+    {
+        $kdp = $project->kdpConfig();
+
+        if (! $kdp->hasEnabledOutputs()) {
+            return;
+        }
+
+        $parts = [];
+
+        if ($kdp->ebookEnabled) {
+            $parts[] = 'ebook';
+        }
+
+        if ($kdp->printEnabled) {
+            $parts[] = 'print';
+        }
+
+        $output->writeln('KDP enabled: '.implode(', ', $parts));
+
+        if ($kdp->ebookEnabled) {
+            $cover = $kdp->ebookCover ?? $project->coverImageForTheme('light');
+
+            if ($cover === null) {
+                $output->writeln('<comment>! KDP ebook has no cover (set kdp.ebook.cover or cover.image).</comment>');
+            } elseif (! is_file($project->assetsDir.'/'.$cover)) {
+                $output->writeln(sprintf('<comment>! KDP ebook cover missing: assets/%s</comment>', $cover));
+            } else {
+                $output->writeln(sprintf('<info>✓</info> KDP ebook cover: assets/%s', $cover));
+            }
+
+            $epubcheck = new EpubcheckRunner;
+
+            if ($epubcheck->isAvailable()) {
+                $output->writeln('<info>✓</info> epubcheck: available on PATH');
+            } else {
+                $output->writeln('<comment>! epubcheck not found on PATH (optional; use --require-epubcheck to enforce).</comment>');
+            }
+        }
+
+        if ($kdp->printEnabled) {
+            if (! PrintMarginPreset::isKnown($kdp->printMarginPreset)) {
+                $output->writeln(sprintf(
+                    '<comment>! Unknown kdp.print.margin_preset "%s" (known: %s); falling back to recommended.</comment>',
+                    $kdp->printMarginPreset,
+                    implode(', ', PrintMarginPreset::names()),
+                ));
+            } else {
+                $output->writeln(sprintf('KDP print margin_preset: %s', $kdp->printMarginPreset));
+            }
+
+            $output->writeln(sprintf('KDP print bleed_mm: %s', $kdp->printBleedMm));
+            $output->writeln(sprintf('KDP print paper: %s', $kdp->printPaper));
         }
     }
 

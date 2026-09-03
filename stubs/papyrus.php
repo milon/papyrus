@@ -91,6 +91,13 @@ return [
         'print' => [
             'enabled' => false,
             'bleed_mm' => 3,
+            'margin_preset' => 'recommended', // or 'minimum'
+            'paper' => 'white', // metadata helper only
+        ],
+        'metadata' => [
+            // 'description' => 'Bookstore blurb…',
+            // 'keywords' => ['keyword-one', 'keyword-two'],
+            // 'language' => 'en', // optional; else project language
         ],
     ],
 

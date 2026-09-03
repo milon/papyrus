@@ -10,6 +10,7 @@ copies, and the metadata JSON sidecar.
 
 ```bash
 papyrus kdp
+papyrus kdp --require-epubcheck
 papyrus kdp -d /path/to/book -e /path/to/out
 ```
 
@@ -22,6 +23,7 @@ Unlike `papyrus build`, this command **fails** when neither
 |--------|-------|---------|---------|
 | `--dir` | `-d` | current directory | Book root |
 | `--export` | `-e` | `export/` | Output directory |
+| `--require-epubcheck` | | off | Fail ebook build if `epubcheck` is missing |
 
 Print uses the **first** configured theme (same as `kdp:print` without
 `--theme`).

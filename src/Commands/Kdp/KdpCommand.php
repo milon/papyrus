@@ -8,17 +8,31 @@ use Milon\Papyrus\Commands\BookCommand;
 use Milon\Papyrus\Config\ConfigException;
 use Milon\Papyrus\Kdp\KdpBuilder;
 use Milon\Papyrus\Kdp\KdpException;
+use Milon\Papyrus\Kdp\KdpRenderResult;
 use Milon\Papyrus\Mermaid\MermaidException;
 use Milon\Papyrus\Render\Epub\EpubException;
 use Milon\Papyrus\Render\Pdf\PdfException;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: 'kdp', description: 'Build all enabled KDP outputs')]
 final class KdpCommand extends BookCommand
 {
+    protected function configure(): void
+    {
+        parent::configure();
+
+        $this->addOption(
+            'require-epubcheck',
+            null,
+            InputOption::VALUE_NONE,
+            'Fail if epubcheck is not available on PATH (ebook builds)',
+        );
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
@@ -39,12 +53,14 @@ final class KdpCommand extends BookCommand
 
         $failed = false;
         $theme = $project->themes()[0] ?? 'light';
+        $requireEpubcheck = (bool) $input->getOption('require-epubcheck');
 
         try {
-            $path = $builder->buildEbook();
+            $result = $builder->buildEbook(requireEpubcheck: $requireEpubcheck);
 
-            if ($path !== null) {
-                $output->writeln(sprintf('<info>✓</info> %s', $path));
+            if ($result !== null) {
+                $this->writeWarnings($output, $result);
+                $output->writeln(sprintf('<info>✓</info> %s', $result->path));
             }
         } catch (KdpException|EpubException|MermaidException $e) {
             $output->writeln('<error>✗ kdp ebook: '.$e->getMessage().'</error>');
@@ -80,5 +96,12 @@ final class KdpCommand extends BookCommand
         }
 
         return $failed ? Command::FAILURE : Command::SUCCESS;
+    }
+
+    private function writeWarnings(OutputInterface $output, KdpRenderResult $result): void
+    {
+        foreach ($result->warnings as $warning) {
+            $output->writeln('<comment>! '.$warning.'</comment>');
+        }
     }
 }

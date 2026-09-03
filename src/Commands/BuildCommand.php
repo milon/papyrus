@@ -87,10 +87,13 @@ final class BuildCommand extends BookCommand
             $theme = $project->themes()[0] ?? 'light';
 
             try {
-                $path = $builder->buildEbook();
+                $result = $builder->buildEbook();
 
-                if ($path !== null) {
-                    $output->writeln(sprintf('<info>✓</info> %s', $path));
+                if ($result !== null) {
+                    foreach ($result->warnings as $warning) {
+                        $output->writeln('<comment>! '.$warning.'</comment>');
+                    }
+                    $output->writeln(sprintf('<info>✓</info> %s', $result->path));
                 }
             } catch (KdpException|EpubException|MermaidException $e) {
                 $output->writeln('<error>✗ kdp ebook: '.$e->getMessage().'</error>');

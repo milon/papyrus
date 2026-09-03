@@ -1296,9 +1296,16 @@ Body starts here.
 <td><code>pretoc</code></td>
 <td><code>true</code> places the chapter <strong>before</strong> the PDF table of contents</td>
 </tr>
+<tr>
+<td><code>draft</code></td>
+<td><code>true</code> omits the chapter from PDF, EPUB, HTML, site, sample, and KDP builds</td>
+</tr>
 </tbody>
 </table>
-<p>Accepted truthy values for <code>pretoc</code>: <code>true</code>, <code>&quot;true&quot;</code>, <code>1</code>, <code>&quot;1&quot;</code>.</p>
+<p>Accepted truthy values for <code>pretoc</code> and <code>draft</code>: <code>true</code>, <code>&quot;true&quot;</code>, <code>1</code>, <code>&quot;1&quot;</code>.</p>
+<p>Pass <code>--include-drafts</code> on any book build command (or <code>watch</code>) when you want
+draft chapters in the output. <code>doctor</code> lists drafts and warns if <code>site.links</code>
+points at one.</p>
 <h2 id="pretoc-chapters"><a class="heading-permalink" href="#pretoc-chapters" aria-hidden="true" tabindex="-1">#</a>Pretoc chapters</h2>
 <p>In the PDF, Papyrus splits the book into three bands around the theme’s TOC
 marker (<code>&lt;!-- PAPYRUS:TOC --&gt;</code>):</p>
@@ -1534,6 +1541,12 @@ papyrus build -d examples/the-papyrus-handbook -e docs --with-site --with-sample
 <td>off</td>
 <td>Also run <code>build:sample</code> for every theme</td>
 </tr>
+<tr>
+<td><code>--include-drafts</code></td>
+<td></td>
+<td>off</td>
+<td>Include chapters with <code>draft: true</code></td>
+</tr>
 </tbody>
 </table>
 <p>Global Symfony options also apply (<code>-v</code> / <code>--verbose</code>, <code>-q</code>, <code>--no-ansi</code>, …).
@@ -1582,7 +1595,8 @@ With <code>-v</code>, Papyrus prints third-party notices from mPDF and the EPUB 
 </table>
 <p>Slug comes from <code>title</code> (lowercased, non-alphanumeric → <code>-</code>).</p>
 <p><code>watch</code> invokes <code>build</code> on each change. Pass <code>--with-site</code> and/or
-<code>--with-sample</code> to include those outputs in every rebuild.</p>
+<code>--with-sample</code> to include those outputs in every rebuild. Pass
+<code>--include-drafts</code> to keep <code>draft: true</code> chapters in the rebuild.</p>
 <h2 id="failures"><a class="heading-permalink" href="#failures" aria-hidden="true" tabindex="-1">#</a>Failures</h2>
 <p>Each step is independent. If one format fails, Papyrus continues with the
 others and exits non-zero if any step failed. When no KDP outputs are
@@ -2834,7 +2848,7 @@ $book = $project-&gt;bookConverter()-&gt;convertDirectory($project-&gt;contentDi
 <tr>
 <td><code>watch</code></td>
 <td>Rebuild via <code>build</code> on file changes</td>
-<td><code>--interval</code>, <code>--with-site</code>, <code>--with-sample</code></td>
+<td><code>--interval</code>, <code>--with-site</code>, <code>--with-sample</code>, <code>--include-drafts</code></td>
 </tr>
 <tr>
 <td><code>serve</code></td>
@@ -2871,6 +2885,12 @@ $book = $project-&gt;bookConverter()-&gt;convertDirectory($project-&gt;contentDi
 <td><code>-e</code></td>
 <td><code>&lt;book&gt;/export</code></td>
 <td>Override export directory</td>
+</tr>
+<tr>
+<td><code>--include-drafts</code></td>
+<td></td>
+<td>off</td>
+<td>Include chapters with <code>draft: true</code></td>
 </tr>
 </tbody>
 </table>

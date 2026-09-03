@@ -12,13 +12,13 @@ final class KdpBuilder
         private readonly Project $project,
     ) {}
 
-    public function buildEbook(): ?string
+    public function buildEbook(bool $requireEpubcheck = false): ?KdpRenderResult
     {
         if (! $this->project->kdpConfig()->ebookEnabled) {
             return null;
         }
 
-        return (new KdpEbookRenderer($this->project))->render();
+        return (new KdpEbookRenderer($this->project))->render(requireEpubcheck: $requireEpubcheck);
     }
 
     public function buildPrint(string $themeName): ?string

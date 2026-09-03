@@ -54,10 +54,33 @@ export/<slug>-kdp-metadata.json
   "language": "en",
   "description": "…",
   "keywords": ["…"],
+  "ebook": {
+    "enabled": true,
+    "cover": "cover-ebook.jpg",
+    "artifact": "<slug>-kdp.epub"
+  },
   "print": {
+    "enabled": true,
     "paper": "white",
     "bleed_mm": 3,
-    "margin_preset": "recommended"
+    "margin_preset": "recommended",
+    "margin_preset_known": true,
+    "trim": {
+      "width_mm": 152.4,
+      "height_mm": 228.6,
+      "width_in": 6.0,
+      "height_in": 9.0,
+      "preset": "6x9",
+      "within_kdp_bounds": true
+    },
+    "artifact": "<slug>-kdp-print.pdf"
+  },
+  "artifacts": {
+    "ebook": "<slug>-kdp.epub",
+    "print": "<slug>-kdp-print.pdf",
+    "metadata": "<slug>-kdp-metadata.json",
+    "ebook_cover": "<slug>-kdp-ebook-cover.jpg",
+    "print_covers": ["<slug>-kdp-print-cover-light.jpg"]
   }
 }
 ```
@@ -68,7 +91,9 @@ export/<slug>-kdp-metadata.json
 | `language` | `kdp.metadata.language` → `language` → `en` |
 | `description` | `kdp.metadata.description` (may be empty) |
 | `keywords` | `kdp.metadata.keywords` (string list) |
-| `print.*` | Current `kdp.print` settings |
+| `ebook.*` / `print.*` | Enable flags, paper, bleed, margin preset, trim size |
+| `artifacts.*` | Expected export filenames for uploads |
 
 This file is a helper for your workflow — it is not uploaded automatically
-to Amazon.
+to Amazon. Run `papyrus doctor` to check KDP readiness (covers, margin
+preset, epubcheck on `PATH`).

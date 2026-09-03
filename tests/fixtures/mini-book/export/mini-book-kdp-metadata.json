@@ -8,9 +8,35 @@
         "papyrus",
         "fixture"
     ],
+    "ebook": {
+        "enabled": true,
+        "cover": null,
+        "artifact": "mini-book-kdp.epub"
+    },
     "print": {
+        "enabled": true,
         "paper": "white",
         "bleed_mm": 3,
-        "margin_preset": "recommended"
+        "margin_preset": "recommended",
+        "margin_preset_known": true,
+        "trim": {
+            "width_mm": 188.976,
+            "height_mm": 246.126,
+            "width_in": 7.44,
+            "height_in": 9.69,
+            "preset": "crown-quarto",
+            "within_kdp_bounds": true
+        },
+        "artifact": "mini-book-kdp-print.pdf"
+    },
+    "artifacts": {
+        "ebook": "mini-book-kdp.epub",
+        "print": "mini-book-kdp-print.pdf",
+        "metadata": "mini-book-kdp-metadata.json",
+        "ebook_cover": null,
+        "print_covers": [
+            "mini-book-kdp-print-cover-light.png",
+            "mini-book-kdp-print-cover-dark.png"
+        ]
     }
 }

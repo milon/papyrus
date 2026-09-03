@@ -27,6 +27,19 @@ final class PrintMarginPreset
     ];
 
     /**
+     * @return list<string>
+     */
+    public static function names(): array
+    {
+        return array_keys(self::PRESETS);
+    }
+
+    public static function isKnown(string $preset): bool
+    {
+        return isset(self::PRESETS[$preset]);
+    }
+
+    /**
      * @return array{left: float, right: float, top: float, bottom: float}
      */
     public static function margins(string $preset): array

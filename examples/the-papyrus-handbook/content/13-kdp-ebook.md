@@ -8,6 +8,7 @@ Build a Kindle-oriented EPUB for Amazon KDP upload.
 
 ```bash
 papyrus kdp:ebook
+papyrus kdp:ebook --require-epubcheck
 papyrus kdp:ebook -d /path/to/book -e /path/to/out
 ```
 
@@ -19,6 +20,7 @@ Requires `kdp.ebook.enabled => true`.
 |--------|-------|---------|---------|
 | `--dir` | `-d` | current directory | Book root |
 | `--export` | `-e` | `export/` | Output directory |
+| `--require-epubcheck` | | off | Fail if `epubcheck` is not on `PATH` |
 
 ## Output
 
@@ -28,7 +30,9 @@ export/<slug>-kdp.epub
 
 Papyrus runs an internal KDP-oriented check and, when available on `PATH`,
 `epubcheck` (install with `brew install epubcheck`, or from
-[w3c/epubcheck](https://github.com/w3c/epubcheck/releases)).
+[w3c/epubcheck](https://github.com/w3c/epubcheck/releases)). Warnings from
+those checks are printed to the console. Without epubcheck, the build still
+succeeds with a warning unless you pass `--require-epubcheck`.
 
 ## Cover
 

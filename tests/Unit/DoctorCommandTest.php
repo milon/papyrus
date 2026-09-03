@@ -23,6 +23,7 @@ final class DoctorCommandTest extends TestCase
         $this->assertStringContainsString('Configuration OK', $tester->getDisplay());
         $this->assertStringContainsString('Mini Book', $tester->getDisplay());
         $this->assertStringContainsString('Theme light:', $tester->getDisplay());
+        $this->assertStringContainsString('KDP enabled: ebook, print', $tester->getDisplay());
     }
 
     #[Test]

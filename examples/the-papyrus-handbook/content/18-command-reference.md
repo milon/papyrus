@@ -19,8 +19,8 @@ title: Command reference
 
 | Command | Purpose | Notable options |
 |---------|---------|-----------------|
-| `kdp` | All enabled KDP outputs | `-d`, `-e` |
-| `kdp:ebook` | Kindle EPUB | requires `kdp.ebook.enabled` |
+| `kdp` | All enabled KDP outputs | `-d`, `-e`, `--require-epubcheck` |
+| `kdp:ebook` | Kindle EPUB | `--require-epubcheck`; requires `kdp.ebook.enabled` |
 | `kdp:print` | Print interior PDF | `--theme`; requires `kdp.print.enabled` |
 | `kdp:cover` | Copy cover assets to `export/` | no enable flag |
 | `kdp:metadata` | Metadata JSON sidecar | no enable flag |

@@ -117,8 +117,45 @@
             if (links.length === 0) return false;
             var target = links[activeResultIndex >= 0 ? activeResultIndex : 0];
             if (!target) return false;
-            window.location.href = target.getAttribute("href");
+            navigateToResult(target.getAttribute("href"));
             return true;
+        }
+
+        function navigateToResult(href) {
+            if (!href) return;
+
+            closeSearch();
+
+            var url;
+            try {
+                url = new URL(href, window.location.href);
+            } catch (e) {
+                window.location.href = href;
+                return;
+            }
+
+            var current = new URL(window.location.href);
+            var samePage = url.pathname === current.pathname && url.search === current.search;
+
+            if (!samePage) {
+                window.location.href = href;
+                return;
+            }
+
+            if (!url.hash) {
+                return;
+            }
+
+            var id = decodeURIComponent(url.hash.replace(/^#/, ""));
+            var target = id ? document.getElementById(id) : null;
+
+            if (current.hash !== url.hash) {
+                history.pushState(null, "", url.pathname + url.search + url.hash);
+            }
+
+            if (target) {
+                target.scrollIntoView();
+            }
         }
 
         function excerptFor(entry) {
@@ -265,7 +302,8 @@
             searchResults.addEventListener("click", function (event) {
                 var link = event.target.closest("a.search-result-item");
                 if (link) {
-                    window.location.href = link.getAttribute("href");
+                    event.preventDefault();
+                    navigateToResult(link.getAttribute("href"));
                 }
             });
         }

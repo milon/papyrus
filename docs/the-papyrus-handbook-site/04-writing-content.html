@@ -70,9 +70,16 @@ Body starts here.
 <td><code>pretoc</code></td>
 <td><code>true</code> places the chapter <strong>before</strong> the PDF table of contents</td>
 </tr>
+<tr>
+<td><code>draft</code></td>
+<td><code>true</code> omits the chapter from PDF, EPUB, HTML, site, sample, and KDP builds</td>
+</tr>
 </tbody>
 </table>
-<p>Accepted truthy values for <code>pretoc</code>: <code>true</code>, <code>&quot;true&quot;</code>, <code>1</code>, <code>&quot;1&quot;</code>.</p>
+<p>Accepted truthy values for <code>pretoc</code> and <code>draft</code>: <code>true</code>, <code>&quot;true&quot;</code>, <code>1</code>, <code>&quot;1&quot;</code>.</p>
+<p>Pass <code>--include-drafts</code> on any book build command (or <code>watch</code>) when you want
+draft chapters in the output. <code>doctor</code> lists drafts and warns if <code>site.links</code>
+points at one.</p>
 <h2 id="pretoc-chapters"><a class="heading-permalink" href="#pretoc-chapters" aria-hidden="true" tabindex="-1">#</a>Pretoc chapters</h2>
 <p>In the PDF, Papyrus splits the book into three bands around the theme’s TOC
 marker (<code>&lt;!-- PAPYRUS:TOC --&gt;</code>):</p>
