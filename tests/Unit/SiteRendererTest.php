@@ -54,6 +54,13 @@ final class SiteRendererTest extends TestCase
             $this->assertStringContainsString('.book-banner', $css);
             $this->assertStringContainsString('@media (min-width: 56em)', $css);
             $this->assertFileExists($siteDir.'/.nojekyll');
+            $this->assertFileExists($siteDir.'/404.html');
+
+            $notFound = file_get_contents($siteDir.'/404.html');
+            $this->assertIsString($notFound);
+            $this->assertStringContainsString('Page not found', $notFound);
+            $this->assertStringContainsString('href="index.html"', $notFound);
+            $this->assertStringContainsString('name="robots"', $notFound);
         } finally {
             $this->removeDir($export);
         }

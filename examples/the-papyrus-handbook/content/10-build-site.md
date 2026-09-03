@@ -26,6 +26,7 @@ papyrus build:site -d examples/the-papyrus-handbook -e docs
 ```text
 export/<slug>-site/
   index.html
+  404.html
   <chapter-slug>.html
   .nojekyll
   assets/site.css
@@ -35,7 +36,8 @@ export/<slug>-site/
 ```
 
 Point any static host (GitHub Pages, Netlify, S3, …) at that folder.
-`.nojekyll` tells GitHub Pages not to run Jekyll.
+`.nojekyll` tells GitHub Pages not to run Jekyll. GitHub Pages and Netlify
+serve `404.html` for missing URLs.
 
 ## Site config
 

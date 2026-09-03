@@ -72,6 +72,7 @@ papyrus build:site -d examples/the-papyrus-handbook -e docs
 <h2>Output</h2>
 <pre><code class="language-text">export/&lt;slug&gt;-site/
   index.html
+  404.html
   &lt;chapter-slug&gt;.html
   .nojekyll
   assets/site.css
@@ -80,7 +81,8 @@ papyrus build:site -d examples/the-papyrus-handbook -e docs
   assets/&lt;banner&gt;   # when configured
 </code></pre>
 <p>Point any static host (GitHub Pages, Netlify, S3, …) at that folder.
-<code>.nojekyll</code> tells GitHub Pages not to run Jekyll.</p>
+<code>.nojekyll</code> tells GitHub Pages not to run Jekyll. GitHub Pages and Netlify
+serve <code>404.html</code> for missing URLs.</p>
 <h2>Site config</h2>
 <p>Optional <code>site</code> block in <code>papyrus.php</code>:</p>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'site'</span> =&gt; [

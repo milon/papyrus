@@ -67,6 +67,7 @@ final class SiteRenderer
         }
 
         $this->writeFile($siteDir.'/index.html', $this->renderIndex($pages));
+        $this->writeFile($siteDir.'/404.html', $this->renderNotFound($pages));
 
         foreach ($pages as $index => $page) {
             $prev = $pages[$index - 1] ?? null;
@@ -128,6 +129,31 @@ HTML;
             activeFile: 'index.html',
             body: $body,
             topbarTitle: $this->project->title(),
+        );
+    }
+
+    /**
+     * @param  list<array{chapter: Chapter, file: string, title: string}>  $pages
+     */
+    private function renderNotFound(array $pages): string
+    {
+        $title = htmlspecialchars($this->project->title(), ENT_QUOTES | ENT_HTML5);
+        $body = <<<HTML
+<div class="not-found">
+    <p class="not-found-code">404</p>
+    <h1>Page not found</h1>
+    <p>This URL is not part of {$title}.</p>
+    <a class="start-reading" href="index.html">Back to home</a>
+</div>
+HTML;
+
+        return $this->document(
+            pages: $pages,
+            pageTitle: 'Page not found — '.$this->project->title(),
+            activeFile: '404.html',
+            body: $body,
+            topbarTitle: 'Page not found',
+            extraHead: '<meta name="robots" content="noindex">',
         );
     }
 
@@ -223,12 +249,14 @@ HTML;
         string $activeFile,
         string $body,
         string $topbarTitle,
+        string $extraHead = '',
     ): string {
         $title = htmlspecialchars($pageTitle, ENT_QUOTES | ENT_HTML5);
         $bookTitle = htmlspecialchars($this->project->title(), ENT_QUOTES | ENT_HTML5);
         $bookSubtitle = htmlspecialchars($this->project->subtitle(), ENT_QUOTES | ENT_HTML5);
         $topbar = htmlspecialchars($topbarTitle, ENT_QUOTES | ENT_HTML5);
         $sidebar = $this->sidebarHtml($pages, $activeFile);
+        $headExtra = $extraHead !== '' ? "\n    ".$extraHead : '';
 
         return <<<HTML
 <!DOCTYPE html>
@@ -236,7 +264,7 @@ HTML;
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{$title}</title>
+    <title>{$title}</title>{$headExtra}
     <link rel="stylesheet" href="assets/site.css">
     <script src="assets/site.js"></script>
 </head>

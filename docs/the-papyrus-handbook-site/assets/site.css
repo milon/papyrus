@@ -404,6 +404,22 @@ div[style*="page-break"] { display: none; }
 .title-page .home-links a:hover {
     text-decoration: underline;
 }
+
+.not-found { text-align: center; padding: 3em 0 4em; }
+.not-found-code {
+    margin: 0;
+    font-family: oxproto, ui-monospace, monospace;
+    font-size: 0.9em;
+    letter-spacing: 0.12em;
+    color: var(--muted);
+}
+.not-found h1 {
+    font-size: 2em;
+    margin: 0.4em 0 0.5em;
+    padding: 0;
+    color: var(--heading);
+}
+.not-found p { color: var(--muted); }
 .theme-toggle,
 .nav-toggle {
     display: inline-flex;

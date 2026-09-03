@@ -52,6 +52,7 @@ jobs:
           echo "Using Chrome at: ${PUPPETEER_EXECUTABLE_PATH:-not set}"
           ./bin/papyrus build:site -d examples/the-papyrus-handbook -e docs
           test -f docs/the-papyrus-handbook-site/index.html
+          test -f docs/the-papyrus-handbook-site/404.html
           test -f docs/the-papyrus-handbook-site/.nojekyll
           test -f docs/the-papyrus-handbook-site/assets/fonts/LinLibertine_R.ttf
 
