@@ -27,6 +27,13 @@ abstract class BookCommand extends Command
             InputOption::VALUE_REQUIRED,
             'Override export directory (default: <book>/export)',
         );
+
+        $this->addOption(
+            'include-drafts',
+            null,
+            InputOption::VALUE_NONE,
+            'Include chapters marked draft: true in front matter',
+        );
     }
 
     protected function projectDir(InputInterface $input): string
@@ -39,11 +46,15 @@ abstract class BookCommand extends Command
         $project = Project::load($this->projectDir($input));
         $export = $input->getOption('export');
 
-        if (! is_string($export) || $export === '') {
-            return $project;
+        if (is_string($export) && $export !== '') {
+            $project = $project->withExportDir($this->resolveExportDir($export));
         }
 
-        return $project->withExportDir($this->resolveExportDir($export));
+        if ($input->hasOption('include-drafts') && (bool) $input->getOption('include-drafts')) {
+            $project = $project->withIncludeDrafts();
+        }
+
+        return $project;
     }
 
     protected function resolveExportDir(string $path): string

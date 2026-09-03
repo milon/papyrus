@@ -117,6 +117,10 @@ final class WatchCommand extends BookCommand
             $buildArgs['--with-sample'] = true;
         }
 
+        if ((bool) $input->getOption('include-drafts')) {
+            $buildArgs['--include-drafts'] = true;
+        }
+
         return $buildArgs;
     }
 }

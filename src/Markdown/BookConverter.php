@@ -171,7 +171,7 @@ final class BookConverter
 
         $pretoc = $frontMatter['pretoc'] ?? false;
 
-        return $pretoc === true || $pretoc === 'true' || $pretoc === 1 || $pretoc === '1';
+        return Chapter::isTruthy($pretoc);
     }
 }
 

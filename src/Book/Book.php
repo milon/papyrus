@@ -36,6 +36,25 @@ final class Book
     }
 
     /**
+     * @return list<Chapter>
+     */
+    public function drafts(): array
+    {
+        return array_values(array_filter(
+            $this->chapters,
+            fn (Chapter $chapter): bool => $chapter->isDraft(),
+        ));
+    }
+
+    public function withoutDrafts(): self
+    {
+        return new self(array_values(array_filter(
+            $this->chapters,
+            fn (Chapter $chapter): bool => ! $chapter->isDraft(),
+        )));
+    }
+
+    /**
      * Select chapters in the given config order. Names may be a source path,
      * basename (`01-intro.md`), or stem (`01-intro`).
      *

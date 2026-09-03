@@ -34,7 +34,7 @@ title: Command reference
 | `doctor` | Validate config, paths, Mermaid, KDP trim | `-d` |
 | `sizes` | List page-size presets (+ KDP in-bounds) | (no `-d` / `-e`) |
 | `lint` | Lint PHP fences in `content/` | `--fix`, `--max-width=66` |
-| `watch` | Rebuild via `build` on file changes | `--interval`, `--with-site`, `--with-sample` |
+| `watch` | Rebuild via `build` on file changes | `--interval`, `--with-site`, `--with-sample`, `--include-drafts` |
 | `serve` | Preview the generated site in a browser | `--host`, `-p`/`--port`, `--build`, `-s`/`--site` |
 | `migrate-ibis` | `ibis.php` → `papyrus.php`; TOC markers in local `assets/theme*.html` only | `--force` |
 
@@ -46,6 +46,7 @@ Most book commands accept:
 |--------|-------|---------|---------|
 | `--dir` | `-d` | current directory | Book root (contains `papyrus.php`) |
 | `--export` | `-e` | `<book>/export` | Override export directory |
+| `--include-drafts` | | off | Include chapters with `draft: true` |
 
 Also useful globally: `-v` / `--verbose` (include third-party vendor notices),
 `-q` / `--quiet`, `--no-ansi`.

@@ -43,9 +43,19 @@ final class Chapter
         return pathinfo($this->source, PATHINFO_FILENAME);
     }
 
+    public function isDraft(): bool
+    {
+        return self::isTruthy($this->frontMatter['draft'] ?? false);
+    }
+
     public function webSlug(): string
     {
         return pathinfo($this->source, PATHINFO_FILENAME);
+    }
+
+    public static function isTruthy(mixed $value): bool
+    {
+        return $value === true || $value === 'true' || $value === 1 || $value === '1';
     }
 
     /**

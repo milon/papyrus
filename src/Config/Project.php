@@ -34,6 +34,7 @@ final class Project
         public readonly string $contentDir,
         public readonly string $assetsDir,
         public readonly string $exportDir,
+        public readonly bool $includeDrafts = false,
     ) {}
 
     public function withExportDir(string $exportDir): self
@@ -45,6 +46,20 @@ final class Project
             contentDir: $this->contentDir,
             assetsDir: $this->assetsDir,
             exportDir: self::normalizePath($exportDir),
+            includeDrafts: $this->includeDrafts,
+        );
+    }
+
+    public function withIncludeDrafts(bool $includeDrafts = true): self
+    {
+        return new self(
+            dir: $this->dir,
+            configPath: $this->configPath,
+            config: $this->config,
+            contentDir: $this->contentDir,
+            assetsDir: $this->assetsDir,
+            exportDir: $this->exportDir,
+            includeDrafts: $includeDrafts,
         );
     }
 
@@ -167,6 +182,10 @@ final class Project
     public function bookWithFigures(?int $breakLevel, string $exportTheme): Book
     {
         $book = $this->bookConverter($breakLevel)->convertDirectory($this->contentDir);
+
+        if (! $this->includeDrafts) {
+            $book = $book->withoutDrafts();
+        }
 
         if (! $this->mermaidConfig()->enabled) {
             return $book;

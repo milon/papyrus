@@ -22,8 +22,13 @@ Body starts here.
 |-----|---------|
 | `title` | Chapter title for EPUB / site sidebar / running headers |
 | `pretoc` | `true` places the chapter **before** the PDF table of contents |
+| `draft` | `true` omits the chapter from PDF, EPUB, HTML, site, sample, and KDP builds |
 
-Accepted truthy values for `pretoc`: `true`, `"true"`, `1`, `"1"`.
+Accepted truthy values for `pretoc` and `draft`: `true`, `"true"`, `1`, `"1"`.
+
+Pass `--include-drafts` on any book build command (or `watch`) when you want
+draft chapters in the output. `doctor` lists drafts and warns if `site.links`
+points at one.
 
 ## Pretoc chapters
 

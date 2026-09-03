@@ -22,6 +22,7 @@ final class WatchCommandTest extends TestCase
             '--export' => '/tmp/papyrus-watch-export',
             '--with-site' => true,
             '--with-sample' => true,
+            '--include-drafts' => true,
         ]);
         $input->bind($command->getDefinition());
 
@@ -32,6 +33,7 @@ final class WatchCommandTest extends TestCase
         $this->assertSame($project->exportDir, $args['--export']);
         $this->assertTrue($args['--with-site']);
         $this->assertTrue($args['--with-sample']);
+        $this->assertTrue($args['--include-drafts']);
     }
 
     #[Test]
@@ -46,6 +48,7 @@ final class WatchCommandTest extends TestCase
 
         $this->assertArrayNotHasKey('--with-site', $args);
         $this->assertArrayNotHasKey('--with-sample', $args);
+        $this->assertArrayNotHasKey('--include-drafts', $args);
         $this->assertArrayNotHasKey('--export', $args);
     }
 }

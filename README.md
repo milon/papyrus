@@ -237,18 +237,20 @@ papyrus asset:publish --only=themes
 | `sizes`        | List KDP page-size presets                                            |
 | `migrate-ibis` | Migrate `ibis.php` to `papyrus.php`; update TOC markers in local themes |
 | `lint`         | Lint PHP code fences in `content/` (`--fix` to auto-fix)              |
-| `watch`        | Rebuild on file changes (`--interval`, `--with-site`, `--with-sample`) |
+| `watch`        | Rebuild on file changes (`--interval`, `--with-site`, `--with-sample`, `--include-drafts`) |
 
 Common options on book commands:
 
 - `-d` / `--dir` — book root (default: current directory)
 - `-e` / `--export` — override export directory (default: `<book>/export`)
+- `--include-drafts` — include chapters with `draft: true` in front matter
 
 Convert Markdown chapters programmatically:
 
 ```php
 $project = Milon\Papyrus\Config\Project::load($bookDir);
-$book = $project->bookConverter()->convertDirectory($project->contentDir);
+$book = $project->bookWithFigures(breakLevel: 1, exportTheme: 'html'); // drafts omitted
+$withDrafts = $project->withIncludeDrafts()->bookWithFigures(breakLevel: 1, exportTheme: 'html');
 ```
 
 ## Tests

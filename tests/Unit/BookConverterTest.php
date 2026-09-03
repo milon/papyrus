@@ -6,6 +6,7 @@ namespace Milon\Papyrus\Tests\Unit;
 
 use Milon\Papyrus\Config\Project;
 use Milon\Papyrus\Markdown\BookConverter;
+use Milon\Papyrus\Render\Html\SiteRenderer;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -119,5 +120,70 @@ MD;
             unlink($dir.'/02-two.md');
             rmdir($dir);
         }
+    }
+
+    #[Test]
+    public function draft_chapters_are_excluded_unless_include_drafts_is_set(): void
+    {
+        $bookDir = sys_get_temp_dir().'/papyrus-draft-'.uniqid('', true);
+        $export = $bookDir.'/export';
+        mkdir($bookDir.'/content', 0755, true);
+        mkdir($bookDir.'/assets', 0755, true);
+        mkdir($export, 0755, true);
+
+        file_put_contents($bookDir.'/content/01-published.md', "---\ntitle: Published\n---\n\n# Published\n\nHello.\n");
+        file_put_contents($bookDir.'/content/02-wip.md', "---\ntitle: Work in progress\ndraft: true\n---\n\n# WIP\n\nSecret.\n");
+        file_put_contents($bookDir.'/papyrus.php', <<<'PHP'
+<?php
+
+return [
+    'title' => 'Draft Book',
+    'author' => 'Author',
+    'themes' => ['light'],
+    'mermaid' => ['enabled' => false],
+];
+PHP);
+
+        try {
+            $project = Project::load($bookDir)->withExportDir($export);
+            $published = $project->bookWithFigures(breakLevel: 1, exportTheme: 'html');
+            $this->assertCount(1, $published->chapters);
+            $this->assertSame('01-published.md', $published->chapters[0]->source);
+
+            $withDrafts = $project->withIncludeDrafts()->bookWithFigures(breakLevel: 1, exportTheme: 'html');
+            $this->assertCount(2, $withDrafts->chapters);
+            $this->assertTrue($withDrafts->chapters[1]->isDraft());
+
+            $siteDir = (new SiteRenderer($project))->render();
+            $this->assertFileExists($siteDir.'/01-published.html');
+            $this->assertFileDoesNotExist($siteDir.'/02-wip.html');
+
+            $draftSite = (new SiteRenderer($project->withIncludeDrafts()))->render($export.'/with-drafts-site');
+            $this->assertFileExists($draftSite.'/02-wip.html');
+        } finally {
+            $this->removeDir($bookDir);
+        }
+    }
+
+    private function removeDir(string $dir): void
+    {
+        if (! is_dir($dir)) {
+            return;
+        }
+
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::CHILD_FIRST,
+        );
+
+        foreach ($iterator as $file) {
+            if ($file->isDir()) {
+                rmdir($file->getPathname());
+            } else {
+                unlink($file->getPathname());
+            }
+        }
+
+        rmdir($dir);
     }
 }

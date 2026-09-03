@@ -23,6 +23,7 @@ papyrus build -d examples/the-papyrus-handbook -e docs --with-site --with-sample
 | `--export` | `-e` | `export_dir` from config (`export`) | Where artifacts are written |
 | `--with-site` | | off | Also run `build:site` |
 | `--with-sample` | | off | Also run `build:sample` for every theme |
+| `--include-drafts` | | off | Include chapters with `draft: true` |
 
 Global Symfony options also apply (`-v` / `--verbose`, `-q`, `--no-ansi`, …).
 With `-v`, Papyrus prints third-party notices from mPDF and the EPUB zipper.
@@ -41,7 +42,8 @@ With `-v`, Papyrus prints third-party notices from mPDF and the EPUB zipper.
 Slug comes from `title` (lowercased, non-alphanumeric → `-`).
 
 `watch` invokes `build` on each change. Pass `--with-site` and/or
-`--with-sample` to include those outputs in every rebuild.
+`--with-sample` to include those outputs in every rebuild. Pass
+`--include-drafts` to keep `draft: true` chapters in the rebuild.
 
 ## Failures
 

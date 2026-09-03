@@ -86,6 +86,7 @@ final class DoctorCommand extends BookCommand
         $this->reportThemeSources($project, $output);
         $this->reportCoverAssets($project, $output);
         $this->reportSiteAssets($project, $output);
+        $this->reportDraftChapters($project, $output);
         $this->reportSiteLinkChapters($project, $output);
 
         if ($project->mermaidConfig()->enabled) {
@@ -204,6 +205,30 @@ final class DoctorCommand extends BookCommand
         }
     }
 
+    private function reportDraftChapters(Project $project, OutputInterface $output): void
+    {
+        if (! is_dir($project->contentDir)) {
+            return;
+        }
+
+        $book = $project->bookConverter(useCache: false)->convertDirectory($project->contentDir);
+        $drafts = $book->drafts();
+
+        if ($drafts === []) {
+            return;
+        }
+
+        $names = array_map(
+            fn ($chapter): string => $chapter->source,
+            $drafts,
+        );
+
+        $output->writeln(sprintf(
+            '<comment>! Draft chapter(s) excluded from builds unless --include-drafts: %s</comment>',
+            implode(', ', $names),
+        ));
+    }
+
     private function reportSiteLinkChapters(Project $project, OutputInterface $output): void
     {
         $chapterNames = [];
@@ -229,6 +254,21 @@ final class DoctorCommand extends BookCommand
 
         foreach ($missing as $name) {
             $output->writeln(sprintf('<comment>! site.links chapter not found: %s</comment>', $name));
+        }
+
+        $published = $book->withoutDrafts();
+
+        foreach ($chapterNames as $name) {
+            if (in_array($name, $missing, true)) {
+                continue;
+            }
+
+            if ($published->missingChapterNames([$name]) !== []) {
+                $output->writeln(sprintf(
+                    '<comment>! site.links chapter is a draft (omitted from builds): %s</comment>',
+                    $name,
+                ));
+            }
         }
     }
 }
