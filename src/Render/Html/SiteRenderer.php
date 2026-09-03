@@ -54,6 +54,7 @@ final class SiteRenderer
         $this->writeFile($assetsDir.'/site.css', $css);
         $this->writeFile($assetsDir.'/site.js', WebTheme::themeScript());
         $this->writeFile($siteDir.'/.nojekyll', '');
+        $this->writeCname($siteDir);
 
         /** @var list<array{chapter: Chapter, file: string, title: string}> $pages */
         $pages = [];
@@ -333,6 +334,22 @@ HTML;
         }
 
         return '<nav class="sidebar-nav"><ul>'.$items.'</ul></nav>';
+    }
+
+    private function writeCname(string $siteDir): void
+    {
+        $cnamePath = $siteDir.'/CNAME';
+        $cname = $this->project->siteCname();
+
+        if ($cname === null) {
+            if (is_file($cnamePath)) {
+                unlink($cnamePath);
+            }
+
+            return;
+        }
+
+        $this->writeFile($cnamePath, $cname."\n");
     }
 
     private function copySiteBanner(string $assetsDir): void

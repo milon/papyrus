@@ -34,6 +34,7 @@ return [
         'banner' => 'banner.jpg',
         'repository' => 'https://github.com/milon/papyrus',
         'lead' => 'Official handbook for milon/papyrus — the same Markdown chapters build the PDF, HTML file, and this site.',
+        'cname' => 'papyrus.milon.im',
     ],
 
     'fonts' => [

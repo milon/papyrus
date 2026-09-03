@@ -29,6 +29,9 @@ jobs:
           coverage: none
           tools: composer:v2
 
+      - name: Install PDF tools
+        run: sudo apt-get update && sudo apt-get install -y poppler-utils
+
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist
 

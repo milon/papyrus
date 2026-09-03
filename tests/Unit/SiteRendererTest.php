@@ -54,6 +54,7 @@ final class SiteRendererTest extends TestCase
             $this->assertStringContainsString('.book-banner', $css);
             $this->assertStringContainsString('@media (min-width: 56em)', $css);
             $this->assertFileExists($siteDir.'/.nojekyll');
+            $this->assertFileDoesNotExist($siteDir.'/CNAME');
             $this->assertFileExists($siteDir.'/404.html');
 
             $notFound = file_get_contents($siteDir.'/404.html');
@@ -89,6 +90,7 @@ return [
         'banner' => 'banner.jpg',
         'repository' => 'https://github.com/milon/papyrus',
         'lead' => 'A short lead for the home page.',
+        'cname' => 'https://Docs.Example.com/',
     ],
     'mermaid' => ['enabled' => false],
 ];
@@ -108,6 +110,8 @@ PHP);
             $this->assertStringContainsString('Source on GitHub', $index);
             $this->assertStringContainsString('Packagist', $index);
             $this->assertStringContainsString('Issues', $index);
+            $this->assertFileExists($siteDir.'/CNAME');
+            $this->assertSame("docs.example.com\n", file_get_contents($siteDir.'/CNAME'));
         } finally {
             $this->removeDir($bookDir);
             $this->removeDir($export);

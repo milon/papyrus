@@ -284,6 +284,42 @@ final class Project
         return is_string($lead) && $lead !== '' ? $lead : null;
     }
 
+    /**
+     * Optional custom domain for GitHub Pages (`CNAME` file in the site root).
+     * Accepts a bare host or a URL; stores the hostname only.
+     */
+    public function siteCname(): ?string
+    {
+        $site = $this->config['site'] ?? [];
+
+        if (! is_array($site)) {
+            return null;
+        }
+
+        $cname = $site['cname'] ?? null;
+
+        if (! is_string($cname)) {
+            return null;
+        }
+
+        $host = trim($cname);
+
+        if ($host === '') {
+            return null;
+        }
+
+        if (preg_match('#^https?://#i', $host) === 1) {
+            $parsed = parse_url($host);
+            $host = is_array($parsed) && isset($parsed['host']) && is_string($parsed['host'])
+                ? $parsed['host']
+                : $host;
+        }
+
+        $host = strtolower(rtrim(explode('/', $host, 2)[0], '.'));
+
+        return $host !== '' ? $host : null;
+    }
+
     public function outputSlug(): string
     {
         $slug = strtolower(trim($this->title()));

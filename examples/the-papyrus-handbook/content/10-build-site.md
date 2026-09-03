@@ -29,6 +29,7 @@ export/<slug>-site/
   404.html
   <chapter-slug>.html
   .nojekyll
+  CNAME              # when site.cname is set
   assets/site.css
   assets/site.js
   assets/fonts/…
@@ -36,8 +37,9 @@ export/<slug>-site/
 ```
 
 Point any static host (GitHub Pages, Netlify, S3, …) at that folder.
-`.nojekyll` tells GitHub Pages not to run Jekyll. GitHub Pages and Netlify
-serve `404.html` for missing URLs.
+`.nojekyll` tells GitHub Pages not to run Jekyll. `CNAME` (from `site.cname`)
+sets a custom domain. GitHub Pages and Netlify serve `404.html` for missing
+URLs.
 
 ## Site config
 
@@ -48,6 +50,7 @@ Optional `site` block in `papyrus.php`:
     'banner' => 'banner.jpg',           // under assets/; auto-detects banner.jpg / banner.png
     'repository' => 'https://github.com/you/your-book',
     'lead' => 'A one-line pitch for the home page.',
+    'cname' => 'docs.example.com',      // GitHub Pages custom domain
 ],
 ```
 
@@ -56,6 +59,7 @@ Optional `site` block in `papyrus.php`:
 | `banner` | `banner.jpg` then `banner.png` if present | Hero image on Home |
 | `repository` | unset | Repo URL; GitHub hosts also get Packagist / Issues links when detected |
 | `lead` | unset | Short pitch under the title on Home |
+| `cname` | unset | Writes `CNAME` in the site root for a GitHub Pages custom domain |
 
 ## Hosting this handbook
 

@@ -174,6 +174,7 @@ face is registered.
     'banner' => 'banner.jpg',
     'repository' => 'https://github.com/you/your-book',
     'lead' => 'A one-line pitch for the home page.',
+    'cname' => 'docs.example.com',
 ],
 ```
 
@@ -182,6 +183,7 @@ face is registered.
 | `banner` | auto `banner.jpg` / `banner.png` if present | Under `assets/` |
 | `repository` | unset | Repo URL; GitHub hosts also surface Packagist / Issues links |
 | `lead` | unset | Home page pitch |
+| `cname` | unset | Custom domain; writes a `CNAME` file in the site root for GitHub Pages |
 
 ## Mermaid
 

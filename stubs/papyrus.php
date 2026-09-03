@@ -33,6 +33,7 @@ return [
     //     'banner' => 'banner.jpg',
     //     'repository' => 'https://github.com/you/your-book',
     //     'lead' => 'A one-line pitch for the home page.',
+    //     'cname' => 'docs.example.com', // writes CNAME for GitHub Pages
     // ],
 
     'header' => [

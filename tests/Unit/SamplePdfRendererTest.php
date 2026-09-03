@@ -7,6 +7,7 @@ namespace Milon\Papyrus\Tests\Unit;
 use Milon\Papyrus\Config\Project;
 use Milon\Papyrus\Render\Pdf\PdfRenderer;
 use Milon\Papyrus\Render\Pdf\SamplePdfRenderer;
+use Mpdf\Mpdf;
 use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
@@ -96,10 +97,15 @@ PHP);
 
             $this->assertFileExists($path);
             $this->assertSame('%PDF-', file_get_contents($path, false, null, 0, 5));
+            $this->assertGreaterThan(0, $this->pageCount($path));
 
-            $text = (string) shell_exec(sprintf('pdftotext %s - 2>/dev/null', escapeshellarg($path)));
-            $this->assertStringContainsString('Chapter sample notice', $text);
-            $this->assertStringNotContainsString('Table of Contents', $text);
+            $text = $this->pdfText($path);
+
+            if ($text !== null) {
+                $this->assertStringContainsString('Chapter sample notice', $text);
+                $this->assertStringContainsString('Chapter one', $text);
+                $this->assertStringNotContainsString('Table of Contents', $text);
+            }
         } finally {
             $this->removeDir($bookDir);
         }
@@ -171,5 +177,25 @@ PHP);
             'width' => (float) $matches[1],
             'height' => (float) $matches[2],
         ];
+    }
+
+    private function pageCount(string $pdfPath): int
+    {
+        $pdf = new Mpdf(['tempDir' => sys_get_temp_dir().'/mpdf-'.uniqid('', true)]);
+
+        return $pdf->setSourceFile($pdfPath);
+    }
+
+    private function pdfText(string $pdfPath): ?string
+    {
+        $pdftotext = trim((string) shell_exec('command -v pdftotext'));
+
+        if ($pdftotext === '') {
+            return null;
+        }
+
+        $text = shell_exec(sprintf('pdftotext %s - 2>/dev/null', escapeshellarg($pdfPath)));
+
+        return is_string($text) ? $text : null;
     }
 }
