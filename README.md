@@ -230,7 +230,7 @@ papyrus asset:publish
 | `kdp:cover`    | Export KDP cover assets to `export/`                                  |
 | `kdp:metadata` | Emit KDP metadata sidecar JSON                                        |
 | `sizes`        | List KDP page-size presets                                            |
-| `migrate-ibis` | Migrate `ibis.php` to `papyrus.php` and update theme TOC markers      |
+| `migrate-ibis` | Migrate `ibis.php` to `papyrus.php`; update TOC markers in local themes |
 | `lint`         | Lint PHP code fences in `content/` (`--fix` to auto-fix)              |
 | `watch`        | Rebuild on file changes (`--interval` seconds)                        |
 

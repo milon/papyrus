@@ -17,12 +17,20 @@ papyrus migrate-ibis --force
 | `--dir` | `-d` | Book root |
 | `--force` | `-f` | Overwrite an existing `papyrus.php` |
 
-This writes `papyrus.php` from `ibis.php` and updates theme TOC markers to
-`<!-- PAPYRUS:TOC -->`. After migration:
+This writes `papyrus.php` from `ibis.php`. If you still have custom
+`assets/theme*.html` files from ibis, it rewrites `<!-- IBIS:TOC -->` to
+`<!-- PAPYRUS:TOC -->` in those **project** files only. Bundled Papyrus
+themes (used when `assets/` has no theme override) already use the Papyrus
+marker — `migrate-ibis` does not copy or rewrite vendor assets.
+
+After migration:
 
 1. Remove `hi-folks/ibis-next` and any Composer patches for ibis/mPDF.
 2. Point scripts at `papyrus` (`build`, `build:pdf`, `build:site`, …).
-3. Run `papyrus doctor` and a full `papyrus build`.
+3. Decide on themes: keep your ibis HTML under `assets/` as overrides, or
+   delete those copies and use Papyrus defaults (optional
+   `papyrus asset:publish` later if you want local copies to edit).
+4. Run `papyrus doctor` and a full `papyrus build`.
 
 ## Continuous integration
 

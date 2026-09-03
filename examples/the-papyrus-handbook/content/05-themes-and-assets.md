@@ -26,8 +26,9 @@ then falls back to the bundled copy. Split the theme on the TOC marker:
 ```
 
 Papyrus writes pretoc chapters, then the TOC, then body chapters around that
-marker. A legacy `<!-- IBIS:TOC -->` marker is still recognized after
-`migrate-ibis`.
+marker. A legacy `<!-- IBIS:TOC -->` marker is still accepted. `migrate-ibis`
+rewrites that marker only in **your** `assets/theme*.html` files, not in the
+bundled defaults.
 
 Typical theme responsibilities: `@page` / typography, code blocks, callout
 colors, title page, and running header styles (often paired with

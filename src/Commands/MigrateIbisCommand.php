@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand(name: 'migrate-ibis', description: 'Migrate ibis.php to papyrus.php and update theme TOC markers')]
+#[AsCommand(name: 'migrate-ibis', description: 'Migrate ibis.php to papyrus.php; update TOC markers in local assets/ themes')]
 final class MigrateIbisCommand extends BookCommand
 {
     protected function configure(): void
@@ -42,7 +42,8 @@ final class MigrateIbisCommand extends BookCommand
         }
 
         if ($result['themes'] === []) {
-            $output->writeln('<comment>No theme files required TOC marker updates.</comment>');
+            $output->writeln('<comment>No local assets/theme*.html files needed TOC updates.</comment>');
+            $output->writeln('<comment>Builds will use bundled Papyrus themes unless you keep custom files in assets/.</comment>');
         }
 
         $output->writeln('');
