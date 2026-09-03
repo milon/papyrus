@@ -32,9 +32,14 @@ return [
 
     'site' => [
         'banner' => 'banner.jpg',
-        'repository' => 'https://github.com/milon/papyrus',
         'lead' => 'Official handbook for milon/papyrus — the same Markdown chapters build the PDF, HTML file, and this site.',
         'cname' => 'papyrus.milon.im',
+        'links' => [
+            ['label' => 'Downloads', 'chapter' => '19-downloads.md'],
+            ['label' => 'Source on GitHub', 'url' => 'https://github.com/milon/papyrus'],
+            ['label' => 'Packagist', 'url' => 'https://packagist.org/packages/milon/papyrus'],
+            ['label' => 'Issues', 'url' => 'https://github.com/milon/papyrus/issues'],
+        ],
     ],
 
     'fonts' => [

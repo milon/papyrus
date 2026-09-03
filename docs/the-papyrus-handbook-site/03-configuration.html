@@ -229,9 +229,13 @@ non-Latin runs often show as tofu (missing glyphs) in the default font.</p>
 <h2>Site home (<code>build:site</code>)</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'site'</span> =&gt; [
     <span class="hljs-string">'banner'</span> =&gt; <span class="hljs-string">'banner.jpg'</span>,
-    <span class="hljs-string">'repository'</span> =&gt; <span class="hljs-string">'https://github.com/you/your-book'</span>,
     <span class="hljs-string">'lead'</span> =&gt; <span class="hljs-string">'A one-line pitch for the home page.'</span>,
     <span class="hljs-string">'cname'</span> =&gt; <span class="hljs-string">'docs.example.com'</span>,
+    <span class="hljs-string">'links'</span> =&gt; [
+        [<span class="hljs-string">'label'</span> =&gt; <span class="hljs-string">'Downloads'</span>, <span class="hljs-string">'chapter'</span> =&gt; <span class="hljs-string">'19-downloads.md'</span>],
+        [<span class="hljs-string">'label'</span> =&gt; <span class="hljs-string">'Source on GitHub'</span>, <span class="hljs-string">'url'</span> =&gt; <span class="hljs-string">'https://github.com/you/your-book'</span>],
+        [<span class="hljs-string">'label'</span> =&gt; <span class="hljs-string">'Issues'</span>, <span class="hljs-string">'url'</span> =&gt; <span class="hljs-string">'https://github.com/you/your-book/issues'</span>],
+    ],
 ],
 </code></pre>
 <table>
@@ -249,11 +253,6 @@ non-Latin runs often show as tofu (missing glyphs) in the default font.</p>
 <td>Under <code>assets/</code></td>
 </tr>
 <tr>
-<td><code>repository</code></td>
-<td>unset</td>
-<td>Repo URL; GitHub hosts also surface Packagist / Issues links</td>
-</tr>
-<tr>
 <td><code>lead</code></td>
 <td>unset</td>
 <td>Home page pitch</td>
@@ -263,8 +262,18 @@ non-Latin runs often show as tofu (missing glyphs) in the default font.</p>
 <td>unset</td>
 <td>Custom domain; writes a <code>CNAME</code> file in the site root for GitHub Pages</td>
 </tr>
+<tr>
+<td><code>links</code></td>
+<td>unset</td>
+<td>Explicit home-page links; each item needs <code>label</code> plus either <code>url</code> or <code>chapter</code></td>
+</tr>
 </tbody>
 </table>
+<p><code>chapter</code> matches a chapter source name like <code>19-downloads.md</code>, <code>19-downloads</code>,
+or a full relative source path, and links to that generated page.
+<code>repository</code> still works as a legacy fallback that auto-adds GitHub, Packagist,
+and Issues links when <code>links</code> is not set. Chapters are never linked
+automatically; add them explicitly through <code>links</code>.</p>
 <h2>Mermaid</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'mermaid'</span> =&gt; [
     <span class="hljs-string">'enabled'</span> =&gt; <span class="hljs-keyword">true</span>,

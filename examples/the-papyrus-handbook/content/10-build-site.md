@@ -48,18 +48,24 @@ Optional `site` block in `papyrus.php`:
 ```php
 'site' => [
     'banner' => 'banner.jpg',           // under assets/; auto-detects banner.jpg / banner.png
-    'repository' => 'https://github.com/you/your-book',
     'lead' => 'A one-line pitch for the home page.',
     'cname' => 'docs.example.com',      // GitHub Pages custom domain
+    'links' => [
+        ['label' => 'Downloads', 'chapter' => '19-downloads.md'],
+        ['label' => 'Source on GitHub', 'url' => 'https://github.com/you/your-book'],
+    ],
 ],
 ```
 
 | Key | Default | Meaning |
 |-----|---------|---------|
 | `banner` | `banner.jpg` then `banner.png` if present | Hero image on Home |
-| `repository` | unset | Repo URL; GitHub hosts also get Packagist / Issues links when detected |
 | `lead` | unset | Short pitch under the title on Home |
 | `cname` | unset | Writes `CNAME` in the site root for a GitHub Pages custom domain |
+| `links` | unset | Home-page links; each item needs `label` plus either `url` or `chapter` |
+
+Nothing is inferred from chapter titles. If you want a Downloads link on Home,
+add it explicitly with `['label' => 'Downloads', 'chapter' => '19-downloads.md']`.
 
 ## Hosting this handbook
 

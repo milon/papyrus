@@ -31,9 +31,13 @@ return [
     // Optional site home extras for `build:site` (banner under assets/).
     // 'site' => [
     //     'banner' => 'banner.jpg',
-    //     'repository' => 'https://github.com/you/your-book',
     //     'lead' => 'A one-line pitch for the home page.',
     //     'cname' => 'docs.example.com', // writes CNAME for GitHub Pages
+    //     'links' => [
+    //         ['label' => 'Downloads', 'chapter' => '19-downloads.md'],
+    //         ['label' => 'Source', 'url' => 'https://github.com/you/your-book'],
+    //     ],
+    //     // 'repository' => 'https://github.com/you/your-book', // legacy fallback for auto links
     // ],
 
     'header' => [

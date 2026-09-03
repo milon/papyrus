@@ -164,32 +164,20 @@ HTML;
     private function homeLinksHtml(array $pages): string
     {
         $items = '';
+        $links = $this->project->siteLinks();
 
-        foreach ($pages as $page) {
-            if (strcasecmp($page['title'], 'Downloads') !== 0) {
+        foreach ($links as $link) {
+            $href = $link['url'] ?? $this->chapterHref($pages, $link['chapter'] ?? null);
+
+            if ($href === null) {
                 continue;
             }
 
             $items .= sprintf(
-                '<a href="%s">Downloads</a>',
-                htmlspecialchars($page['file'], ENT_QUOTES | ENT_HTML5),
+                '<a href="%s">%s</a>',
+                htmlspecialchars($href, ENT_QUOTES | ENT_HTML5),
+                htmlspecialchars($link['label'], ENT_QUOTES | ENT_HTML5),
             );
-            break;
-        }
-
-        $repository = $this->project->siteRepository();
-
-        if ($repository !== null) {
-            $repoUrl = htmlspecialchars($repository, ENT_QUOTES | ENT_HTML5);
-            $items .= sprintf('<a href="%s">Source on GitHub</a>', $repoUrl);
-
-            if (preg_match('#github\.com/([^/]+/[^/]+?)(?:\.git)?/?$#', $repository, $matches) === 1) {
-                $slug = $matches[1];
-                $packagist = htmlspecialchars('https://packagist.org/packages/'.$slug, ENT_QUOTES | ENT_HTML5);
-                $issues = htmlspecialchars(rtrim($repository, '/').'/issues', ENT_QUOTES | ENT_HTML5);
-                $items .= sprintf('<a href="%s">Packagist</a>', $packagist);
-                $items .= sprintf('<a href="%s">Issues</a>', $issues);
-            }
         }
 
         if ($items === '') {
@@ -197,6 +185,63 @@ HTML;
         }
 
         return '<p class="home-links">'.$items.'</p>';
+    }
+
+    /**
+     * @param  list<array{chapter: Chapter, file: string, title: string}>  $pages
+     */
+    private function chapterHref(array $pages, ?string $chapterName): ?string
+    {
+        if ($chapterName === null) {
+            return null;
+        }
+
+        foreach ($pages as $page) {
+            if (! $this->pageMatchesChapterName($page, $chapterName)) {
+                continue;
+            }
+
+            return $page['file'];
+        }
+
+        return null;
+    }
+
+    /**
+     * @param  array{chapter: Chapter, file: string, title: string}  $page
+     */
+    private function pageMatchesChapterName(array $page, string $chapterName): bool
+    {
+        $name = strtolower(trim($chapterName));
+
+        if ($name === '') {
+            return false;
+        }
+
+        foreach ($this->chapterAliases($page['chapter']) as $alias) {
+            if ($alias === $name) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * @return list<string>
+     */
+    private function chapterAliases(Chapter $chapter): array
+    {
+        $source = strtolower(ltrim(str_replace('\\', '/', $chapter->source), '/'));
+        $base = basename($source);
+        $stem = pathinfo($base, PATHINFO_FILENAME);
+
+        return array_values(array_unique(array_filter([
+            $source,
+            $base,
+            $stem,
+            $stem.'.md',
+        ])));
     }
 
     /**

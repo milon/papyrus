@@ -172,18 +172,28 @@ face is registered.
 ```php
 'site' => [
     'banner' => 'banner.jpg',
-    'repository' => 'https://github.com/you/your-book',
     'lead' => 'A one-line pitch for the home page.',
     'cname' => 'docs.example.com',
+    'links' => [
+        ['label' => 'Downloads', 'chapter' => '19-downloads.md'],
+        ['label' => 'Source on GitHub', 'url' => 'https://github.com/you/your-book'],
+        ['label' => 'Issues', 'url' => 'https://github.com/you/your-book/issues'],
+    ],
 ],
 ```
 
 | Key | Default | Notes |
 |-----|---------|-------|
 | `banner` | auto `banner.jpg` / `banner.png` if present | Under `assets/` |
-| `repository` | unset | Repo URL; GitHub hosts also surface Packagist / Issues links |
 | `lead` | unset | Home page pitch |
 | `cname` | unset | Custom domain; writes a `CNAME` file in the site root for GitHub Pages |
+| `links` | unset | Explicit home-page links; each item needs `label` plus either `url` or `chapter` |
+
+`chapter` matches a chapter source name like `19-downloads.md`, `19-downloads`,
+or a full relative source path, and links to that generated page.
+`repository` still works as a legacy fallback that auto-adds GitHub, Packagist,
+and Issues links when `links` is not set. Chapters are never linked
+automatically; add them explicitly through `links`.
 
 ## Mermaid
 

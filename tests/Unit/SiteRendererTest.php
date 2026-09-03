@@ -68,7 +68,7 @@ final class SiteRendererTest extends TestCase
     }
 
     #[Test]
-    public function site_index_includes_banner_and_repository_links(): void
+    public function site_index_includes_banner_and_configured_links(): void
     {
         $bookDir = sys_get_temp_dir().'/papyrus-site-home-'.uniqid('', true);
         $export = sys_get_temp_dir().'/papyrus-site-home-export-'.uniqid('', true);
@@ -88,14 +88,18 @@ return [
     'themes' => ['light'],
     'site' => [
         'banner' => 'banner.jpg',
-        'repository' => 'https://github.com/milon/papyrus',
         'lead' => 'A short lead for the home page.',
         'cname' => 'https://Docs.Example.com/',
+        'links' => [
+            ['label' => 'Project', 'url' => 'https://example.com/project'],
+            ['label' => 'Downloads', 'chapter' => '19-downloads'],
+        ],
     ],
     'mermaid' => ['enabled' => false],
 ];
 PHP);
         file_put_contents($bookDir.'/assets/theme-html.html', '<html><body>{{$body}}</body></html>');
+        file_put_contents($bookDir.'/content/19-downloads.md', "---\ntitle: Downloads\n---\n\nPDFs here.\n");
 
         try {
             $project = Project::load($bookDir)->withExportDir($export);
@@ -103,13 +107,14 @@ PHP);
             $index = file_get_contents($siteDir.'/index.html');
             $this->assertIsString($index);
             $this->assertFileExists($siteDir.'/assets/banner.jpg');
+            $this->assertFileExists($siteDir.'/19-downloads.html');
             $this->assertStringContainsString('class="book-banner"', $index);
             $this->assertStringContainsString('src="assets/banner.jpg"', $index);
             $this->assertStringContainsString('A short lead for the home page.', $index);
-            $this->assertStringContainsString('https://github.com/milon/papyrus', $index);
-            $this->assertStringContainsString('Source on GitHub', $index);
-            $this->assertStringContainsString('Packagist', $index);
-            $this->assertStringContainsString('Issues', $index);
+            $this->assertStringContainsString('https://example.com/project', $index);
+            $this->assertStringContainsString('Project', $index);
+            $this->assertStringContainsString('href="19-downloads.html">Downloads</a>', $index);
+            $this->assertStringNotContainsString('Source on GitHub', $index);
             $this->assertFileExists($siteDir.'/CNAME');
             $this->assertSame("docs.example.com\n", file_get_contents($siteDir.'/CNAME'));
         } finally {
@@ -119,7 +124,7 @@ PHP);
     }
 
     #[Test]
-    public function site_index_links_to_downloads_chapter_when_present(): void
+    public function site_index_uses_repository_as_backward_compatible_default_links(): void
     {
         $bookDir = sys_get_temp_dir().'/papyrus-site-downloads-'.uniqid('', true);
         $export = sys_get_temp_dir().'/papyrus-site-downloads-export-'.uniqid('', true);
@@ -149,9 +154,12 @@ PHP);
             $siteDir = (new SiteRenderer($project))->render();
             $index = file_get_contents($siteDir.'/index.html');
             $this->assertIsString($index);
-            $this->assertFileExists($siteDir.'/19-downloads.html');
-            $this->assertStringContainsString('href="19-downloads.html">Downloads</a>', $index);
+            preg_match('/<p class="home-links">.*?<\/p>/s', $index, $matches);
+            $homeLinks = $matches[0] ?? '';
             $this->assertStringContainsString('Source on GitHub', $index);
+            $this->assertStringContainsString('Packagist', $index);
+            $this->assertStringContainsString('Issues', $index);
+            $this->assertStringNotContainsString('href="19-downloads.html">Downloads</a>', $homeLinks);
         } finally {
             $this->removeDir($bookDir);
             $this->removeDir($export);

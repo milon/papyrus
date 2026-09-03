@@ -1101,8 +1101,13 @@ non-Latin runs often show as tofu (missing glyphs) in the default font.</p>
 <h2>Site home (<code>build:site</code>)</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'site'</span> =&gt; [
     <span class="hljs-string">'banner'</span> =&gt; <span class="hljs-string">'banner.jpg'</span>,
-    <span class="hljs-string">'repository'</span> =&gt; <span class="hljs-string">'https://github.com/you/your-book'</span>,
     <span class="hljs-string">'lead'</span> =&gt; <span class="hljs-string">'A one-line pitch for the home page.'</span>,
+    <span class="hljs-string">'cname'</span> =&gt; <span class="hljs-string">'docs.example.com'</span>,
+    <span class="hljs-string">'links'</span> =&gt; [
+        [<span class="hljs-string">'label'</span> =&gt; <span class="hljs-string">'Downloads'</span>, <span class="hljs-string">'chapter'</span> =&gt; <span class="hljs-string">'19-downloads.md'</span>],
+        [<span class="hljs-string">'label'</span> =&gt; <span class="hljs-string">'Source on GitHub'</span>, <span class="hljs-string">'url'</span> =&gt; <span class="hljs-string">'https://github.com/you/your-book'</span>],
+        [<span class="hljs-string">'label'</span> =&gt; <span class="hljs-string">'Issues'</span>, <span class="hljs-string">'url'</span> =&gt; <span class="hljs-string">'https://github.com/you/your-book/issues'</span>],
+    ],
 ],
 </code></pre>
 <table>
@@ -1120,17 +1125,27 @@ non-Latin runs often show as tofu (missing glyphs) in the default font.</p>
 <td>Under <code>assets/</code></td>
 </tr>
 <tr>
-<td><code>repository</code></td>
-<td>unset</td>
-<td>Repo URL; GitHub hosts also surface Packagist / Issues links</td>
-</tr>
-<tr>
 <td><code>lead</code></td>
 <td>unset</td>
 <td>Home page pitch</td>
 </tr>
+<tr>
+<td><code>cname</code></td>
+<td>unset</td>
+<td>Custom domain; writes a <code>CNAME</code> file in the site root for GitHub Pages</td>
+</tr>
+<tr>
+<td><code>links</code></td>
+<td>unset</td>
+<td>Explicit home-page links; each item needs <code>label</code> plus either <code>url</code> or <code>chapter</code></td>
+</tr>
 </tbody>
 </table>
+<p><code>chapter</code> matches a chapter source name like <code>19-downloads.md</code>, <code>19-downloads</code>,
+or a full relative source path, and links to that generated page.
+<code>repository</code> still works as a legacy fallback that auto-adds GitHub, Packagist,
+and Issues links when <code>links</code> is not set. Chapters are never linked
+automatically; add them explicitly through <code>links</code>.</p>
 <h2>Mermaid</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'mermaid'</span> =&gt; [
     <span class="hljs-string">'enabled'</span> =&gt; <span class="hljs-keyword">true</span>,
@@ -1888,20 +1903,26 @@ papyrus build:site -d examples/the-papyrus-handbook -e docs
   404.html
   &lt;chapter-slug&gt;.html
   .nojekyll
+  CNAME              # when site.cname is set
   assets/site.css
   assets/site.js
   assets/fonts/…
   assets/&lt;banner&gt;   # when configured
 </code></pre>
 <p>Point any static host (GitHub Pages, Netlify, S3, …) at that folder.
-<code>.nojekyll</code> tells GitHub Pages not to run Jekyll. GitHub Pages and Netlify
-serve <code>404.html</code> for missing URLs.</p>
+<code>.nojekyll</code> tells GitHub Pages not to run Jekyll. <code>CNAME</code> (from <code>site.cname</code>)
+sets a custom domain. GitHub Pages and Netlify serve <code>404.html</code> for missing
+URLs.</p>
 <h2>Site config</h2>
 <p>Optional <code>site</code> block in <code>papyrus.php</code>:</p>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'site'</span> =&gt; [
     <span class="hljs-string">'banner'</span> =&gt; <span class="hljs-string">'banner.jpg'</span>,           <span class="hljs-comment">// under assets/; auto-detects banner.jpg / banner.png</span>
-    <span class="hljs-string">'repository'</span> =&gt; <span class="hljs-string">'https://github.com/you/your-book'</span>,
     <span class="hljs-string">'lead'</span> =&gt; <span class="hljs-string">'A one-line pitch for the home page.'</span>,
+    <span class="hljs-string">'cname'</span> =&gt; <span class="hljs-string">'docs.example.com'</span>,      <span class="hljs-comment">// GitHub Pages custom domain</span>
+    <span class="hljs-string">'links'</span> =&gt; [
+        [<span class="hljs-string">'label'</span> =&gt; <span class="hljs-string">'Downloads'</span>, <span class="hljs-string">'chapter'</span> =&gt; <span class="hljs-string">'19-downloads.md'</span>],
+        [<span class="hljs-string">'label'</span> =&gt; <span class="hljs-string">'Source on GitHub'</span>, <span class="hljs-string">'url'</span> =&gt; <span class="hljs-string">'https://github.com/you/your-book'</span>],
+    ],
 ],
 </code></pre>
 <table>
@@ -1919,17 +1940,24 @@ serve <code>404.html</code> for missing URLs.</p>
 <td>Hero image on Home</td>
 </tr>
 <tr>
-<td><code>repository</code></td>
-<td>unset</td>
-<td>Repo URL; GitHub hosts also get Packagist / Issues links when detected</td>
-</tr>
-<tr>
 <td><code>lead</code></td>
 <td>unset</td>
 <td>Short pitch under the title on Home</td>
 </tr>
+<tr>
+<td><code>cname</code></td>
+<td>unset</td>
+<td>Writes <code>CNAME</code> in the site root for a GitHub Pages custom domain</td>
+</tr>
+<tr>
+<td><code>links</code></td>
+<td>unset</td>
+<td>Home-page links; each item needs <code>label</code> plus either <code>url</code> or <code>chapter</code></td>
+</tr>
 </tbody>
 </table>
+<p>Nothing is inferred from chapter titles. If you want a Downloads link on Home,
+add it explicitly with <code>['label' =&gt; 'Downloads', 'chapter' =&gt; '19-downloads.md']</code>.</p>
 <h2>Hosting this handbook</h2>
 <p>In the Papyrus repository, pushes to <code>main</code> rebuild the handbook site and
 publish it to <code>gh-pages</code> via <code>.github/workflows/pages.yml</code>. Locally:</p>

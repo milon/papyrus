@@ -258,19 +258,6 @@ final class Project
         return null;
     }
 
-    public function siteRepository(): ?string
-    {
-        $site = $this->config['site'] ?? [];
-
-        if (! is_array($site)) {
-            return null;
-        }
-
-        $repository = $site['repository'] ?? null;
-
-        return is_string($repository) && $repository !== '' ? $repository : null;
-    }
-
     public function siteLead(): ?string
     {
         $site = $this->config['site'] ?? [];
@@ -318,6 +305,82 @@ final class Project
         $host = strtolower(rtrim(explode('/', $host, 2)[0], '.'));
 
         return $host !== '' ? $host : null;
+    }
+
+    /**
+     * @return list<array{label: string, url?: string, chapter?: string}>
+     */
+    public function siteLinks(): array
+    {
+        $site = $this->config['site'] ?? [];
+
+        if (! is_array($site)) {
+            return [];
+        }
+
+        $links = [];
+        $rawLinks = $site['links'] ?? null;
+
+        if (is_array($rawLinks)) {
+            foreach ($rawLinks as $link) {
+                if (! is_array($link)) {
+                    continue;
+                }
+
+                $label = $link['label'] ?? null;
+
+                if (! is_string($label) || trim($label) === '') {
+                    continue;
+                }
+
+                $item = ['label' => trim($label)];
+
+                $url = $link['url'] ?? null;
+
+                if (is_string($url) && trim($url) !== '') {
+                    $item['url'] = trim($url);
+                }
+
+                $chapter = $link['chapter'] ?? null;
+
+                if (is_string($chapter) && trim($chapter) !== '') {
+                    $item['chapter'] = trim($chapter);
+                }
+
+                if (! isset($item['url']) && ! isset($item['chapter'])) {
+                    continue;
+                }
+
+                $links[] = $item;
+            }
+
+            return $links;
+        }
+
+        $repository = $site['repository'] ?? null;
+
+        if (! is_string($repository) || $repository === '') {
+            return [];
+        }
+
+        $links[] = [
+            'label' => 'Source on GitHub',
+            'url' => $repository,
+        ];
+
+        if (preg_match('#github\.com/([^/]+/[^/]+?)(?:\.git)?/?$#', $repository, $matches) === 1) {
+            $slug = $matches[1];
+            $links[] = [
+                'label' => 'Packagist',
+                'url' => 'https://packagist.org/packages/'.$slug,
+            ];
+            $links[] = [
+                'label' => 'Issues',
+                'url' => rtrim($repository, '/').'/issues',
+            ];
+        }
+
+        return $links;
     }
 
     public function outputSlug(): string
