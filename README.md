@@ -232,8 +232,9 @@ papyrus asset:publish --only=themes
 | `kdp`          | Build all enabled KDP outputs (eBook, print, cover, metadata)         |
 | `kdp:ebook`    | KDP-ready Kindle EPUB (`export/<slug>-kdp.epub`)                      |
 | `kdp:print`    | Print interior PDF with KDP margin/bleed presets                      |
-| `kdp:cover`    | Export KDP cover assets to `export/`                                  |
+| `kdp:cover`    | Export KDP cover assets (`--dimensions`, `--pages`)                   |
 | `kdp:metadata` | Emit KDP metadata sidecar JSON                                        |
+| `kdp:package`  | Zip enabled KDP artifacts with an upload checklist                    |
 | `sizes`        | List KDP page-size presets                                            |
 | `migrate-ibis` | Migrate `ibis.php` to `papyrus.php`; update TOC markers in local themes |
 | `lint`         | Lint PHP code fences in `content/` (`--fix` to auto-fix)              |

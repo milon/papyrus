@@ -52,5 +52,14 @@ export/my-book-kdp-print-cover-dark.png   # if dark cover resolves
 ```
 
 Papyrus copies files as-is — it does not generate a full wraparound print
-cover. Use Amazon’s cover calculator for spine width and bleed on the
-print jacket.
+cover. For size estimates (Amazon’s spine formula + bleed):
+
+```bash
+papyrus kdp:cover --dimensions
+papyrus kdp:cover --dimensions --pages=220
+```
+
+Without `--pages`, Papyrus counts pages in `export/<slug>-kdp-print.pdf`
+(build `kdp:print` first). Estimates use white/cream paper factors from
+[Amazon’s paperback cover help](https://kdp.amazon.com/help/topic/G201953020).
+Always verify with Amazon’s cover calculator before upload.

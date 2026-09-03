@@ -6,9 +6,12 @@ namespace Milon\Papyrus\Commands\Kdp;
 
 use Milon\Papyrus\Commands\BookCommand;
 use Milon\Papyrus\Config\ConfigException;
+use Milon\Papyrus\Config\Project;
 use Milon\Papyrus\Kdp\KdpBuilder;
 use Milon\Papyrus\Kdp\KdpException;
 use Milon\Papyrus\Kdp\KdpRenderResult;
+use Milon\Papyrus\Kdp\PdfPageCounter;
+use Milon\Papyrus\Kdp\PrintCoverDimensions;
 use Milon\Papyrus\Mermaid\MermaidException;
 use Milon\Papyrus\Render\Epub\EpubException;
 use Milon\Papyrus\Render\Pdf\PdfException;
@@ -30,6 +33,12 @@ final class KdpCommand extends BookCommand
             null,
             InputOption::VALUE_NONE,
             'Fail if epubcheck is not available on PATH (ebook builds)',
+        );
+        $this->addOption(
+            'package',
+            null,
+            InputOption::VALUE_NONE,
+            'Also zip artifacts into export/<slug>-kdp-package.zip',
         );
     }
 
@@ -72,6 +81,7 @@ final class KdpCommand extends BookCommand
 
             if ($path !== null) {
                 $output->writeln(sprintf('<info>✓</info> %s', $path));
+                $this->writeCoverEstimate($output, $project, $path);
             }
         } catch (KdpException|PdfException|MermaidException $e) {
             $output->writeln('<error>✗ kdp print: '.$e->getMessage().'</error>');
@@ -95,7 +105,41 @@ final class KdpCommand extends BookCommand
             $failed = true;
         }
 
+        if (! $failed && (bool) $input->getOption('package')) {
+            try {
+                $path = $builder->buildPackage();
+                $output->writeln(sprintf('<info>✓</info> %s', $path));
+            } catch (KdpException $e) {
+                $output->writeln('<error>✗ kdp package: '.$e->getMessage().'</error>');
+                $failed = true;
+            }
+        }
+
         return $failed ? Command::FAILURE : Command::SUCCESS;
+    }
+
+    private function writeCoverEstimate(OutputInterface $output, Project $project, string $printPdfPath): void
+    {
+        $pages = PdfPageCounter::count($printPdfPath);
+
+        if ($pages === null) {
+            return;
+        }
+
+        $dims = PrintCoverDimensions::calculate(
+            $project->documentSize(),
+            $pages,
+            $project->kdpConfig()->printPaper,
+        );
+
+        $output->writeln(sprintf(
+            'Wrap cover estimate: %d pages → spine %.3f mm; full %.3f × %.3f mm (%s paper)',
+            $dims['page_count'],
+            $dims['spine_mm'],
+            $dims['wrap_width_mm'],
+            $dims['wrap_height_mm'],
+            $dims['paper'],
+        ));
     }
 
     private function writeWarnings(OutputInterface $output, KdpRenderResult $result): void

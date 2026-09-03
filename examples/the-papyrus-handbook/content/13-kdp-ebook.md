@@ -63,3 +63,7 @@ Description falls back to `"{title} - {author}"` when
 | Enable flag | always | `kdp.ebook.enabled` |
 | Validation | packaging only | KDP checks + optional epubcheck |
 | Cover preference | theme cover | `kdp.ebook.cover` first |
+
+Internal checks also warn on an empty `kdp.metadata.description` and on eBook
+cover images smaller than 1600 px on the shortest side (when GD can read the
+file).

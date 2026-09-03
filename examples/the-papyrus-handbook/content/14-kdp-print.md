@@ -62,8 +62,13 @@ Unknown preset names fall back to `recommended`.
 
 ### Paper
 
-`print.paper` is written into the KDP metadata sidecar. It does not change
-PDF colour or stock — choose white vs cream in the KDP dashboard to match.
+`print.paper` is written into the KDP metadata sidecar and used for wrap-cover
+spine estimates (`white` or `cream`). It does not change PDF colour or stock —
+choose white vs cream in the KDP dashboard to match.
+
+After a successful build, Papyrus prints a wrap-cover estimate from the
+interior page count (Amazon’s published inches-per-page formula + 0.125"
+bleed). Use `kdp:cover --dimensions` to recalculate later.
 
 ## Trim size
 

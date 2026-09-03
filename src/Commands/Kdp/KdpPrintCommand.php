@@ -9,6 +9,8 @@ use Milon\Papyrus\Config\ConfigException;
 use Milon\Papyrus\Config\Project;
 use Milon\Papyrus\Kdp\KdpBuilder;
 use Milon\Papyrus\Kdp\KdpException;
+use Milon\Papyrus\Kdp\PdfPageCounter;
+use Milon\Papyrus\Kdp\PrintCoverDimensions;
 use Milon\Papyrus\Mermaid\MermaidException;
 use Milon\Papyrus\Render\Pdf\PdfException;
 use Symfony\Component\Console\Attribute\AsCommand;
@@ -54,12 +56,40 @@ final class KdpPrintCommand extends BookCommand
             $path = (new KdpBuilder($project))->buildPrint($theme);
             $output->writeln(sprintf('<info>✓</info> %s', $path));
 
+            if (is_string($path)) {
+                $this->writeCoverEstimate($output, $project, $path);
+            }
+
             return Command::SUCCESS;
         } catch (KdpException|PdfException|MermaidException $e) {
             $output->writeln('<error>'.$e->getMessage().'</error>');
 
             return Command::FAILURE;
         }
+    }
+
+    private function writeCoverEstimate(OutputInterface $output, Project $project, string $printPdfPath): void
+    {
+        $pages = PdfPageCounter::count($printPdfPath);
+
+        if ($pages === null) {
+            return;
+        }
+
+        $dims = PrintCoverDimensions::calculate(
+            $project->documentSize(),
+            $pages,
+            $project->kdpConfig()->printPaper,
+        );
+
+        $output->writeln(sprintf(
+            'Wrap cover estimate: %d pages → spine %.3f mm; full %.3f × %.3f mm (%s paper)',
+            $dims['page_count'],
+            $dims['spine_mm'],
+            $dims['wrap_width_mm'],
+            $dims['wrap_height_mm'],
+            $dims['paper'],
+        ));
     }
 
     private function resolveTheme(InputInterface $input, Project $project): string

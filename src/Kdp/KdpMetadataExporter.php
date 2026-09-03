@@ -20,10 +20,11 @@ final class KdpMetadataExporter
         $slug = $this->project->outputSlug();
         $trim = $this->project->documentSize();
         $presetName = DocumentSize::resolvePresetName($trim->widthMm, $trim->heightMm);
+        $exportDir = $this->project->exportDir;
 
         $path = $outputPath ?? sprintf(
             '%s/%s-kdp-metadata.json',
-            $this->project->exportDir,
+            $exportDir,
             $slug,
         );
 
@@ -54,6 +55,7 @@ final class KdpMetadataExporter
                     'within_kdp_bounds' => KdpTrimBounds::isWithinBounds($trim),
                 ],
                 'artifact' => $slug.'-kdp-print.pdf',
+                'cover' => $this->coverDimensionsPayload($trim, $exportDir.'/'.$slug.'-kdp-print.pdf', $kdp->printPaper),
             ],
             'artifacts' => [
                 'ebook' => $slug.'-kdp.epub',
@@ -92,6 +94,20 @@ final class KdpMetadataExporter
         }
 
         return $path;
+    }
+
+    /**
+     * @return array<string, mixed>|null
+     */
+    private function coverDimensionsPayload(DocumentSize $trim, string $printPdfPath, string $paper): ?array
+    {
+        $pages = PdfPageCounter::count($printPdfPath);
+
+        if ($pages === null) {
+            return null;
+        }
+
+        return PrintCoverDimensions::calculate($trim, $pages, $paper);
     }
 
     private function extension(string $filename): string

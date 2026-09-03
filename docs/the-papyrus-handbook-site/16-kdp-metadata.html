@@ -101,10 +101,33 @@ papyrus kdp:metadata -d /path/to/book -e /path/to/out
   <span class="hljs-attr">"language"</span>: <span class="hljs-string">"en"</span>,
   <span class="hljs-attr">"description"</span>: <span class="hljs-string">"…"</span>,
   <span class="hljs-attr">"keywords"</span>: [<span class="hljs-string">"…"</span>],
+  <span class="hljs-attr">"ebook"</span>: {
+    <span class="hljs-attr">"enabled"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">"cover"</span>: <span class="hljs-string">"cover-ebook.jpg"</span>,
+    <span class="hljs-attr">"artifact"</span>: <span class="hljs-string">"&lt;slug&gt;-kdp.epub"</span>
+  },
   <span class="hljs-attr">"print"</span>: {
+    <span class="hljs-attr">"enabled"</span>: <span class="hljs-literal">true</span>,
     <span class="hljs-attr">"paper"</span>: <span class="hljs-string">"white"</span>,
     <span class="hljs-attr">"bleed_mm"</span>: <span class="hljs-number">3</span>,
-    <span class="hljs-attr">"margin_preset"</span>: <span class="hljs-string">"recommended"</span>
+    <span class="hljs-attr">"margin_preset"</span>: <span class="hljs-string">"recommended"</span>,
+    <span class="hljs-attr">"margin_preset_known"</span>: <span class="hljs-literal">true</span>,
+    <span class="hljs-attr">"trim"</span>: {
+      <span class="hljs-attr">"width_mm"</span>: <span class="hljs-number">152.4</span>,
+      <span class="hljs-attr">"height_mm"</span>: <span class="hljs-number">228.6</span>,
+      <span class="hljs-attr">"width_in"</span>: <span class="hljs-number">6.0</span>,
+      <span class="hljs-attr">"height_in"</span>: <span class="hljs-number">9.0</span>,
+      <span class="hljs-attr">"preset"</span>: <span class="hljs-string">"6x9"</span>,
+      <span class="hljs-attr">"within_kdp_bounds"</span>: <span class="hljs-literal">true</span>
+    },
+    <span class="hljs-attr">"artifact"</span>: <span class="hljs-string">"&lt;slug&gt;-kdp-print.pdf"</span>
+  },
+  <span class="hljs-attr">"artifacts"</span>: {
+    <span class="hljs-attr">"ebook"</span>: <span class="hljs-string">"&lt;slug&gt;-kdp.epub"</span>,
+    <span class="hljs-attr">"print"</span>: <span class="hljs-string">"&lt;slug&gt;-kdp-print.pdf"</span>,
+    <span class="hljs-attr">"metadata"</span>: <span class="hljs-string">"&lt;slug&gt;-kdp-metadata.json"</span>,
+    <span class="hljs-attr">"ebook_cover"</span>: <span class="hljs-string">"&lt;slug&gt;-kdp-ebook-cover.jpg"</span>,
+    <span class="hljs-attr">"print_covers"</span>: [<span class="hljs-string">"&lt;slug&gt;-kdp-print-cover-light.jpg"</span>]
   }
 }
 </code></pre>
@@ -133,13 +156,18 @@ papyrus kdp:metadata -d /path/to/book -e /path/to/out
 <td><code>kdp.metadata.keywords</code> (string list)</td>
 </tr>
 <tr>
-<td><code>print.*</code></td>
-<td>Current <code>kdp.print</code> settings</td>
+<td><code>ebook.*</code> / <code>print.*</code></td>
+<td>Enable flags, paper, bleed, margin preset, trim size</td>
+</tr>
+<tr>
+<td><code>artifacts.*</code></td>
+<td>Expected export filenames for uploads</td>
 </tr>
 </tbody>
 </table>
 <p>This file is a helper for your workflow — it is not uploaded automatically
-to Amazon.</p>
+to Amazon. Run <code>papyrus doctor</code> to check KDP readiness (covers, margin
+preset, epubcheck on <code>PATH</code>).</p>
 <nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="15-kdp-cover.html"><span class="label">Previous</span>kdp:cover</a><a class="next" href="17-migration-and-ci.html"><span class="label">Next</span>Migration and CI</a></nav>
         </main>
     </div>

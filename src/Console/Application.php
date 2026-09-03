@@ -15,6 +15,7 @@ use Milon\Papyrus\Commands\Kdp\KdpCommand;
 use Milon\Papyrus\Commands\Kdp\KdpCoverCommand;
 use Milon\Papyrus\Commands\Kdp\KdpEbookCommand;
 use Milon\Papyrus\Commands\Kdp\KdpMetadataCommand;
+use Milon\Papyrus\Commands\Kdp\KdpPackageCommand;
 use Milon\Papyrus\Commands\Kdp\KdpPrintCommand;
 use Milon\Papyrus\Commands\LintCommand;
 use Milon\Papyrus\Commands\MigrateIbisCommand;
@@ -55,6 +56,7 @@ final class Application extends SymfonyApplication
             new KdpPrintCommand,
             new KdpCoverCommand,
             new KdpMetadataCommand,
+            new KdpPackageCommand,
         ]);
     }
 

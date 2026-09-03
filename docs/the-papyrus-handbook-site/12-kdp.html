@@ -48,6 +48,7 @@
 Kindle EPUB (if enabled), print interior PDF (if enabled), cover asset
 copies, and the metadata JSON sidecar.</p>
 <pre><code class="language-bash hljs bash" data-lang="bash">papyrus kdp
+papyrus kdp --require-epubcheck
 papyrus kdp -d /path/to/book -e /path/to/out
 </code></pre>
 <p>Unlike <code>papyrus build</code>, this command <strong>fails</strong> when neither
@@ -74,6 +75,12 @@ papyrus kdp -d /path/to/book -e /path/to/out
 <td><code>-e</code></td>
 <td><code>export/</code></td>
 <td>Output directory</td>
+</tr>
+<tr>
+<td><code>--require-epubcheck</code></td>
+<td></td>
+<td>off</td>
+<td>Fail ebook build if <code>epubcheck</code> is missing</td>
 </tr>
 </tbody>
 </table>

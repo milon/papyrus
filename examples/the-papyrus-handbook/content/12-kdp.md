@@ -11,6 +11,7 @@ copies, and the metadata JSON sidecar.
 ```bash
 papyrus kdp
 papyrus kdp --require-epubcheck
+papyrus kdp --package
 papyrus kdp -d /path/to/book -e /path/to/out
 ```
 
@@ -24,6 +25,7 @@ Unlike `papyrus build`, this command **fails** when neither
 | `--dir` | `-d` | current directory | Book root |
 | `--export` | `-e` | `export/` | Output directory |
 | `--require-epubcheck` | | off | Fail ebook build if `epubcheck` is missing |
+| `--package` | | off | Also write `export/<slug>-kdp-package.zip` |
 
 Print uses the **first** configured theme (same as `kdp:print` without
 `--theme`).
@@ -69,6 +71,9 @@ Print uses the **first** configured theme (same as `kdp:print` without
 | Ebook cover copy | `<slug>-kdp-ebook-cover.<ext>` |
 | Print cover copies | `<slug>-kdp-print-cover-<theme>.<ext>` |
 | Metadata | `<slug>-kdp-metadata.json` |
+| Package zip | `<slug>-kdp-package.zip` (via `kdp:package` or `kdp --package`) |
 
-Confirm trim with `papyrus sizes` and Amazon’s current KDP print specs
-before uploading. The next chapters document each `kdp:*` command.
+After `kdp:print`, Papyrus prints a wrap-cover size estimate (spine + full
+bleed dimensions). Confirm trim with `papyrus sizes` and Amazon’s current
+KDP print specs before uploading. The next chapters document each `kdp:*`
+command.

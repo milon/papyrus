@@ -43,6 +43,11 @@ final class KdpBuilder
         return (new KdpMetadataExporter($this->project))->export();
     }
 
+    public function buildPackage(?string $outputPath = null): string
+    {
+        return (new KdpPackageBuilder($this->project))->build($outputPath);
+    }
+
     public function hasEnabledOutputs(): bool
     {
         return $this->project->kdpConfig()->hasEnabledOutputs();

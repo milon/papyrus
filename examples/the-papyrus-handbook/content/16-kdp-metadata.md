@@ -91,9 +91,13 @@ export/<slug>-kdp-metadata.json
 | `language` | `kdp.metadata.language` → `language` → `en` |
 | `description` | `kdp.metadata.description` (may be empty) |
 | `keywords` | `kdp.metadata.keywords` (string list) |
-| `ebook.*` / `print.*` | Enable flags, paper, bleed, margin preset, trim size |
+| `ebook.*` / `print.*` | Enable flags, paper, bleed, margin preset, trim size; optional wrap `cover` estimate when print PDF exists |
 | `artifacts.*` | Expected export filenames for uploads |
+
+When `export/<slug>-kdp-print.pdf` exists, `print.cover` includes page count,
+spine width, and full wrap dimensions. Rebuild metadata after `kdp:print` to
+refresh those numbers.
 
 This file is a helper for your workflow — it is not uploaded automatically
 to Amazon. Run `papyrus doctor` to check KDP readiness (covers, margin
-preset, epubcheck on `PATH`).
+preset, epubcheck on `PATH`). Package uploads with `papyrus kdp:package`.

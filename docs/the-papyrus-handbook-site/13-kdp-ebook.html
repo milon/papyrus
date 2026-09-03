@@ -46,6 +46,7 @@
             <div style="page-break-after: always;"></div><h1>kdp:ebook</h1>
 <p>Build a Kindle-oriented EPUB for Amazon KDP upload.</p>
 <pre><code class="language-bash hljs bash" data-lang="bash">papyrus kdp:ebook
+papyrus kdp:ebook --require-epubcheck
 papyrus kdp:ebook -d /path/to/book -e /path/to/out
 </code></pre>
 <p>Requires <code>kdp.ebook.enabled =&gt; true</code>.</p>
@@ -72,6 +73,12 @@ papyrus kdp:ebook -d /path/to/book -e /path/to/out
 <td><code>export/</code></td>
 <td>Output directory</td>
 </tr>
+<tr>
+<td><code>--require-epubcheck</code></td>
+<td></td>
+<td>off</td>
+<td>Fail if <code>epubcheck</code> is not on <code>PATH</code></td>
+</tr>
 </tbody>
 </table>
 <h2 id="output"><a class="heading-permalink" href="#output" aria-hidden="true" tabindex="-1">#</a>Output</h2>
@@ -79,7 +86,9 @@ papyrus kdp:ebook -d /path/to/book -e /path/to/out
 </code></pre>
 <p>Papyrus runs an internal KDP-oriented check and, when available on <code>PATH</code>,
 <code>epubcheck</code> (install with <code>brew install epubcheck</code>, or from
-<a href="https://github.com/w3c/epubcheck/releases">w3c/epubcheck</a>).</p>
+<a href="https://github.com/w3c/epubcheck/releases">w3c/epubcheck</a>). Warnings from
+those checks are printed to the console. Without epubcheck, the build still
+succeeds with a warning unless you pass <code>--require-epubcheck</code>.</p>
 <h2 id="cover"><a class="heading-permalink" href="#cover" aria-hidden="true" tabindex="-1">#</a>Cover</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'kdp'</span> =&gt; [
     <span class="hljs-string">'ebook'</span> =&gt; [

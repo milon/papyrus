@@ -27,7 +27,21 @@
             "preset": "crown-quarto",
             "within_kdp_bounds": true
         },
-        "artifact": "mini-book-kdp-print.pdf"
+        "artifact": "mini-book-kdp-print.pdf",
+        "cover": {
+            "page_count": 6,
+            "paper": "white",
+            "bleed_in": 0.125,
+            "bleed_mm": 3.175,
+            "spine_in": 0.0135,
+            "spine_mm": 0.343,
+            "wrap_width_in": 15.1435,
+            "wrap_height_in": 9.94,
+            "wrap_width_mm": 384.645,
+            "wrap_height_mm": 252.476,
+            "spine_text_allowed": false,
+            "formula": "pages × 0.002252 in (white paper) + 0.125 in bleed each side"
+        }
     },
     "artifacts": {
         "ebook": "mini-book-kdp.epub",
