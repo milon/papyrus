@@ -6,7 +6,7 @@
 
 PHP CLI for Markdown book projects — PDF, EPUB, HTML, Hosted Site, and KDP exports.
 
-Built from scratch with heavy influence from [ibis-next](https://github.com/Hi-Folks/ibis-next). Book projects use `papyrus.php`, `content/`, and `assets/`.
+Built from scratch with heavy influence from [ibis-next](https://github.com/Hi-Folks/ibis-next). Book projects use `papyrus.php`, `content/`, and `assets/`. By default Papyrus uses bundled themes, CSS, and fonts; publish them into your project only when you want to customize them.
 
 ## Beyond ibis-next
 
@@ -204,11 +204,19 @@ papyrus build:site -d my-book
 
 Open `export/<slug>-site/index.html` in a browser, or deploy that folder as a static site.
 
+`init` creates an empty `assets/` directory. To customize the bundled theme or
+fonts later:
+
+```bash
+papyrus asset:publish
+```
+
 ## Commands
 
 | Command        | Description                                                           |
 |----------------|-----------------------------------------------------------------------|
-| `init`         | Scaffold `papyrus.php`, `content/`, `assets/`                         |
+| `init`         | Scaffold `papyrus.php`, `content/`, and an empty `assets/`            |
+| `asset:publish`| Publish bundled themes, CSS, and fonts into `assets/`                 |
 | `doctor`       | Validate config and project paths                                     |
 | `build`        | Build all PDF themes, EPUB, HTML, and enabled KDP outputs             |
 | `build:pdf`    | Build PDF themes (`--theme light,dark`, `--parallel` for multi-theme) |

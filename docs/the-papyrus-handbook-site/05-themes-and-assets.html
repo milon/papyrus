@@ -38,13 +38,17 @@
         </header>
         <main class="content">
             <div style="page-break-after: always;"></div><h1>Themes and assets</h1>
-<p>Everything visual lives under <code>assets/</code>. New projects from <code>papyrus init</code> ship
-a Filament Playbook–inspired theme: Linux Libertine for body and headings,
-0xProto for code, github-gist highlight colors, and notice / tip / caution
-asides, plus matching font files under <code>assets/fonts/</code>.</p>
+<p>Everything visual can live under <code>assets/</code>, but it does not have to. New
+projects from <code>papyrus init</code> start with an empty <code>assets/</code> directory and use
+the bundled Papyrus defaults: Linux Libertine for body and headings, 0xProto
+for code, github-gist highlight colors, notice / tip / caution asides, and
+matching font files.</p>
+<p>Publish the bundled assets into your project when you want to edit them:</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus asset:publish
+</code></pre>
 <h2>PDF themes</h2>
-<p>For each name in <code>themes</code>, provide <code>assets/theme-{name}.html</code>. Split the theme
-on the TOC marker:</p>
+<p>For each name in <code>themes</code>, Papyrus looks for <code>assets/theme-{name}.html</code> first,
+then falls back to the bundled copy. Split the theme on the TOC marker:</p>
 <pre><code class="language-html hljs xml" data-lang="html"><span class="hljs-comment">&lt;!-- PAPYRUS:TOC --&gt;</span>
 </code></pre>
 <p>Papyrus writes pretoc chapters, then the TOC, then body chapters around that
@@ -54,7 +58,7 @@ marker. A legacy <code>&lt;!-- IBIS:TOC --&gt;</code> marker is still recognized
 colors, title page, and running header styles (often paired with
 <code>header.style</code> in config).</p>
 <h2>HTML theme</h2>
-<p><code>assets/theme-html.html</code> is a full HTML document with placeholders
+<p><code>theme-html.html</code> is a full HTML document with placeholders
 <code>{{$title}}</code>, <code>{{$subtitle}}</code>, <code>{{$author}}</code>, and <code>{{$body}}</code>. The default
 template mirrors the light PDF theme (same typefaces, colors, code blocks,
 and callouts), with a fixed moon/sun icon toggle that switches to the dark
@@ -70,14 +74,18 @@ Home index, shared CSS/JS (fonts copied into the site), a collapsible chapter
 sidebar, and the same light/dark toggle as the single-file HTML export. That
 folder is what this handbook deploys to GitHub Pages.</p>
 <h2>EPUB styles</h2>
-<p><code>assets/style.css</code> (and optional <code>highlight.codeblock.min.css</code>) ship inside
+<p><code>style.css</code> (and optional <code>highlight.codeblock.min.css</code>) are loaded from your
+project <code>assets/</code> first, then from Papyrus’s bundled defaults, and ship inside
 the EPUB. Prefer simple <code>pre</code>/<code>code</code> rules for e-ink readers.</p>
 <h2>Covers and fonts</h2>
 <p>Place cover images and font files under <code>assets/</code> (fonts usually in
 <code>assets/fonts/</code>). Reference them from <code>cover</code> and <code>fonts.faces</code> in
-<code>papyrus.php</code>. This handbook’s cover is <code>assets/cover.jpg</code>; the wide banner
-used on the Welcome page is published from the Papyrus repo at
-<a href="https://github.com/milon/papyrus/blob/master/assets/papyrus-banner.jpg">assets/papyrus-banner.jpg</a>.</p>
+<code>papyrus.php</code>.</p>
+<p>This handbook keeps only book-specific assets in <code>assets/</code> — <code>cover.jpg</code> for
+the PDF cover and <code>banner.jpg</code> for the site home page. Themes, CSS, and fonts
+come from Papyrus’s bundled defaults; run <code>papyrus asset:publish</code> when you want
+local copies to customize. The wide banner image in the Papyrus repo README lives
+at <a href="https://github.com/milon/papyrus/blob/master/assets/papyrus-banner.jpg">assets/papyrus-banner.jpg</a>.</p>
 <nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="04-writing-content.html"><span class="label">Previous</span>Writing content</a><a class="next" href="06-build.html"><span class="label">Next</span>build</a></nav>
         </main>
     </div>

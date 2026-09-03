@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Milon\Papyrus\Console;
 
+use Milon\Papyrus\Commands\AssetPublishCommand;
 use Milon\Papyrus\Commands\BuildCommand;
 use Milon\Papyrus\Commands\DoctorCommand;
 use Milon\Papyrus\Commands\EpubCommand;
@@ -34,6 +35,7 @@ final class Application extends SymfonyApplication
 
         $this->addCommands([
             new InitCommand,
+            new AssetPublishCommand,
             new DoctorCommand,
             new BuildCommand,
             new PdfCommand,

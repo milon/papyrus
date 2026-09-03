@@ -125,8 +125,13 @@ papyrus list
 <pre><code class="language-bash hljs bash" data-lang="bash">papyrus init
 papyrus init -d my-book
 </code></pre>
-<p><code>init</code> creates <code>papyrus.php</code>, <code>content/</code>, and <code>assets/</code>. Use <code>--force</code> / <code>-f</code>
-to overwrite.</p>
+<p><code>init</code> creates <code>papyrus.php</code>, <code>content/</code>, and an empty <code>assets/</code> directory.
+Papyrus uses bundled themes, CSS, and fonts by default. Publish those files
+into your project only when you want to customize them:</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus asset:publish
+</code></pre>
+<p>Use <code>--force</code> / <code>-f</code> to overwrite files during <code>init</code>, or with
+<code>asset:publish</code> to overwrite published assets.</p>
 <h2>Layout</h2>
 <table>
 <thead>
@@ -146,7 +151,7 @@ to overwrite.</p>
 </tr>
 <tr>
 <td><code>assets/</code></td>
-<td>Themes, CSS, covers, fonts</td>
+<td>Your overrides: themes, CSS, covers, fonts, banner</td>
 </tr>
 <tr>
 <td><code>export/</code></td>

@@ -24,10 +24,10 @@ final class MpdfFactory
         $defaultFontConfig = (new FontVariables)->getDefaults();
         $fontData = $defaultFontConfig['fontdata'];
 
-        $customFontsDir = $project->assetsDir.'/fonts';
-
-        if (is_dir($customFontsDir)) {
-            $fontDirs[] = $customFontsDir;
+        foreach ($project->fontDirs() as $customFontsDir) {
+            if (! in_array($customFontsDir, $fontDirs, true)) {
+                $fontDirs[] = $customFontsDir;
+            }
         }
 
         $options = [

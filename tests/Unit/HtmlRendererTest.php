@@ -49,4 +49,63 @@ final class HtmlRendererTest extends TestCase
             rmdir($outputDir);
         }
     }
+
+    #[Test]
+    public function html_build_can_fall_back_to_bundled_assets(): void
+    {
+        $bookDir = sys_get_temp_dir().'/papyrus-html-bundled-'.uniqid('', true);
+        $outputDir = $bookDir.'/export';
+
+        mkdir($bookDir.'/content', 0755, true);
+        mkdir($bookDir.'/assets', 0755, true);
+        mkdir($outputDir, 0755, true);
+
+        file_put_contents($bookDir.'/content/01.md', "---\ntitle: One\n---\n\nHello from bundled assets.\n");
+        file_put_contents($bookDir.'/papyrus.php', <<<'PHP'
+<?php
+
+return [
+    'title' => 'Bundled Asset Book',
+    'author' => 'Papyrus',
+    'themes' => ['light'],
+    'mermaid' => ['enabled' => false],
+];
+PHP);
+
+        try {
+            $project = Project::load($bookDir)->withExportDir($outputDir);
+            $path = (new HtmlRenderer($project))->render();
+
+            $this->assertFileExists($path);
+
+            $html = file_get_contents($path);
+            $this->assertIsString($html);
+            $this->assertStringContainsString('<title>Bundled Asset Book</title>', $html);
+            $this->assertStringContainsString('Hello from bundled assets.', $html);
+        } finally {
+            $this->removeDir($bookDir);
+        }
+    }
+
+    private function removeDir(string $dir): void
+    {
+        if (! is_dir($dir)) {
+            return;
+        }
+
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($dir, \FilesystemIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::CHILD_FIRST,
+        );
+
+        foreach ($iterator as $file) {
+            if ($file->isDir()) {
+                rmdir($file->getPathname());
+            } else {
+                unlink($file->getPathname());
+            }
+        }
+
+        rmdir($dir);
+    }
 }

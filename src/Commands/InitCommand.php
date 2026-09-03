@@ -54,6 +54,14 @@ final class InitCommand extends BookCommand
             $written[] = $relative;
         }
 
+        $assetsDir = $dir.'/assets';
+
+        if (! is_dir($assetsDir) && ! mkdir($assetsDir, 0o755, true) && ! is_dir($assetsDir)) {
+            $output->writeln('<error>Could not create directory: assets</error>');
+
+            return self::FAILURE;
+        }
+
         if ($written === []) {
             $output->writeln('<comment>No files written. Use --force to overwrite.</comment>');
 

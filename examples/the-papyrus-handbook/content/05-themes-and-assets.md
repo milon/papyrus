@@ -4,15 +4,22 @@ title: Themes and assets
 
 # Themes and assets
 
-Everything visual lives under `assets/`. New projects from `papyrus init` ship
-a Filament Playbook–inspired theme: Linux Libertine for body and headings,
-0xProto for code, github-gist highlight colors, and notice / tip / caution
-asides, plus matching font files under `assets/fonts/`.
+Everything visual can live under `assets/`, but it does not have to. New
+projects from `papyrus init` start with an empty `assets/` directory and use
+the bundled Papyrus defaults: Linux Libertine for body and headings, 0xProto
+for code, github-gist highlight colors, notice / tip / caution asides, and
+matching font files.
+
+Publish the bundled assets into your project when you want to edit them:
+
+```bash
+papyrus asset:publish
+```
 
 ## PDF themes
 
-For each name in `themes`, provide `assets/theme-{name}.html`. Split the theme
-on the TOC marker:
+For each name in `themes`, Papyrus looks for `assets/theme-{name}.html` first,
+then falls back to the bundled copy. Split the theme on the TOC marker:
 
 ```html
 <!-- PAPYRUS:TOC -->
@@ -28,7 +35,7 @@ colors, title page, and running header styles (often paired with
 
 ## HTML theme
 
-`assets/theme-html.html` is a full HTML document with placeholders
+`theme-html.html` is a full HTML document with placeholders
 `{{$title}}`, `{{$subtitle}}`, `{{$author}}`, and `{{$body}}`. The default
 template mirrors the light PDF theme (same typefaces, colors, code blocks,
 and callouts), with a fixed moon/sun icon toggle that switches to the dark
@@ -49,13 +56,18 @@ folder is what this handbook deploys to GitHub Pages.
 
 ## EPUB styles
 
-`assets/style.css` (and optional `highlight.codeblock.min.css`) ship inside
+`style.css` (and optional `highlight.codeblock.min.css`) are loaded from your
+project `assets/` first, then from Papyrus’s bundled defaults, and ship inside
 the EPUB. Prefer simple `pre`/`code` rules for e-ink readers.
 
 ## Covers and fonts
 
 Place cover images and font files under `assets/` (fonts usually in
 `assets/fonts/`). Reference them from `cover` and `fonts.faces` in
-`papyrus.php`. This handbook’s cover is `assets/cover.jpg`; the wide banner
-used on the Welcome page is published from the Papyrus repo at
-[assets/papyrus-banner.jpg](https://github.com/milon/papyrus/blob/master/assets/papyrus-banner.jpg).
+`papyrus.php`.
+
+This handbook keeps only book-specific assets in `assets/` — `cover.jpg` for
+the PDF cover and `banner.jpg` for the site home page. Themes, CSS, and fonts
+come from Papyrus’s bundled defaults; run `papyrus asset:publish` when you want
+local copies to customize. The wide banner image in the Papyrus repo README lives
+at [assets/papyrus-banner.jpg](https://github.com/milon/papyrus/blob/master/assets/papyrus-banner.jpg).

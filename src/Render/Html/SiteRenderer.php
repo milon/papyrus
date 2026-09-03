@@ -420,9 +420,9 @@ HTML;
 
     private function copyFontsIntoSite(string $destinationDir): void
     {
-        $sourceDir = $this->project->assetsDir.'/fonts';
+        $sourceDirs = $this->project->fontDirs();
 
-        if (! is_dir($sourceDir)) {
+        if ($sourceDirs === []) {
             return;
         }
 
@@ -430,27 +430,29 @@ HTML;
             throw new HtmlException(sprintf('Unable to create site fonts directory: %s', $destinationDir));
         }
 
-        $files = scandir($sourceDir);
+        foreach (array_reverse($sourceDirs) as $sourceDir) {
+            $files = scandir($sourceDir);
 
-        if ($files === false) {
-            return;
-        }
-
-        foreach ($files as $file) {
-            if ($file === '.' || $file === '..') {
+            if ($files === false) {
                 continue;
             }
 
-            $source = $sourceDir.'/'.$file;
+            foreach ($files as $file) {
+                if ($file === '.' || $file === '..') {
+                    continue;
+                }
 
-            if (! is_file($source)) {
-                continue;
-            }
+                $source = $sourceDir.'/'.$file;
 
-            $destination = $destinationDir.'/'.$file;
+                if (! is_file($source)) {
+                    continue;
+                }
 
-            if (! copy($source, $destination)) {
-                throw new HtmlException(sprintf('Unable to copy font into site: %s', $file));
+                $destination = $destinationDir.'/'.$file;
+
+                if (! copy($source, $destination)) {
+                    throw new HtmlException(sprintf('Unable to copy font into site: %s', $file));
+                }
             }
         }
     }

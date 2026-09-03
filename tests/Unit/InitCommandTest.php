@@ -21,10 +21,11 @@ final class InitCommandTest extends TestCase
         $this->assertSame(0, $exitCode);
         $this->assertFileExists($target.'/papyrus.php');
         $this->assertFileExists($target.'/content/01-introduction.md');
-        $this->assertFileExists($target.'/assets/theme-light.html');
-        $this->assertFileExists($target.'/assets/theme-html.html');
-        $this->assertFileExists($target.'/assets/fonts/LinLibertine_R.ttf');
-        $this->assertFileExists($target.'/assets/fonts/0xProto-Regular.ttf');
+        $this->assertDirectoryExists($target.'/assets');
+        $this->assertFileDoesNotExist($target.'/assets/theme-light.html');
+        $this->assertFileDoesNotExist($target.'/assets/theme-html.html');
+        $this->assertFileDoesNotExist($target.'/assets/fonts/LinLibertine_R.ttf');
+        $this->assertFileDoesNotExist($target.'/assets/fonts/0xProto-Regular.ttf');
 
         $this->removeDir($target);
     }
@@ -36,6 +37,17 @@ final class InitCommandTest extends TestCase
 
         $this->assertContains('papyrus.php', $files);
         $this->assertContains('content/01-introduction.md', $files);
+        $this->assertNotContains('assets/theme-light.html', $files);
+    }
+
+    public function test_stub_repository_lists_publishable_assets(): void
+    {
+        $repo = StubRepository::default();
+        $files = $repo->assetFiles();
+
+        $this->assertContains('theme-light.html', $files);
+        $this->assertContains('theme-html.html', $files);
+        $this->assertContains('fonts/LinLibertine_R.ttf', $files);
     }
 
     private function removeDir(string $dir): void

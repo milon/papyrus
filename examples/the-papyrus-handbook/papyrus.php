@@ -27,11 +27,11 @@ return [
     ],
 
     'cover' => [
-        'image' => 'cover.jpg',
+        'image' => 'cover.jpg', // book-specific; themes/fonts use bundled defaults
     ],
 
     'site' => [
-        'banner' => 'banner.jpg',
+        'banner' => 'banner.jpg', // book-specific site home image
         'lead' => 'Official handbook for milon/papyrus — the same Markdown chapters build the PDF, HTML file, and this site.',
         'cname' => 'papyrus.milon.im',
         'links' => [

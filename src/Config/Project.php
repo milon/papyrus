@@ -20,6 +20,8 @@ final class Project
 
     public const DEFAULT_ASSETS_DIR = 'assets';
 
+    public const PACKAGE_ASSETS_DIR = __DIR__.'/../../stubs/assets';
+
     public const DEFAULT_EXPORT_DIR = 'export';
 
     /**
@@ -214,6 +216,54 @@ final class Project
         }
 
         return (string) ($header['style'] ?? 'font-style: italic; text-align: right; border-bottom: solid 1px #808080;');
+    }
+
+    public function packageAssetsDir(): string
+    {
+        return self::normalizePath(self::PACKAGE_ASSETS_DIR);
+    }
+
+    public function assetPath(string $relativePath): ?string
+    {
+        $relativePath = ltrim(str_replace('\\', '/', $relativePath), '/');
+
+        if ($relativePath === '') {
+            return null;
+        }
+
+        $projectPath = $this->assetsDir.'/'.$relativePath;
+
+        if (is_file($projectPath) || is_dir($projectPath)) {
+            return $projectPath;
+        }
+
+        $packagePath = $this->packageAssetsDir().'/'.$relativePath;
+
+        if (is_file($packagePath) || is_dir($packagePath)) {
+            return $packagePath;
+        }
+
+        return null;
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function fontDirs(): array
+    {
+        $dirs = [];
+
+        if (is_dir($this->assetsDir.'/fonts')) {
+            $dirs[] = $this->assetsDir.'/fonts';
+        }
+
+        $packageFontsDir = $this->packageAssetsDir().'/fonts';
+
+        if (is_dir($packageFontsDir)) {
+            $dirs[] = $packageFontsDir;
+        }
+
+        return array_values(array_unique($dirs));
     }
 
     public function coverImageForTheme(string $theme): ?string

@@ -41,7 +41,11 @@ final class PdfRenderer
         ?Book $book,
         bool $bodyOnly,
     ): string {
-        $themePath = $this->project->assetsDir.'/theme-'.$themeName.'.html';
+        $themePath = $this->project->assetPath('theme-'.$themeName.'.html');
+
+        if ($themePath === null) {
+            throw new PdfException(sprintf('Theme file not found: theme-%s.html', $themeName));
+        }
 
         try {
             $theme = Theme::load($themePath, $this->themeReplacements());

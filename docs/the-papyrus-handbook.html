@@ -12,7 +12,7 @@
     <style>
         @font-face {
             font-family: "Linux Libertine";
-            src: url("../examples/the-papyrus-handbook/assets/fonts/LinLibertine_R.ttf") format("truetype");
+            src: url("../stubs/assets/fonts/LinLibertine_R.ttf") format("truetype");
             font-weight: normal;
             font-style: normal;
             font-display: swap;
@@ -20,7 +20,7 @@
 
         @font-face {
             font-family: "Linux Libertine";
-            src: url("../examples/the-papyrus-handbook/assets/fonts/LinLibertine_RB.ttf") format("truetype");
+            src: url("../stubs/assets/fonts/LinLibertine_RB.ttf") format("truetype");
             font-weight: bold;
             font-style: normal;
             font-display: swap;
@@ -28,7 +28,7 @@
 
         @font-face {
             font-family: "Linux Libertine";
-            src: url("../examples/the-papyrus-handbook/assets/fonts/LinLibertine_RI.ttf") format("truetype");
+            src: url("../stubs/assets/fonts/LinLibertine_RI.ttf") format("truetype");
             font-weight: normal;
             font-style: italic;
             font-display: swap;
@@ -36,7 +36,7 @@
 
         @font-face {
             font-family: "Linux Libertine";
-            src: url("../examples/the-papyrus-handbook/assets/fonts/LinLibertine_RBI.ttf") format("truetype");
+            src: url("../stubs/assets/fonts/LinLibertine_RBI.ttf") format("truetype");
             font-weight: bold;
             font-style: italic;
             font-display: swap;
@@ -44,7 +44,7 @@
 
         @font-face {
             font-family: "0xProto";
-            src: url("../examples/the-papyrus-handbook/assets/fonts/0xProto-Regular.ttf") format("truetype");
+            src: url("../stubs/assets/fonts/0xProto-Regular.ttf") format("truetype");
             font-weight: normal;
             font-style: normal;
             font-display: swap;
@@ -52,7 +52,7 @@
 
         @font-face {
             font-family: "0xProto";
-            src: url("../examples/the-papyrus-handbook/assets/fonts/0xProto-Bold.ttf") format("truetype");
+            src: url("../stubs/assets/fonts/0xProto-Bold.ttf") format("truetype");
             font-weight: bold;
             font-style: normal;
             font-display: swap;
@@ -60,7 +60,7 @@
 
         @font-face {
             font-family: "0xProto";
-            src: url("../examples/the-papyrus-handbook/assets/fonts/0xProto-Italic.ttf") format("truetype");
+            src: url("../stubs/assets/fonts/0xProto-Italic.ttf") format("truetype");
             font-weight: normal;
             font-style: italic;
             font-display: swap;
@@ -766,7 +766,7 @@ example so you can read without installing anything.</p>
 </tr>
 <tr>
 <td><code>assets/</code></td>
-<td>PDF / HTML themes, covers, fonts, CSS</td>
+<td>Your overrides (covers, banner, custom themes/fonts); bundled defaults used when absent</td>
 </tr>
 <tr>
 <td><code>export/</code></td>
@@ -867,8 +867,13 @@ papyrus list
 <pre><code class="language-bash hljs bash" data-lang="bash">papyrus init
 papyrus init -d my-book
 </code></pre>
-<p><code>init</code> creates <code>papyrus.php</code>, <code>content/</code>, and <code>assets/</code>. Use <code>--force</code> / <code>-f</code>
-to overwrite.</p>
+<p><code>init</code> creates <code>papyrus.php</code>, <code>content/</code>, and an empty <code>assets/</code> directory.
+Papyrus uses bundled themes, CSS, and fonts by default. Publish those files
+into your project only when you want to customize them:</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus asset:publish
+</code></pre>
+<p>Use <code>--force</code> / <code>-f</code> to overwrite files during <code>init</code>, or with
+<code>asset:publish</code> to overwrite published assets.</p>
 <h2>Layout</h2>
 <table>
 <thead>
@@ -888,7 +893,7 @@ to overwrite.</p>
 </tr>
 <tr>
 <td><code>assets/</code></td>
-<td>Themes, CSS, covers, fonts</td>
+<td>Your overrides: themes, CSS, covers, fonts, banner</td>
 </tr>
 <tr>
 <td><code>export/</code></td>
@@ -1405,13 +1410,17 @@ papyrus lint --max-width=66
 </tbody>
 </table>
 <div style="page-break-after: always;"></div><h1>Themes and assets</h1>
-<p>Everything visual lives under <code>assets/</code>. New projects from <code>papyrus init</code> ship
-a Filament Playbook–inspired theme: Linux Libertine for body and headings,
-0xProto for code, github-gist highlight colors, and notice / tip / caution
-asides, plus matching font files under <code>assets/fonts/</code>.</p>
+<p>Everything visual can live under <code>assets/</code>, but it does not have to. New
+projects from <code>papyrus init</code> start with an empty <code>assets/</code> directory and use
+the bundled Papyrus defaults: Linux Libertine for body and headings, 0xProto
+for code, github-gist highlight colors, notice / tip / caution asides, and
+matching font files.</p>
+<p>Publish the bundled assets into your project when you want to edit them:</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus asset:publish
+</code></pre>
 <h2>PDF themes</h2>
-<p>For each name in <code>themes</code>, provide <code>assets/theme-{name}.html</code>. Split the theme
-on the TOC marker:</p>
+<p>For each name in <code>themes</code>, Papyrus looks for <code>assets/theme-{name}.html</code> first,
+then falls back to the bundled copy. Split the theme on the TOC marker:</p>
 <pre><code class="language-html hljs xml" data-lang="html"><span class="hljs-comment">&lt;!-- PAPYRUS:TOC --&gt;</span>
 </code></pre>
 <p>Papyrus writes pretoc chapters, then the TOC, then body chapters around that
@@ -1421,12 +1430,12 @@ marker. A legacy <code>&lt;!-- IBIS:TOC --&gt;</code> marker is still recognized
 colors, title page, and running header styles (often paired with
 <code>header.style</code> in config).</p>
 <h2>HTML theme</h2>
-<p><code>assets/theme-html.html</code> is a full HTML document with placeholders
+<p><code>theme-html.html</code> is a full HTML document with placeholders
 <code>{{$title}}</code>, <code>{{$subtitle}}</code>, <code>{{$author}}</code>, and <code>{{$body}}</code>. The default
 template mirrors the light PDF theme (same typefaces, colors, code blocks,
 and callouts), with a fixed moon/sun icon toggle that switches to the dark
 PDF palette. The reading column follows Tailwind screen widths (640 → 1536px).
-<code>@font-face</code> rules in the theme use <code>../examples/the-papyrus-handbook/assets/fonts/</code>; at build time Papyrus
+<code>@font-face</code> rules in the theme use <code>../stubs/assets/fonts/</code>; at build time Papyrus
 rewrites those URLs relative to the HTML output directory (so <code>-e docs</code> still
 finds the book’s fonts).</p>
 <pre><code class="language-bash hljs bash" data-lang="bash">papyrus build:html
@@ -1437,14 +1446,18 @@ Home index, shared CSS/JS (fonts copied into the site), a collapsible chapter
 sidebar, and the same light/dark toggle as the single-file HTML export. That
 folder is what this handbook deploys to GitHub Pages.</p>
 <h2>EPUB styles</h2>
-<p><code>assets/style.css</code> (and optional <code>highlight.codeblock.min.css</code>) ship inside
+<p><code>style.css</code> (and optional <code>highlight.codeblock.min.css</code>) are loaded from your
+project <code>assets/</code> first, then from Papyrus’s bundled defaults, and ship inside
 the EPUB. Prefer simple <code>pre</code>/<code>code</code> rules for e-ink readers.</p>
 <h2>Covers and fonts</h2>
 <p>Place cover images and font files under <code>assets/</code> (fonts usually in
 <code>assets/fonts/</code>). Reference them from <code>cover</code> and <code>fonts.faces</code> in
-<code>papyrus.php</code>. This handbook’s cover is <code>assets/cover.jpg</code>; the wide banner
-used on the Welcome page is published from the Papyrus repo at
-<a href="https://github.com/milon/papyrus/blob/master/assets/papyrus-banner.jpg">assets/papyrus-banner.jpg</a>.</p>
+<code>papyrus.php</code>.</p>
+<p>This handbook keeps only book-specific assets in <code>assets/</code> — <code>cover.jpg</code> for
+the PDF cover and <code>banner.jpg</code> for the site home page. Themes, CSS, and fonts
+come from Papyrus’s bundled defaults; run <code>papyrus asset:publish</code> when you want
+local copies to customize. The wide banner image in the Papyrus repo README lives
+at <a href="https://github.com/milon/papyrus/blob/master/assets/papyrus-banner.jpg">assets/papyrus-banner.jpg</a>.</p>
 <div style="page-break-after: always;"></div><h1>build</h1>
 <p><code>papyrus build</code> is the all-in-one export command. From the book root (or with
 <code>-d</code>), it runs every configured PDF theme, then EPUB, then single-file HTML,
@@ -1819,7 +1832,7 @@ papyrus build:html -d /path/to/book -e docs
 <p>The default stub theme mirrors the light PDF palette, with a moon/sun
 toggle that switches to the dark PDF colours. The reading column follows
 Tailwind screen widths (640 → 1536px).</p>
-<p><code>@font-face</code> URLs that point at <code>../examples/the-papyrus-handbook/assets/fonts/</code> are rewritten at build
+<p><code>@font-face</code> URLs that point at <code>../stubs/assets/fonts/</code> are rewritten at build
 time so <code>-e docs</code> (or any export override) still finds the book’s fonts.</p>
 <h2>Config that affects HTML</h2>
 <table>
@@ -2690,7 +2703,12 @@ $book = $project-&gt;bookConverter()-&gt;convertDirectory($project-&gt;contentDi
 <tbody>
 <tr>
 <td><code>init</code></td>
-<td>Scaffold <code>papyrus.php</code>, <code>content/</code>, <code>assets/</code></td>
+<td>Scaffold <code>papyrus.php</code>, <code>content/</code>, and an empty <code>assets/</code></td>
+<td><code>--force</code></td>
+</tr>
+<tr>
+<td><code>asset:publish</code></td>
+<td>Publish bundled themes, CSS, and fonts into <code>assets/</code></td>
 <td><code>--force</code></td>
 </tr>
 <tr>

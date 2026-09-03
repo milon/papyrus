@@ -111,10 +111,10 @@ final class EpubRenderer
 
     private function readAsset(string $filename): string
     {
-        $path = $this->project->assetsDir.'/'.$filename;
+        $path = $this->project->assetPath($filename);
 
-        if (! is_file($path)) {
-            throw new EpubException(sprintf('EPUB asset not found: %s', $path));
+        if ($path === null) {
+            throw new EpubException(sprintf('EPUB asset not found: %s', $filename));
         }
 
         $contents = file_get_contents($path);

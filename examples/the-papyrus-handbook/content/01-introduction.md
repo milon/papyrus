@@ -34,7 +34,7 @@ Every book is a directory with:
 |------|------|
 | `papyrus.php` | Title, trim, themes, Mermaid, samples, KDP |
 | `content/` | Markdown chapters (natural filename order) |
-| `assets/` | PDF / HTML themes, covers, fonts, CSS |
+| `assets/` | Your overrides (covers, banner, custom themes/fonts); bundled defaults used when absent |
 | `export/` | Build outputs (usually gitignored) |
 
 ## Next steps

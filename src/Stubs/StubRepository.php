@@ -31,6 +31,38 @@ final class StubRepository
             }
 
             $relative = substr($file->getPathname(), strlen($this->stubsDir) + 1);
+            $relative = str_replace('\\', '/', $relative);
+
+            if (str_starts_with($relative, 'assets/')) {
+                continue;
+            }
+
+            $files[] = $relative;
+        }
+
+        sort($files);
+
+        return $files;
+    }
+
+    /**
+     * @return list<string> paths relative to assets/
+     */
+    public function assetFiles(): array
+    {
+        $files = [];
+        $assetsDir = $this->stubsDir.'/assets';
+
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($assetsDir, \FilesystemIterator::SKIP_DOTS),
+        );
+
+        foreach ($iterator as $file) {
+            if (! $file->isFile()) {
+                continue;
+            }
+
+            $relative = substr($file->getPathname(), strlen($assetsDir) + 1);
             $files[] = str_replace('\\', '/', $relative);
         }
 

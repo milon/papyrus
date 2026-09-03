@@ -29,7 +29,6 @@ final class FontRegistry
         $default = is_string($fonts['default'] ?? null) ? $fonts['default'] : '';
 
         $fontData = [];
-        $fontsDir = $project->assetsDir.'/fonts';
 
         foreach ($faces as $face) {
             if (! is_array($face)) {
@@ -44,7 +43,7 @@ final class FontRegistry
 
             $regular = is_string($face['regular'] ?? null) ? $face['regular'] : '';
 
-            if ($regular === '' || ! is_file($fontsDir.'/'.$regular)) {
+            if ($regular === '' || $project->assetPath('fonts/'.$regular) === null) {
                 continue;
             }
 
@@ -53,7 +52,7 @@ final class FontRegistry
             foreach (['bold' => 'B', 'italic' => 'I', 'bold_italic' => 'BI'] as $key => $mpdfKey) {
                 $file = is_string($face[$key] ?? null) ? $face[$key] : '';
 
-                if ($file !== '' && is_file($fontsDir.'/'.$file)) {
+                if ($file !== '' && $project->assetPath('fonts/'.$file) !== null) {
                     $entry[$mpdfKey] = $file;
                 }
             }

@@ -18,10 +18,10 @@ final class HtmlRenderer
 
     public function render(?string $outputPath = null): string
     {
-        $templatePath = $this->project->assetsDir.'/'.self::TEMPLATE_FILE;
+        $templatePath = $this->project->assetPath(self::TEMPLATE_FILE);
 
-        if (! is_file($templatePath)) {
-            throw new HtmlException(sprintf('HTML theme not found: %s', $templatePath));
+        if ($templatePath === null) {
+            throw new HtmlException(sprintf('HTML theme not found: %s', self::TEMPLATE_FILE));
         }
 
         $template = file_get_contents($templatePath);
@@ -70,7 +70,12 @@ final class HtmlRenderer
 
     private function rewriteFontUrls(string $html, string $htmlDir): string
     {
-        $fontsDir = $this->project->assetsDir.'/fonts';
+        $fontsDir = $this->project->assetPath('fonts');
+
+        if ($fontsDir === null) {
+            return str_replace(self::FONT_URL_PLACEHOLDER, '', $html);
+        }
+
         $relative = Project::relativePath($htmlDir, $fontsDir);
 
         if ($relative === '.') {

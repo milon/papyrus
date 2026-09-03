@@ -29,7 +29,8 @@ title: Command reference
 
 | Command | Purpose | Notable options |
 |---------|---------|-----------------|
-| `init` | Scaffold `papyrus.php`, `content/`, `assets/` | `--force` |
+| `init` | Scaffold `papyrus.php`, `content/`, and an empty `assets/` | `--force` |
+| `asset:publish` | Publish bundled themes, CSS, and fonts into `assets/` | `--force` |
 | `doctor` | Validate config, paths, Mermaid, KDP trim | `-d` |
 | `sizes` | List page-size presets (+ KDP in-bounds) | (no `-d` / `-e`) |
 | `lint` | Lint PHP fences in `content/` | `--fix`, `--max-width=66` |

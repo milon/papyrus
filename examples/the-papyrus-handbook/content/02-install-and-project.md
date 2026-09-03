@@ -101,8 +101,16 @@ papyrus init
 papyrus init -d my-book
 ```
 
-`init` creates `papyrus.php`, `content/`, and `assets/`. Use `--force` / `-f`
-to overwrite.
+`init` creates `papyrus.php`, `content/`, and an empty `assets/` directory.
+Papyrus uses bundled themes, CSS, and fonts by default. Publish those files
+into your project only when you want to customize them:
+
+```bash
+papyrus asset:publish
+```
+
+Use `--force` / `-f` to overwrite files during `init`, or with
+`asset:publish` to overwrite published assets.
 
 ## Layout
 
@@ -110,7 +118,7 @@ to overwrite.
 |------|------|
 | `papyrus.php` | Book settings |
 | `content/` | Markdown chapters |
-| `assets/` | Themes, CSS, covers, fonts |
+| `assets/` | Your overrides: themes, CSS, covers, fonts, banner |
 | `export/` | Built artifacts |
 | `.papyrus/` | Incremental caches |
 

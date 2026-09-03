@@ -22,11 +22,12 @@ return [
         'h3' => 1,
     ],
 
-    'cover' => [
-        'image' => 'cover.png',
-        'light' => 'cover-light.png',
-        'dark' => 'cover-dark.png',
-    ],
+    // Optional cover assets under assets/.
+    // 'cover' => [
+    //     'image' => 'cover.png',
+    //     'light' => 'cover-light.png',
+    //     'dark' => 'cover-dark.png',
+    // ],
 
     // Optional site home extras for `build:site` (banner under assets/).
     // 'site' => [
@@ -83,11 +84,11 @@ return [
 
     'kdp' => [
         'ebook' => [
-            'enabled' => true,
-            'cover' => 'cover-ebook.jpg',
+            'enabled' => false,
+            // 'cover' => 'cover-ebook.jpg',
         ],
         'print' => [
-            'enabled' => true,
+            'enabled' => false,
             'bleed_mm' => 3,
         ],
     ],
