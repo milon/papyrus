@@ -34,7 +34,7 @@ title: Command reference
 | `doctor` | Validate config, paths, Mermaid, KDP trim | `-d` |
 | `sizes` | List page-size presets (+ KDP in-bounds) | (no `-d` / `-e`) |
 | `lint` | Lint PHP fences in `content/` | `--fix`, `--max-width=66` |
-| `watch` | Rebuild via `build` on file changes | `--interval` |
+| `watch` | Rebuild via `build` on file changes | `--interval`, `--with-site`, `--with-sample` |
 | `migrate-ibis` | `ibis.php` → `papyrus.php`; TOC markers in local `assets/theme*.html` only | `--force` |
 
 ## Shared book options

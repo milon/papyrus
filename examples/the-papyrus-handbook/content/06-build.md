@@ -40,8 +40,8 @@ With `-v`, Papyrus prints third-party notices from mPDF and the EPUB zipper.
 
 Slug comes from `title` (lowercased, non-alphanumeric → `-`).
 
-`watch` invokes plain `build` (no site or sample) unless you change the watch
-command yourself.
+`watch` invokes `build` on each change. Pass `--with-site` and/or
+`--with-sample` to include those outputs in every rebuild.
 
 ## Failures
 
@@ -64,12 +64,15 @@ Rebuild on changes to `papyrus.php`, `content/`, and `assets/`:
 ```bash
 papyrus watch
 papyrus watch --interval 3
+papyrus watch --with-site --with-sample
 ```
 
 | Option | Short | Default | Meaning |
 |--------|-------|---------|---------|
 | `--interval` | `-i` | `2` | Poll interval in seconds (minimum `1`) |
 | `--dir` / `--export` | `-d` / `-e` | same as `build` | Passed through to each rebuild |
+| `--with-site` | | off | Also run `build:site` |
+| `--with-sample` | | off | Also run `build:sample` |
 
 ## Caching
 

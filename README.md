@@ -233,7 +233,7 @@ papyrus asset:publish --only=themes
 | `sizes`        | List KDP page-size presets                                            |
 | `migrate-ibis` | Migrate `ibis.php` to `papyrus.php`; update TOC markers in local themes |
 | `lint`         | Lint PHP code fences in `content/` (`--fix` to auto-fix)              |
-| `watch`        | Rebuild on file changes (`--interval` seconds)                        |
+| `watch`        | Rebuild on file changes (`--interval`, `--with-site`, `--with-sample`) |
 
 Common options on book commands:
 

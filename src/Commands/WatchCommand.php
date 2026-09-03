@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Milon\Papyrus\Commands;
 
 use Milon\Papyrus\Config\ConfigException;
+use Milon\Papyrus\Config\Project;
 use Milon\Papyrus\Watch\ProjectWatcher;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -26,6 +27,18 @@ final class WatchCommand extends BookCommand
             InputOption::VALUE_REQUIRED,
             'Poll interval in seconds',
             '2',
+        );
+        $this->addOption(
+            'with-site',
+            null,
+            InputOption::VALUE_NONE,
+            'Also run build:site on each rebuild',
+        );
+        $this->addOption(
+            'with-sample',
+            null,
+            InputOption::VALUE_NONE,
+            'Also run build:sample on each rebuild',
         );
     }
 
@@ -73,21 +86,37 @@ final class WatchCommand extends BookCommand
                 return Command::FAILURE;
             }
 
-            $buildArgs = ['--dir' => $project->dir];
-            $export = $input->getOption('export');
+            $buildInput = new ArrayInput($this->rebuildArguments($input, $project));
+            $buildInput->setInteractive(false);
 
-            if (is_string($export) && $export !== '') {
-                $buildArgs['--export'] = $project->exportDir;
-            }
-
-            $exitCode = $build->run(
-                new ArrayInput($buildArgs),
-                $output,
-            );
+            $exitCode = $build->run($buildInput, $output);
 
             if ($exitCode !== Command::SUCCESS) {
                 $output->writeln('<error>Build failed.</error>');
             }
         }
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    public function rebuildArguments(InputInterface $input, Project $project): array
+    {
+        $buildArgs = ['--dir' => $project->dir];
+        $export = $input->getOption('export');
+
+        if (is_string($export) && $export !== '') {
+            $buildArgs['--export'] = $project->exportDir;
+        }
+
+        if ((bool) $input->getOption('with-site')) {
+            $buildArgs['--with-site'] = true;
+        }
+
+        if ((bool) $input->getOption('with-sample')) {
+            $buildArgs['--with-sample'] = true;
+        }
+
+        return $buildArgs;
     }
 }
