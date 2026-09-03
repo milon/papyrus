@@ -1,8 +1,32 @@
 {
     "name": "milon/papyrus",
-    "description": "PHP CLI for Markdown book projects — PDF, EPUB, HTML, and KDP exports",
+    "description": "PHP CLI for Markdown book projects — PDF, EPUB, HTML, multi-page site, and Amazon KDP exports",
     "type": "library",
     "license": "MIT",
+    "keywords": [
+        "markdown",
+        "book",
+        "pdf",
+        "epub",
+        "html",
+        "static-site",
+        "kdp",
+        "kindle",
+        "publishing",
+        "cli"
+    ],
+    "homepage": "https://papyrus.milon.im/",
+    "support": {
+        "docs": "https://papyrus.milon.im/",
+        "issues": "https://github.com/milon/papyrus/issues",
+        "source": "https://github.com/milon/papyrus"
+    },
+    "authors": [
+        {
+            "name": "Nuruzzaman Milon",
+            "homepage": "https://milon.im"
+        }
+    ],
     "require": {
         "php": "^8.2",
         "ext-dom": "*",

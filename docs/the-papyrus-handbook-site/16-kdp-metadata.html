@@ -157,7 +157,7 @@ papyrus kdp:metadata -d /path/to/book -e /path/to/out
 </tr>
 <tr>
 <td><code>ebook.*</code> / <code>print.*</code></td>
-<td>Enable flags, paper, bleed, margin preset, trim size</td>
+<td>Enable flags, paper, bleed, margin preset, trim size; optional wrap <code>cover</code> estimate when print PDF exists</td>
 </tr>
 <tr>
 <td><code>artifacts.*</code></td>
@@ -165,9 +165,12 @@ papyrus kdp:metadata -d /path/to/book -e /path/to/out
 </tr>
 </tbody>
 </table>
+<p>When <code>export/&lt;slug&gt;-kdp-print.pdf</code> exists, <code>print.cover</code> includes page count,
+spine width, and full wrap dimensions. Rebuild metadata after <code>kdp:print</code> to
+refresh those numbers.</p>
 <p>This file is a helper for your workflow — it is not uploaded automatically
 to Amazon. Run <code>papyrus doctor</code> to check KDP readiness (covers, margin
-preset, epubcheck on <code>PATH</code>).</p>
+preset, epubcheck on <code>PATH</code>). Package uploads with <code>papyrus kdp:package</code>.</p>
 <nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="15-kdp-cover.html"><span class="label">Previous</span>kdp:cover</a><a class="next" href="17-migration-and-ci.html"><span class="label">Next</span>Migration and CI</a></nav>
         </main>
     </div>

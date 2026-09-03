@@ -12,17 +12,29 @@ Built from scratch with heavy influence from [ibis-next](https://github.com/Hi-F
 
 Same core idea — Markdown chapters to PDF, EPUB, and HTML — plus first-class extras that ibis-next does not ship:
 
-- **Multi-page site** — `build:site` with Home, chapter sidebar, Prev/Next, light/dark mode, banner, and `404.html` (ready for GitHub Pages / Netlify)
-- **Amazon KDP** — Kindle EPUB, print interior (bleed + margin presets), cover asset export, metadata JSON (`kdp` / `kdp:*`)
+- **Multi-page site** — `build:site` with Home, chapter sidebar, popup search, heading permalinks, sitemap/robots, Prev/Next, light/dark mode, banner, and `404.html` (ready for GitHub Pages / Netlify)
+- **Local preview** — `serve` runs the site with `php -S` so search and assets work over HTTP
+- **Amazon KDP** — Kindle EPUB, print interior (bleed + margins), cover export, wrap-size estimates, metadata JSON, upload package zip (`kdp` / `kdp:*`)
+- **Draft chapters** — `draft: true` in front matter omits chapters from builds unless `--include-drafts`
 - **Mermaid** — `mermaid` fences rendered at build time for PDF, EPUB, HTML, and site (`theme: auto` embeds light + dark on the web)
 - **Sample PDFs** — carve marketing / review PDFs from page ranges and/or whole chapters (`build:sample`)
-- **Multi-script fonts** — ordered script → face routing for PDF (e.g. Bengali alongside Latin, Hindi alongside German etc.)
+- **Multi-script fonts** — ordered script → face routing for PDF (e.g. Bengali alongside Latin)
 - **Parallel PDF themes** — `build:pdf --parallel` for light + dark in one go
-- **Tooling** — `doctor`, `watch`, `serve`, PHP fence `lint`, page-size `sizes`, and `migrate-ibis` from `ibis.php`
+- **Tooling** — `doctor`, `watch`, `serve`, PHP fence `lint`, page-size `sizes`, `asset:publish`, and `migrate-ibis` from `ibis.php`
 - **Caches** — incremental chapter HTML and Mermaid figure caches under `.papyrus/`
 - **Export override** — `-e` / `--export` to write artifacts outside the book tree (CI / `docs/`)
 
 See the [handbook](https://papyrus.milon.im/) for the full option set.
+
+## Stability (1.x)
+
+Starting with **1.0**, Papyrus treats these as stable for SemVer majors:
+
+- CLI command names and common flags (`-d`, `-e`, `--include-drafts`, …)
+- `papyrus.php` public config keys documented in the handbook
+- Default export filenames under `export/`
+
+Theme HTML, CSS, and internal PHP APIs may still change in minor releases when needed for fixes or features.
 
 ## Host your book as a website
 
@@ -40,8 +52,10 @@ What you get:
 
 - One HTML page per chapter, plus a Home index
 - Chapter sidebar (collapsible on mobile)
+- Popup search (`/` or the topbar button; ↑/↓/Enter; section `#` hits)
 - Light and dark mode (same palette as single-file HTML)
 - Prev / Next navigation between chapters
+- `sitemap.xml`, `robots.txt`, and optional `CNAME` / `site.base_path`
 - Shared `assets/site.css` and `assets/site.js` — no CDN required
 
 Example — this repo’s handbook is hosted on GitHub Pages:
@@ -56,7 +70,7 @@ papyrus build:site -d examples/the-papyrus-handbook -e docs
 
 The sample book **The Papyrus Handbook** lives in [`examples/the-papyrus-handbook/`](examples/the-papyrus-handbook/). Read it online or from the prebuilt exports in `docs/`:
 
-- [Site](https://papyrus.milon.im/) — GitHub Pages (multi-page, sidebar, light/dark mode)
+- [Site](https://papyrus.milon.im/) — GitHub Pages (sidebar, popup search, light/dark mode)
 - [Downloads](https://papyrus.milon.im/19-downloads.html) — full and sample PDF previews from GitHub
 - [HTML](docs/the-papyrus-handbook.html) — single file, light/dark mode toggle
 - [PDF (light)](docs/the-papyrus-handbook-light.pdf) · [PDF (dark)](docs/the-papyrus-handbook-dark.pdf)
@@ -221,15 +235,15 @@ papyrus asset:publish --only=themes
 |----------------|-----------------------------------------------------------------------|
 | `init`         | Scaffold `papyrus.php`, `content/`, and an empty `assets/`            |
 | `asset:publish`| Publish bundled themes, CSS, and fonts into `assets/` (`--only`, `--force`) |
-| `doctor`       | Validate config and project paths                                     |
+| `doctor`       | Validate config, assets, Mermaid, KDP readiness                       |
 | `build`        | Build PDF/EPUB/HTML/KDP; optional `--with-site` / `--with-sample`     |
 | `build:pdf`    | Build PDF themes (`--theme light,dark`, `--parallel` for multi-theme) |
-| `build:site`   | Build multi-page HTML site with chapter sidebar (light/dark mode)     |
+| `build:site`   | Multi-page HTML site (sidebar, search, sitemap, light/dark)           |
 | `serve`        | Serve the site locally with `php -S` (`--host`, `--port`, `--build`, `--site`) |
 | `build:html`   | Build single-file HTML from `assets/theme-html.html` (light/dark mode) |
 | `build:epub`   | Build EPUB3 with CSS and embedded images                              |
 | `build:sample` | Build sample PDF from `sample.ranges` and/or `sample.chapters`        |
-| `kdp`          | Build all enabled KDP outputs (eBook, print, cover, metadata)         |
+| `kdp`          | All enabled KDP outputs (`--require-epubcheck`, `--package`)          |
 | `kdp:ebook`    | KDP-ready Kindle EPUB (`export/<slug>-kdp.epub`)                      |
 | `kdp:print`    | Print interior PDF with KDP margin/bleed presets                      |
 | `kdp:cover`    | Export KDP cover assets (`--dimensions`, `--pages`)                   |
@@ -261,6 +275,10 @@ composer test
 composer lint   # Pint
 composer format # Pint --write
 ```
+
+## Changelog
+
+See [CHANGELOG.md](CHANGELOG.md) for release notes and upgrade guidance.
 
 ## License
 

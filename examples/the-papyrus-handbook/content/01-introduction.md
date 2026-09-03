@@ -12,8 +12,8 @@ One project layout yields:
 - **PDF** — print interiors and shareable digital books
 - **EPUB** — stores, e-readers, and Kindle upload
 - **HTML** — a single file with light / dark mode
-- **Site** — a multi-page static website (this handbook)
-- **KDP helpers** — Kindle EPUB, print PDF, covers, metadata JSON
+- **Site** — a multi-page static website with popup search (this handbook)
+- **KDP helpers** — Kindle EPUB, print PDF, covers, wrap estimates, metadata, package zip
 
 This handbook is itself a Papyrus book. The Markdown source lives in
 [`examples/the-papyrus-handbook/`](https://github.com/milon/papyrus/tree/master/examples/the-papyrus-handbook)

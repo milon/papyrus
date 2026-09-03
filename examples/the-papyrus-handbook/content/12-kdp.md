@@ -20,12 +20,12 @@ Unlike `papyrus build`, this command **fails** when neither
 
 ## Options
 
-| Option | Short | Default | Meaning |
-|--------|-------|---------|---------|
-| `--dir` | `-d` | current directory | Book root |
-| `--export` | `-e` | `export/` | Output directory |
-| `--require-epubcheck` | | off | Fail ebook build if `epubcheck` is missing |
-| `--package` | | off | Also write `export/<slug>-kdp-package.zip` |
+| Option                | Short | Default           | Meaning                                    |
+|-----------------------|-------|-------------------|--------------------------------------------|
+| `--dir`               | `-d`  | current directory | Book root                                  |
+| `--export`            | `-e`  | `export/`         | Output directory                           |
+| `--require-epubcheck` |       | off               | Fail ebook build if `epubcheck` is missing |
+| `--package`           |       | off               | Also write `export/<slug>-kdp-package.zip` |
 
 Print uses the **first** configured theme (same as `kdp:print` without
 `--theme`).
@@ -52,28 +52,43 @@ Print uses the **first** configured theme (same as `kdp:print` without
 ],
 ```
 
-| Key | Default | Notes |
-|-----|---------|-------|
-| `ebook.enabled` | `false` | Gates ebook EPUB |
-| `ebook.cover` | unset | Asset under `assets/` |
-| `print.enabled` | `false` | Gates print PDF |
-| `print.bleed_mm` | `3` | Added to trim and each margin |
-| `print.margin_preset` | `recommended` | `recommended` or `minimum` |
-| `print.paper` | `white` | Recorded in metadata only |
-| `metadata.*` | see metadata chapter | Sidecar + EPUB description fallback |
+| Key                   | Default              | Notes                               |
+|-----------------------|----------------------|-------------------------------------|
+| `ebook.enabled`       | `false`              | Gates ebook EPUB                    |
+| `ebook.cover`         | unset                | Asset under `assets/`               |
+| `print.enabled`       | `false`              | Gates print PDF                     |
+| `print.bleed_mm`      | `3`                  | Added to trim and each margin       |
+| `print.margin_preset` | `recommended`        | `recommended` or `minimum`          |
+| `print.paper`         | `white`              | Recorded in metadata only           |
+| `metadata.*`          | see metadata chapter | Sidecar + EPUB description fallback |
 
 ## Typical artifacts
 
-| Artifact | Filename |
-|----------|----------|
-| Kindle EPUB | `<slug>-kdp.epub` |
-| Print PDF | `<slug>-kdp-print.pdf` |
-| Ebook cover copy | `<slug>-kdp-ebook-cover.<ext>` |
-| Print cover copies | `<slug>-kdp-print-cover-<theme>.<ext>` |
-| Metadata | `<slug>-kdp-metadata.json` |
-| Package zip | `<slug>-kdp-package.zip` (via `kdp:package` or `kdp --package`) |
+| Artifact           | Filename                                                        |
+|--------------------|-----------------------------------------------------------------|
+| Kindle EPUB        | `<slug>-kdp.epub`                                               |
+| Print PDF          | `<slug>-kdp-print.pdf`                                          |
+| Ebook cover copy   | `<slug>-kdp-ebook-cover.<ext>`                                  |
+| Print cover copies | `<slug>-kdp-print-cover-<theme>.<ext>`                          |
+| Metadata           | `<slug>-kdp-metadata.json`                                      |
+| Package zip        | `<slug>-kdp-package.zip` (via `kdp:package` or `kdp --package`) |
 
 After `kdp:print`, Papyrus prints a wrap-cover size estimate (spine + full
 bleed dimensions). Confirm trim with `papyrus sizes` and Amazon’s current
-KDP print specs before uploading. The next chapters document each `kdp:*`
-command.
+KDP print specs before uploading.
+
+## Package for upload
+
+After the artifacts exist:
+
+```bash
+papyrus kdp:package
+# or fold it into the all-in-one run:
+papyrus kdp --package
+```
+
+That writes `export/<slug>-kdp-package.zip` containing the enabled ebook /
+print / cover / metadata files plus a `KDP-CHECKLIST.txt` reminder. It does
+not talk to Amazon — upload the zip contents through KDP’s web UI.
+
+The next chapters document each `kdp:*` command.

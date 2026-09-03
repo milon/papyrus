@@ -19,11 +19,11 @@ Amazon KDP exports. You are reading those same chapters as a Papyrus site.
 1. **Introduction** — what Papyrus is and the project layout
 2. **Install** — Composer setup and `papyrus init`
 3. **Configuration** — every `papyrus.php` option
-4. **Writing** — Markdown, front matter, `pretoc`, asides, Mermaid, linting
+4. **Writing** — Markdown, front matter (`pretoc`, `draft`), asides, Mermaid, linting
 5. **Themes** — PDF / HTML themes and fonts
 6. **build** — all-in-one export, watch, caches
-7. **build:pdf** / **epub** / **html** / **site** / **sample** — one chapter each
-8. **kdp** and **kdp:\*** — Kindle, print, covers, metadata
+7. **build:pdf** / **epub** / **html** / **site** / **sample** — one chapter each (`serve` is covered with site)
+8. **kdp** and **kdp:\*** — Kindle, print, covers, metadata, package
 9. **Migration and CI** — ibis-next migration and GitHub Actions
 10. **Command reference** — full CLI tables
 11. **Downloads** — light and dark PDF previews from GitHub

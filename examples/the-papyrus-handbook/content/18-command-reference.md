@@ -8,7 +8,7 @@ title: Command reference
 
 | Command | Purpose | Notable options |
 |---------|---------|-----------------|
-| `build` | PDF themes, EPUB, HTML, enabled KDP | `-d`, `-e`, `--with-site`, `--with-sample` |
+| `build` | PDF themes, EPUB, HTML, enabled KDP | `-d`, `-e`, `--with-site`, `--with-sample`, `--include-drafts` |
 | `build:pdf` | PDF themes | `--theme`, `--parallel` |
 | `build:epub` | EPUB3 | `-d`, `-e` |
 | `build:html` | Single-file HTML | `-d`, `-e` |
@@ -32,7 +32,7 @@ title: Command reference
 |---------|---------|-----------------|
 | `init` | Scaffold `papyrus.php`, `content/`, and an empty `assets/` | `--force` |
 | `asset:publish` | Publish bundled themes, CSS, and fonts into `assets/` | `--force`, `--only=themes,css,fonts` |
-| `doctor` | Validate config, paths, Mermaid, KDP trim | `-d` |
+| `doctor` | Validate config, paths, Mermaid, KDP readiness | `-d` |
 | `sizes` | List page-size presets (+ KDP in-bounds) | (no `-d` / `-e`) |
 | `lint` | Lint PHP fences in `content/` | `--fix`, `--max-width=66` |
 | `watch` | Rebuild via `build` on file changes | `--interval`, `--with-site`, `--with-sample`, `--include-drafts` |

@@ -132,8 +132,12 @@ papyrus kdp:<span class="hljs-built_in">print</span> -t dark -e /path/to/out
 </table>
 <p>Unknown preset names fall back to <code>recommended</code>.</p>
 <h3>Paper</h3>
-<p><code>print.paper</code> is written into the KDP metadata sidecar. It does not change
-PDF colour or stock — choose white vs cream in the KDP dashboard to match.</p>
+<p><code>print.paper</code> is written into the KDP metadata sidecar and used for wrap-cover
+spine estimates (<code>white</code> or <code>cream</code>). It does not change PDF colour or stock —
+choose white vs cream in the KDP dashboard to match.</p>
+<p>After a successful build, Papyrus prints a wrap-cover estimate from the
+interior page count (Amazon’s published inches-per-page formula + 0.125&quot;
+bleed). Use <code>kdp:cover --dimensions</code> to recalculate later.</p>
 <h2 id="trim-size"><a class="heading-permalink" href="#trim-size" aria-hidden="true" tabindex="-1">#</a>Trim size</h2>
 <p>Uses the same <code>document.size</code> / <code>document.format</code> as your regular PDFs.
 <code>papyrus doctor</code> warns when trim falls outside KDP bounds

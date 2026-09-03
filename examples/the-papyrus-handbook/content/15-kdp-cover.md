@@ -10,21 +10,25 @@ filenames. No enable flag — safe to run anytime.
 ```bash
 papyrus kdp:cover
 papyrus kdp:cover -d /path/to/book -e /path/to/out
+papyrus kdp:cover --dimensions
+papyrus kdp:cover --dimensions --pages=220
 ```
 
 ## Options
 
-| Option | Short | Default | Meaning |
-|--------|-------|---------|---------|
-| `--dir` | `-d` | current directory | Book root |
-| `--export` | `-e` | `export/` | Output directory |
+| Option         | Short | Default           | Meaning                                             |
+|----------------|-------|-------------------|-----------------------------------------------------|
+| `--dir`        | `-d`  | current directory | Book root                                           |
+| `--export`     | `-e`  | `export/`         | Output directory                                    |
+| `--dimensions` |       | off               | Print wrap-cover size estimate (spine + full bleed) |
+| `--pages`      |       | from print PDF    | Page count for the estimate (overrides PDF count)   |
 
 ## Sources and outputs
 
-| Source | Export name |
-|--------|-------------|
-| `kdp.ebook.cover` → `assets/<file>` | `<slug>-kdp-ebook-cover.<ext>` |
-| `cover[<theme>]` or `cover.image` | `<slug>-kdp-print-cover-<theme>.<ext>` (one per theme) |
+| Source                              | Export name                                            |
+|-------------------------------------|--------------------------------------------------------|
+| `kdp.ebook.cover` → `assets/<file>` | `<slug>-kdp-ebook-cover.<ext>`                         |
+| `cover[<theme>]` or `cover.image`   | `<slug>-kdp-print-cover-<theme>.<ext>` (one per theme) |
 
 Missing source files are skipped (no error). If nothing is copied, the
 command still succeeds with a comment.

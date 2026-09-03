@@ -48,6 +48,8 @@
 filenames. No enable flag — safe to run anytime.</p>
 <pre><code class="language-bash hljs bash" data-lang="bash">papyrus kdp:cover
 papyrus kdp:cover -d /path/to/book -e /path/to/out
+papyrus kdp:cover --dimensions
+papyrus kdp:cover --dimensions --pages=220
 </code></pre>
 <h2 id="options"><a class="heading-permalink" href="#options" aria-hidden="true" tabindex="-1">#</a>Options</h2>
 <table>
@@ -71,6 +73,18 @@ papyrus kdp:cover -d /path/to/book -e /path/to/out
 <td><code>-e</code></td>
 <td><code>export/</code></td>
 <td>Output directory</td>
+</tr>
+<tr>
+<td><code>--dimensions</code></td>
+<td></td>
+<td>off</td>
+<td>Print wrap-cover size estimate (spine + full bleed)</td>
+</tr>
+<tr>
+<td><code>--pages</code></td>
+<td></td>
+<td>from print PDF</td>
+<td>Page count for the estimate (overrides PDF count)</td>
 </tr>
 </tbody>
 </table>
@@ -112,8 +126,14 @@ export/my-book-kdp-print-cover-light.png
 export/my-book-kdp-print-cover-dark.png   # if dark cover resolves
 </code></pre>
 <p>Papyrus copies files as-is — it does not generate a full wraparound print
-cover. Use Amazon’s cover calculator for spine width and bleed on the
-print jacket.</p>
+cover. For size estimates (Amazon’s spine formula + bleed):</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus kdp:cover --dimensions
+papyrus kdp:cover --dimensions --pages=220
+</code></pre>
+<p>Without <code>--pages</code>, Papyrus counts pages in <code>export/&lt;slug&gt;-kdp-print.pdf</code>
+(build <code>kdp:print</code> first). Estimates use white/cream paper factors from
+<a href="https://kdp.amazon.com/help/topic/G201953020">Amazon’s paperback cover help</a>.
+Always verify with Amazon’s cover calculator before upload.</p>
 <nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="14-kdp-print.html"><span class="label">Previous</span>kdp:print</a><a class="next" href="16-kdp-metadata.html"><span class="label">Next</span>kdp:metadata</a></nav>
         </main>
     </div>
