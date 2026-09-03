@@ -13,11 +13,6 @@
         <div class="sidebar-header">
             <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
             <p class="sidebar-subtitle">Markdown to PDF, EPUB, HTML sites, and KDP</p>
-            <div class="site-search">
-                <label class="visually-hidden" for="site-search-input">Search chapters</label>
-                <input id="site-search-input" type="search" placeholder="Search" autocomplete="off">
-                <ul class="site-search-results" id="site-search-results" hidden></ul>
-            </div>
         </div>
         <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-welcome.html">Welcome</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a href="03-configuration.html">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a class="is-active" href="05-themes-and-assets.html" aria-current="page">Themes and assets</a></li><li><a href="06-build.html">build</a></li><li><a href="07-build-pdf.html">build:pdf</a></li><li><a href="08-build-epub.html">build:epub</a></li><li><a href="09-build-html.html">build:html</a></li><li><a href="10-build-site.html">build:site</a></li><li><a href="11-build-sample.html">build:sample</a></li><li><a href="12-kdp.html">kdp</a></li><li><a href="13-kdp-ebook.html">kdp:ebook</a></li><li><a href="14-kdp-print.html">kdp:print</a></li><li><a href="15-kdp-cover.html">kdp:cover</a></li><li><a href="16-kdp-metadata.html">kdp:metadata</a></li><li><a href="17-migration-and-ci.html">Migration and CI</a></li><li><a href="18-command-reference.html">Command reference</a></li><li><a href="19-downloads.html">Downloads</a></li></ul></nav>
     </aside>
@@ -30,6 +25,12 @@
             </button>
             <p class="topbar-title">Themes and assets</p>
             <div class="topbar-actions">
+                <button type="button" class="search-open" id="search-open" aria-label="Search" title="Search (/)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M20 20l-3.5-3.5"/>
+                    </svg>
+                </button>
                 <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Dark mode">
                     <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
@@ -54,7 +55,7 @@ papyrus asset:publish --only=themes,css
 papyrus asset:publish --only=fonts --force
 </code></pre>
 <p><code>--only</code> accepts <code>themes</code>, <code>css</code>, and/or <code>fonts</code>. Omit it to publish everything.</p>
-<h2>PDF themes</h2>
+<h2 id="pdf-themes"><a class="heading-permalink" href="#pdf-themes" aria-hidden="true" tabindex="-1">#</a>PDF themes</h2>
 <p>For each name in <code>themes</code>, Papyrus looks for <code>assets/theme-{name}.html</code> first,
 then falls back to the bundled copy. Split the theme on the TOC marker:</p>
 <pre><code class="language-html hljs xml" data-lang="html"><span class="hljs-comment">&lt;!-- PAPYRUS:TOC --&gt;</span>
@@ -66,7 +67,7 @@ bundled defaults.</p>
 <p>Typical theme responsibilities: <code>@page</code> / typography, code blocks, callout
 colors, title page, and running header styles (often paired with
 <code>header.style</code> in config).</p>
-<h2>HTML theme</h2>
+<h2 id="html-theme"><a class="heading-permalink" href="#html-theme" aria-hidden="true" tabindex="-1">#</a>HTML theme</h2>
 <p><code>theme-html.html</code> is a full HTML document with placeholders
 <code>{{$title}}</code>, <code>{{$subtitle}}</code>, <code>{{$author}}</code>, and <code>{{$body}}</code>. The default
 template mirrors the light PDF theme (same typefaces, colors, code blocks,
@@ -83,11 +84,11 @@ papyrus build:site
 Home index, shared CSS/JS (fonts copied into the site), a collapsible chapter
 sidebar, and the same light/dark toggle as the single-file HTML export. That
 folder is what this handbook deploys to GitHub Pages.</p>
-<h2>EPUB styles</h2>
+<h2 id="epub-styles"><a class="heading-permalink" href="#epub-styles" aria-hidden="true" tabindex="-1">#</a>EPUB styles</h2>
 <p><code>style.css</code> (and optional <code>highlight.codeblock.min.css</code>) are loaded from your
 project <code>assets/</code> first, then from Papyrus’s bundled defaults, and ship inside
 the EPUB. Prefer simple <code>pre</code>/<code>code</code> rules for e-ink readers.</p>
-<h2>Covers and fonts</h2>
+<h2 id="covers-and-fonts"><a class="heading-permalink" href="#covers-and-fonts" aria-hidden="true" tabindex="-1">#</a>Covers and fonts</h2>
 <p>Place cover images and font files under <code>assets/</code> (fonts usually in
 <code>assets/fonts/</code>). Reference them from <code>cover</code> and <code>fonts.faces</code> in
 <code>papyrus.php</code>.</p>
@@ -98,6 +99,31 @@ local copies to customize. The wide banner image in the Papyrus repo README live
 at <a href="https://github.com/milon/papyrus/blob/master/assets/papyrus-banner.jpg">assets/papyrus-banner.jpg</a>.</p>
 <nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="04-writing-content.html"><span class="label">Previous</span>Writing content</a><a class="next" href="06-build.html"><span class="label">Next</span>build</a></nav>
         </main>
+    </div>
+    <div class="search-modal" id="search-modal" hidden role="dialog" aria-modal="true" aria-labelledby="search-modal-title">
+        <div class="search-modal-backdrop" id="search-modal-backdrop"></div>
+        <div class="search-modal-panel" id="search-modal-panel">
+            <h2 id="search-modal-title" class="visually-hidden">Search</h2>
+            <div class="search-modal-header">
+                <div class="search-modal-input-wrap">
+                    <svg class="search-modal-input-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M20 20l-3.5-3.5"/>
+                    </svg>
+                    <label class="visually-hidden" for="search-modal-input">Search chapters</label>
+                    <input id="search-modal-input" type="search" role="searchbox" placeholder="Search chapters…" autocomplete="off">
+                </div>
+                <button type="button" class="search-modal-close" id="search-modal-close" aria-label="Close search">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M6 6l12 12M18 6L6 18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="search-modal-body">
+                <p class="search-modal-hint" id="search-modal-hint"><kbd>/</kbd> to search from any page</p>
+                <div class="search-results" id="search-results" hidden></div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

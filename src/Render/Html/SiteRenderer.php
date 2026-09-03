@@ -6,6 +6,7 @@ namespace Milon\Papyrus\Render\Html;
 
 use Milon\Papyrus\Book\Chapter;
 use Milon\Papyrus\Config\Project;
+use Milon\Papyrus\Markdown\HeadingAnchors;
 
 final class SiteRenderer
 {
@@ -278,7 +279,7 @@ HTML;
 
         $nav .= '</nav>';
 
-        $body = $page['chapter']->html.$nav;
+        $body = HeadingAnchors::decorate($page['chapter']->html).$nav;
         $documentTitle = $page['title'].' — '.$this->project->title();
 
         return $this->document(
@@ -404,11 +405,21 @@ HTML;
         ];
 
         foreach ($pages as $page) {
+            [$anchoredHtml, $headings] = HeadingAnchors::process($page['chapter']->html);
+
             $entries[] = [
                 'file' => $page['file'],
                 'title' => $page['title'],
-                'text' => $this->plainText($page['title'].' '.$page['chapter']->html),
+                'text' => $this->plainText($page['title'].' '.$anchoredHtml),
             ];
+
+            foreach ($headings as $heading) {
+                $entries[] = [
+                    'file' => $page['file'].'#'.$heading['id'],
+                    'title' => $heading['title'],
+                    'text' => $this->plainText($heading['title'].' '.$page['title']),
+                ];
+            }
         }
 
         $json = json_encode($entries, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Milon\Papyrus\Render\Html;
 
 use Milon\Papyrus\Config\Project;
+use Milon\Papyrus\Markdown\HeadingAnchors;
 
 final class HtmlRenderer
 {
@@ -33,7 +34,7 @@ final class HtmlRenderer
         $body = '';
 
         foreach ($book->chapters as $chapter) {
-            $body .= $chapter->html;
+            $body .= HeadingAnchors::decorate($chapter->html);
         }
 
         $html = str_replace(

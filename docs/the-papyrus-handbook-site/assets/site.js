@@ -57,36 +57,77 @@
             backdrop.addEventListener("click", closeSidebar);
         }
 
-        document.addEventListener("keydown", function (event) {
-            if (event.key === "Escape") {
-                closeSidebar();
-                hideSearch();
-            }
-            if (event.key === "/" && event.target && event.target.tagName !== "INPUT" && event.target.tagName !== "TEXTAREA") {
-                var searchInput = document.getElementById("site-search-input");
-                if (searchInput) {
-                    event.preventDefault();
-                    openSidebar();
-                    searchInput.focus();
-                }
-            }
-        });
-
-        var searchInput = document.getElementById("site-search-input");
-        var searchResults = document.getElementById("site-search-results");
+        var searchOpen = document.getElementById("search-open");
+        var searchModal = document.getElementById("search-modal");
+        var searchModalBackdrop = document.getElementById("search-modal-backdrop");
+        var searchModalPanel = document.getElementById("search-modal-panel");
+        var searchModalClose = document.getElementById("search-modal-close");
+        var searchInput = document.getElementById("search-modal-input");
+        var searchResults = document.getElementById("search-results");
+        var searchHint = document.getElementById("search-modal-hint");
         var searchIndex = null;
-
-        function hideSearch() {
-            if (searchResults) {
-                searchResults.hidden = true;
-                searchResults.innerHTML = "";
-            }
-        }
+        var activeResultIndex = -1;
+        var lastActiveElement = null;
 
         function escapeHtml(value) {
             return String(value).replace(/[&<>"']/g, function (character) {
                 return ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character];
             });
+        }
+
+        function isTypingTarget(target) {
+            if (!target || !target.tagName) return false;
+            var tag = target.tagName;
+            return tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT" || target.isContentEditable;
+        }
+
+        function resultLinks() {
+            if (!searchResults) return [];
+            return Array.prototype.slice.call(searchResults.querySelectorAll("a.search-result-item"));
+        }
+
+        function setActiveResult(index) {
+            var links = resultLinks();
+            if (links.length === 0) {
+                activeResultIndex = -1;
+                return;
+            }
+
+            if (index < 0) {
+                index = links.length - 1;
+            } else if (index >= links.length) {
+                index = 0;
+            }
+
+            activeResultIndex = index;
+            links.forEach(function (link, i) {
+                var active = i === activeResultIndex;
+                link.classList.toggle("is-active", active);
+                if (active) {
+                    link.setAttribute("aria-current", "true");
+                    link.scrollIntoView({ block: "nearest" });
+                } else {
+                    link.removeAttribute("aria-current");
+                }
+            });
+        }
+
+        function openActiveResult() {
+            var links = resultLinks();
+            if (links.length === 0) return false;
+            var target = links[activeResultIndex >= 0 ? activeResultIndex : 0];
+            if (!target) return false;
+            window.location.href = target.getAttribute("href");
+            return true;
+        }
+
+        function excerptFor(entry) {
+            var text = String(entry.text || "").replace(/\s+/g, " ").trim();
+            if (!text) return "";
+            if (text.length > 140) {
+                return text.slice(0, 140).replace(/\s+\S*$/, "") + "…";
+            }
+            return text;
         }
 
         function loadSearchIndex(done) {
@@ -103,12 +144,26 @@
                 .catch(function () { done([]); });
         }
 
+        function clearResults() {
+            if (searchResults) {
+                searchResults.hidden = true;
+                searchResults.innerHTML = "";
+            }
+            if (searchHint) {
+                searchHint.hidden = false;
+            }
+            activeResultIndex = -1;
+        }
+
         function renderSearch(query) {
             if (!searchResults) return;
             var terms = query.toLowerCase().trim().split(/\s+/).filter(Boolean);
             if (terms.length === 0) {
-                hideSearch();
+                clearResults();
                 return;
+            }
+            if (searchHint) {
+                searchHint.hidden = true;
             }
             loadSearchIndex(function (entries) {
                 var matches = [];
@@ -125,25 +180,138 @@
                 }
                 searchResults.hidden = false;
                 if (matches.length === 0) {
-                    searchResults.innerHTML = "<li><p class=\"site-search-empty\">No matches</p></li>";
+                    searchResults.innerHTML = "<p class=\"search-no-results\">No matches for “" + escapeHtml(query.trim()) + "”</p>";
+                    activeResultIndex = -1;
                     return;
                 }
                 searchResults.innerHTML = matches.map(function (entry) {
-                    return "<li><a href=\"" + entry.file + "\">" + escapeHtml(entry.title) + "</a></li>";
+                    var excerpt = excerptFor(entry);
+                    return "<a class=\"search-result-item\" href=\"" + escapeHtml(entry.file) + "\">"
+                        + "<span class=\"search-result-title\">" + escapeHtml(entry.title) + "</span>"
+                        + (excerpt ? "<span class=\"search-result-excerpt\">" + escapeHtml(excerpt) + "</span>" : "")
+                        + "</a>";
                 }).join("");
+                setActiveResult(0);
             });
         }
 
-        if (searchInput && searchResults) {
+        function focusables() {
+            if (!searchModalPanel) return [];
+            return Array.prototype.slice.call(
+                searchModalPanel.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])')
+            ).filter(function (el) {
+                return !el.hasAttribute("disabled") && el.offsetParent !== null;
+            });
+        }
+
+        function trapFocus(event) {
+            if (event.key !== "Tab" || !searchModal || searchModal.hidden) return;
+            var items = focusables();
+            if (items.length === 0) return;
+            var first = items[0];
+            var last = items[items.length - 1];
+            if (event.shiftKey && document.activeElement === first) {
+                event.preventDefault();
+                last.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+                event.preventDefault();
+                first.focus();
+            }
+        }
+
+        function openSearch() {
+            if (!searchModal || !searchInput) return;
+            lastActiveElement = document.activeElement;
+            closeSidebar();
+            searchModal.hidden = false;
+            document.body.classList.add("search-modal-open");
+            searchInput.value = "";
+            clearResults();
+            window.setTimeout(function () { searchInput.focus(); }, 0);
+        }
+
+        function closeSearch() {
+            if (!searchModal) return;
+            searchModal.hidden = true;
+            document.body.classList.remove("search-modal-open");
+            if (searchInput) {
+                searchInput.value = "";
+            }
+            clearResults();
+            if (lastActiveElement && typeof lastActiveElement.focus === "function") {
+                lastActiveElement.focus();
+            }
+        }
+
+        if (searchOpen) {
+            searchOpen.addEventListener("click", openSearch);
+        }
+        if (searchModalClose) {
+            searchModalClose.addEventListener("click", closeSearch);
+        }
+        if (searchModalBackdrop) {
+            searchModalBackdrop.addEventListener("click", closeSearch);
+        }
+        if (searchModalPanel) {
+            searchModalPanel.addEventListener("keydown", trapFocus);
+        }
+        if (searchResults) {
+            searchResults.addEventListener("mousedown", function (event) {
+                var link = event.target.closest("a.search-result-item");
+                if (link) {
+                    event.preventDefault();
+                }
+            });
+            searchResults.addEventListener("click", function (event) {
+                var link = event.target.closest("a.search-result-item");
+                if (link) {
+                    window.location.href = link.getAttribute("href");
+                }
+            });
+        }
+
+        if (searchInput) {
             searchInput.addEventListener("input", function () {
                 renderSearch(searchInput.value);
             });
             searchInput.addEventListener("keydown", function (event) {
                 if (event.key === "Escape") {
-                    hideSearch();
-                    searchInput.blur();
+                    event.preventDefault();
+                    closeSearch();
+                    return;
+                }
+                if (searchResults && !searchResults.hidden && resultLinks().length > 0) {
+                    if (event.key === "ArrowDown") {
+                        event.preventDefault();
+                        setActiveResult(activeResultIndex + 1);
+                        return;
+                    }
+                    if (event.key === "ArrowUp") {
+                        event.preventDefault();
+                        setActiveResult(activeResultIndex - 1);
+                        return;
+                    }
+                    if (event.key === "Enter") {
+                        if (openActiveResult()) {
+                            event.preventDefault();
+                        }
+                    }
                 }
             });
         }
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape") {
+                if (searchModal && !searchModal.hidden) {
+                    closeSearch();
+                    return;
+                }
+                closeSidebar();
+            }
+            if (event.key === "/" && !event.metaKey && !event.ctrlKey && !event.altKey && !isTypingTarget(event.target)) {
+                event.preventDefault();
+                openSearch();
+            }
+        });
     });
 })();

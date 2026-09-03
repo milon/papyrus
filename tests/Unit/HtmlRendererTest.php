@@ -42,6 +42,8 @@ final class HtmlRendererTest extends TestCase
             $this->assertStringContainsString('<strong>world</strong>', $html);
             $this->assertStringContainsString('বন্ধন', $html);
             $this->assertStringContainsString("class='notice'", $html);
+            $this->assertStringContainsString('id="flow"', $html);
+            $this->assertStringContainsString('heading-permalink', $html);
         } finally {
             if (is_file($outputPath)) {
                 unlink($outputPath);

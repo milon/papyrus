@@ -13,11 +13,6 @@
         <div class="sidebar-header">
             <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
             <p class="sidebar-subtitle">Markdown to PDF, EPUB, HTML sites, and KDP</p>
-            <div class="site-search">
-                <label class="visually-hidden" for="site-search-input">Search chapters</label>
-                <input id="site-search-input" type="search" placeholder="Search" autocomplete="off">
-                <ul class="site-search-results" id="site-search-results" hidden></ul>
-            </div>
         </div>
         <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-welcome.html">Welcome</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a href="03-configuration.html">Configuration</a></li><li><a class="is-active" href="04-writing-content.html" aria-current="page">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li><li><a href="06-build.html">build</a></li><li><a href="07-build-pdf.html">build:pdf</a></li><li><a href="08-build-epub.html">build:epub</a></li><li><a href="09-build-html.html">build:html</a></li><li><a href="10-build-site.html">build:site</a></li><li><a href="11-build-sample.html">build:sample</a></li><li><a href="12-kdp.html">kdp</a></li><li><a href="13-kdp-ebook.html">kdp:ebook</a></li><li><a href="14-kdp-print.html">kdp:print</a></li><li><a href="15-kdp-cover.html">kdp:cover</a></li><li><a href="16-kdp-metadata.html">kdp:metadata</a></li><li><a href="17-migration-and-ci.html">Migration and CI</a></li><li><a href="18-command-reference.html">Command reference</a></li><li><a href="19-downloads.html">Downloads</a></li></ul></nav>
     </aside>
@@ -30,6 +25,12 @@
             </button>
             <p class="topbar-title">Writing content</p>
             <div class="topbar-actions">
+                <button type="button" class="search-open" id="search-open" aria-label="Search" title="Search (/)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M20 20l-3.5-3.5"/>
+                    </svg>
+                </button>
                 <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Dark mode">
                     <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
@@ -45,7 +46,7 @@
             <div style="page-break-after: always;"></div><h1>Writing content</h1>
 <p>Chapters are Markdown under <code>content/</code>, loaded in natural filename order
 (<code>00-…</code>, <code>01-…</code>, <code>10-…</code>).</p>
-<h2>Front matter</h2>
+<h2 id="front-matter"><a class="heading-permalink" href="#front-matter" aria-hidden="true" tabindex="-1">#</a>Front matter</h2>
 <pre><code class="language-markdown hljs markdown" data-lang="markdown">---
 title: My chapter
 <span class="hljs-section">pretoc: true
@@ -72,7 +73,7 @@ Body starts here.
 </tbody>
 </table>
 <p>Accepted truthy values for <code>pretoc</code>: <code>true</code>, <code>&quot;true&quot;</code>, <code>1</code>, <code>&quot;1&quot;</code>.</p>
-<h2>Pretoc chapters</h2>
+<h2 id="pretoc-chapters"><a class="heading-permalink" href="#pretoc-chapters" aria-hidden="true" tabindex="-1">#</a>Pretoc chapters</h2>
 <p>In the PDF, Papyrus splits the book into three bands around the theme’s TOC
 marker (<code>&lt;!-- PAPYRUS:TOC --&gt;</code>):</p>
 <ol>
@@ -102,7 +103,7 @@ title: Welcome
 (or set it false) so they sit after the TOC in the PDF.</p>
 <p>You can have several pretoc files (<code>00-copyright.md</code>, <code>00-dedication.md</code>,
 <code>00-welcome.md</code>); all of them render before the TOC, in filename order.</p>
-<h2>Markdown features</h2>
+<h2 id="markdown-features"><a class="heading-permalink" href="#markdown-features" aria-hidden="true" tabindex="-1">#</a>Markdown features</h2>
 <p>CommonMark + GFM, fenced code highlighting, and book extras.</p>
 <h3>Emphasis and code</h3>
 <pre><code class="language-markdown hljs markdown" data-lang="markdown">Hello, <span class="hljs-strong">**world**</span>.
@@ -174,7 +175,7 @@ site embeds both light and dark variants):</p>
 theme like <code>default</code> / <code>dark</code> / <code>forest</code>), <code>max_width_mm</code>.</p>
 <p>Requires <code>@mermaid-js/mermaid-cli</code> (<code>mmdc</code>) on <code>PATH</code>.
 Diagrams cache under <code>.papyrus/cache/mermaid</code>.</p>
-<h2>PHP fence linting</h2>
+<h2 id="php-fence-linting"><a class="heading-permalink" href="#php-fence-linting" aria-hidden="true" tabindex="-1">#</a>PHP fence linting</h2>
 <pre><code class="language-bash hljs bash" data-lang="bash">papyrus lint
 papyrus lint --fix
 papyrus lint --max-width=66
@@ -211,6 +212,31 @@ papyrus lint --max-width=66
 </table>
 <nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="03-configuration.html"><span class="label">Previous</span>Configuration</a><a class="next" href="05-themes-and-assets.html"><span class="label">Next</span>Themes and assets</a></nav>
         </main>
+    </div>
+    <div class="search-modal" id="search-modal" hidden role="dialog" aria-modal="true" aria-labelledby="search-modal-title">
+        <div class="search-modal-backdrop" id="search-modal-backdrop"></div>
+        <div class="search-modal-panel" id="search-modal-panel">
+            <h2 id="search-modal-title" class="visually-hidden">Search</h2>
+            <div class="search-modal-header">
+                <div class="search-modal-input-wrap">
+                    <svg class="search-modal-input-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M20 20l-3.5-3.5"/>
+                    </svg>
+                    <label class="visually-hidden" for="search-modal-input">Search chapters</label>
+                    <input id="search-modal-input" type="search" role="searchbox" placeholder="Search chapters…" autocomplete="off">
+                </div>
+                <button type="button" class="search-modal-close" id="search-modal-close" aria-label="Close search">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M6 6l12 12M18 6L6 18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="search-modal-body">
+                <p class="search-modal-hint" id="search-modal-hint"><kbd>/</kbd> to search from any page</p>
+                <div class="search-results" id="search-results" hidden></div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

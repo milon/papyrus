@@ -32,7 +32,7 @@ See the [handbook](https://papyrus.milon.im/) for the full option set.
 papyrus build:site
 # → export/<slug>-site/
 papyrus serve
-# → http://127.0.0.1:8000/  (sidebar search needs a real HTTP origin)
+# → http://127.0.0.1:8000/  (popup search needs a real HTTP origin)
 papyrus serve -s docs/the-papyrus-handbook-site
 ```
 

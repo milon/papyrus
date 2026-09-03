@@ -13,11 +13,6 @@
         <div class="sidebar-header">
             <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
             <p class="sidebar-subtitle">Markdown to PDF, EPUB, HTML sites, and KDP</p>
-            <div class="site-search">
-                <label class="visually-hidden" for="site-search-input">Search chapters</label>
-                <input id="site-search-input" type="search" placeholder="Search" autocomplete="off">
-                <ul class="site-search-results" id="site-search-results" hidden></ul>
-            </div>
         </div>
         <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-welcome.html">Welcome</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a href="03-configuration.html">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li><li><a class="is-active" href="06-build.html" aria-current="page">build</a></li><li><a href="07-build-pdf.html">build:pdf</a></li><li><a href="08-build-epub.html">build:epub</a></li><li><a href="09-build-html.html">build:html</a></li><li><a href="10-build-site.html">build:site</a></li><li><a href="11-build-sample.html">build:sample</a></li><li><a href="12-kdp.html">kdp</a></li><li><a href="13-kdp-ebook.html">kdp:ebook</a></li><li><a href="14-kdp-print.html">kdp:print</a></li><li><a href="15-kdp-cover.html">kdp:cover</a></li><li><a href="16-kdp-metadata.html">kdp:metadata</a></li><li><a href="17-migration-and-ci.html">Migration and CI</a></li><li><a href="18-command-reference.html">Command reference</a></li><li><a href="19-downloads.html">Downloads</a></li></ul></nav>
     </aside>
@@ -30,6 +25,12 @@
             </button>
             <p class="topbar-title">build</p>
             <div class="topbar-actions">
+                <button type="button" class="search-open" id="search-open" aria-label="Search" title="Search (/)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M20 20l-3.5-3.5"/>
+                    </svg>
+                </button>
                 <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Dark mode">
                     <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
@@ -51,7 +52,7 @@ papyrus build --with-site --with-sample
 papyrus build -d /path/to/book
 papyrus build -d examples/the-papyrus-handbook -e docs --with-site --with-sample
 </code></pre>
-<h2>Options</h2>
+<h2 id="options"><a class="heading-permalink" href="#options" aria-hidden="true" tabindex="-1">#</a>Options</h2>
 <table>
 <thead>
 <tr>
@@ -90,7 +91,7 @@ papyrus build -d examples/the-papyrus-handbook -e docs --with-site --with-sample
 </table>
 <p>Global Symfony options also apply (<code>-v</code> / <code>--verbose</code>, <code>-q</code>, <code>--no-ansi</code>, …).
 With <code>-v</code>, Papyrus prints third-party notices from mPDF and the EPUB zipper.</p>
-<h2>What it builds</h2>
+<h2 id="what-it-builds"><a class="heading-permalink" href="#what-it-builds" aria-hidden="true" tabindex="-1">#</a>What it builds</h2>
 <table>
 <thead>
 <tr>
@@ -135,16 +136,16 @@ With <code>-v</code>, Papyrus prints third-party notices from mPDF and the EPUB 
 <p>Slug comes from <code>title</code> (lowercased, non-alphanumeric → <code>-</code>).</p>
 <p><code>watch</code> invokes <code>build</code> on each change. Pass <code>--with-site</code> and/or
 <code>--with-sample</code> to include those outputs in every rebuild.</p>
-<h2>Failures</h2>
+<h2 id="failures"><a class="heading-permalink" href="#failures" aria-hidden="true" tabindex="-1">#</a>Failures</h2>
 <p>Each step is independent. If one format fails, Papyrus continues with the
 others and exits non-zero if any step failed. When no KDP outputs are
 enabled, the KDP block is skipped silently (unlike <code>papyrus kdp</code>, which
 errors).</p>
-<h2>Validate first</h2>
+<h2 id="validate-first"><a class="heading-permalink" href="#validate-first" aria-hidden="true" tabindex="-1">#</a>Validate first</h2>
 <pre><code class="language-bash hljs bash" data-lang="bash">papyrus doctor
 papyrus build
 </code></pre>
-<h2>Watch mode</h2>
+<h2 id="watch-mode"><a class="heading-permalink" href="#watch-mode" aria-hidden="true" tabindex="-1">#</a>Watch mode</h2>
 <p>Rebuild on changes to <code>papyrus.php</code>, <code>content/</code>, and <code>assets/</code>:</p>
 <pre><code class="language-bash hljs bash" data-lang="bash">papyrus watch
 papyrus watch --interval 3
@@ -186,13 +187,38 @@ papyrus watch --with-site --with-sample
 </tr>
 </tbody>
 </table>
-<h2>Caching</h2>
+<h2 id="caching"><a class="heading-permalink" href="#caching" aria-hidden="true" tabindex="-1">#</a>Caching</h2>
 <p>Chapter HTML caches under <code>.papyrus/cache/markdown</code>. Mermaid figures use
 <code>.papyrus/cache/mermaid</code>. Delete <code>.papyrus/</code> for a cold rebuild.</p>
-<h2>Related chapters</h2>
+<h2 id="related-chapters"><a class="heading-permalink" href="#related-chapters" aria-hidden="true" tabindex="-1">#</a>Related chapters</h2>
 <p>The next chapters cover each <code>build:*</code> command and every KDP command in turn.</p>
 <nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="05-themes-and-assets.html"><span class="label">Previous</span>Themes and assets</a><a class="next" href="07-build-pdf.html"><span class="label">Next</span>build:pdf</a></nav>
         </main>
+    </div>
+    <div class="search-modal" id="search-modal" hidden role="dialog" aria-modal="true" aria-labelledby="search-modal-title">
+        <div class="search-modal-backdrop" id="search-modal-backdrop"></div>
+        <div class="search-modal-panel" id="search-modal-panel">
+            <h2 id="search-modal-title" class="visually-hidden">Search</h2>
+            <div class="search-modal-header">
+                <div class="search-modal-input-wrap">
+                    <svg class="search-modal-input-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M20 20l-3.5-3.5"/>
+                    </svg>
+                    <label class="visually-hidden" for="search-modal-input">Search chapters</label>
+                    <input id="search-modal-input" type="search" role="searchbox" placeholder="Search chapters…" autocomplete="off">
+                </div>
+                <button type="button" class="search-modal-close" id="search-modal-close" aria-label="Close search">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M6 6l12 12M18 6L6 18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="search-modal-body">
+                <p class="search-modal-hint" id="search-modal-hint"><kbd>/</kbd> to search from any page</p>
+                <div class="search-results" id="search-results" hidden></div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

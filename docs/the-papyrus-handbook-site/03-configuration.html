@@ -13,11 +13,6 @@
         <div class="sidebar-header">
             <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
             <p class="sidebar-subtitle">Markdown to PDF, EPUB, HTML sites, and KDP</p>
-            <div class="site-search">
-                <label class="visually-hidden" for="site-search-input">Search chapters</label>
-                <input id="site-search-input" type="search" placeholder="Search" autocomplete="off">
-                <ul class="site-search-results" id="site-search-results" hidden></ul>
-            </div>
         </div>
         <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-welcome.html">Welcome</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a class="is-active" href="03-configuration.html" aria-current="page">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li><li><a href="06-build.html">build</a></li><li><a href="07-build-pdf.html">build:pdf</a></li><li><a href="08-build-epub.html">build:epub</a></li><li><a href="09-build-html.html">build:html</a></li><li><a href="10-build-site.html">build:site</a></li><li><a href="11-build-sample.html">build:sample</a></li><li><a href="12-kdp.html">kdp</a></li><li><a href="13-kdp-ebook.html">kdp:ebook</a></li><li><a href="14-kdp-print.html">kdp:print</a></li><li><a href="15-kdp-cover.html">kdp:cover</a></li><li><a href="16-kdp-metadata.html">kdp:metadata</a></li><li><a href="17-migration-and-ci.html">Migration and CI</a></li><li><a href="18-command-reference.html">Command reference</a></li><li><a href="19-downloads.html">Downloads</a></li></ul></nav>
     </aside>
@@ -30,6 +25,12 @@
             </button>
             <p class="topbar-title">Configuration</p>
             <div class="topbar-actions">
+                <button type="button" class="search-open" id="search-open" aria-label="Search" title="Search (/)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M20 20l-3.5-3.5"/>
+                    </svg>
+                </button>
                 <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Dark mode">
                     <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
@@ -44,7 +45,7 @@
         <main class="content">
             <div style="page-break-after: always;"></div><h1>Configuration</h1>
 <p>All settings live in <code>papyrus.php</code>, which returns a PHP array.</p>
-<h2>Identity and paths</h2>
+<h2 id="identity-and-paths"><a class="heading-permalink" href="#identity-and-paths" aria-hidden="true" tabindex="-1">#</a>Identity and paths</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-keyword">return</span> [
     <span class="hljs-string">'title'</span> =&gt; <span class="hljs-string">'My Book'</span>,
     <span class="hljs-string">'subtitle'</span> =&gt; <span class="hljs-string">'A short subtitle'</span>,
@@ -111,7 +112,7 @@
 <p>The slug is the title lowercased with non-alphanumeric runs turned into <code>-</code>.
 This handbook is <em>The Papyrus Handbook</em>, so outputs look like
 <code>the-papyrus-handbook-light.pdf</code>.</p>
-<h2>Page size and margins</h2>
+<h2 id="page-size-and-margins"><a class="heading-permalink" href="#page-size-and-margins" aria-hidden="true" tabindex="-1">#</a>Page size and margins</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'document'</span> =&gt; [
     <span class="hljs-string">'size'</span> =&gt; <span class="hljs-string">'crown-quarto'</span>,
     <span class="hljs-string">'margin_left'</span> =&gt; <span class="hljs-number">27</span>,
@@ -125,7 +126,7 @@ This handbook is <em>The Papyrus Handbook</em>, so outputs look like
     <span class="hljs-string">'format'</span> =&gt; [<span class="hljs-number">152.4</span>, <span class="hljs-number">228.6</span>], <span class="hljs-comment">// width_mm, height_mm</span>
 ],
 </code></pre>
-<h2>Table of contents</h2>
+<h2 id="table-of-contents"><a class="heading-permalink" href="#table-of-contents" aria-hidden="true" tabindex="-1">#</a>Table of contents</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'toc'</span> =&gt; [
     <span class="hljs-string">'h1'</span> =&gt; <span class="hljs-number">0</span>,
     <span class="hljs-string">'h2'</span> =&gt; <span class="hljs-number">0</span>,
@@ -134,7 +135,7 @@ This handbook is <em>The Papyrus Handbook</em>, so outputs look like
 </code></pre>
 <p>Values follow mPDF <code>h2toc</code> conventions used by Papyrus (<code>0</code> include, <code>1</code>
 exclude).</p>
-<h2>Cover images</h2>
+<h2 id="cover-images"><a class="heading-permalink" href="#cover-images" aria-hidden="true" tabindex="-1">#</a>Cover images</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'cover'</span> =&gt; [
     <span class="hljs-string">'image'</span> =&gt; <span class="hljs-string">'cover.png'</span>,
     <span class="hljs-string">'light'</span> =&gt; <span class="hljs-string">'cover-light.png'</span>,
@@ -145,13 +146,13 @@ exclude).</p>
 </code></pre>
 <p>Paths are relative to <code>assets/</code>. Missing per-theme covers fall back to
 <code>cover.image</code>. KDP print PDFs omit the cover page entirely.</p>
-<h2>Running header</h2>
+<h2 id="running-header"><a class="heading-permalink" href="#running-header" aria-hidden="true" tabindex="-1">#</a>Running header</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'header'</span> =&gt; [
     <span class="hljs-string">'style'</span> =&gt; <span class="hljs-string">'font-style: italic; text-align: right; border-bottom: solid 1px #808080;'</span>,
 ],
 </code></pre>
 <p>Pretoc chapters suppress folios differently from body chapters.</p>
-<h2>Fonts</h2>
+<h2 id="fonts"><a class="heading-permalink" href="#fonts" aria-hidden="true" tabindex="-1">#</a>Fonts</h2>
 <p>Declare faces under <code>assets/fonts/</code> and optional <strong>script routing</strong> (PDF only).
 First matching <code>script</code> rule wins.</p>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'fonts'</span> =&gt; [
@@ -231,7 +232,7 @@ face is registered.</p>
 <blockquote class='notice'><p><strong>Notice:</strong> Without both a registered face and a matching <code>script</code> rule,
 non-Latin runs often show as tofu (missing glyphs) in the default font.</p>
 </blockquote>
-<h2>Site home (<code>build:site</code>)</h2>
+<h2 id="site-home-build-site"><a class="heading-permalink" href="#site-home-build-site" aria-hidden="true" tabindex="-1">#</a>Site home (<code>build:site</code>)</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'site'</span> =&gt; [
     <span class="hljs-string">'banner'</span> =&gt; <span class="hljs-string">'banner.jpg'</span>,
     <span class="hljs-string">'lead'</span> =&gt; <span class="hljs-string">'A one-line pitch for the home page.'</span>,
@@ -285,7 +286,7 @@ or a full relative source path, and links to that generated page.
 <code>repository</code> still works as a legacy fallback that auto-adds GitHub, Packagist,
 and Issues links when <code>links</code> is not set. Chapters are never linked
 automatically; add them explicitly through <code>links</code>.</p>
-<h2>Mermaid</h2>
+<h2 id="mermaid"><a class="heading-permalink" href="#mermaid" aria-hidden="true" tabindex="-1">#</a>Mermaid</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'mermaid'</span> =&gt; [
     <span class="hljs-string">'enabled'</span> =&gt; <span class="hljs-keyword">true</span>,
     <span class="hljs-string">'format'</span> =&gt; <span class="hljs-string">'svg'</span>,          <span class="hljs-comment">// svg | png</span>
@@ -330,7 +331,7 @@ automatically; add them explicitly through <code>links</code>.</p>
 </tr>
 </tbody>
 </table>
-<h2>Sample PDF</h2>
+<h2 id="sample-pdf"><a class="heading-permalink" href="#sample-pdf" aria-hidden="true" tabindex="-1">#</a>Sample PDF</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'sample'</span> =&gt; [
     <span class="hljs-string">'ranges'</span> =&gt; [
         [<span class="hljs-string">'from'</span> =&gt; <span class="hljs-number">1</span>, <span class="hljs-string">'to'</span> =&gt; <span class="hljs-number">3</span>],
@@ -344,7 +345,7 @@ automatically; add them explicitly through <code>links</code>.</p>
 <p>Ranges are 1-based inclusive pages of the finished theme PDF. <code>chapters</code> lists
 content filenames (or stems) to include in full. Notice text also accepts
 <code>sample.notice</code> / <code>sample.text</code> as fallbacks. See the <code>build:sample</code> chapter.</p>
-<h2>KDP</h2>
+<h2 id="kdp"><a class="heading-permalink" href="#kdp" aria-hidden="true" tabindex="-1">#</a>KDP</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'kdp'</span> =&gt; [
     <span class="hljs-string">'ebook'</span> =&gt; [
         <span class="hljs-string">'enabled'</span> =&gt; <span class="hljs-keyword">true</span>,
@@ -366,18 +367,43 @@ content filenames (or stems) to include in full. Notice text also accepts
 <p>Full option tables live in the <code>kdp</code> and <code>kdp:*</code> chapters. <code>papyrus build</code>
 only runs KDP when ebook or print is enabled; <code>papyrus kdp</code> errors if neither
 is.</p>
-<h2>Break level</h2>
+<h2 id="break-level"><a class="heading-permalink" href="#break-level" aria-hidden="true" tabindex="-1">#</a>Break level</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'break_level'</span> =&gt; <span class="hljs-number">2</span>,
 </code></pre>
 <p>Automatic page breaks before headings (<code>1</code> = H1, <code>2</code> = H1 and H2). Explicit
 <code>[break]</code> markers always insert a break.</p>
-<h2>CommonMark hook</h2>
+<h2 id="commonmark-hook"><a class="heading-permalink" href="#commonmark-hook" aria-hidden="true" tabindex="-1">#</a>CommonMark hook</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'configure_commonmark'</span> =&gt; <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(\League\CommonMark\Environment\Environment $environment)</span>: <span class="hljs-title">void</span> </span>{
     <span class="hljs-comment">// register custom extensions</span>
 },
 </code></pre>
 <nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="02-install-and-project.html"><span class="label">Previous</span>Install and project layout</a><a class="next" href="04-writing-content.html"><span class="label">Next</span>Writing content</a></nav>
         </main>
+    </div>
+    <div class="search-modal" id="search-modal" hidden role="dialog" aria-modal="true" aria-labelledby="search-modal-title">
+        <div class="search-modal-backdrop" id="search-modal-backdrop"></div>
+        <div class="search-modal-panel" id="search-modal-panel">
+            <h2 id="search-modal-title" class="visually-hidden">Search</h2>
+            <div class="search-modal-header">
+                <div class="search-modal-input-wrap">
+                    <svg class="search-modal-input-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M20 20l-3.5-3.5"/>
+                    </svg>
+                    <label class="visually-hidden" for="search-modal-input">Search chapters</label>
+                    <input id="search-modal-input" type="search" role="searchbox" placeholder="Search chapters…" autocomplete="off">
+                </div>
+                <button type="button" class="search-modal-close" id="search-modal-close" aria-label="Close search">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M6 6l12 12M18 6L6 18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="search-modal-body">
+                <p class="search-modal-hint" id="search-modal-hint"><kbd>/</kbd> to search from any page</p>
+                <div class="search-results" id="search-results" hidden></div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

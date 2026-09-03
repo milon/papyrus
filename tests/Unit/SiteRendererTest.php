@@ -45,6 +45,14 @@ final class SiteRendererTest extends TestCase
             $this->assertStringContainsString('class="is-active"', $chapter);
             $this->assertStringContainsString('aria-current="page"', $chapter);
             $this->assertStringContainsString('chapter-nav', $chapter);
+            $this->assertStringContainsString('id="flow"', $chapter);
+            $this->assertStringContainsString('href="#flow"', $chapter);
+            $this->assertStringContainsString('heading-permalink', $chapter);
+
+            $search = file_get_contents($siteDir.'/assets/search.json');
+            $this->assertIsString($search);
+            $this->assertStringContainsString('"file":"01-chapter-one.html#flow"', $search);
+            $this->assertStringContainsString('"title":"Flow"', $search);
 
             $css = file_get_contents($siteDir.'/assets/site.css');
             $this->assertIsString($css);
@@ -59,7 +67,10 @@ final class SiteRendererTest extends TestCase
             $this->assertFileExists($siteDir.'/sitemap.xml');
             $this->assertFileExists($siteDir.'/robots.txt');
             $this->assertFileExists($siteDir.'/assets/search.json');
-            $this->assertStringContainsString('id="site-search-input"', $index);
+            $this->assertStringContainsString('id="search-open"', $index);
+            $this->assertStringContainsString('id="search-modal"', $index);
+            $this->assertStringContainsString('id="search-modal-input"', $index);
+            $this->assertStringNotContainsString('id="site-search-input"', $index);
 
             $sitemap = file_get_contents($siteDir.'/sitemap.xml');
             $this->assertIsString($sitemap);
