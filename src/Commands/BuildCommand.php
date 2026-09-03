@@ -12,16 +12,38 @@ use Milon\Papyrus\Render\Epub\EpubException;
 use Milon\Papyrus\Render\Epub\EpubRenderer;
 use Milon\Papyrus\Render\Html\HtmlException;
 use Milon\Papyrus\Render\Html\HtmlRenderer;
+use Milon\Papyrus\Render\Html\SiteRenderer;
 use Milon\Papyrus\Render\Pdf\PdfException;
 use Milon\Papyrus\Render\Pdf\PdfRenderer;
+use Milon\Papyrus\Render\Pdf\SampleException;
+use Milon\Papyrus\Render\Pdf\SamplePdfRenderer;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 #[AsCommand(name: 'build', description: 'Build PDF, EPUB, HTML, and KDP')]
 final class BuildCommand extends BookCommand
 {
+    protected function configure(): void
+    {
+        parent::configure();
+
+        $this->addOption(
+            'with-site',
+            null,
+            InputOption::VALUE_NONE,
+            'Also run build:site',
+        );
+        $this->addOption(
+            'with-sample',
+            null,
+            InputOption::VALUE_NONE,
+            'Also run build:sample for all themes',
+        );
+    }
+
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         try {
@@ -101,6 +123,30 @@ final class BuildCommand extends BookCommand
             } catch (KdpException $e) {
                 $output->writeln('<error>✗ kdp metadata: '.$e->getMessage().'</error>');
                 $failed = true;
+            }
+        }
+
+        if ((bool) $input->getOption('with-site')) {
+            try {
+                $path = (new SiteRenderer($project))->render();
+                $output->writeln(sprintf('<info>✓</info> %s', $path));
+            } catch (HtmlException|MermaidException $e) {
+                $output->writeln('<error>✗ site: '.$e->getMessage().'</error>');
+                $failed = true;
+            }
+        }
+
+        if ((bool) $input->getOption('with-sample')) {
+            $renderer = new SamplePdfRenderer($project);
+
+            foreach ($project->themes() as $theme) {
+                try {
+                    $path = $renderer->render($theme);
+                    $output->writeln(sprintf('<info>✓</info> %s', $path));
+                } catch (SampleException|PdfException|MermaidException $e) {
+                    $output->writeln(sprintf('<error>✗ sample %s: %s</error>', $theme, $e->getMessage()));
+                    $failed = true;
+                }
             }
         }
 

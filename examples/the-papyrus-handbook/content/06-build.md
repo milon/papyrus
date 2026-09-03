@@ -6,12 +6,13 @@ title: build
 
 `papyrus build` is the all-in-one export command. From the book root (or with
 `-d`), it runs every configured PDF theme, then EPUB, then single-file HTML,
-then every **enabled** KDP output.
+then every **enabled** KDP output. Site and sample builds are opt-in.
 
 ```bash
 papyrus build
+papyrus build --with-site --with-sample
 papyrus build -d /path/to/book
-papyrus build -d examples/the-papyrus-handbook -e docs
+papyrus build -d examples/the-papyrus-handbook -e docs --with-site --with-sample
 ```
 
 ## Options
@@ -20,6 +21,8 @@ papyrus build -d examples/the-papyrus-handbook -e docs
 |--------|-------|---------|---------|
 | `--dir` | `-d` | current directory | Book root (must contain `papyrus.php`) |
 | `--export` | `-e` | `export_dir` from config (`export`) | Where artifacts are written |
+| `--with-site` | | off | Also run `build:site` |
+| `--with-sample` | | off | Also run `build:sample` for every theme |
 
 Global Symfony options also apply (`-v` / `--verbose`, `-q`, `--no-ansi`, …).
 With `-v`, Papyrus prints third-party notices from mPDF and the EPUB zipper.
@@ -32,17 +35,13 @@ With `-v`, Papyrus prints third-party notices from mPDF and the EPUB zipper.
 | EPUB | yes | `export/<slug>.epub` |
 | HTML | yes | `export/<slug>.html` |
 | KDP ebook / print / covers / metadata | only if `kdp.ebook.enabled` or `kdp.print.enabled` | see KDP chapters |
+| Site | only with `--with-site` | `export/<slug>-site/` |
+| Sample PDF | only with `--with-sample` | `export/sample-<slug>-<theme>.pdf` |
 
 Slug comes from `title` (lowercased, non-alphanumeric → `-`).
 
-## What it does *not* build
-
-These need their own commands:
-
-- `build:site` — multi-page static site
-- `build:sample` — sample PDF from page ranges
-
-`watch` also invokes `build` only (not site or sample).
+`watch` invokes plain `build` (no site or sample) unless you change the watch
+command yourself.
 
 ## Failures
 

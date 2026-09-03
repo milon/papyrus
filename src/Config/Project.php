@@ -358,6 +358,33 @@ final class Project
     }
 
     /**
+     * Optional URL path prefix for project GitHub Pages (e.g. /my-repo).
+     * Empty string means the site is hosted at the domain root.
+     */
+    public function siteBasePath(): string
+    {
+        $site = $this->config['site'] ?? [];
+
+        if (! is_array($site)) {
+            return '';
+        }
+
+        $basePath = $site['base_path'] ?? null;
+
+        if (! is_string($basePath)) {
+            return '';
+        }
+
+        $basePath = trim(str_replace('\\', '/', $basePath));
+
+        if ($basePath === '' || $basePath === '/') {
+            return '';
+        }
+
+        return '/'.trim($basePath, '/');
+    }
+
+    /**
      * @return list<array{label: string, url?: string, chapter?: string}>
      */
     public function siteLinks(): array

@@ -34,6 +34,7 @@ return [
     //     'banner' => 'banner.jpg',
     //     'lead' => 'A one-line pitch for the home page.',
     //     'cname' => 'docs.example.com', // writes CNAME for GitHub Pages
+    //     'base_path' => '/my-repo', // project Pages path prefix; omit for domain root
     //     'links' => [
     //         ['label' => 'Downloads', 'chapter' => '19-downloads.md'],
     //         ['label' => 'Source', 'url' => 'https://github.com/you/your-book'],

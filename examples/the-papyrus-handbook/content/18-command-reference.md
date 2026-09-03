@@ -8,7 +8,7 @@ title: Command reference
 
 | Command | Purpose | Notable options |
 |---------|---------|-----------------|
-| `build` | PDF themes, EPUB, HTML, enabled KDP | `-d`, `-e` |
+| `build` | PDF themes, EPUB, HTML, enabled KDP | `-d`, `-e`, `--with-site`, `--with-sample` |
 | `build:pdf` | PDF themes | `--theme`, `--parallel` |
 | `build:epub` | EPUB3 | `-d`, `-e` |
 | `build:html` | Single-file HTML | `-d`, `-e` |

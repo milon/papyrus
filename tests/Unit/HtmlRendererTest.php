@@ -82,6 +82,8 @@ PHP);
             $this->assertIsString($html);
             $this->assertStringContainsString('<title>Bundled Asset Book</title>', $html);
             $this->assertStringContainsString('Hello from bundled assets.', $html);
+            $this->assertStringContainsString('data:font/ttf;base64,', $html);
+            $this->assertStringNotContainsString('../assets/fonts/', $html);
         } finally {
             $this->removeDir($bookDir);
         }

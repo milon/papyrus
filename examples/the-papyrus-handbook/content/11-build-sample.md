@@ -13,7 +13,8 @@ papyrus build:sample --theme light
 papyrus build:sample -t light,dark
 ```
 
-`papyrus build` does **not** run this command.
+`papyrus build` does **not** run this by default — pass `--with-sample`, or
+call `build:sample` directly.
 
 ## Options
 

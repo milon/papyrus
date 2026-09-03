@@ -10,8 +10,6 @@ final class HtmlRenderer
 {
     private const TEMPLATE_FILE = 'theme-html.html';
 
-    private const FONT_URL_PLACEHOLDER = '../assets/fonts/';
-
     public function __construct(
         private readonly Project $project,
     ) {}
@@ -59,7 +57,7 @@ final class HtmlRenderer
             $this->project->outputSlug(),
         );
 
-        $html = $this->rewriteFontUrls($html, dirname($filename));
+        $html = $this->embedFonts($html);
 
         if (file_put_contents($filename, $html) === false) {
             throw new HtmlException(sprintf('Unable to write HTML file: %s', $filename));
@@ -68,22 +66,36 @@ final class HtmlRenderer
         return $filename;
     }
 
-    private function rewriteFontUrls(string $html, string $htmlDir): string
+    private function embedFonts(string $html): string
     {
-        $fontsDir = $this->project->assetPath('fonts');
+        return (string) preg_replace_callback(
+            '/url\(\s*(["\']?)(\.\.\/assets\/fonts\/([^"\')\s]+))\1\s*\)/i',
+            function (array $matches): string {
+                $relative = $matches[3];
+                $path = $this->project->assetPath('fonts/'.$relative);
 
-        if ($fontsDir === null) {
-            return str_replace(self::FONT_URL_PLACEHOLDER, '', $html);
-        }
+                if ($path === null || ! is_file($path)) {
+                    return $matches[0];
+                }
 
-        $relative = Project::relativePath($htmlDir, $fontsDir);
+                $contents = file_get_contents($path);
 
-        if ($relative === '.') {
-            $relative = '';
-        }
+                if ($contents === false) {
+                    return $matches[0];
+                }
 
-        $prefix = $relative === '' ? '' : rtrim($relative, '/').'/';
+                $extension = strtolower(pathinfo($relative, PATHINFO_EXTENSION));
+                $mime = match ($extension) {
+                    'ttf' => 'font/ttf',
+                    'otf' => 'font/otf',
+                    'woff' => 'font/woff',
+                    'woff2' => 'font/woff2',
+                    default => 'application/octet-stream',
+                };
 
-        return str_replace(self::FONT_URL_PLACEHOLDER, $prefix, $html);
+                return 'url("data:'.$mime.';base64,'.base64_encode($contents).'")';
+            },
+            $html,
+        );
     }
 }

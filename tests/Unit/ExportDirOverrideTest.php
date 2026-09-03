@@ -35,7 +35,7 @@ final class ExportDirOverrideTest extends TestCase
     }
 
     #[Test]
-    public function html_build_rewrites_font_urls_for_custom_export_dir(): void
+    public function html_build_embeds_fonts_as_data_uris(): void
     {
         $bookDir = $this->prepareFontBook();
         $export = sys_get_temp_dir().'/papyrus-html-export-'.uniqid('', true);
@@ -49,8 +49,7 @@ final class ExportDirOverrideTest extends TestCase
             $html = file_get_contents($path);
             $this->assertIsString($html);
 
-            $expectedPrefix = Project::relativePath($export, $project->assetsDir.'/fonts').'/';
-            $this->assertStringContainsString('url("'.$expectedPrefix, $html);
+            $this->assertStringContainsString('url("data:font/ttf;base64,'.base64_encode('font').'")', $html);
             $this->assertStringNotContainsString('../assets/fonts/', $html);
         } finally {
             if (is_file($htmlPath)) {

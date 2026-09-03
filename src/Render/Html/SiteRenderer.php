@@ -303,6 +303,7 @@ HTML;
         $topbar = htmlspecialchars($topbarTitle, ENT_QUOTES | ENT_HTML5);
         $sidebar = $this->sidebarHtml($pages, $activeFile);
         $headExtra = $extraHead !== '' ? "\n    ".$extraHead : '';
+        $baseHref = $this->baseHrefTag();
 
         return <<<HTML
 <!DOCTYPE html>
@@ -310,7 +311,7 @@ HTML;
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{$title}</title>{$headExtra}
+    <title>{$title}</title>{$baseHref}{$headExtra}
     <link rel="stylesheet" href="assets/site.css">
     <script src="assets/site.js"></script>
 </head>
@@ -350,6 +351,17 @@ HTML;
 </body>
 </html>
 HTML;
+    }
+
+    private function baseHrefTag(): string
+    {
+        $basePath = $this->project->siteBasePath();
+
+        if ($basePath === '') {
+            return '';
+        }
+
+        return "\n    <base href=\"".htmlspecialchars($basePath.'/', ENT_QUOTES | ENT_HTML5).'">';
     }
 
     /**

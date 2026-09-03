@@ -37,6 +37,29 @@ final class BuildCommandTest extends TestCase
         $this->assertStringContainsString('mini-book-kdp.epub', $tester->getDisplay());
         $this->assertStringContainsString('mini-book-kdp-print.pdf', $tester->getDisplay());
         $this->assertStringContainsString('mini-book-kdp-metadata.json', $tester->getDisplay());
+        $this->assertStringNotContainsString('mini-book-site', $tester->getDisplay());
+        $this->assertStringNotContainsString('sample-mini-book-', $tester->getDisplay());
+    }
+
+    #[Test]
+    public function build_with_site_and_sample_opt_in_flags(): void
+    {
+        if (! extension_loaded('gd')) {
+            $this->markTestSkipped('ext-gd is required for PDF build');
+        }
+
+        $tester = new CommandTester(new BuildCommand);
+        $exitCode = $tester->execute([
+            '--dir' => $this->fixtureDir,
+            '--with-site' => true,
+            '--with-sample' => true,
+        ]);
+
+        $this->assertSame(0, $exitCode);
+        $display = $tester->getDisplay();
+        $this->assertStringContainsString('mini-book-site', $display);
+        $this->assertStringContainsString('sample-mini-book-light.pdf', $display);
+        $this->assertStringContainsString('sample-mini-book-dark.pdf', $display);
     }
 
     #[Test]

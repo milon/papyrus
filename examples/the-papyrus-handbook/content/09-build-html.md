@@ -24,7 +24,8 @@ papyrus build:html -d /path/to/book -e docs
 export/<slug>.html
 ```
 
-Requires `assets/theme-html.html`. Placeholders in the theme:
+Requires `theme-html.html` (project `assets/` or bundled default). Placeholders
+in the theme:
 
 | Placeholder | Source |
 |-------------|--------|
@@ -37,8 +38,9 @@ The default stub theme mirrors the light PDF palette, with a moon/sun
 toggle that switches to the dark PDF colours. The reading column follows
 Tailwind screen widths (640 → 1536px).
 
-`@font-face` URLs that point at `../assets/fonts/` are rewritten at build
-time so `-e docs` (or any export override) still finds the book’s fonts.
+`@font-face` rules that point at `../assets/fonts/` are embedded as base64
+data URIs at build time, so the single HTML file is self-contained even when
+fonts come from Papyrus’s bundled defaults.
 
 ## Config that affects HTML
 

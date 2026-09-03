@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Milon\Papyrus\Console;
 
+use Composer\InstalledVersions;
 use Milon\Papyrus\Commands\AssetPublishCommand;
 use Milon\Papyrus\Commands\BuildCommand;
 use Milon\Papyrus\Commands\DoctorCommand;
@@ -31,7 +32,7 @@ final class Application extends SymfonyApplication
 {
     public function __construct()
     {
-        parent::__construct('Papyrus', '0.1.0');
+        parent::__construct('Papyrus', self::resolveVersion());
 
         $this->addCommands([
             new InitCommand,
@@ -53,6 +54,29 @@ final class Application extends SymfonyApplication
             new KdpCoverCommand,
             new KdpMetadataCommand,
         ]);
+    }
+
+    private static function resolveVersion(): string
+    {
+        if (! class_exists(InstalledVersions::class)) {
+            return 'dev';
+        }
+
+        try {
+            if (! InstalledVersions::isInstalled('milon/papyrus')) {
+                return 'dev';
+            }
+
+            $pretty = InstalledVersions::getPrettyVersion('milon/papyrus');
+        } catch (\Throwable) {
+            return 'dev';
+        }
+
+        if (! is_string($pretty) || $pretty === '') {
+            return 'dev';
+        }
+
+        return ltrim($pretty, 'v');
     }
 
     public function doRun(InputInterface $input, OutputInterface $output): int

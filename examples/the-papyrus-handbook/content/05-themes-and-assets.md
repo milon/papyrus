@@ -41,9 +41,10 @@ colors, title page, and running header styles (often paired with
 template mirrors the light PDF theme (same typefaces, colors, code blocks,
 and callouts), with a fixed moon/sun icon toggle that switches to the dark
 PDF palette. The reading column follows Tailwind screen widths (640 → 1536px).
-`@font-face` rules in the theme use `../assets/fonts/`; at build time Papyrus
-rewrites those URLs relative to the HTML output directory (so `-e docs` still
-finds the book’s fonts).
+`@font-face` rules in the theme use `../assets/fonts/`. For `build:html`,
+Papyrus embeds those font files as base64 data URIs so the export is
+self-contained. For `build:site`, fonts are copied into the site
+`assets/fonts/` folder.
 
 ```bash
 papyrus build:html

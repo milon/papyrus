@@ -7,6 +7,7 @@ namespace Milon\Papyrus\Commands;
 use Milon\Papyrus\Config\ConfigException;
 use Milon\Papyrus\Config\DocumentSize;
 use Milon\Papyrus\Config\KdpTrimBounds;
+use Milon\Papyrus\Config\Project;
 use Milon\Papyrus\Mermaid\MermaidCliResolver;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -82,6 +83,11 @@ final class DoctorCommand extends BookCommand
             ));
         }
 
+        $this->reportThemeSources($project, $output);
+        $this->reportCoverAssets($project, $output);
+        $this->reportSiteAssets($project, $output);
+        $this->reportSiteLinkChapters($project, $output);
+
         if ($project->mermaidConfig()->enabled) {
             $cli = MermaidCliResolver::resolve($project->mermaidConfig()->command);
 
@@ -103,5 +109,126 @@ final class DoctorCommand extends BookCommand
         $output->writeln('<info>Configuration OK.</info>');
 
         return Command::SUCCESS;
+    }
+
+    private function reportThemeSources(Project $project, OutputInterface $output): void
+    {
+        $usingBundled = [];
+
+        foreach ($project->themes() as $theme) {
+            $relative = 'theme-'.$theme.'.html';
+            $projectPath = $project->assetsDir.'/'.$relative;
+
+            if (is_file($projectPath)) {
+                $output->writeln(sprintf('<info>✓</info> Theme %s: %s', $theme, $projectPath));
+
+                continue;
+            }
+
+            if ($project->assetPath($relative) !== null) {
+                $usingBundled[] = $theme;
+            } else {
+                $output->writeln(sprintf('<comment>! Theme %s: missing (no project or bundled theme-%s.html)</comment>', $theme, $theme));
+            }
+        }
+
+        $htmlTheme = $project->assetsDir.'/theme-html.html';
+
+        if (is_file($htmlTheme)) {
+            $output->writeln(sprintf('<info>✓</info> HTML theme: %s', $htmlTheme));
+        } elseif ($project->assetPath('theme-html.html') !== null) {
+            $usingBundled[] = 'html';
+        }
+
+        if ($usingBundled !== []) {
+            $output->writeln(sprintf(
+                '<comment>! Using bundled defaults for: %s (run papyrus asset:publish to customize)</comment>',
+                implode(', ', $usingBundled),
+            ));
+        }
+    }
+
+    private function reportCoverAssets(Project $project, OutputInterface $output): void
+    {
+        $cover = $project->config['cover'] ?? [];
+
+        if (! is_array($cover)) {
+            return;
+        }
+
+        $names = [];
+
+        foreach (['image', 'light', 'dark'] as $key) {
+            $name = $cover[$key] ?? null;
+
+            if (is_string($name) && $name !== '') {
+                $names[$name] = true;
+            }
+        }
+
+        foreach (array_keys($names) as $name) {
+            $path = $project->assetsDir.'/'.$name;
+
+            if (is_file($path)) {
+                $output->writeln(sprintf('<info>✓</info> Cover: %s', $path));
+            } else {
+                $output->writeln(sprintf('<comment>! Cover configured but missing: %s</comment>', $path));
+            }
+        }
+    }
+
+    private function reportSiteAssets(Project $project, OutputInterface $output): void
+    {
+        $banner = $project->siteBanner();
+
+        if ($banner !== null) {
+            $path = $project->assetsDir.'/'.$banner;
+
+            if (is_file($path)) {
+                $output->writeln(sprintf('<info>✓</info> Site banner: %s', $path));
+            } else {
+                $output->writeln(sprintf('<comment>! Site banner configured but missing: %s</comment>', $path));
+            }
+        }
+
+        $basePath = $project->siteBasePath();
+
+        if ($basePath !== '') {
+            $output->writeln(sprintf('Site base_path: %s', $basePath));
+        }
+
+        $cname = $project->siteCname();
+
+        if ($cname !== null) {
+            $output->writeln(sprintf('Site cname: %s', $cname));
+        }
+    }
+
+    private function reportSiteLinkChapters(Project $project, OutputInterface $output): void
+    {
+        $chapterNames = [];
+
+        foreach ($project->siteLinks() as $link) {
+            if (! isset($link['chapter'])) {
+                continue;
+            }
+
+            $chapterNames[] = $link['chapter'];
+        }
+
+        if ($chapterNames === []) {
+            return;
+        }
+
+        if (! is_dir($project->contentDir)) {
+            return;
+        }
+
+        $book = $project->bookConverter(useCache: false)->convertDirectory($project->contentDir);
+        $missing = $book->missingChapterNames($chapterNames);
+
+        foreach ($missing as $name) {
+            $output->writeln(sprintf('<comment>! site.links chapter not found: %s</comment>', $name));
+        }
     }
 }

@@ -218,7 +218,7 @@ papyrus asset:publish
 | `init`         | Scaffold `papyrus.php`, `content/`, and an empty `assets/`            |
 | `asset:publish`| Publish bundled themes, CSS, and fonts into `assets/`                 |
 | `doctor`       | Validate config and project paths                                     |
-| `build`        | Build all PDF themes, EPUB, HTML, and enabled KDP outputs             |
+| `build`        | Build PDF/EPUB/HTML/KDP; optional `--with-site` / `--with-sample`     |
 | `build:pdf`    | Build PDF themes (`--theme light,dark`, `--parallel` for multi-theme) |
 | `build:site`   | Build multi-page HTML site with chapter sidebar (light/dark mode)     |
 | `build:html`   | Build single-file HTML from `assets/theme-html.html` (light/dark mode) |

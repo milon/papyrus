@@ -166,6 +166,43 @@ PHP);
         }
     }
 
+    #[Test]
+    public function site_index_includes_base_href_when_base_path_is_configured(): void
+    {
+        $bookDir = sys_get_temp_dir().'/papyrus-site-base-'.uniqid('', true);
+        $export = sys_get_temp_dir().'/papyrus-site-base-export-'.uniqid('', true);
+        mkdir($bookDir.'/content', 0755, true);
+        mkdir($bookDir.'/assets', 0755, true);
+        mkdir($export);
+
+        file_put_contents($bookDir.'/content/01.md', "---\ntitle: One\n---\n\nHello.\n");
+        file_put_contents($bookDir.'/papyrus.php', <<<'PHP'
+<?php
+
+return [
+    'title' => 'Base Path Book',
+    'author' => 'Author',
+    'themes' => ['light'],
+    'site' => [
+        'base_path' => 'docs/book',
+    ],
+    'mermaid' => ['enabled' => false],
+];
+PHP);
+
+        try {
+            $project = Project::load($bookDir)->withExportDir($export);
+            $siteDir = (new SiteRenderer($project))->render();
+            $index = file_get_contents($siteDir.'/index.html');
+            $this->assertIsString($index);
+            $this->assertStringContainsString('<base href="/docs/book/">', $index);
+            $this->assertSame('/docs/book', $project->siteBasePath());
+        } finally {
+            $this->removeDir($bookDir);
+            $this->removeDir($export);
+        }
+    }
+
     private function removeDir(string $dir): void
     {
         if (! is_dir($dir)) {
