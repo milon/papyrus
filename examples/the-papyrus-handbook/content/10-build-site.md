@@ -63,6 +63,9 @@ Point any static host (GitHub Pages, Netlify, S3, …) at that folder.
 sets a custom domain. GitHub Pages and Netlify serve `404.html` for missing
 URLs. Press <kbd>/</kbd> or the topbar search button for popup search
 (↑/↓ moves through results, Enter opens the hit, Escape closes).
+Results are ranked: title and heading matches outrank body hits, whole-word
+matches beat substrings, and pretoc chapters are demoted so Welcome/copyright
+noise sinks. Excerpts centre on the first matching term.
 `sitemap.xml` uses `https://{cname}` when `site.cname` is set, otherwise the
 `site.base_path` prefix. `robots.txt` points at the sitemap when a CNAME is
 configured. Each `##` heading gets an id and a `#` permalink; search hits for

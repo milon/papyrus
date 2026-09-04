@@ -110,6 +110,9 @@ loaded project, the printed URL includes that prefix so <code>&lt;base href&gt;<
 sets a custom domain. GitHub Pages and Netlify serve <code>404.html</code> for missing
 URLs. Press <kbd>/</kbd> or the topbar search button for popup search
 (↑/↓ moves through results, Enter opens the hit, Escape closes).
+Results are ranked: title and heading matches outrank body hits, whole-word
+matches beat substrings, and pretoc chapters are demoted so Welcome/copyright
+noise sinks. Excerpts centre on the first matching term.
 <code>sitemap.xml</code> uses <code>https://{cname}</code> when <code>site.cname</code> is set, otherwise the
 <code>site.base_path</code> prefix. <code>robots.txt</code> points at the sitemap when a CNAME is
 configured. Each <code>##</code> heading gets an id and a <code>#</code> permalink; search hits for

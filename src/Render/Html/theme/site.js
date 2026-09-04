@@ -158,13 +158,55 @@
             }
         }
 
-        function excerptFor(entry) {
+        function escapeRegExp(value) {
+            return String(value).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        }
+
+        function termScore(haystack, term, wordPts, subPts) {
+            if (!haystack || !term) return 0;
+            if (haystack === term) return wordPts * 2;
+            var re = new RegExp("(^|[^a-z0-9_])" + escapeRegExp(term) + "([^a-z0-9_]|$)", "i");
+            if (re.test(haystack)) return wordPts;
+            if (haystack.indexOf(term) !== -1) return subPts;
+            return 0;
+        }
+
+        function scoreEntry(entry, terms) {
+            var title = String(entry.title || "").toLowerCase();
+            var text = String(entry.text || "").toLowerCase();
+            var score = 0;
+            for (var t = 0; t < terms.length; t++) {
+                var term = terms[t];
+                var titleHit = termScore(title, term, 40, 18);
+                var textHit = termScore(text, term, 8, 3);
+                if (titleHit === 0 && textHit === 0) {
+                    return -1;
+                }
+                score += titleHit + textHit;
+            }
+            if (entry.kind === "heading") score += 12;
+            else if (entry.kind === "home") score += 4;
+            if (entry.pretoc) score -= 28;
+            return score;
+        }
+
+        function excerptFor(entry, terms) {
             var text = String(entry.text || "").replace(/\s+/g, " ").trim();
             if (!text) return "";
-            if (text.length > 140) {
-                return text.slice(0, 140).replace(/\s+\S*$/, "") + "…";
+            var lower = text.toLowerCase();
+            var pos = 0;
+            if (terms && terms.length) {
+                var best = -1;
+                for (var t = 0; t < terms.length; t++) {
+                    var p = lower.indexOf(terms[t]);
+                    if (p !== -1 && (best === -1 || p < best)) best = p;
+                }
+                if (best > 0) pos = Math.max(0, best - 36);
             }
-            return text;
+            var slice = text.slice(pos, pos + 140);
+            if (pos > 0) slice = "…" + slice.replace(/^\S*\s+/, "");
+            if (pos + 140 < text.length) slice = slice.replace(/\s+\S*$/, "") + "…";
+            return slice;
         }
 
         function loadSearchIndex(done) {
@@ -203,18 +245,18 @@
                 searchHint.hidden = true;
             }
             loadSearchIndex(function (entries) {
-                var matches = [];
-                for (var i = 0; i < entries.length && matches.length < 12; i++) {
-                    var haystack = ((entries[i].title || "") + " " + (entries[i].text || "")).toLowerCase();
-                    var ok = true;
-                    for (var t = 0; t < terms.length; t++) {
-                        if (haystack.indexOf(terms[t]) === -1) {
-                            ok = false;
-                            break;
-                        }
+                var ranked = [];
+                for (var i = 0; i < entries.length; i++) {
+                    var score = scoreEntry(entries[i], terms);
+                    if (score >= 0) {
+                        ranked.push({ entry: entries[i], score: score, index: i });
                     }
-                    if (ok) matches.push(entries[i]);
                 }
+                ranked.sort(function (a, b) {
+                    if (b.score !== a.score) return b.score - a.score;
+                    return a.index - b.index;
+                });
+                var matches = ranked.slice(0, 12).map(function (row) { return row.entry; });
                 searchResults.hidden = false;
                 if (matches.length === 0) {
                     searchResults.innerHTML = "<p class=\"search-no-results\">No matches for “" + escapeHtml(query.trim()) + "”</p>";
@@ -222,7 +264,7 @@
                     return;
                 }
                 searchResults.innerHTML = matches.map(function (entry) {
-                    var excerpt = excerptFor(entry);
+                    var excerpt = excerptFor(entry, terms);
                     return "<a class=\"search-result-item\" href=\"" + escapeHtml(entry.file) + "\">"
                         + "<span class=\"search-result-title\">" + escapeHtml(entry.title) + "</span>"
                         + (excerpt ? "<span class=\"search-result-excerpt\">" + escapeHtml(excerpt) + "</span>" : "")

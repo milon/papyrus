@@ -401,6 +401,8 @@ HTML;
                 'file' => 'index.html',
                 'title' => $this->project->title(),
                 'text' => $this->plainText($this->project->title().' '.$this->project->subtitle().' '.($this->project->siteLead() ?? '')),
+                'kind' => 'home',
+                'pretoc' => false,
             ],
         ];
 
@@ -411,6 +413,8 @@ HTML;
                 'file' => $page['file'],
                 'title' => $page['title'],
                 'text' => $this->plainText($page['title'].' '.$anchoredHtml),
+                'kind' => 'chapter',
+                'pretoc' => $page['chapter']->pretoc,
             ];
 
             foreach ($headings as $heading) {
@@ -418,6 +422,8 @@ HTML;
                     'file' => $page['file'].'#'.$heading['id'],
                     'title' => $heading['title'],
                     'text' => $this->plainText($heading['title'].' '.$page['title']),
+                    'kind' => 'heading',
+                    'pretoc' => $page['chapter']->pretoc,
                 ];
             }
         }

@@ -101,6 +101,9 @@ final class KdpPackageBuilder
             $candidates[] = $slug.'-kdp-print-cover-'.$theme.($ext !== '' ? '.'.$ext : '');
         }
 
+        $candidates[] = $slug.'-kdp-print-wrap.pdf';
+        $candidates[] = $slug.'-kdp-print-wrap.png';
+
         $files = [];
 
         foreach (array_unique($candidates) as $name) {
@@ -136,8 +139,22 @@ final class KdpPackageBuilder
         $lines[] = 'Reminders:';
         $lines[] = '  - Upload the Kindle EPUB ('.$this->project->outputSlug().'-kdp.epub) for the eBook.';
         $lines[] = '  - Upload the print interior PDF for paperback/hardcover interiors.';
-        $lines[] = '  - Build a full wraparound cover PDF yourself (Papyrus copies front covers only).';
-        $lines[] = '  - Use Amazon’s cover calculator with spine estimates from kdp:metadata / kdp:cover --dimensions.';
+        $hasWrap = false;
+
+        foreach ($files as $relative) {
+            if (str_ends_with((string) $relative, '-kdp-print-wrap.pdf')) {
+                $hasWrap = true;
+                break;
+            }
+        }
+
+        if ($hasWrap) {
+            $lines[] = '  - Upload the wraparound cover PDF (…-kdp-print-wrap.pdf) for the paperback cover.';
+            $lines[] = '  - Confirm spine width with Amazon’s cover calculator before submitting.';
+        } else {
+            $lines[] = '  - Generate a wraparound cover with papyrus kdp:cover --wrap (or build one yourself).';
+            $lines[] = '  - Use Amazon’s cover calculator with spine estimates from kdp:metadata / kdp:cover --dimensions.';
+        }
         $lines[] = '  - Confirm keywords, description, and categories in the KDP dashboard.';
 
         if ($kdp->ebookEnabled && $kdp->metadataDescription === '') {

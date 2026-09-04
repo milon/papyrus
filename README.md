@@ -14,7 +14,7 @@ Same core idea — Markdown chapters to PDF, EPUB, and HTML — plus first-class
 
 - **Multi-page site** — `build:site` with Home, chapter sidebar, popup search, heading permalinks, sitemap/robots, Prev/Next, light/dark mode, banner, and `404.html` (ready for GitHub Pages / Netlify)
 - **Local preview** — `serve` runs the site with `php -S` so search and assets work over HTTP
-- **Amazon KDP** — Kindle EPUB, print interior (bleed + margins), cover export, wrap-size estimates, metadata JSON, upload package zip (`kdp` / `kdp:*`)
+- **Amazon KDP** — Kindle EPUB, print interior (bleed + margins), cover export, wraparound cover PDF, wrap-size estimates, metadata JSON, upload package zip (`kdp` / `kdp:*`)
 - **Draft chapters** — `draft: true` in front matter omits chapters from builds unless `--include-drafts`
 - **Mermaid** — `mermaid` fences rendered at build time for PDF, EPUB, HTML, and site (`theme: auto` embeds light + dark on the web)
 - **Sample PDFs** — carve marketing / review PDFs from page ranges and/or whole chapters (`build:sample`)
@@ -52,7 +52,7 @@ What you get:
 
 - One HTML page per chapter, plus a Home index
 - Chapter sidebar (collapsible on mobile)
-- Popup search (`/` or the topbar button; ↑/↓/Enter; section `#` hits)
+- Popup search (`/` or the topbar button; ↑/↓/Enter; ranked title/heading hits)
 - Light and dark mode (same palette as single-file HTML)
 - Prev / Next navigation between chapters
 - `sitemap.xml`, `robots.txt`, and optional `CNAME` / `site.base_path`
@@ -243,10 +243,10 @@ papyrus asset:publish --only=themes
 | `build:html`    | Build single-file HTML from `assets/theme-html.html` (light/dark mode)                     |
 | `build:epub`    | Build EPUB3 with CSS and embedded images                                                   |
 | `build:sample`  | Build sample PDF from `sample.ranges` and/or `sample.chapters`                             |
-| `kdp`           | All enabled KDP outputs (`--require-epubcheck`, `--package`)                               |
+| `kdp`           | All enabled KDP outputs (`--require-epubcheck`, `--package`, `--wrap`)                     |
 | `kdp:ebook`     | KDP-ready Kindle EPUB (`export/<slug>-kdp.epub`)                                           |
 | `kdp:print`     | Print interior PDF with KDP margin/bleed presets                                           |
-| `kdp:cover`     | Export KDP cover assets (`--dimensions`, `--pages`)                                        |
+| `kdp:cover`     | Export KDP cover assets (`--dimensions`, `--wrap`, `--pages`, `--theme`)                   |
 | `kdp:metadata`  | Emit KDP metadata sidecar JSON                                                             |
 | `kdp:package`   | Zip enabled KDP artifacts with an upload checklist                                         |
 | `sizes`         | List KDP page-size presets                                                                 |

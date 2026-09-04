@@ -53,6 +53,10 @@ final class SiteRendererTest extends TestCase
             $this->assertIsString($search);
             $this->assertStringContainsString('"file":"01-chapter-one.html#flow"', $search);
             $this->assertStringContainsString('"title":"Flow"', $search);
+            $this->assertStringContainsString('"kind":"heading"', $search);
+            $this->assertStringContainsString('"kind":"chapter"', $search);
+            $this->assertStringContainsString('"pretoc":true', $search);
+            $this->assertStringContainsString('"pretoc":false', $search);
 
             $css = file_get_contents($siteDir.'/assets/site.css');
             $this->assertIsString($css);

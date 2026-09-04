@@ -247,7 +247,9 @@ content filenames (or stems) to include in full. Notice text also accepts
         'enabled' => true,
         'bleed_mm' => 3,
         'margin_preset' => 'recommended', // or minimum
-        'paper' => 'white',
+        'paper' => 'white',               // or cream — spine width
+        'back_cover' => 'back-cover.png', // optional wrap artwork
+        'spine_color' => '#1a1a1a',       // optional wrap spine fill
     ],
     'metadata' => [
         'description' => 'Bookstore blurb…',

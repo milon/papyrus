@@ -38,6 +38,14 @@ final class KdpBuilder
         return (new KdpCoverExporter($this->project))->export();
     }
 
+    /**
+     * @return list<string>
+     */
+    public function buildWrapCover(int $pageCount, string $theme = 'light'): array
+    {
+        return (new WrapCoverRenderer($this->project))->render($pageCount, $theme);
+    }
+
     public function buildMetadata(): string
     {
         return (new KdpMetadataExporter($this->project))->export();

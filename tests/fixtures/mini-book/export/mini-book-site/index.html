@@ -25,6 +25,12 @@
             </button>
             <p class="topbar-title">Mini Book</p>
             <div class="topbar-actions">
+                <button type="button" class="search-open" id="search-open" aria-label="Search" title="Search (/)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M20 20l-3.5-3.5"/>
+                    </svg>
+                </button>
                 <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Dark mode">
                     <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
                         <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
@@ -47,6 +53,31 @@
     <a class="start-reading" href="00-copyright.html">Start reading — Copyright</a>
 </div>
         </main>
+    </div>
+    <div class="search-modal" id="search-modal" hidden role="dialog" aria-modal="true" aria-labelledby="search-modal-title">
+        <div class="search-modal-backdrop" id="search-modal-backdrop"></div>
+        <div class="search-modal-panel" id="search-modal-panel">
+            <h2 id="search-modal-title" class="visually-hidden">Search</h2>
+            <div class="search-modal-header">
+                <div class="search-modal-input-wrap">
+                    <svg class="search-modal-input-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M20 20l-3.5-3.5"/>
+                    </svg>
+                    <label class="visually-hidden" for="search-modal-input">Search chapters</label>
+                    <input id="search-modal-input" type="search" role="searchbox" placeholder="Search chapters…" autocomplete="off">
+                </div>
+                <button type="button" class="search-modal-close" id="search-modal-close" aria-label="Close search">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M6 6l12 12M18 6L6 18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="search-modal-body">
+                <p class="search-modal-hint" id="search-modal-hint"><kbd>/</kbd> to search from any page</p>
+                <div class="search-results" id="search-results" hidden></div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

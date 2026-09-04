@@ -10,8 +10,9 @@ filenames. No enable flag — safe to run anytime.
 ```bash
 papyrus kdp:cover
 papyrus kdp:cover -d /path/to/book -e /path/to/out
-papyrus kdp:cover --dimensions
 papyrus kdp:cover --dimensions --pages=220
+papyrus kdp:cover --wrap --pages=220
+papyrus kdp:cover --wrap --theme=light
 ```
 
 ## Options
@@ -21,7 +22,9 @@ papyrus kdp:cover --dimensions --pages=220
 | `--dir`        | `-d`  | current directory | Book root                                           |
 | `--export`     | `-e`  | `export/`         | Output directory                                    |
 | `--dimensions` |       | off               | Print wrap-cover size estimate (spine + full bleed) |
-| `--pages`      |       | from print PDF    | Page count for the estimate (overrides PDF count)   |
+| `--wrap`       |       | off               | Generate wraparound cover PDF + PNG preview         |
+| `--pages`      |       | from print PDF    | Page count for `--dimensions` / `--wrap`            |
+| `--theme`      |       | first theme       | Front-cover theme used by `--wrap`                  |
 
 ## Sources and outputs
 
@@ -55,15 +58,38 @@ export/my-book-kdp-print-cover-light.png
 export/my-book-kdp-print-cover-dark.png   # if dark cover resolves
 ```
 
-Papyrus copies files as-is — it does not generate a full wraparound print
-cover. For size estimates (Amazon’s spine formula + bleed):
+Papyrus copies files as-is for ebook/front covers. With `--wrap` it also
+composes a **paperback wraparound** PDF (back | spine | front, plus bleed)
+using Amazon’s spine formula and your front cover image:
 
 ```bash
-papyrus kdp:cover --dimensions
-papyrus kdp:cover --dimensions --pages=220
+papyrus kdp:cover --wrap
+papyrus kdp:cover --wrap --pages=220
+```
+
+Outputs:
+
+```text
+export/<slug>-kdp-print-wrap.pdf   # upload to KDP as the cover
+export/<slug>-kdp-print-wrap.png   # preview
+```
+
+Optional config:
+
+```php
+'cover' => [
+    'image' => 'cover.png',
+    'back' => 'back-cover.png',   // optional; otherwise a text back panel is drawn
+],
+'kdp' => [
+    'print' => [
+        'paper' => 'white',       // or cream — affects spine width
+        'back_cover' => 'back-cover.png', // preferred over cover.back
+        'spine_color' => '#1a1a1a',       // optional; default samples the front cover
+    ],
+],
 ```
 
 Without `--pages`, Papyrus counts pages in `export/<slug>-kdp-print.pdf`
-(build `kdp:print` first). Estimates use white/cream paper factors from
-[Amazon’s paperback cover help](https://kdp.amazon.com/help/topic/G201953020).
-Always verify with Amazon’s cover calculator before upload.
+(build `kdp:print` first). Spine text is drawn only when Amazon allows it
+(≥ 79 pages). Always verify with Amazon’s cover calculator before upload.

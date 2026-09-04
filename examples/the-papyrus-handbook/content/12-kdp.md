@@ -12,6 +12,7 @@ copies, and the metadata JSON sidecar.
 papyrus kdp
 papyrus kdp --require-epubcheck
 papyrus kdp --package
+papyrus kdp --wrap
 papyrus kdp -d /path/to/book -e /path/to/out
 ```
 
@@ -26,6 +27,7 @@ Unlike `papyrus build`, this command **fails** when neither
 | `--export`            | `-e`  | `export/`         | Output directory                           |
 | `--require-epubcheck` |       | off               | Fail ebook build if `epubcheck` is missing |
 | `--package`           |       | off               | Also write `export/<slug>-kdp-package.zip` |
+| `--wrap`              |       | off               | Also generate wraparound cover PDF + PNG   |
 
 Print uses the **first** configured theme (same as `kdp:print` without
 `--theme`).
@@ -42,7 +44,9 @@ Print uses the **first** configured theme (same as `kdp:print` without
         'enabled' => true,
         'bleed_mm' => 3,
         'margin_preset' => 'recommended', // or minimum
-        'paper' => 'white',               // metadata only (e.g. cream)
+        'paper' => 'white',               // metadata + spine formula (e.g. cream)
+        'back_cover' => 'back-cover.png', // optional wrap artwork
+        'spine_color' => '#1a1a1a',       // optional wrap spine fill
     ],
     'metadata' => [
         'description' => 'Bookstore blurb…',
@@ -59,8 +63,10 @@ Print uses the **first** configured theme (same as `kdp:print` without
 | `print.enabled`       | `false`              | Gates print PDF                     |
 | `print.bleed_mm`      | `3`                  | Added to trim and each margin       |
 | `print.margin_preset` | `recommended`        | `recommended` or `minimum`          |
-| `print.paper`         | `white`              | Recorded in metadata only           |
-| `metadata.*`          | see metadata chapter | Sidecar + EPUB description fallback |
+| `print.paper`         | `white`              | Spine formula + metadata (`cream` allowed) |
+| `print.back_cover`    | unset                | Optional back panel for `--wrap`           |
+| `print.spine_color`   | sample front cover   | Hex fill for spine / generated back        |
+| `metadata.*`          | see metadata chapter | Sidecar + EPUB description fallback        |
 
 ## Typical artifacts
 
@@ -70,6 +76,7 @@ Print uses the **first** configured theme (same as `kdp:print` without
 | Print PDF          | `<slug>-kdp-print.pdf`                                          |
 | Ebook cover copy   | `<slug>-kdp-ebook-cover.<ext>`                                  |
 | Print cover copies | `<slug>-kdp-print-cover-<theme>.<ext>`                          |
+| Wrap cover         | `<slug>-kdp-print-wrap.pdf` (+ `.png` preview via `--wrap`)     |
 | Metadata           | `<slug>-kdp-metadata.json`                                      |
 | Package zip        | `<slug>-kdp-package.zip` (via `kdp:package` or `kdp --package`) |
 

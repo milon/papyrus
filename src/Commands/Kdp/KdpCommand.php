@@ -40,6 +40,12 @@ final class KdpCommand extends BookCommand
             InputOption::VALUE_NONE,
             'Also zip artifacts into export/<slug>-kdp-package.zip',
         );
+        $this->addOption(
+            'wrap',
+            null,
+            InputOption::VALUE_NONE,
+            'Also generate a paperback wraparound cover PDF after print/covers',
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -95,6 +101,29 @@ final class KdpCommand extends BookCommand
         } catch (KdpException $e) {
             $output->writeln('<error>✗ kdp cover: '.$e->getMessage().'</error>');
             $failed = true;
+        }
+
+        if (! $failed && (bool) $input->getOption('wrap')) {
+            try {
+                $printPdf = sprintf(
+                    '%s/%s-kdp-print.pdf',
+                    $project->exportDir,
+                    $project->outputSlug(),
+                );
+                $pages = PdfPageCounter::count($printPdf);
+
+                if ($pages === null) {
+                    $output->writeln('<error>✗ kdp wrap: unable to count pages in print PDF. Build kdp:print first.</error>');
+                    $failed = true;
+                } else {
+                    foreach ($builder->buildWrapCover($pages, $theme) as $path) {
+                        $output->writeln(sprintf('<info>✓</info> %s', $path));
+                    }
+                }
+            } catch (KdpException $e) {
+                $output->writeln('<error>✗ kdp wrap: '.$e->getMessage().'</error>');
+                $failed = true;
+            }
         }
 
         try {

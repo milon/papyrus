@@ -19,12 +19,12 @@ title: Command reference
 
 | Command        | Purpose                        | Notable options                                     |
 |----------------|--------------------------------|-----------------------------------------------------|
-| `kdp`          | All enabled KDP outputs        | `-d`, `-e`, `--require-epubcheck`, `--package`      |
-| `kdp:ebook`    | Kindle EPUB                    | `--require-epubcheck`; requires `kdp.ebook.enabled` |
-| `kdp:print`    | Print interior PDF             | `--theme`; requires `kdp.print.enabled`             |
-| `kdp:cover`    | Copy cover assets to `export/` | `--dimensions`, `--pages`                           |
-| `kdp:metadata` | Metadata JSON sidecar          | no enable flag                                      |
-| `kdp:package`  | Zip KDP artifacts + checklist  | requires enabled outputs + built files              |
+| `kdp`          | All enabled KDP outputs        | `-d`, `-e`, `--require-epubcheck`, `--package`, `--wrap` |
+| `kdp:ebook`    | Kindle EPUB                    | `--require-epubcheck`; requires `kdp.ebook.enabled`      |
+| `kdp:print`    | Print interior PDF             | `--theme`; requires `kdp.print.enabled`                  |
+| `kdp:cover`    | Cover assets + optional wrap   | `--dimensions`, `--wrap`, `--pages`, `--theme`           |
+| `kdp:metadata` | Metadata JSON sidecar          | no enable flag                                           |
+| `kdp:package`  | Zip KDP artifacts + checklist  | requires enabled outputs + built files                   |
 
 ## Project tooling
 
@@ -64,6 +64,7 @@ Also useful globally: `-v` / `--verbose` (include third-party vendor notices),
 | `kdp:ebook`    | `<slug>-kdp.epub`                                              |
 | `kdp:print`    | `<slug>-kdp-print.pdf`                                         |
 | `kdp:cover`    | `<slug>-kdp-ebook-cover.*`, `<slug>-kdp-print-cover-<theme>.*` |
+| wrap (`--wrap`)| `<slug>-kdp-print-wrap.pdf`, `<slug>-kdp-print-wrap.png`       |
 | `kdp:metadata` | `<slug>-kdp-metadata.json`                                     |
 | `kdp:package`  | `<slug>-kdp-package.zip`                                       |
 

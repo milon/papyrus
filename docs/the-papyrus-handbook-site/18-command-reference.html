@@ -99,7 +99,7 @@
 <tr>
 <td><code>kdp</code></td>
 <td>All enabled KDP outputs</td>
-<td><code>-d</code>, <code>-e</code>, <code>--require-epubcheck</code>, <code>--package</code></td>
+<td><code>-d</code>, <code>-e</code>, <code>--require-epubcheck</code>, <code>--package</code>, <code>--wrap</code></td>
 </tr>
 <tr>
 <td><code>kdp:ebook</code></td>
@@ -113,8 +113,8 @@
 </tr>
 <tr>
 <td><code>kdp:cover</code></td>
-<td>Copy cover assets to <code>export/</code></td>
-<td><code>--dimensions</code>, <code>--pages</code></td>
+<td>Cover assets + optional wrap</td>
+<td><code>--dimensions</code>, <code>--wrap</code>, <code>--pages</code>, <code>--theme</code></td>
 </tr>
 <tr>
 <td><code>kdp:metadata</code></td>
@@ -254,6 +254,10 @@
 <tr>
 <td><code>kdp:cover</code></td>
 <td><code>&lt;slug&gt;-kdp-ebook-cover.*</code>, <code>&lt;slug&gt;-kdp-print-cover-&lt;theme&gt;.*</code></td>
+</tr>
+<tr>
+<td>wrap (<code>--wrap</code>)</td>
+<td><code>&lt;slug&gt;-kdp-print-wrap.pdf</code>, <code>&lt;slug&gt;-kdp-print-wrap.png</code></td>
 </tr>
 <tr>
 <td><code>kdp:metadata</code></td>

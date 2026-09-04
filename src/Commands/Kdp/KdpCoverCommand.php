@@ -31,10 +31,22 @@ final class KdpCoverCommand extends BookCommand
             'Print wrap-cover size estimates (needs page count)',
         );
         $this->addOption(
+            'wrap',
+            null,
+            InputOption::VALUE_NONE,
+            'Generate a paperback wraparound cover PDF + PNG preview',
+        );
+        $this->addOption(
             'pages',
             null,
             InputOption::VALUE_REQUIRED,
-            'Page count for --dimensions (default: count pages in export/<slug>-kdp-print.pdf)',
+            'Page count for --dimensions / --wrap (default: count pages in export/<slug>-kdp-print.pdf)',
+        );
+        $this->addOption(
+            'theme',
+            null,
+            InputOption::VALUE_REQUIRED,
+            'Theme whose front cover image to use for --wrap (default: first configured theme)',
         );
     }
 
@@ -49,7 +61,8 @@ final class KdpCoverCommand extends BookCommand
         }
 
         try {
-            $paths = (new KdpBuilder($project))->buildCovers();
+            $builder = new KdpBuilder($project);
+            $paths = $builder->buildCovers();
 
             if ($paths === []) {
                 $output->writeln('<comment>No cover assets were exported.</comment>');
@@ -59,8 +72,30 @@ final class KdpCoverCommand extends BookCommand
                 }
             }
 
-            if ((bool) $input->getOption('dimensions')) {
-                $this->writeDimensions($input, $output, $project);
+            $wantDimensions = (bool) $input->getOption('dimensions');
+            $wantWrap = (bool) $input->getOption('wrap');
+
+            if ($wantDimensions || $wantWrap) {
+                $pages = $this->resolvePageCount($input, $output, $project);
+
+                if ($pages === null) {
+                    return $wantWrap ? Command::FAILURE : Command::SUCCESS;
+                }
+
+                if ($wantDimensions) {
+                    $this->writeDimensions($output, $project, $pages);
+                }
+
+                if ($wantWrap) {
+                    $themeOption = $input->getOption('theme');
+                    $theme = is_string($themeOption) && trim($themeOption) !== ''
+                        ? trim($themeOption)
+                        : ($project->themes()[0] ?? 'light');
+
+                    foreach ($builder->buildWrapCover($pages, $theme) as $path) {
+                        $output->writeln(sprintf('<info>✓</info> %s', $path));
+                    }
+                }
             }
 
             return Command::SUCCESS;
@@ -71,34 +106,46 @@ final class KdpCoverCommand extends BookCommand
         }
     }
 
-    private function writeDimensions(InputInterface $input, OutputInterface $output, Project $project): void
+    private function resolvePageCount(InputInterface $input, OutputInterface $output, Project $project): ?int
     {
         $pagesOption = $input->getOption('pages');
-        $pages = null;
 
         if (is_string($pagesOption) && trim($pagesOption) !== '') {
             $pages = (int) $pagesOption;
-        } else {
-            $printPdf = sprintf(
-                '%s/%s-kdp-print.pdf',
-                $project->exportDir,
-                $project->outputSlug(),
-            );
-            $pages = PdfPageCounter::count($printPdf);
 
-            if ($pages === null) {
-                $output->writeln('<comment>! Unable to determine page count. Pass --pages=N or build kdp:print first.</comment>');
+            if ($pages < 1) {
+                $output->writeln('<error>Page count must be at least 1.</error>');
 
-                return;
+                return null;
             }
+
+            return $pages;
+        }
+
+        $printPdf = sprintf(
+            '%s/%s-kdp-print.pdf',
+            $project->exportDir,
+            $project->outputSlug(),
+        );
+        $pages = PdfPageCounter::count($printPdf);
+
+        if ($pages === null) {
+            $output->writeln('<comment>! Unable to determine page count. Pass --pages=N or build kdp:print first.</comment>');
+
+            return null;
         }
 
         if ($pages < 1) {
             $output->writeln('<error>Page count must be at least 1.</error>');
 
-            return;
+            return null;
         }
 
+        return $pages;
+    }
+
+    private function writeDimensions(OutputInterface $output, Project $project, int $pages): void
+    {
         $dims = PrintCoverDimensions::calculate(
             $project->documentSize(),
             $pages,

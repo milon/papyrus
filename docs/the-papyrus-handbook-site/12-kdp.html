@@ -50,6 +50,7 @@ copies, and the metadata JSON sidecar.</p>
 <pre><code class="language-bash hljs bash" data-lang="bash">papyrus kdp
 papyrus kdp --require-epubcheck
 papyrus kdp --package
+papyrus kdp --wrap
 papyrus kdp -d /path/to/book -e /path/to/out
 </code></pre>
 <p>Unlike <code>papyrus build</code>, this command <strong>fails</strong> when neither
@@ -89,6 +90,12 @@ papyrus kdp -d /path/to/book -e /path/to/out
 <td>off</td>
 <td>Also write <code>export/&lt;slug&gt;-kdp-package.zip</code></td>
 </tr>
+<tr>
+<td><code>--wrap</code></td>
+<td></td>
+<td>off</td>
+<td>Also generate wraparound cover PDF + PNG</td>
+</tr>
 </tbody>
 </table>
 <p>Print uses the <strong>first</strong> configured theme (same as <code>kdp:print</code> without
@@ -103,7 +110,9 @@ papyrus kdp -d /path/to/book -e /path/to/out
         <span class="hljs-string">'enabled'</span> =&gt; <span class="hljs-keyword">true</span>,
         <span class="hljs-string">'bleed_mm'</span> =&gt; <span class="hljs-number">3</span>,
         <span class="hljs-string">'margin_preset'</span> =&gt; <span class="hljs-string">'recommended'</span>, <span class="hljs-comment">// or minimum</span>
-        <span class="hljs-string">'paper'</span> =&gt; <span class="hljs-string">'white'</span>,               <span class="hljs-comment">// metadata only (e.g. cream)</span>
+        <span class="hljs-string">'paper'</span> =&gt; <span class="hljs-string">'white'</span>,               <span class="hljs-comment">// metadata + spine formula (e.g. cream)</span>
+        <span class="hljs-string">'back_cover'</span> =&gt; <span class="hljs-string">'back-cover.png'</span>, <span class="hljs-comment">// optional wrap artwork</span>
+        <span class="hljs-string">'spine_color'</span> =&gt; <span class="hljs-string">'#1a1a1a'</span>,       <span class="hljs-comment">// optional wrap spine fill</span>
     ],
     <span class="hljs-string">'metadata'</span> =&gt; [
         <span class="hljs-string">'description'</span> =&gt; <span class="hljs-string">'Bookstore blurb…'</span>,
@@ -149,7 +158,17 @@ papyrus kdp -d /path/to/book -e /path/to/out
 <tr>
 <td><code>print.paper</code></td>
 <td><code>white</code></td>
-<td>Recorded in metadata only</td>
+<td>Spine formula + metadata (<code>cream</code> allowed)</td>
+</tr>
+<tr>
+<td><code>print.back_cover</code></td>
+<td>unset</td>
+<td>Optional back panel for <code>--wrap</code></td>
+</tr>
+<tr>
+<td><code>print.spine_color</code></td>
+<td>sample front cover</td>
+<td>Hex fill for spine / generated back</td>
 </tr>
 <tr>
 <td><code>metadata.*</code></td>
@@ -182,6 +201,10 @@ papyrus kdp -d /path/to/book -e /path/to/out
 <tr>
 <td>Print cover copies</td>
 <td><code>&lt;slug&gt;-kdp-print-cover-&lt;theme&gt;.&lt;ext&gt;</code></td>
+</tr>
+<tr>
+<td>Wrap cover</td>
+<td><code>&lt;slug&gt;-kdp-print-wrap.pdf</code> (+ <code>.png</code> preview via <code>--wrap</code>)</td>
 </tr>
 <tr>
 <td>Metadata</td>

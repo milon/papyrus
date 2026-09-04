@@ -26,6 +26,8 @@ final class KdpConfigTest extends TestCase
                     'bleed_mm' => 3,
                     'margin_preset' => 'minimum',
                     'paper' => 'cream',
+                    'back_cover' => 'back-cover.jpg',
+                    'spine_color' => '#1a1a1a',
                 ],
                 'metadata' => [
                     'description' => 'About the book',
@@ -41,6 +43,8 @@ final class KdpConfigTest extends TestCase
         $this->assertSame(3.0, $config->printBleedMm);
         $this->assertSame('minimum', $config->printMarginPreset);
         $this->assertSame('cream', $config->printPaper);
+        $this->assertSame('back-cover.jpg', $config->printBackCover);
+        $this->assertSame('#1a1a1a', $config->printSpineColor);
         $this->assertSame('About the book', $config->metadataDescription);
         $this->assertSame(['php', 'books'], $config->keywords);
         $this->assertSame('en-GB', $config->metadataLanguage);
