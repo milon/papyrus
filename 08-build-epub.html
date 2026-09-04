@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>build:epub — The Papyrus Handbook</title>
+    <link rel="stylesheet" href="assets/site.css">
+    <script src="assets/site.js"></script>
+</head>
+<body>
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+    <aside class="sidebar" id="sidebar" aria-label="Chapters">
+        <div class="sidebar-header">
+            <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
+            <p class="sidebar-subtitle">Markdown to PDF, EPUB, HTML sites, and KDP</p>
+        </div>
+        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-welcome.html">Welcome</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a href="03-configuration.html">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li><li><a href="06-build.html">build</a></li><li><a href="07-build-pdf.html">build:pdf</a></li><li><a class="is-active" href="08-build-epub.html" aria-current="page">build:epub</a></li><li><a href="09-build-html.html">build:html</a></li><li><a href="10-build-site.html">build:site</a></li><li><a href="11-build-sample.html">build:sample</a></li><li><a href="12-kdp.html">kdp</a></li><li><a href="13-kdp-ebook.html">kdp:ebook</a></li><li><a href="14-kdp-print.html">kdp:print</a></li><li><a href="15-kdp-cover.html">kdp:cover</a></li><li><a href="16-kdp-metadata.html">kdp:metadata</a></li><li><a href="17-migration-and-ci.html">Migration and CI</a></li><li><a href="18-command-reference.html">Command reference</a></li><li><a href="19-downloads.html">Downloads</a></li></ul></nav>
+    </aside>
+    <div class="layout">
+        <header class="topbar">
+            <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Open chapter list" title="Chapters">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M4 7h16M4 12h16M4 17h16"/>
+                </svg>
+            </button>
+            <p class="topbar-title">build:epub</p>
+            <div class="topbar-actions">
+                <button type="button" class="search-open" id="search-open" aria-label="Search" title="Search (/)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M20 20l-3.5-3.5"/>
+                    </svg>
+                </button>
+                <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Dark mode">
+                    <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                    <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+        <main class="content">
+            <div style="page-break-after: always;"></div><h1>build:epub</h1>
+<p>Build an EPUB3 package from the same Markdown chapters as PDF and HTML.</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus build:epub
+papyrus build:epub -d /path/to/book
+papyrus build:epub -e /path/to/out
+</code></pre>
+<h2 id="options"><a class="heading-permalink" href="#options" aria-hidden="true" tabindex="-1">#</a>Options</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dir</code></td>
+<td><code>-d</code></td>
+<td>current directory</td>
+<td>Book root</td>
+</tr>
+<tr>
+<td><code>--export</code></td>
+<td><code>-e</code></td>
+<td><code>export/</code></td>
+<td>Output directory</td>
+</tr>
+</tbody>
+</table>
+<h2 id="output"><a class="heading-permalink" href="#output" aria-hidden="true" tabindex="-1">#</a>Output</h2>
+<pre><code class="language-text">export/&lt;slug&gt;.epub
+</code></pre>
+<h2 id="what-goes-in-the-package"><a class="heading-permalink" href="#what-goes-in-the-package" aria-hidden="true" tabindex="-1">#</a>What goes in the package</h2>
+<ul>
+<li>Chapter HTML derived from <code>content/</code></li>
+<li><code>assets/style.css</code> and optional <code>highlight.codeblock.min.css</code></li>
+<li>Embedded images referenced from chapters</li>
+<li>Cover from <code>cover</code> (theme fallback → <code>cover.image</code>)</li>
+<li>Metadata from <code>title</code>, <code>subtitle</code>, <code>author</code>, and <code>language</code></li>
+</ul>
+<h2 id="config-that-affects-epub"><a class="heading-permalink" href="#config-that-affects-epub" aria-hidden="true" tabindex="-1">#</a>Config that affects EPUB</h2>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code>, <code>subtitle</code>, <code>author</code></td>
+<td>Package identity</td>
+</tr>
+<tr>
+<td><code>language</code></td>
+<td>EPUB language (default <code>en</code>)</td>
+</tr>
+<tr>
+<td><code>cover</code></td>
+<td>Cover image under <code>assets/</code></td>
+</tr>
+<tr>
+<td><code>mermaid</code></td>
+<td>Pre-rendered figures</td>
+</tr>
+<tr>
+<td><code>fonts</code></td>
+<td>Faces are PDF-oriented; EPUB relies on CSS</td>
+</tr>
+</tbody>
+</table>
+<p>Prefer simple <code>pre</code> / <code>code</code> rules in <code>assets/style.css</code> for e-ink readers.</p>
+<h2 id="kindle-upload"><a class="heading-permalink" href="#kindle-upload" aria-hidden="true" tabindex="-1">#</a>Kindle upload</h2>
+<p>For Amazon KDP’s Kindle pipeline, prefer <code>kdp:ebook</code> (validates and names
+the file for upload). <code>build:epub</code> is the general-purpose store / archive
+build.</p>
+<nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="07-build-pdf.html"><span class="label">Previous</span>build:pdf</a><a class="next" href="09-build-html.html"><span class="label">Next</span>build:html</a></nav>
+        </main>
+    </div>
+    <div class="search-modal" id="search-modal" hidden role="dialog" aria-modal="true" aria-labelledby="search-modal-title">
+        <div class="search-modal-backdrop" id="search-modal-backdrop"></div>
+        <div class="search-modal-panel" id="search-modal-panel">
+            <h2 id="search-modal-title" class="visually-hidden">Search</h2>
+            <div class="search-modal-header">
+                <div class="search-modal-input-wrap">
+                    <svg class="search-modal-input-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M20 20l-3.5-3.5"/>
+                    </svg>
+                    <label class="visually-hidden" for="search-modal-input">Search chapters</label>
+                    <input id="search-modal-input" type="search" role="searchbox" placeholder="Search chapters…" autocomplete="off">
+                </div>
+                <button type="button" class="search-modal-close" id="search-modal-close" aria-label="Close search">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M6 6l12 12M18 6L6 18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="search-modal-body">
+                <p class="search-modal-hint" id="search-modal-hint"><kbd>/</kbd> to search from any page</p>
+                <div class="search-results" id="search-results" hidden></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

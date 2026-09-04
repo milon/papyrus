@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Configuration — The Papyrus Handbook</title>
+    <link rel="stylesheet" href="assets/site.css">
+    <script src="assets/site.js"></script>
+</head>
+<body>
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+    <aside class="sidebar" id="sidebar" aria-label="Chapters">
+        <div class="sidebar-header">
+            <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
+            <p class="sidebar-subtitle">Markdown to PDF, EPUB, HTML sites, and KDP</p>
+        </div>
+        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-welcome.html">Welcome</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a class="is-active" href="03-configuration.html" aria-current="page">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li><li><a href="06-build.html">build</a></li><li><a href="07-build-pdf.html">build:pdf</a></li><li><a href="08-build-epub.html">build:epub</a></li><li><a href="09-build-html.html">build:html</a></li><li><a href="10-build-site.html">build:site</a></li><li><a href="11-build-sample.html">build:sample</a></li><li><a href="12-kdp.html">kdp</a></li><li><a href="13-kdp-ebook.html">kdp:ebook</a></li><li><a href="14-kdp-print.html">kdp:print</a></li><li><a href="15-kdp-cover.html">kdp:cover</a></li><li><a href="16-kdp-metadata.html">kdp:metadata</a></li><li><a href="17-migration-and-ci.html">Migration and CI</a></li><li><a href="18-command-reference.html">Command reference</a></li><li><a href="19-downloads.html">Downloads</a></li></ul></nav>
+    </aside>
+    <div class="layout">
+        <header class="topbar">
+            <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Open chapter list" title="Chapters">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M4 7h16M4 12h16M4 17h16"/>
+                </svg>
+            </button>
+            <p class="topbar-title">Configuration</p>
+            <div class="topbar-actions">
+                <button type="button" class="search-open" id="search-open" aria-label="Search" title="Search (/)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M20 20l-3.5-3.5"/>
+                    </svg>
+                </button>
+                <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Dark mode">
+                    <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                    <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+        <main class="content">
+            <div style="page-break-after: always;"></div><h1>Configuration</h1>
+<p>All settings live in <code>papyrus.php</code>, which returns a PHP array.</p>
+<h2 id="identity-and-paths"><a class="heading-permalink" href="#identity-and-paths" aria-hidden="true" tabindex="-1">#</a>Identity and paths</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-keyword">return</span> [
+    <span class="hljs-string">'title'</span> =&gt; <span class="hljs-string">'My Book'</span>,
+    <span class="hljs-string">'subtitle'</span> =&gt; <span class="hljs-string">'A short subtitle'</span>,
+    <span class="hljs-string">'author'</span> =&gt; <span class="hljs-string">'Author Name'</span>,
+    <span class="hljs-string">'language'</span> =&gt; <span class="hljs-string">'en'</span>,
+    <span class="hljs-string">'themes'</span> =&gt; [<span class="hljs-string">'light'</span>, <span class="hljs-string">'dark'</span>],
+
+    <span class="hljs-string">'content_dir'</span> =&gt; <span class="hljs-string">'content'</span>,
+    <span class="hljs-string">'assets_dir'</span> =&gt; <span class="hljs-string">'assets'</span>,
+    <span class="hljs-string">'export_dir'</span> =&gt; <span class="hljs-string">'export'</span>,
+];
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>title</code></td>
+<td><code>Untitled</code></td>
+<td>Drives the export filename slug</td>
+</tr>
+<tr>
+<td><code>subtitle</code></td>
+<td><code>''</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>author</code></td>
+<td><code>''</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>language</code></td>
+<td><code>en</code></td>
+<td>EPUB / KDP metadata fallback</td>
+</tr>
+<tr>
+<td><code>themes</code></td>
+<td><code>['light', 'dark']</code></td>
+<td>Each needs <code>assets/theme-{name}.html</code></td>
+</tr>
+<tr>
+<td><code>content_dir</code></td>
+<td><code>content</code></td>
+<td>Relative to the book root</td>
+</tr>
+<tr>
+<td><code>assets_dir</code></td>
+<td><code>assets</code></td>
+<td></td>
+</tr>
+<tr>
+<td><code>export_dir</code></td>
+<td><code>export</code></td>
+<td>Overridden by <code>-e</code> / <code>--export</code></td>
+</tr>
+</tbody>
+</table>
+<p>The slug is the title lowercased with non-alphanumeric runs turned into <code>-</code>.
+This handbook is <em>The Papyrus Handbook</em>, so outputs look like
+<code>the-papyrus-handbook-light.pdf</code>.</p>
+<h2 id="page-size-and-margins"><a class="heading-permalink" href="#page-size-and-margins" aria-hidden="true" tabindex="-1">#</a>Page size and margins</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'document'</span> =&gt; [
+    <span class="hljs-string">'size'</span> =&gt; <span class="hljs-string">'crown-quarto'</span>,
+    <span class="hljs-string">'margin_left'</span> =&gt; <span class="hljs-number">27</span>,
+    <span class="hljs-string">'margin_right'</span> =&gt; <span class="hljs-number">27</span>,
+    <span class="hljs-string">'margin_top'</span> =&gt; <span class="hljs-number">14</span>,
+    <span class="hljs-string">'margin_bottom'</span> =&gt; <span class="hljs-number">14</span>,
+],
+</code></pre>
+<p>List presets with <code>papyrus sizes</code>. Custom trim:</p>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'document'</span> =&gt; [
+    <span class="hljs-string">'format'</span> =&gt; [<span class="hljs-number">152.4</span>, <span class="hljs-number">228.6</span>], <span class="hljs-comment">// width_mm, height_mm</span>
+],
+</code></pre>
+<h2 id="table-of-contents"><a class="heading-permalink" href="#table-of-contents" aria-hidden="true" tabindex="-1">#</a>Table of contents</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'toc'</span> =&gt; [
+    <span class="hljs-string">'h1'</span> =&gt; <span class="hljs-number">0</span>,
+    <span class="hljs-string">'h2'</span> =&gt; <span class="hljs-number">0</span>,
+    <span class="hljs-string">'h3'</span> =&gt; <span class="hljs-number">1</span>,
+],
+</code></pre>
+<p>Values follow mPDF <code>h2toc</code> conventions used by Papyrus (<code>0</code> include, <code>1</code>
+exclude).</p>
+<h2 id="cover-images"><a class="heading-permalink" href="#cover-images" aria-hidden="true" tabindex="-1">#</a>Cover images</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'cover'</span> =&gt; [
+    <span class="hljs-string">'image'</span> =&gt; <span class="hljs-string">'cover.png'</span>,
+    <span class="hljs-string">'light'</span> =&gt; <span class="hljs-string">'cover-light.png'</span>,
+    <span class="hljs-string">'dark'</span> =&gt; <span class="hljs-string">'cover-dark.png'</span>,
+    <span class="hljs-comment">// 'width' =&gt; 188.976,  // mm; defaults to page width</span>
+    <span class="hljs-comment">// 'height' =&gt; 246.126, // mm; defaults to page height</span>
+],
+</code></pre>
+<p>Paths are relative to <code>assets/</code>. Missing per-theme covers fall back to
+<code>cover.image</code>. KDP print PDFs omit the cover page entirely.</p>
+<h2 id="running-header"><a class="heading-permalink" href="#running-header" aria-hidden="true" tabindex="-1">#</a>Running header</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'header'</span> =&gt; [
+    <span class="hljs-string">'style'</span> =&gt; <span class="hljs-string">'font-style: italic; text-align: right; border-bottom: solid 1px #808080;'</span>,
+],
+</code></pre>
+<p>Pretoc chapters suppress folios differently from body chapters.</p>
+<h2 id="fonts"><a class="heading-permalink" href="#fonts" aria-hidden="true" tabindex="-1">#</a>Fonts</h2>
+<p>Declare faces under <code>assets/fonts/</code> and optional <strong>script routing</strong> (PDF only).
+First matching <code>script</code> rule wins.</p>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'fonts'</span> =&gt; [
+    <span class="hljs-string">'default'</span> =&gt; <span class="hljs-string">'librelibertine'</span>, <span class="hljs-comment">// optional; else first face, else mPDF default</span>
+    <span class="hljs-string">'faces'</span> =&gt; [
+        [
+            <span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'librelibertine'</span>,
+            <span class="hljs-string">'regular'</span> =&gt; <span class="hljs-string">'LinLibertine_R.ttf'</span>,
+            <span class="hljs-string">'bold'</span> =&gt; <span class="hljs-string">'LinLibertine_RB.ttf'</span>,
+            <span class="hljs-string">'italic'</span> =&gt; <span class="hljs-string">'LinLibertine_RI.ttf'</span>,
+            <span class="hljs-string">'bold_italic'</span> =&gt; <span class="hljs-string">'LinLibertine_RBI.ttf'</span>,
+        ],
+        [
+            <span class="hljs-string">'name'</span> =&gt; <span class="hljs-string">'notosansbengali'</span>,
+            <span class="hljs-string">'regular'</span> =&gt; <span class="hljs-string">'NotoSansBengali-Regular.ttf'</span>,
+            <span class="hljs-string">'otl'</span> =&gt; <span class="hljs-keyword">true</span>, <span class="hljs-comment">// OpenType layout — needed for complex scripts</span>
+        ],
+    ],
+    <span class="hljs-string">'script'</span> =&gt; [
+        <span class="hljs-comment">// When mPDF tags a run as Bengali, use this face instead of the default</span>
+        [<span class="hljs-string">'match'</span> =&gt; [<span class="hljs-string">'bn'</span>, <span class="hljs-string">'ben'</span>, <span class="hljs-string">'bengali'</span>], <span class="hljs-string">'face'</span> =&gt; <span class="hljs-string">'notosansbengali'</span>],
+    ],
+],
+</code></pre>
+<h3>Faces</h3>
+<p>Each face needs a <code>name</code> and a <code>regular</code> file that exists under <code>assets/fonts/</code>.
+Optional keys: <code>bold</code>, <code>italic</code>, <code>bold_italic</code>, and <code>otl</code> (sets mPDF
+<code>useOTL</code> when true — common for code fonts and Indic / Arabic scripts).</p>
+<p>Papyrus merges these into mPDF’s <code>fontdata</code> when building PDF
+(<code>FontRegistry</code> → <code>MpdfFactory</code>).</p>
+<h3>Script rules</h3>
+<p><code>fonts.script</code> is a list of <code>{ match, face }</code> rules used only for <strong>PDF</strong>.
+They do not change EPUB or HTML typography.</p>
+<p>When any applicable rule exists, Papyrus turns on mPDF’s
+<code>autoScriptToLang</code> and <code>autoLangToFont</code>, and installs a custom
+<code>languageToFont</code> resolver (<code>ScriptLanguageToFont</code>). mPDF then:</p>
+<ol>
+<li>Detects script runs in the HTML (e.g. Bengali glyphs).</li>
+<li>Tags them with a language / script code (e.g. <code>bn</code>, or <code>*-beng</code>).</li>
+<li>Asks Papyrus which face to use; the first rule whose <code>match</code> list hits
+that code wins.</li>
+</ol>
+<p><code>match</code> aliases are lowercased. Built-in aliases include:</p>
+<table>
+<thead>
+<tr>
+<th>Aliases you can list</th>
+<th>Resolves as</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>bn</code>, <code>ben</code>, <code>beng</code>, <code>bengali</code></td>
+<td>Bengali</td>
+</tr>
+<tr>
+<td><code>ar</code>, <code>arab</code>, <code>arabic</code></td>
+<td>Arabic</td>
+</tr>
+<tr>
+<td><code>hi</code>, <code>hin</code>, <code>deva</code>, <code>devanagari</code>, <code>hindi</code></td>
+<td>Devanagari</td>
+</tr>
+<tr>
+<td>any 4-letter ISO script code</td>
+<td>that script as-is</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>face</code> string must be a name from <code>fonts.faces</code> <strong>and</strong> that face must
+actually load (regular file present). Rules pointing at a missing face are
+skipped (<code>FontRegistry::applicableScriptRules()</code>). Unmatched languages fall
+through to mPDF’s built-in <code>LanguageToFont</code>.</p>
+<p>Example: body text in Latin uses <code>librelibertine</code>; a paragraph containing
+<code>বন্ধন</code> is auto-tagged Bengali and rendered with <code>notosansbengali</code> if that
+face is registered.</p>
+<blockquote class='notice'><p><strong>Notice:</strong> Without both a registered face and a matching <code>script</code> rule,
+non-Latin runs often show as tofu (missing glyphs) in the default font.</p>
+</blockquote>
+<h2 id="site-home-build-site"><a class="heading-permalink" href="#site-home-build-site" aria-hidden="true" tabindex="-1">#</a>Site home (<code>build:site</code>)</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'site'</span> =&gt; [
+    <span class="hljs-string">'banner'</span> =&gt; <span class="hljs-string">'banner.jpg'</span>,
+    <span class="hljs-string">'lead'</span> =&gt; <span class="hljs-string">'A one-line pitch for the home page.'</span>,
+    <span class="hljs-string">'cname'</span> =&gt; <span class="hljs-string">'docs.example.com'</span>,
+    <span class="hljs-string">'base_path'</span> =&gt; <span class="hljs-string">'/my-repo'</span>, <span class="hljs-comment">// project Pages path; omit for custom domains at /</span>
+    <span class="hljs-string">'links'</span> =&gt; [
+        [<span class="hljs-string">'label'</span> =&gt; <span class="hljs-string">'Downloads'</span>, <span class="hljs-string">'chapter'</span> =&gt; <span class="hljs-string">'19-downloads.md'</span>],
+        [<span class="hljs-string">'label'</span> =&gt; <span class="hljs-string">'Source on GitHub'</span>, <span class="hljs-string">'url'</span> =&gt; <span class="hljs-string">'https://github.com/you/your-book'</span>],
+        [<span class="hljs-string">'label'</span> =&gt; <span class="hljs-string">'Issues'</span>, <span class="hljs-string">'url'</span> =&gt; <span class="hljs-string">'https://github.com/you/your-book/issues'</span>],
+    ],
+],
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>banner</code></td>
+<td>auto <code>banner.jpg</code> / <code>banner.png</code> if present</td>
+<td>Under <code>assets/</code></td>
+</tr>
+<tr>
+<td><code>lead</code></td>
+<td>unset</td>
+<td>Home page pitch</td>
+</tr>
+<tr>
+<td><code>cname</code></td>
+<td>unset</td>
+<td>Custom domain; writes a <code>CNAME</code> file in the site root for GitHub Pages; absolute <code>sitemap.xml</code> / <code>robots.txt</code> Sitemap URL</td>
+</tr>
+<tr>
+<td><code>base_path</code></td>
+<td>unset (site at <code>/</code>)</td>
+<td>Path prefix for project GitHub Pages (e.g. <code>/my-repo</code>); injects <code>&lt;base href&gt;</code>; also prefixes sitemap locs</td>
+</tr>
+<tr>
+<td><code>links</code></td>
+<td>unset</td>
+<td>Explicit home-page links; each item needs <code>label</code> plus either <code>url</code> or <code>chapter</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>chapter</code> matches a chapter source name like <code>19-downloads.md</code>, <code>19-downloads</code>,
+or a full relative source path, and links to that generated page.
+<code>repository</code> still works as a legacy fallback that auto-adds GitHub, Packagist,
+and Issues links when <code>links</code> is not set. Chapters are never linked
+automatically; add them explicitly through <code>links</code>.</p>
+<h2 id="mermaid"><a class="heading-permalink" href="#mermaid" aria-hidden="true" tabindex="-1">#</a>Mermaid</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'mermaid'</span> =&gt; [
+    <span class="hljs-string">'enabled'</span> =&gt; <span class="hljs-keyword">true</span>,
+    <span class="hljs-string">'format'</span> =&gt; <span class="hljs-string">'svg'</span>,          <span class="hljs-comment">// svg | png</span>
+    <span class="hljs-string">'theme'</span> =&gt; <span class="hljs-string">'auto'</span>,          <span class="hljs-comment">// auto = book colours; or default|dark|forest|neutral</span>
+    <span class="hljs-string">'max_width_mm'</span> =&gt; <span class="hljs-number">130</span>,
+    <span class="hljs-comment">// 'command' =&gt; '/usr/local/bin/mmdc', // optional override</span>
+],
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Default</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>enabled</code></td>
+<td><code>false</code></td>
+<td>Requires <code>mmdc</code> on <code>PATH</code> (or <code>command</code>)</td>
+</tr>
+<tr>
+<td><code>format</code></td>
+<td><code>svg</code></td>
+<td>Anything other than <code>png</code> becomes <code>svg</code></td>
+</tr>
+<tr>
+<td><code>theme</code></td>
+<td><code>auto</code></td>
+<td>Book-matched palettes for PDF; HTML/site embed light + dark</td>
+</tr>
+<tr>
+<td><code>max_width_mm</code></td>
+<td><code>130</code></td>
+<td>PDF figure width cap</td>
+</tr>
+<tr>
+<td><code>command</code></td>
+<td>auto-resolve <code>mmdc</code></td>
+<td>Explicit CLI path</td>
+</tr>
+</tbody>
+</table>
+<h2 id="sample-pdf"><a class="heading-permalink" href="#sample-pdf" aria-hidden="true" tabindex="-1">#</a>Sample PDF</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'sample'</span> =&gt; [
+    <span class="hljs-string">'ranges'</span> =&gt; [
+        [<span class="hljs-string">'from'</span> =&gt; <span class="hljs-number">1</span>, <span class="hljs-string">'to'</span> =&gt; <span class="hljs-number">3</span>],
+    ],
+    <span class="hljs-string">'chapters'</span> =&gt; [
+        <span class="hljs-string">'01-introduction.md'</span>,
+    ],
+],
+<span class="hljs-string">'sample_notice'</span> =&gt; <span class="hljs-string">'This is a sample from My Book.'</span>,
+</code></pre>
+<p>Ranges are 1-based inclusive pages of the finished theme PDF. <code>chapters</code> lists
+content filenames (or stems) to include in full. Notice text also accepts
+<code>sample.notice</code> / <code>sample.text</code> as fallbacks. See the <code>build:sample</code> chapter.</p>
+<h2 id="kdp"><a class="heading-permalink" href="#kdp" aria-hidden="true" tabindex="-1">#</a>KDP</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'kdp'</span> =&gt; [
+    <span class="hljs-string">'ebook'</span> =&gt; [
+        <span class="hljs-string">'enabled'</span> =&gt; <span class="hljs-keyword">true</span>,
+        <span class="hljs-string">'cover'</span> =&gt; <span class="hljs-string">'cover-ebook.jpg'</span>,
+    ],
+    <span class="hljs-string">'print'</span> =&gt; [
+        <span class="hljs-string">'enabled'</span> =&gt; <span class="hljs-keyword">true</span>,
+        <span class="hljs-string">'bleed_mm'</span> =&gt; <span class="hljs-number">3</span>,
+        <span class="hljs-string">'margin_preset'</span> =&gt; <span class="hljs-string">'recommended'</span>, <span class="hljs-comment">// or minimum</span>
+        <span class="hljs-string">'paper'</span> =&gt; <span class="hljs-string">'white'</span>,               <span class="hljs-comment">// or cream — spine width</span>
+        <span class="hljs-string">'back_cover'</span> =&gt; <span class="hljs-string">'back-cover.png'</span>, <span class="hljs-comment">// optional wrap artwork</span>
+        <span class="hljs-string">'spine_color'</span> =&gt; <span class="hljs-string">'#1a1a1a'</span>,       <span class="hljs-comment">// optional wrap spine fill</span>
+    ],
+    <span class="hljs-string">'metadata'</span> =&gt; [
+        <span class="hljs-string">'description'</span> =&gt; <span class="hljs-string">'Bookstore blurb…'</span>,
+        <span class="hljs-string">'keywords'</span> =&gt; [<span class="hljs-string">'laravel'</span>, <span class="hljs-string">'filament'</span>],
+        <span class="hljs-string">'language'</span> =&gt; <span class="hljs-string">'en'</span>,
+    ],
+],
+</code></pre>
+<p>Full option tables live in the <code>kdp</code> and <code>kdp:*</code> chapters. <code>papyrus build</code>
+only runs KDP when ebook or print is enabled; <code>papyrus kdp</code> errors if neither
+is.</p>
+<h2 id="break-level"><a class="heading-permalink" href="#break-level" aria-hidden="true" tabindex="-1">#</a>Break level</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'break_level'</span> =&gt; <span class="hljs-number">2</span>,
+</code></pre>
+<p>Automatic page breaks before headings (<code>1</code> = H1, <code>2</code> = H1 and H2). Explicit
+<code>[break]</code> markers always insert a break.</p>
+<h2 id="commonmark-hook"><a class="heading-permalink" href="#commonmark-hook" aria-hidden="true" tabindex="-1">#</a>CommonMark hook</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'configure_commonmark'</span> =&gt; <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(\League\CommonMark\Environment\Environment $environment)</span>: <span class="hljs-title">void</span> </span>{
+    <span class="hljs-comment">// register custom extensions</span>
+},
+</code></pre>
+<nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="02-install-and-project.html"><span class="label">Previous</span>Install and project layout</a><a class="next" href="04-writing-content.html"><span class="label">Next</span>Writing content</a></nav>
+        </main>
+    </div>
+    <div class="search-modal" id="search-modal" hidden role="dialog" aria-modal="true" aria-labelledby="search-modal-title">
+        <div class="search-modal-backdrop" id="search-modal-backdrop"></div>
+        <div class="search-modal-panel" id="search-modal-panel">
+            <h2 id="search-modal-title" class="visually-hidden">Search</h2>
+            <div class="search-modal-header">
+                <div class="search-modal-input-wrap">
+                    <svg class="search-modal-input-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M20 20l-3.5-3.5"/>
+                    </svg>
+                    <label class="visually-hidden" for="search-modal-input">Search chapters</label>
+                    <input id="search-modal-input" type="search" role="searchbox" placeholder="Search chapters…" autocomplete="off">
+                </div>
+                <button type="button" class="search-modal-close" id="search-modal-close" aria-label="Close search">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M6 6l12 12M18 6L6 18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="search-modal-body">
+                <p class="search-modal-hint" id="search-modal-hint"><kbd>/</kbd> to search from any page</p>
+                <div class="search-results" id="search-results" hidden></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

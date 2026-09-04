@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://papyrus.milon.im/index.html</loc></url>
+  <url><loc>https://papyrus.milon.im/00-welcome.html</loc></url>
+  <url><loc>https://papyrus.milon.im/01-introduction.html</loc></url>
+  <url><loc>https://papyrus.milon.im/02-install-and-project.html</loc></url>
+  <url><loc>https://papyrus.milon.im/03-configuration.html</loc></url>
+  <url><loc>https://papyrus.milon.im/04-writing-content.html</loc></url>
+  <url><loc>https://papyrus.milon.im/05-themes-and-assets.html</loc></url>
+  <url><loc>https://papyrus.milon.im/06-build.html</loc></url>
+  <url><loc>https://papyrus.milon.im/07-build-pdf.html</loc></url>
+  <url><loc>https://papyrus.milon.im/08-build-epub.html</loc></url>
+  <url><loc>https://papyrus.milon.im/09-build-html.html</loc></url>
+  <url><loc>https://papyrus.milon.im/10-build-site.html</loc></url>
+  <url><loc>https://papyrus.milon.im/11-build-sample.html</loc></url>
+  <url><loc>https://papyrus.milon.im/12-kdp.html</loc></url>
+  <url><loc>https://papyrus.milon.im/13-kdp-ebook.html</loc></url>
+  <url><loc>https://papyrus.milon.im/14-kdp-print.html</loc></url>
+  <url><loc>https://papyrus.milon.im/15-kdp-cover.html</loc></url>
+  <url><loc>https://papyrus.milon.im/16-kdp-metadata.html</loc></url>
+  <url><loc>https://papyrus.milon.im/17-migration-and-ci.html</loc></url>
+  <url><loc>https://papyrus.milon.im/18-command-reference.html</loc></url>
+  <url><loc>https://papyrus.milon.im/19-downloads.html</loc></url>
+</urlset>
