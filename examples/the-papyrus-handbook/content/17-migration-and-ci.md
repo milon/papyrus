@@ -10,18 +10,22 @@ title: Migration and CI
 papyrus migrate-ibis
 papyrus migrate-ibis -d /path/to/book
 papyrus migrate-ibis --force
+papyrus migrate-ibis --format=yml
 ```
 
-| Option    | Short | Meaning                             |
-|-----------|-------|-------------------------------------|
-| `--dir`   | `-d`  | Book root                           |
-| `--force` | `-f`  | Overwrite an existing `papyrus.php` |
+| Option     | Short | Meaning                                          |
+|------------|-------|--------------------------------------------------|
+| `--dir`    | `-d`  | Book root                                        |
+| `--force`  | `-f`  | Overwrite an existing Papyrus config file        |
+| `--format` |       | `php` (default), `yml` / `yaml`, or `json`       |
 
-This writes `papyrus.php` from `ibis.php`. If you still have custom
+This writes `papyrus.php` (or `.yml` / `.json`) from `ibis.php`. If you still have custom
 `assets/theme*.html` files from ibis, it rewrites `<!-- IBIS:TOC -->` to
 `<!-- PAPYRUS:TOC -->` in those **project** files only. Bundled Papyrus
 themes (used when `assets/` has no theme override) already use the Papyrus
 marker — `migrate-ibis` does not copy or rewrite vendor assets.
+
+YAML/JSON migrations drop `configure_commonmark` (callables need `papyrus.php`).
 
 After migration:
 

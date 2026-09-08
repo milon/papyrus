@@ -66,17 +66,8 @@ final class Project
     public static function load(string $dir): self
     {
         $dir = self::normalizeDir($dir);
-        $configPath = $dir.'/'.self::CONFIG_FILE;
-
-        if (! is_file($configPath)) {
-            throw new ConfigException(sprintf('Missing %s in %s', self::CONFIG_FILE, $dir));
-        }
-
-        $config = require $configPath;
-
-        if (! is_array($config)) {
-            throw new ConfigException(sprintf('%s must return an array', self::CONFIG_FILE));
-        }
+        $configPath = ConfigLocator::discover($dir);
+        $config = ConfigLoader::load($configPath);
 
         return new self(
             dir: $dir,

@@ -30,14 +30,14 @@ title: Command reference
 
 | Command         | Purpose                                                                    | Notable options                                                  |
 |-----------------|----------------------------------------------------------------------------|------------------------------------------------------------------|
-| `init`          | Scaffold `papyrus.php`, `content/`, and an empty `assets/`                 | `--force`                                                        |
+| `init`          | Scaffold config + `content/` + empty `assets/`                             | `--force`, `--format=php\|yml\|yaml\|json`                       |
 | `asset:publish` | Publish bundled themes, CSS, and fonts into `assets/`                      | `--force`, `--only=themes,css,fonts`                             |
 | `doctor`        | Validate config, paths, Mermaid, KDP readiness                             | `-d`                                                             |
 | `sizes`         | List page-size presets (+ KDP in-bounds)                                   | (no `-d` / `-e`)                                                 |
 | `lint`          | Lint PHP fences in `content/`                                              | `--fix`, `--max-width=66`                                        |
 | `watch`         | Rebuild via `build` on file changes                                        | `--interval`, `--with-site`, `--with-sample`, `--include-drafts` |
 | `serve`         | Preview the generated site in a browser                                    | `--host`, `-p`/`--port`, `--build`, `-s`/`--site`                |
-| `migrate-ibis`  | `ibis.php` → `papyrus.php`; TOC markers in local `assets/theme*.html` only | `--force`                                                        |
+| `migrate-ibis`  | `ibis.php` → Papyrus config; TOC markers in local `assets/theme*.html`     | `--force`, `--format=php\|yml\|yaml\|json`                       |
 
 ## Shared book options
 

@@ -4,18 +4,16 @@ declare(strict_types=1);
 
 namespace Milon\Papyrus\Migration;
 
+use Milon\Papyrus\Config\ConfigFormat;
+use Milon\Papyrus\Config\ConfigWriter;
 use Milon\Papyrus\Config\DocumentSize;
 
 final class IbisMigrator
 {
-    public function __construct(
-        private readonly PhpConfigWriter $writer = new PhpConfigWriter,
-    ) {}
-
     /**
-     * @return array{papyrus: string, themes: list<string>}
+     * @return array{papyrus: string, themes: list<string>, dropped_commonmark_hook: bool}
      */
-    public function migrate(string $bookDir, bool $force = false): array
+    public function migrate(string $bookDir, bool $force = false, ConfigFormat $format = ConfigFormat::Php): array
     {
         $ibisPath = $bookDir.'/ibis.php';
 
@@ -23,7 +21,7 @@ final class IbisMigrator
             throw new MigrationException(sprintf('Missing ibis.php in %s', $bookDir));
         }
 
-        $papyrusPath = $bookDir.'/papyrus.php';
+        $papyrusPath = $bookDir.'/'.$format->filename();
 
         if (is_file($papyrusPath) && ! $force) {
             throw new MigrationException(sprintf('%s already exists. Use --force to overwrite.', $papyrusPath));
@@ -37,13 +35,16 @@ final class IbisMigrator
         }
 
         $config = $this->convert($ibis);
-        $this->writer->write($config, $papyrusPath);
+        $hadCommonmarkHook = isset($config['configure_commonmark']);
+        $writtenConfig = ConfigWriter::forFormat($config, $format);
+        ConfigWriter::write($config, $papyrusPath, $format);
 
         $themes = (new ThemeMigrator)->migrateDirectory($bookDir.'/assets');
 
         return [
             'papyrus' => $papyrusPath,
             'themes' => $themes,
+            'dropped_commonmark_hook' => $hadCommonmarkHook && ! isset($writtenConfig['configure_commonmark']),
         ];
     }
 

@@ -17,7 +17,7 @@ abstract class BookCommand extends Command
             'dir',
             'd',
             InputOption::VALUE_REQUIRED,
-            'Book root directory (contains papyrus.php)',
+            'Book root directory (contains papyrus.php, .yml, or .json)',
             (string) getcwd(),
         );
 

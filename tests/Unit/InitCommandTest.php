@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Milon\Papyrus\Tests\Unit;
 
 use Milon\Papyrus\Commands\InitCommand;
+use Milon\Papyrus\Config\Project;
 use Milon\Papyrus\Stubs\StubRepository;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Tester\CommandTester;
@@ -26,6 +27,57 @@ final class InitCommandTest extends TestCase
         $this->assertFileDoesNotExist($target.'/assets/theme-html.html');
         $this->assertFileDoesNotExist($target.'/assets/fonts/LinLibertine_R.ttf');
         $this->assertFileDoesNotExist($target.'/assets/fonts/0xProto-Regular.ttf');
+
+        $this->removeDir($target);
+    }
+
+    public function test_init_can_scaffold_yml_config(): void
+    {
+        $target = sys_get_temp_dir().'/papyrus-init-yml-'.uniqid('', true);
+
+        $tester = new CommandTester(new InitCommand);
+        $exitCode = $tester->execute(['--dir' => $target, '--format' => 'yml']);
+
+        $this->assertSame(0, $exitCode);
+        $this->assertFileExists($target.'/papyrus.yml');
+        $this->assertFileDoesNotExist($target.'/papyrus.php');
+
+        $project = Project::load($target);
+        $this->assertSame('My Book', $project->title());
+
+        $this->removeDir($target);
+    }
+
+    public function test_init_accepts_yaml_alias_for_yml(): void
+    {
+        $target = sys_get_temp_dir().'/papyrus-init-yaml-'.uniqid('', true);
+
+        $tester = new CommandTester(new InitCommand);
+        $exitCode = $tester->execute(['--dir' => $target, '--format' => 'yaml']);
+
+        $this->assertSame(0, $exitCode);
+        $this->assertFileExists($target.'/papyrus.yml');
+        $this->assertFileDoesNotExist($target.'/papyrus.yaml');
+
+        $project = Project::load($target);
+        $this->assertSame('My Book', $project->title());
+
+        $this->removeDir($target);
+    }
+
+    public function test_init_can_scaffold_json_config(): void
+    {
+        $target = sys_get_temp_dir().'/papyrus-init-json-'.uniqid('', true);
+
+        $tester = new CommandTester(new InitCommand);
+        $exitCode = $tester->execute(['--dir' => $target, '--format' => 'json']);
+
+        $this->assertSame(0, $exitCode);
+        $this->assertFileExists($target.'/papyrus.json');
+        $this->assertFileDoesNotExist($target.'/papyrus.php');
+
+        $project = Project::load($target);
+        $this->assertSame('My Book', $project->title());
 
         $this->removeDir($target);
     }

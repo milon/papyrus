@@ -4,7 +4,14 @@ title: Configuration
 
 # Configuration
 
-All settings live in `papyrus.php`, which returns a PHP array.
+Book settings live in **one** of:
+
+- `papyrus.php` — PHP array (default; supports callables like `configure_commonmark`)
+- `papyrus.yml` / `papyrus.yaml`
+- `papyrus.json`
+
+Papyrus auto-discovers which file is present and errors if more than one exists.
+Examples below use PHP; the same keys work in YAML/JSON.
 
 ## Identity and paths
 

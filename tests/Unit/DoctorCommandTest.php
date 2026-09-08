@@ -36,7 +36,7 @@ final class DoctorCommandTest extends TestCase
         $exitCode = $tester->execute(['--dir' => $target]);
 
         $this->assertSame(1, $exitCode);
-        $this->assertStringContainsString('Missing papyrus.php', $tester->getDisplay());
+        $this->assertStringContainsString('Missing book config', $tester->getDisplay());
 
         rmdir($target);
     }

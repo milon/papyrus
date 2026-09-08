@@ -5,6 +5,13 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0]
+
+### Added
+
+- Alternate book config formats: `papyrus.yml` / `papyrus.yaml` / `papyrus.json` (auto-discovered; only one allowed)
+- `init --format=php|yml|json` and `migrate-ibis --format=php|yml|json` (default `php`)
+
 ## [1.1.0] - 2026-09-04
 
 ### Added

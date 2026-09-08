@@ -207,6 +207,7 @@ Scaffold a new book in the current directory:
 
 ```bash
 papyrus init
+papyrus init --format=yml
 papyrus doctor
 papyrus build:site
 ```
@@ -221,8 +222,9 @@ papyrus build:site -d my-book
 
 Open `export/<slug>-site/index.html` in a browser, or deploy that folder as a static site.
 
-`init` creates an empty `assets/` directory. To customize the bundled theme or
-fonts later:
+`init` writes `papyrus.php` by default (`--format=yml` or `json` for
+`papyrus.yml` / `papyrus.json`). It also creates an empty `assets/` directory.
+To customize the bundled theme or fonts later:
 
 ```bash
 papyrus asset:publish
@@ -233,7 +235,7 @@ papyrus asset:publish --only=themes
 
 | Command         | Description                                                                                |
 |-----------------|--------------------------------------------------------------------------------------------|
-| `init`          | Scaffold `papyrus.php`, `content/`, and an empty `assets/`                                 |
+| `init`          | Scaffold book config + `content/` + empty `assets/` (`--format=php\|yml\|yaml\|json`)       |
 | `asset:publish` | Publish bundled themes, CSS, and fonts into `assets/` (`--only`, `--force`)                |
 | `doctor`        | Validate config, assets, Mermaid, KDP readiness                                            |
 | `build`         | Build PDF/EPUB/HTML/KDP; optional `--with-site` / `--with-sample`                          |
@@ -250,7 +252,7 @@ papyrus asset:publish --only=themes
 | `kdp:metadata`  | Emit KDP metadata sidecar JSON                                                             |
 | `kdp:package`   | Zip enabled KDP artifacts with an upload checklist                                         |
 | `sizes`         | List KDP page-size presets                                                                 |
-| `migrate-ibis`  | Migrate `ibis.php` to `papyrus.php`; update TOC markers in local themes                    |
+| `migrate-ibis`  | Migrate `ibis.php` to Papyrus config (`--format=php\|yml\|yaml\|json`); update TOC markers |
 | `lint`          | Lint PHP code fences in `content/` (`--fix` to auto-fix)                                   |
 | `watch`         | Rebuild on file changes (`--interval`, `--with-site`, `--with-sample`, `--include-drafts`) |
 

@@ -87,6 +87,51 @@ final class MigrateIbisCommandTest extends TestCase
     }
 
     #[Test]
+    public function migrate_ibis_command_can_write_yml_config(): void
+    {
+        $dir = sys_get_temp_dir().'/papyrus-migrate-yml-'.uniqid('', true);
+        mkdir($dir);
+        mkdir($dir.'/assets');
+        copy($this->fixtureDir.'/ibis.php', $dir.'/ibis.php');
+
+        try {
+            $tester = new CommandTester(new MigrateIbisCommand);
+            $exitCode = $tester->execute(['--dir' => $dir, '--format' => 'yml']);
+
+            $this->assertSame(0, $exitCode);
+            $this->assertFileExists($dir.'/papyrus.yml');
+            $this->assertFileDoesNotExist($dir.'/papyrus.php');
+
+            $project = Project::load($dir);
+            $this->assertSame('Ibis Fixture Book', $project->title());
+        } finally {
+            $this->removeDirectory($dir);
+        }
+    }
+
+    #[Test]
+    public function migrate_ibis_command_can_write_json_config(): void
+    {
+        $dir = sys_get_temp_dir().'/papyrus-migrate-json-'.uniqid('', true);
+        mkdir($dir);
+        mkdir($dir.'/assets');
+        copy($this->fixtureDir.'/ibis.php', $dir.'/ibis.php');
+
+        try {
+            $tester = new CommandTester(new MigrateIbisCommand);
+            $exitCode = $tester->execute(['--dir' => $dir, '--format' => 'json']);
+
+            $this->assertSame(0, $exitCode);
+            $this->assertFileExists($dir.'/papyrus.json');
+
+            $project = Project::load($dir);
+            $this->assertSame('Ibis Fixture Book', $project->title());
+        } finally {
+            $this->removeDirectory($dir);
+        }
+    }
+
+    #[Test]
     public function sizes_command_lists_kdp_presets(): void
     {
         $tester = new CommandTester(new SizesCommand);

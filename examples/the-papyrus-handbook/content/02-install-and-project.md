@@ -99,9 +99,13 @@ papyrus list
 ```bash
 papyrus init
 papyrus init -d my-book
+papyrus init --format=yml
+papyrus init --format=yaml
+papyrus init --format=json
 ```
 
-`init` creates `papyrus.php`, `content/`, and an empty `assets/` directory.
+`init` creates a book config (`papyrus.php` by default, or YAML / JSON via
+`--format`), `content/`, and an empty `assets/` directory.
 Papyrus uses bundled themes, CSS, and fonts by default. Publish those files
 into your project only when you want to customize them:
 
@@ -114,15 +118,96 @@ Use `--force` / `-f` to overwrite files during `init`, or with
 `asset:publish` to overwrite published assets. `--only` limits publishing to
 `themes`, `css`, and/or `fonts`.
 
+## Config without PHP (YAML or JSON)
+
+You still need PHP installed to *run* Papyrus — but you do **not** need to
+edit PHP to configure a book. If you are more comfortable with YAML or JSON,
+scaffold that way:
+
+```bash
+papyrus init --format=yml    # writes papyrus.yml  (--format=yaml is the same)
+papyrus init --format=json   # writes papyrus.json
+```
+
+Same keys as the PHP stub, without the `<?php return […]` wrapper. Example
+YAML:
+
+```yaml
+title: My Book
+subtitle: A short subtitle
+author: Author Name
+themes:
+  - light
+  - dark
+
+document:
+  size: crown-quarto
+  margin_left: 27
+  margin_right: 27
+  margin_top: 14
+  margin_bottom: 14
+
+toc:
+  h1: 0
+  h2: 0
+  h3: 1
+
+mermaid:
+  enabled: true
+  format: svg
+  theme: auto
+```
+
+Or JSON:
+
+```json
+{
+  "title": "My Book",
+  "subtitle": "A short subtitle",
+  "author": "Author Name",
+  "themes": ["light", "dark"],
+  "document": {
+    "size": "crown-quarto",
+    "margin_left": 27,
+    "margin_right": 27,
+    "margin_top": 14,
+    "margin_bottom": 14
+  }
+}
+```
+
+Rules of thumb:
+
+- Keep **exactly one** config file in the book root (`papyrus.php`,
+  `papyrus.yml` / `papyrus.yaml`, or `papyrus.json`).
+- `--format=yml` and `--format=yaml` both write `papyrus.yml`.
+- You can also name the file `papyrus.yaml` by hand; Papyrus loads either
+  extension.
+- Full option tables live in the Configuration chapter — they apply to every
+  format.
+- One PHP-only escape hatch: `configure_commonmark` (a callable). If you need
+  that hook, use `papyrus.php`; otherwise YAML/JSON are enough.
+
+Coming from ibis-next, the same choice exists on migrate:
+
+```bash
+papyrus migrate-ibis --format=yml\
+papyrus migrate-ibis --format=json
+```
+
 ## Layout
 
-| Path          | Role                                               |
-|---------------|----------------------------------------------------|
-| `papyrus.php` | Book settings                                      |
-| `content/`    | Markdown chapters                                  |
-| `assets/`     | Your overrides: themes, CSS, covers, fonts, banner |
-| `export/`     | Built artifacts                                    |
-| `.papyrus/`   | Incremental caches                                 |
+| Path                                       | Role                                               |
+|--------------------------------------------|----------------------------------------------------|
+| `papyrus.php` / `.yml` / `.yaml` / `.json` | Book settings (exactly one)                        |
+| `content/`                                 | Markdown chapters                                  |
+| `assets/`                                  | Your overrides: themes, CSS, covers, fonts, banner |
+| `export/`                                  | Built artifacts                                    |
+| `.papyrus/`                                | Incremental caches                                 |
+
+Only one config file is allowed. See [Config without PHP](#config-without-php-yaml-or-json)
+above if you prefer YAML or JSON. Use `papyrus.php` when you need PHP callables
+such as `configure_commonmark`.
 
 Always run from the book root, or pass `-d` / `--dir`. Override where
 artifacts are written with `-e` / `--export` (default: `<book>/export`):

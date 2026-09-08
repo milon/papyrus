@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace Milon\Papyrus\Commands;
 
+use Milon\Papyrus\Config\ConfigException;
+use Milon\Papyrus\Config\ConfigFormat;
+use Milon\Papyrus\Config\ConfigWriter;
 use Milon\Papyrus\Stubs\StubRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,12 +21,27 @@ final class InitCommand extends BookCommand
         parent::configure();
 
         $this->addOption('force', 'f', InputOption::VALUE_NONE, 'Overwrite existing files');
+        $this->addOption(
+            'format',
+            null,
+            InputOption::VALUE_REQUIRED,
+            'Config format: php, yml/yaml, or json (default: php)',
+            'php',
+        );
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $dir = $this->projectDir($input);
         $force = (bool) $input->getOption('force');
+
+        try {
+            $format = ConfigFormat::fromOption((string) $input->getOption('format'));
+        } catch (ConfigException $e) {
+            $output->writeln('<error>'.$e->getMessage().'</error>');
+
+            return self::FAILURE;
+        }
 
         if (! is_dir($dir) && ! mkdir($dir, 0o755, true) && ! is_dir($dir)) {
             $output->writeln('<error>Could not create directory: '.$dir.'</error>');
@@ -35,6 +53,10 @@ final class InitCommand extends BookCommand
         $written = [];
 
         foreach ($repo->bookFiles() as $relative) {
+            if ($relative === ConfigFormat::Php->filename()) {
+                continue;
+            }
+
             $target = $dir.'/'.$relative;
             $parent = dirname($target);
 
@@ -52,6 +74,27 @@ final class InitCommand extends BookCommand
 
             file_put_contents($target, $repo->read($relative));
             $written[] = $relative;
+        }
+
+        $configRelative = $format->filename();
+        $configTarget = $dir.'/'.$configRelative;
+
+        if (is_file($configTarget) && ! $force) {
+            $output->writeln('<comment>Skipped (exists): '.$configRelative.'</comment>');
+        } else {
+            try {
+                if ($format === ConfigFormat::Php) {
+                    file_put_contents($configTarget, $repo->read(ConfigFormat::Php->filename()));
+                } else {
+                    ConfigWriter::write(ConfigWriter::stubConfig(), $configTarget, $format);
+                }
+            } catch (ConfigException $e) {
+                $output->writeln('<error>'.$e->getMessage().'</error>');
+
+                return self::FAILURE;
+            }
+
+            $written[] = $configRelative;
         }
 
         $assetsDir = $dir.'/assets';
