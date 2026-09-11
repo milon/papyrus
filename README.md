@@ -4,161 +4,75 @@
   <img src="assets/papyrus-banner.jpg" alt="Papyrus — Site, PDF, EPUB, HTML, and KDP" width="100%">
 </p>
 
-PHP CLI for Markdown book projects — PDF, EPUB, HTML, Hosted Site, and KDP exports.
+PHP CLI for Markdown book projects. One `content/` tree becomes PDF, EPUB, HTML, a multi-page site, sample PDFs, and Amazon KDP deliverables.
 
-Built from scratch with heavy influence from [ibis-next](https://github.com/Hi-Folks/ibis-next). Book projects use `papyrus.php`, `content/`, and `assets/`. By default Papyrus uses bundled themes, CSS, and fonts; publish them into your project only when you want to customize them.
+Influenced by [ibis-next](https://github.com/Hi-Folks/ibis-next), with first-class extras for sites, Mermaid, multi-script fonts, drafts, and KDP. Book roots use `papyrus.php` (or `.yml` / `.json`), `content/`, and `assets/`. Themes, CSS, and fonts ship bundled; publish them locally only when you need to customize.
 
-## Beyond ibis-next
+**[Handbook](https://papyrus.milon.im/)** · [Packagist](https://packagist.org/packages/milon/papyrus) · [GitHub](https://github.com/milon/papyrus)
 
-Same core idea — Markdown chapters to PDF, EPUB, and HTML — plus first-class extras that ibis-next does not ship:
+## Features
 
-- **Multi-page site** — `build:site` with Home, chapter sidebar, popup search, heading permalinks, sitemap/robots, Prev/Next, light/dark mode, banner, and `404.html` (ready for GitHub Pages / Netlify)
-- **Local preview** — `serve` runs the site with `php -S` so search and assets work over HTTP
-- **Amazon KDP** — Kindle EPUB, print interior (bleed + margins), cover export, wraparound cover PDF, wrap-size estimates, metadata JSON, upload package zip (`kdp` / `kdp:*`)
-- **Draft chapters** — `draft: true` in front matter omits chapters from builds unless `--include-drafts`
-- **Mermaid** — `mermaid` fences rendered at build time for PDF, EPUB, HTML, and site (`theme: auto` embeds light + dark on the web)
-- **Sample PDFs** — carve marketing / review PDFs from page ranges and/or whole chapters (`build:sample`)
-- **Multi-script fonts** — ordered script → face routing for PDF (e.g. Bengali alongside Latin)
-- **Parallel PDF themes** — `build:pdf --parallel` for light + dark in one go
-- **Tooling** — `doctor`, `watch`, `serve`, PHP fence `lint`, page-size `sizes`, `asset:publish`, and `migrate-ibis` from `ibis.php`
-- **Caches** — incremental chapter HTML and Mermaid figure caches under `.papyrus/`
-- **Export override** — `-e` / `--export` to write artifacts outside the book tree (CI / `docs/`)
-
-See the [handbook](https://papyrus.milon.im/) for the full option set.
-
-## Stability (1.x)
-
-Starting with **1.0**, Papyrus treats these as stable for SemVer majors:
-
-- CLI command names and common flags (`-d`, `-e`, `--include-drafts`, …)
-- `papyrus.php` public config keys documented in the handbook
-- Default export filenames under `export/`
-
-Theme HTML, CSS, and internal PHP APIs may still change in minor releases when needed for fixes or features.
-
-## Host your book as a website
-
-`build:site` turns the same Markdown chapters into a multi-page static site you can deploy anywhere (GitHub Pages, Netlify, S3, …):
-
-```bash
-papyrus build:site
-# → export/<slug>-site/
-papyrus serve
-# → http://127.0.0.1:8000/  (popup search needs a real HTTP origin)
-papyrus serve -s docs/the-papyrus-handbook-site
-```
-
-What you get:
-
-- One HTML page per chapter, plus a Home index
-- Chapter sidebar (collapsible on mobile)
-- Popup search (`/` or the topbar button; ↑/↓/Enter; ranked title/heading hits)
-- Light and dark mode (same palette as single-file HTML)
-- Prev / Next navigation between chapters
-- `sitemap.xml`, `robots.txt`, and optional `CNAME` / `site.base_path`
-- Shared `assets/site.css` and `assets/site.js` — no CDN required
-
-Example — this repo’s handbook is hosted on GitHub Pages:
-
-**[Browse The Papyrus Handbook](https://papyrus.milon.im/)**
-
-```bash
-papyrus build:site -d examples/the-papyrus-handbook -e docs
-```
+- **Site** — `build:site` + `serve`: sidebar, ranked popup search, heading permalinks, sitemap/robots, light/dark, `404.html` (GitHub Pages / Netlify ready)
+- **KDP** — Kindle EPUB, print interior, wraparound cover PDF, metadata, package zip (`kdp` / `kdp:*`)
+- **PDF / EPUB / HTML** — light & dark themes, `--parallel` PDF builds, single-file HTML
+- **Writing** — Mermaid at build time, draft chapters (`draft: true`), sample PDFs, multi-script fonts
+- **Tooling** — `doctor`, `watch`, `lint`, `sizes`, `asset:publish`, `migrate-ibis`
+- **Caches** — chapter HTML and Mermaid figures under `.papyrus/`; `-e` / `--export` for CI / `docs/`
 
 ## Handbook
 
-The sample book **The Papyrus Handbook** lives in [`examples/the-papyrus-handbook/`](examples/the-papyrus-handbook/). Read it online or from the prebuilt exports in `docs/`:
+The sample book lives in [`examples/the-papyrus-handbook/`](examples/the-papyrus-handbook/). Prebuilt outputs are in `docs/` and on GitHub Pages:
 
-- [Site](https://papyrus.milon.im/) — GitHub Pages (sidebar, popup search, light/dark mode)
-- [Downloads](https://papyrus.milon.im/19-downloads.html) — full and sample PDF previews from GitHub
-- [HTML](docs/the-papyrus-handbook.html) — single file, light/dark mode toggle
-- [PDF (light)](docs/the-papyrus-handbook-light.pdf) · [PDF (dark)](docs/the-papyrus-handbook-dark.pdf)
-- [Sample PDF (light)](docs/sample-the-papyrus-handbook-light.pdf) · [Sample PDF (dark)](docs/sample-the-papyrus-handbook-dark.pdf)
-
-Rebuild those exports with:
+| Format     | Link                                                                                                    |
+|------------|---------------------------------------------------------------------------------------------------------|
+| Site       | [papyrus.milon.im](https://papyrus.milon.im/)                                                           |
+| Downloads  | [PDF previews](https://papyrus.milon.im/19-downloads.html)                                              |
+| HTML       | [docs/the-papyrus-handbook.html](docs/the-papyrus-handbook.html)                                        |
+| PDF        | [light](docs/the-papyrus-handbook-light.pdf) · [dark](docs/the-papyrus-handbook-dark.pdf)               |
+| Sample PDF | [light](docs/sample-the-papyrus-handbook-light.pdf) · [dark](docs/sample-the-papyrus-handbook-dark.pdf) |
 
 ```bash
-composer build:handbook
+composer build:handbook   # PDF, sample, HTML, and site → docs/
 ```
 
-That runs `build:pdf`, `build:sample`, `build:html`, and `build:site` with
-`-d examples/the-papyrus-handbook -e docs`.
+## Stability (1.x)
+
+Stable across SemVer majors: CLI command names and common flags, documented config keys, and default `export/` filenames. Theme HTML/CSS and internal PHP APIs may change in minor releases.
 
 ## Requirements
 
-**Required**
+- **PHP 8.2+** with `dom`, `gd`, `mbstring`, `zip`, `zlib`
+- **Composer**
 
-- PHP 8.2+ with extensions `dom`, `gd`, `mbstring`, `zip`, and `zlib` (PDF via mPDF; EPUB packaging)
-- Composer
+Optional (skipped with a warning when missing):
 
-**Optional** (features work without them; Papyrus skips or warns when missing)
-
-| Tool                               | Used by          | Notes                                                             |
-|------------------------------------|------------------|-------------------------------------------------------------------|
-| `@mermaid-js/mermaid-cli` (`mmdc`) | Mermaid diagrams | Needs a Chrome/Chromium binary for Puppeteer                      |
-| Chrome or Chromium                 | Mermaid CLI      | Set `PUPPETEER_EXECUTABLE_PATH` if the bundled browser is missing |
-| `epubcheck`                        | `kdp:ebook`      | Extra EPUB validation; skipped with a warning when absent         |
-
-### Install optional tooling (macOS / Homebrew)
+| Tool                                                                                | Used by                   |
+|-------------------------------------------------------------------------------------|---------------------------|
+| `mmdc` ([mermaid-cli](https://github.com/mermaid-js/mermaid-cli)) + Chrome/Chromium | Mermaid diagrams          |
+| `epubcheck`                                                                         | Extra KDP EPUB validation |
 
 ```bash
-brew install php composer
-brew install mermaid-cli          # provides mmdc
-brew install --cask google-chrome # Puppeteer browser for Mermaid
-brew install epubcheck            # optional KDP EPUB checks (pulls OpenJDK)
-```
-
-Point Mermaid at system Chrome when needed:
-
-```bash
+# macOS example
+brew install php composer mermaid-cli epubcheck
+brew install --cask google-chrome
 export PUPPETEER_EXECUTABLE_PATH="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-```
 
-### Install optional tooling (npm / Linux)
-
-```bash
-# Mermaid CLI (global, or use npx - Papyrus also tries `npx -y @mermaid-js/mermaid-cli`)
-npm install -g @mermaid-js/mermaid-cli
-
-# Browser for Puppeteer (pick one)
-# Debian/Ubuntu:
-sudo apt-get install -y chromium-browser
-# or Google Chrome from Google’s .deb
-
-export PUPPETEER_EXECUTABLE_PATH="$(command -v chromium-browser || command -v google-chrome || command -v chromium)"
-
-# epubcheck — Homebrew on macOS, or download from
-# https://github.com/w3c/epubcheck/releases and put `epubcheck` on PATH
-```
-
-Verify:
-
-```bash
-php -m | grep -E 'dom|gd|mbstring|zip|zlib'
-mmdc --version
-epubcheck --version
 papyrus doctor
 ```
 
+Linux: install Chromium or Chrome, set `PUPPETEER_EXECUTABLE_PATH`, and put [epubcheck](https://github.com/w3c/epubcheck/releases) on `PATH`. Details are in the [install chapter](https://papyrus.milon.im/02-install-and-project.html).
+
 ## Install
 
-### Per project (recommended)
-
-In your book repository:
+**Per project (recommended)**
 
 ```bash
 composer require milon/papyrus
-```
-
-Then run via Composer’s binary path:
-
-```bash
-vendor/bin/papyrus --version
 vendor/bin/papyrus init
+vendor/bin/papyrus doctor
 ```
 
-Or add Composer scripts (example):
+Optional Composer scripts: `"build": "papyrus build"`, `"build:site": "papyrus build:site"`, and so on.
 
 ```json
 {
@@ -183,36 +97,27 @@ composer build:site
 
 ```bash
 composer global require milon/papyrus
-```
-
-Ensure Composer’s global `bin` directory is on your `PATH` (typical locations: `~/.composer/vendor/bin` or `~/.config/composer/vendor/bin`):
-
-```bash
 export PATH="$(composer global config bin-dir --absolute):$PATH"
-papyrus --version
 papyrus list
 ```
 
-### From this repository (development)
+**From this repository**
 
 ```bash
 composer install
-./bin/papyrus --version
 ./bin/papyrus list
 ```
 
 ## Quick start
 
-Scaffold a new book in the current directory:
-
 ```bash
-papyrus init
-papyrus init --format=yml
+papyrus init                 # or: --format=yml|yaml|json
 papyrus doctor
 papyrus build:site
+papyrus serve               # http://127.0.0.1:8000/ — needed for site search
 ```
 
-Or in a new folder:
+New folder: `papyrus init -d my-book` then pass `-d my-book` to other commands.
 
 ```bash
 mkdir my-book && papyrus init -d my-book
@@ -233,36 +138,26 @@ papyrus asset:publish --only=themes
 
 ## Commands
 
-| Command         | Description                                                                                |
-|-----------------|--------------------------------------------------------------------------------------------|
-| `init`          | Scaffold book config + `content/` + empty `assets/` (`--format=php\|yml\|yaml\|json`)       |
-| `asset:publish` | Publish bundled themes, CSS, and fonts into `assets/` (`--only`, `--force`)                |
-| `doctor`        | Validate config, assets, Mermaid, KDP readiness                                            |
-| `build`         | Build PDF/EPUB/HTML/KDP; optional `--with-site` / `--with-sample`                          |
-| `build:pdf`     | Build PDF themes (`--theme light,dark`, `--parallel` for multi-theme)                      |
-| `build:site`    | Multi-page HTML site (sidebar, search, sitemap, light/dark)                                |
-| `serve`         | Serve the site locally with `php -S` (`--host`, `--port`, `--build`, `--site`)             |
-| `build:html`    | Build single-file HTML from `assets/theme-html.html` (light/dark mode)                     |
-| `build:epub`    | Build EPUB3 with CSS and embedded images                                                   |
-| `build:sample`  | Build sample PDF from `sample.ranges` and/or `sample.chapters`                             |
-| `kdp`           | All enabled KDP outputs (`--require-epubcheck`, `--package`, `--wrap`)                     |
-| `kdp:ebook`     | KDP-ready Kindle EPUB (`export/<slug>-kdp.epub`)                                           |
-| `kdp:print`     | Print interior PDF with KDP margin/bleed presets                                           |
-| `kdp:cover`     | Export KDP cover assets (`--dimensions`, `--wrap`, `--pages`, `--theme`)                   |
-| `kdp:metadata`  | Emit KDP metadata sidecar JSON                                                             |
-| `kdp:package`   | Zip enabled KDP artifacts with an upload checklist                                         |
-| `sizes`         | List KDP page-size presets                                                                 |
-| `migrate-ibis`  | Migrate `ibis.php` to Papyrus config (`--format=php\|yml\|yaml\|json`); update TOC markers |
-| `lint`          | Lint PHP code fences in `content/` (`--fix` to auto-fix)                                   |
-| `watch`         | Rebuild on file changes (`--interval`, `--with-site`, `--with-sample`, `--include-drafts`) |
+| Command                                                                  | Description                                                                |
+|--------------------------------------------------------------------------|----------------------------------------------------------------------------|
+| `init`                                                                   | Scaffold config + `content/` + `assets/` (`--format=php\|yml\|yaml\|json`) |
+| `asset:publish`                                                          | Copy bundled themes, CSS, fonts into `assets/` (`--only`, `--force`)       |
+| `doctor`                                                                 | Validate config, assets, Mermaid, KDP readiness                            |
+| `build`                                                                  | PDF / EPUB / HTML / enabled KDP (`--with-site`, `--with-sample`)           |
+| `build:pdf`                                                              | PDF themes (`--theme`, `--parallel`)                                       |
+| `build:epub`                                                             | EPUB3                                                                      |
+| `build:html`                                                             | Single-file HTML                                                           |
+| `build:site`                                                             | Multi-page site                                                            |
+| `build:sample`                                                           | Sample PDF from ranges and/or chapters                                     |
+| `serve`                                                                  | Local site preview (`--host`, `--port`, `--build`, `--site`)               |
+| `kdp`                                                                    | All enabled KDP outputs (`--require-epubcheck`, `--package`, `--wrap`)     |
+| `kdp:ebook` / `kdp:print` / `kdp:cover` / `kdp:metadata` / `kdp:package` | Individual KDP steps                                                       |
+| `sizes`                                                                  | Page-size presets                                                          |
+| `migrate-ibis`                                                           | `ibis.php` → Papyrus config (`--format=…`)                                 |
+| `lint`                                                                   | Lint PHP fences in `content/` (`--fix`)                                    |
+| `watch`                                                                  | Rebuild on change (`--with-site`, `--with-sample`, `--include-drafts`)     |
 
-Common options on book commands:
-
-- `-d` / `--dir` — book root (default: current directory)
-- `-e` / `--export` — override export directory (default: `<book>/export`)
-- `--include-drafts` — include chapters with `draft: true` in front matter
-
-Convert Markdown chapters programmatically:
+Shared flags: `-d` / `--dir`, `-e` / `--export`, `--include-drafts`. Full options: [handbook command reference](https://papyrus.milon.im/18-command-reference.html).
 
 ```php
 $project = Milon\Papyrus\Config\Project::load($bookDir);
@@ -270,18 +165,18 @@ $book = $project->bookWithFigures(breakLevel: 1, exportTheme: 'html'); // drafts
 $withDrafts = $project->withIncludeDrafts()->bookWithFigures(breakLevel: 1, exportTheme: 'html');
 ```
 
-## Tests
+## Development
 
 ```bash
 composer test
-composer lint   # Pint
-composer format # Pint --write
+composer lint    # Pint --test
+composer format  # Pint
 ```
 
 ## Changelog
 
-See [CHANGELOG.md](CHANGELOG.md) for release notes and upgrade guidance.
+[CHANGELOG.md](CHANGELOG.md)
 
 ## License
 
-MIT — see [LICENSE](LICENSE).
+MIT — [LICENSE](LICENSE).
