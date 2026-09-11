@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>build:pdf — The Papyrus Handbook</title>
+    <link rel="stylesheet" href="assets/site.css">
+    <script src="assets/site.js"></script>
+</head>
+<body>
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+    <aside class="sidebar" id="sidebar" aria-label="Chapters">
+        <div class="sidebar-header">
+            <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
+            <p class="sidebar-subtitle">Markdown to PDF, EPUB, HTML sites, and KDP</p>
+        </div>
+        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-welcome.html">Welcome</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a href="03-configuration.html">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li><li><a href="06-build.html">build</a></li><li><a class="is-active" href="07-build-pdf.html" aria-current="page">build:pdf</a></li><li><a href="08-build-epub.html">build:epub</a></li><li><a href="09-build-html.html">build:html</a></li><li><a href="10-build-site.html">build:site</a></li><li><a href="11-build-sample.html">build:sample</a></li><li><a href="12-kdp.html">kdp</a></li><li><a href="13-kdp-ebook.html">kdp:ebook</a></li><li><a href="14-kdp-print.html">kdp:print</a></li><li><a href="15-kdp-cover.html">kdp:cover</a></li><li><a href="16-kdp-metadata.html">kdp:metadata</a></li><li><a href="17-migration-and-ci.html">Migration and CI</a></li><li><a href="18-command-reference.html">Command reference</a></li><li><a href="19-downloads.html">Downloads</a></li></ul></nav>
+    </aside>
+    <div class="layout">
+        <header class="topbar">
+            <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Open chapter list" title="Chapters">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M4 7h16M4 12h16M4 17h16"/>
+                </svg>
+            </button>
+            <p class="topbar-title">build:pdf</p>
+            <div class="topbar-actions">
+                <button type="button" class="search-open" id="search-open" aria-label="Search" title="Search (/)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M20 20l-3.5-3.5"/>
+                    </svg>
+                </button>
+                <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Dark mode">
+                    <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                    <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+        <main class="content">
+            <div style="page-break-after: always;"></div><h1>build:pdf</h1>
+<p>Build one PDF per theme (or a subset). Each theme needs
+<code>assets/theme-{name}.html</code> and an entry in <code>themes</code>.</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus build:pdf
+papyrus build:pdf --theme light
+papyrus build:pdf --theme light,dark --parallel
+papyrus build:pdf -d /path/to/book -e /path/to/out
+</code></pre>
+<h2 id="options"><a class="heading-permalink" href="#options" aria-hidden="true" tabindex="-1">#</a>Options</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dir</code></td>
+<td><code>-d</code></td>
+<td>current directory</td>
+<td>Book root</td>
+</tr>
+<tr>
+<td><code>--export</code></td>
+<td><code>-e</code></td>
+<td><code>export/</code></td>
+<td>Output directory</td>
+</tr>
+<tr>
+<td><code>--theme</code></td>
+<td><code>-t</code></td>
+<td>all configured themes</td>
+<td>Comma-separated theme names</td>
+</tr>
+<tr>
+<td><code>--parallel</code></td>
+<td><code>-p</code></td>
+<td>off</td>
+<td>One process per theme</td>
+</tr>
+</tbody>
+</table>
+<h2 id="output"><a class="heading-permalink" href="#output" aria-hidden="true" tabindex="-1">#</a>Output</h2>
+<pre><code class="language-text">export/&lt;slug&gt;-&lt;theme&gt;.pdf
+</code></pre>
+<p>Example for this handbook: <code>the-papyrus-handbook-light.pdf</code>.</p>
+<h2 id="config-that-affects-pdf"><a class="heading-permalink" href="#config-that-affects-pdf" aria-hidden="true" tabindex="-1">#</a>Config that affects PDF</h2>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>themes</code></td>
+<td>Which theme names to build by default</td>
+</tr>
+<tr>
+<td><code>document.size</code> / <code>document.format</code></td>
+<td>Trim size</td>
+</tr>
+<tr>
+<td><code>document.margin_*</code></td>
+<td>Margins in millimetres</td>
+</tr>
+<tr>
+<td><code>cover</code></td>
+<td>Cover image(s) under <code>assets/</code></td>
+</tr>
+<tr>
+<td><code>header.style</code></td>
+<td>Running header CSS</td>
+</tr>
+<tr>
+<td><code>toc</code></td>
+<td>Which heading levels enter the TOC</td>
+</tr>
+<tr>
+<td><code>break_level</code></td>
+<td>Auto page breaks before headings</td>
+</tr>
+<tr>
+<td><code>fonts</code></td>
+<td>Faces and script routing</td>
+</tr>
+<tr>
+<td><code>mermaid</code></td>
+<td>Diagram rendering</td>
+</tr>
+</tbody>
+</table>
+<p>List trim presets with <code>papyrus sizes</code>. Custom trim:</p>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'document'</span> =&gt; [
+    <span class="hljs-string">'format'</span> =&gt; [<span class="hljs-number">152.4</span>, <span class="hljs-number">228.6</span>], <span class="hljs-comment">// width_mm, height_mm</span>
+],
+</code></pre>
+<h2 id="parallel-builds"><a class="heading-permalink" href="#parallel-builds" aria-hidden="true" tabindex="-1">#</a>Parallel builds</h2>
+<p><code>--parallel</code> / <code>-p</code> spawns one PHP process per theme. Useful when
+<code>themes</code> has both <code>light</code> and <code>dark</code>. Sequential is the default (and what
+<code>papyrus build</code> uses).</p>
+<h2 id="covers"><a class="heading-permalink" href="#covers" aria-hidden="true" tabindex="-1">#</a>Covers</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'cover'</span> =&gt; [
+    <span class="hljs-string">'image'</span> =&gt; <span class="hljs-string">'cover.png'</span>,       <span class="hljs-comment">// fallback for every theme</span>
+    <span class="hljs-string">'light'</span> =&gt; <span class="hljs-string">'cover-light.png'</span>, <span class="hljs-comment">// optional per-theme</span>
+    <span class="hljs-string">'dark'</span> =&gt; <span class="hljs-string">'cover-dark.png'</span>,
+    <span class="hljs-comment">// 'width' / 'height' — mm; default to page size</span>
+],
+</code></pre>
+<p>Paths are relative to <code>assets/</code>. Missing per-theme covers fall back to
+<code>cover.image</code>.</p>
+<nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="06-build.html"><span class="label">Previous</span>build</a><a class="next" href="08-build-epub.html"><span class="label">Next</span>build:epub</a></nav>
+        </main>
+    </div>
+    <div class="search-modal" id="search-modal" hidden role="dialog" aria-modal="true" aria-labelledby="search-modal-title">
+        <div class="search-modal-backdrop" id="search-modal-backdrop"></div>
+        <div class="search-modal-panel" id="search-modal-panel">
+            <h2 id="search-modal-title" class="visually-hidden">Search</h2>
+            <div class="search-modal-header">
+                <div class="search-modal-input-wrap">
+                    <svg class="search-modal-input-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M20 20l-3.5-3.5"/>
+                    </svg>
+                    <label class="visually-hidden" for="search-modal-input">Search chapters</label>
+                    <input id="search-modal-input" type="search" role="searchbox" placeholder="Search chapters…" autocomplete="off">
+                </div>
+                <button type="button" class="search-modal-close" id="search-modal-close" aria-label="Close search">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M6 6l12 12M18 6L6 18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="search-modal-body">
+                <p class="search-modal-hint" id="search-modal-hint"><kbd>/</kbd> to search from any page</p>
+                <div class="search-results" id="search-results" hidden></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

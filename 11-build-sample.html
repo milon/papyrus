@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>build:sample — The Papyrus Handbook</title>
+    <link rel="stylesheet" href="assets/site.css">
+    <script src="assets/site.js"></script>
+</head>
+<body>
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+    <aside class="sidebar" id="sidebar" aria-label="Chapters">
+        <div class="sidebar-header">
+            <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
+            <p class="sidebar-subtitle">Markdown to PDF, EPUB, HTML sites, and KDP</p>
+        </div>
+        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-welcome.html">Welcome</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a href="03-configuration.html">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li><li><a href="06-build.html">build</a></li><li><a href="07-build-pdf.html">build:pdf</a></li><li><a href="08-build-epub.html">build:epub</a></li><li><a href="09-build-html.html">build:html</a></li><li><a href="10-build-site.html">build:site</a></li><li><a class="is-active" href="11-build-sample.html" aria-current="page">build:sample</a></li><li><a href="12-kdp.html">kdp</a></li><li><a href="13-kdp-ebook.html">kdp:ebook</a></li><li><a href="14-kdp-print.html">kdp:print</a></li><li><a href="15-kdp-cover.html">kdp:cover</a></li><li><a href="16-kdp-metadata.html">kdp:metadata</a></li><li><a href="17-migration-and-ci.html">Migration and CI</a></li><li><a href="18-command-reference.html">Command reference</a></li><li><a href="19-downloads.html">Downloads</a></li></ul></nav>
+    </aside>
+    <div class="layout">
+        <header class="topbar">
+            <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Open chapter list" title="Chapters">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M4 7h16M4 12h16M4 17h16"/>
+                </svg>
+            </button>
+            <p class="topbar-title">build:sample</p>
+            <div class="topbar-actions">
+                <button type="button" class="search-open" id="search-open" aria-label="Search" title="Search (/)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M20 20l-3.5-3.5"/>
+                    </svg>
+                </button>
+                <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Dark mode">
+                    <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                    <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+        <main class="content">
+            <div style="page-break-after: always;"></div><h1>build:sample</h1>
+<p>Build a <strong>sample</strong> PDF for marketing downloads or review copies. Select content
+with page ranges, whole chapters by filename, or both.</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus build:sample
+papyrus build:sample --theme light
+papyrus build:sample -t light,dark
+</code></pre>
+<p><code>papyrus build</code> does <strong>not</strong> run this by default — pass <code>--with-sample</code>, or
+call <code>build:sample</code> directly.</p>
+<h2 id="options"><a class="heading-permalink" href="#options" aria-hidden="true" tabindex="-1">#</a>Options</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dir</code></td>
+<td><code>-d</code></td>
+<td>current directory</td>
+<td>Book root</td>
+</tr>
+<tr>
+<td><code>--export</code></td>
+<td><code>-e</code></td>
+<td><code>export/</code></td>
+<td>Output directory</td>
+</tr>
+<tr>
+<td><code>--theme</code></td>
+<td><code>-t</code></td>
+<td>all configured themes</td>
+<td>Comma-separated theme names</td>
+</tr>
+</tbody>
+</table>
+<h2 id="config"><a class="heading-permalink" href="#config" aria-hidden="true" tabindex="-1">#</a>Config</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'sample'</span> =&gt; [
+    <span class="hljs-string">'ranges'</span> =&gt; [
+        [<span class="hljs-string">'from'</span> =&gt; <span class="hljs-number">1</span>, <span class="hljs-string">'to'</span> =&gt; <span class="hljs-number">4</span>],
+        [<span class="hljs-string">'from'</span> =&gt; <span class="hljs-number">10</span>, <span class="hljs-string">'to'</span> =&gt; <span class="hljs-number">12</span>],
+    ],
+    <span class="hljs-string">'chapters'</span> =&gt; [
+        <span class="hljs-string">'01-introduction.md'</span>,
+        <span class="hljs-string">'04-writing-content'</span>, <span class="hljs-comment">// stem or basename also works</span>
+    ],
+    <span class="hljs-comment">// Optional notice text (also accepted as sample.notice / sample.text):</span>
+    <span class="hljs-comment">// 'notice' =&gt; 'This is a sample…',</span>
+],
+
+<span class="hljs-string">'sample_notice'</span> =&gt; <span class="hljs-string">'This is a sample from My Book.'</span>,
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>Key</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>sample.ranges</code></td>
+<td>List of <code>{from, to}</code> <strong>1-based inclusive</strong> page ranges against the finished PDF</td>
+</tr>
+<tr>
+<td><code>sample.chapters</code></td>
+<td>Chapter files to include in full (config order). Match by source path, basename (<code>01-intro.md</code>), or stem (<code>01-intro</code>). Rendered as body pages only — no extra cover, title page, or TOC</td>
+</tr>
+</tbody>
+</table>
+<p>| <code>sample_notice</code> | Extra notice page (preferred) |
+| <code>sample.notice</code> / <code>sample.text</code> | Fallbacks if <code>sample_notice</code> is empty |</p>
+<p>Invalid ranges are dropped. Unknown chapter names fail the build.
+<code>build:sample</code> requires at least one of <code>ranges</code> or <code>chapters</code>.</p>
+<p>When both are set, page-range slices from the full theme PDF come first, then
+chapter pages (in config order).</p>
+<h2 id="output"><a class="heading-permalink" href="#output" aria-hidden="true" tabindex="-1">#</a>Output</h2>
+<pre><code class="language-text">export/sample-&lt;slug&gt;-&lt;theme&gt;.pdf
+</code></pre>
+<p>When a notice is set, it is appended after the selected content.</p>
+<nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="10-build-site.html"><span class="label">Previous</span>build:site</a><a class="next" href="12-kdp.html"><span class="label">Next</span>kdp</a></nav>
+        </main>
+    </div>
+    <div class="search-modal" id="search-modal" hidden role="dialog" aria-modal="true" aria-labelledby="search-modal-title">
+        <div class="search-modal-backdrop" id="search-modal-backdrop"></div>
+        <div class="search-modal-panel" id="search-modal-panel">
+            <h2 id="search-modal-title" class="visually-hidden">Search</h2>
+            <div class="search-modal-header">
+                <div class="search-modal-input-wrap">
+                    <svg class="search-modal-input-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M20 20l-3.5-3.5"/>
+                    </svg>
+                    <label class="visually-hidden" for="search-modal-input">Search chapters</label>
+                    <input id="search-modal-input" type="search" role="searchbox" placeholder="Search chapters…" autocomplete="off">
+                </div>
+                <button type="button" class="search-modal-close" id="search-modal-close" aria-label="Close search">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M6 6l12 12M18 6L6 18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="search-modal-body">
+                <p class="search-modal-hint" id="search-modal-hint"><kbd>/</kbd> to search from any page</p>
+                <div class="search-results" id="search-results" hidden></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

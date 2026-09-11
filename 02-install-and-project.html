@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Install and project layout — The Papyrus Handbook</title>
+    <link rel="stylesheet" href="assets/site.css">
+    <script src="assets/site.js"></script>
+</head>
+<body>
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+    <aside class="sidebar" id="sidebar" aria-label="Chapters">
+        <div class="sidebar-header">
+            <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
+            <p class="sidebar-subtitle">Markdown to PDF, EPUB, HTML sites, and KDP</p>
+        </div>
+        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-welcome.html">Welcome</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a class="is-active" href="02-install-and-project.html" aria-current="page">Install and project layout</a></li><li><a href="03-configuration.html">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li><li><a href="06-build.html">build</a></li><li><a href="07-build-pdf.html">build:pdf</a></li><li><a href="08-build-epub.html">build:epub</a></li><li><a href="09-build-html.html">build:html</a></li><li><a href="10-build-site.html">build:site</a></li><li><a href="11-build-sample.html">build:sample</a></li><li><a href="12-kdp.html">kdp</a></li><li><a href="13-kdp-ebook.html">kdp:ebook</a></li><li><a href="14-kdp-print.html">kdp:print</a></li><li><a href="15-kdp-cover.html">kdp:cover</a></li><li><a href="16-kdp-metadata.html">kdp:metadata</a></li><li><a href="17-migration-and-ci.html">Migration and CI</a></li><li><a href="18-command-reference.html">Command reference</a></li><li><a href="19-downloads.html">Downloads</a></li></ul></nav>
+    </aside>
+    <div class="layout">
+        <header class="topbar">
+            <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Open chapter list" title="Chapters">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M4 7h16M4 12h16M4 17h16"/>
+                </svg>
+            </button>
+            <p class="topbar-title">Install and project layout</p>
+            <div class="topbar-actions">
+                <button type="button" class="search-open" id="search-open" aria-label="Search" title="Search (/)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M20 20l-3.5-3.5"/>
+                    </svg>
+                </button>
+                <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Dark mode">
+                    <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                    <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+        <main class="content">
+            <div style="page-break-after: always;"></div><h1>Install and project layout</h1>
+<h2 id="requirements"><a class="heading-permalink" href="#requirements" aria-hidden="true" tabindex="-1">#</a>Requirements</h2>
+<p><strong>Required</strong></p>
+<ul>
+<li>PHP 8.2+ with extensions <code>dom</code>, <code>gd</code>, <code>mbstring</code>, <code>zip</code>, and <code>zlib</code></li>
+<li>Composer</li>
+</ul>
+<p><strong>Optional</strong></p>
+<table>
+<thead>
+<tr>
+<th>Tool</th>
+<th>Used by</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>mmdc</code> (<code>@mermaid-js/mermaid-cli</code> or Homebrew <code>mermaid-cli</code>)</td>
+<td>Mermaid diagrams</td>
+<td>Needs Chrome/Chromium for Puppeteer</td>
+</tr>
+<tr>
+<td>Chrome or Chromium</td>
+<td>Mermaid CLI</td>
+<td>Set <code>PUPPETEER_EXECUTABLE_PATH</code> if needed</td>
+</tr>
+<tr>
+<td><code>epubcheck</code></td>
+<td><code>kdp:ebook</code></td>
+<td>Extra validation; skipped with a warning when absent</td>
+</tr>
+</tbody>
+</table>
+<h3>macOS (Homebrew)</h3>
+<pre><code class="language-bash hljs bash" data-lang="bash">brew install php composer
+brew install mermaid-cli
+brew install --cask google-chrome
+brew install epubcheck
+</code></pre>
+<pre><code class="language-bash hljs bash" data-lang="bash"><span class="hljs-built_in">export</span> PUPPETEER_EXECUTABLE_PATH=<span class="hljs-string">"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"</span>
+</code></pre>
+<h3>npm / Linux</h3>
+<pre><code class="language-bash hljs bash" data-lang="bash">npm install -g @mermaid-js/mermaid-cli
+<span class="hljs-comment"># Debian/Ubuntu example:</span>
+sudo apt-get install -y chromium-browser
+<span class="hljs-built_in">export</span> PUPPETEER_EXECUTABLE_PATH=<span class="hljs-string">"<span class="hljs-variable">$(command -v chromium-browser || command -v google-chrome || command -v chromium)</span>"</span>
+</code></pre>
+<p>Install <a href="https://github.com/w3c/epubcheck/releases">epubcheck</a> and put it on
+<code>PATH</code>, or use <code>brew install epubcheck</code> on macOS.</p>
+<h3>Check the toolchain</h3>
+<pre><code class="language-bash hljs bash" data-lang="bash">php -m | grep -E <span class="hljs-string">'dom|gd|mbstring|zip|zlib'</span>
+mmdc --version
+epubcheck --version
+papyrus doctor
+</code></pre>
+<h2 id="install-per-project"><a class="heading-permalink" href="#install-per-project" aria-hidden="true" tabindex="-1">#</a>Install per project</h2>
+<p>In your book repository:</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">composer require milon/papyrus
+</code></pre>
+<pre><code class="language-bash hljs bash" data-lang="bash">vendor/bin/papyrus --version
+vendor/bin/papyrus init
+vendor/bin/papyrus doctor
+</code></pre>
+<p>Wire Composer scripts (example):</p>
+<pre><code class="language-json hljs json" data-lang="json">{
+  <span class="hljs-attr">"scripts"</span>: {
+    <span class="hljs-attr">"build"</span>: <span class="hljs-string">"papyrus build"</span>,
+    <span class="hljs-attr">"build:pdf"</span>: <span class="hljs-string">"papyrus build:pdf --theme light,dark"</span>,
+    <span class="hljs-attr">"build:epub"</span>: <span class="hljs-string">"papyrus build:epub"</span>,
+    <span class="hljs-attr">"build:html"</span>: <span class="hljs-string">"papyrus build:html"</span>,
+    <span class="hljs-attr">"build:site"</span>: <span class="hljs-string">"papyrus build:site"</span>,
+    <span class="hljs-attr">"build:sample"</span>: <span class="hljs-string">"papyrus build:sample"</span>,
+    <span class="hljs-attr">"build:kdp"</span>: <span class="hljs-string">"papyrus kdp"</span>,
+    <span class="hljs-attr">"doctor"</span>: <span class="hljs-string">"papyrus doctor"</span>
+  }
+}
+</code></pre>
+<p>Package page: <a href="https://packagist.org/packages/milon/papyrus">packagist.org/packages/milon/papyrus</a>.</p>
+<h2 id="install-globally"><a class="heading-permalink" href="#install-globally" aria-hidden="true" tabindex="-1">#</a>Install globally</h2>
+<pre><code class="language-bash hljs bash" data-lang="bash">composer global require milon/papyrus
+<span class="hljs-built_in">export</span> PATH=<span class="hljs-string">"<span class="hljs-variable">$(composer global config bin-dir --absolute)</span>:<span class="hljs-variable">$PATH</span>"</span>
+papyrus list
+</code></pre>
+<h2 id="scaffold-a-book"><a class="heading-permalink" href="#scaffold-a-book" aria-hidden="true" tabindex="-1">#</a>Scaffold a book</h2>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus init
+papyrus init -d my-book
+papyrus init --format=yml
+papyrus init --format=yaml
+papyrus init --format=json
+</code></pre>
+<p><code>init</code> creates a book config (<code>papyrus.php</code> by default, or YAML / JSON via
+<code>--format</code>), <code>content/</code>, and an empty <code>assets/</code> directory.
+Papyrus uses bundled themes, CSS, and fonts by default. Publish those files
+into your project only when you want to customize them:</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus asset:publish
+papyrus asset:publish --only=themes,css
+</code></pre>
+<p>Use <code>--force</code> / <code>-f</code> to overwrite files during <code>init</code>, or with
+<code>asset:publish</code> to overwrite published assets. <code>--only</code> limits publishing to
+<code>themes</code>, <code>css</code>, and/or <code>fonts</code>.</p>
+<h2 id="config-without-php-yaml-or-json"><a class="heading-permalink" href="#config-without-php-yaml-or-json" aria-hidden="true" tabindex="-1">#</a>Config without PHP (YAML or JSON)</h2>
+<p>You still need PHP installed to <em>run</em> Papyrus — but you do <strong>not</strong> need to
+edit PHP to configure a book. If you are more comfortable with YAML or JSON,
+scaffold that way:</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus init --format=yml    <span class="hljs-comment"># writes papyrus.yml  (--format=yaml is the same)</span>
+papyrus init --format=json   <span class="hljs-comment"># writes papyrus.json</span>
+</code></pre>
+<p>Same keys as the PHP stub, without the <code>&lt;?php return […]</code> wrapper. Example
+YAML:</p>
+<pre><code class="language-yaml hljs yaml" data-lang="yaml"><span class="hljs-attr">title:</span> <span class="hljs-string">My</span> <span class="hljs-string">Book</span>
+<span class="hljs-attr">subtitle:</span> <span class="hljs-string">A</span> <span class="hljs-string">short</span> <span class="hljs-string">subtitle</span>
+<span class="hljs-attr">author:</span> <span class="hljs-string">Author</span> <span class="hljs-string">Name</span>
+<span class="hljs-attr">themes:</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">light</span>
+  <span class="hljs-bullet">-</span> <span class="hljs-string">dark</span>
+
+<span class="hljs-attr">document:</span>
+  <span class="hljs-attr">size:</span> <span class="hljs-string">crown-quarto</span>
+  <span class="hljs-attr">margin_left:</span> <span class="hljs-number">27</span>
+  <span class="hljs-attr">margin_right:</span> <span class="hljs-number">27</span>
+  <span class="hljs-attr">margin_top:</span> <span class="hljs-number">14</span>
+  <span class="hljs-attr">margin_bottom:</span> <span class="hljs-number">14</span>
+
+<span class="hljs-attr">toc:</span>
+  <span class="hljs-attr">h1:</span> <span class="hljs-number">0</span>
+  <span class="hljs-attr">h2:</span> <span class="hljs-number">0</span>
+  <span class="hljs-attr">h3:</span> <span class="hljs-number">1</span>
+
+<span class="hljs-attr">mermaid:</span>
+  <span class="hljs-attr">enabled:</span> <span class="hljs-literal">true</span>
+  <span class="hljs-attr">format:</span> <span class="hljs-string">svg</span>
+  <span class="hljs-attr">theme:</span> <span class="hljs-string">auto</span>
+</code></pre>
+<p>Or JSON:</p>
+<pre><code class="language-json hljs json" data-lang="json">{
+  <span class="hljs-attr">"title"</span>: <span class="hljs-string">"My Book"</span>,
+  <span class="hljs-attr">"subtitle"</span>: <span class="hljs-string">"A short subtitle"</span>,
+  <span class="hljs-attr">"author"</span>: <span class="hljs-string">"Author Name"</span>,
+  <span class="hljs-attr">"themes"</span>: [<span class="hljs-string">"light"</span>, <span class="hljs-string">"dark"</span>],
+  <span class="hljs-attr">"document"</span>: {
+    <span class="hljs-attr">"size"</span>: <span class="hljs-string">"crown-quarto"</span>,
+    <span class="hljs-attr">"margin_left"</span>: <span class="hljs-number">27</span>,
+    <span class="hljs-attr">"margin_right"</span>: <span class="hljs-number">27</span>,
+    <span class="hljs-attr">"margin_top"</span>: <span class="hljs-number">14</span>,
+    <span class="hljs-attr">"margin_bottom"</span>: <span class="hljs-number">14</span>
+  }
+}
+</code></pre>
+<p>Rules of thumb:</p>
+<ul>
+<li>Keep <strong>exactly one</strong> config file in the book root (<code>papyrus.php</code>,
+<code>papyrus.yml</code> / <code>papyrus.yaml</code>, or <code>papyrus.json</code>).</li>
+<li><code>--format=yml</code> and <code>--format=yaml</code> both write <code>papyrus.yml</code>.</li>
+<li>You can also name the file <code>papyrus.yaml</code> by hand; Papyrus loads either
+extension.</li>
+<li>Full option tables live in the Configuration chapter — they apply to every
+format.</li>
+<li>One PHP-only escape hatch: <code>configure_commonmark</code> (a callable). If you need
+that hook, use <code>papyrus.php</code>; otherwise YAML/JSON are enough.</li>
+</ul>
+<p>Coming from ibis-next, the same choice exists on migrate:</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus migrate-ibis --format=yml\
+papyrus migrate-ibis --format=json
+</code></pre>
+<h2 id="layout"><a class="heading-permalink" href="#layout" aria-hidden="true" tabindex="-1">#</a>Layout</h2>
+<table>
+<thead>
+<tr>
+<th>Path</th>
+<th>Role</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>papyrus.php</code> / <code>.yml</code> / <code>.yaml</code> / <code>.json</code></td>
+<td>Book settings (exactly one)</td>
+</tr>
+<tr>
+<td><code>content/</code></td>
+<td>Markdown chapters</td>
+</tr>
+<tr>
+<td><code>assets/</code></td>
+<td>Your overrides: themes, CSS, covers, fonts, banner</td>
+</tr>
+<tr>
+<td><code>export/</code></td>
+<td>Built artifacts</td>
+</tr>
+<tr>
+<td><code>.papyrus/</code></td>
+<td>Incremental caches</td>
+</tr>
+</tbody>
+</table>
+<p>Only one config file is allowed. See <a href="#config-without-php-yaml-or-json">Config without PHP</a>
+above if you prefer YAML or JSON. Use <code>papyrus.php</code> when you need PHP callables
+such as <code>configure_commonmark</code>.</p>
+<p>Always run from the book root, or pass <code>-d</code> / <code>--dir</code>. Override where
+artifacts are written with <code>-e</code> / <code>--export</code> (default: <code>&lt;book&gt;/export</code>):</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus doctor -d /path/to/book
+papyrus build --dir /path/to/book
+papyrus build:site -d /path/to/book -e /path/to/out
+</code></pre>
+<p>Browse the Papyrus source on
+<a href="https://github.com/milon/papyrus">GitHub</a> if you want to follow along with
+this handbook’s own project under <code>examples/the-papyrus-handbook/</code>.</p>
+<nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="01-introduction.html"><span class="label">Previous</span>Introduction</a><a class="next" href="03-configuration.html"><span class="label">Next</span>Configuration</a></nav>
+        </main>
+    </div>
+    <div class="search-modal" id="search-modal" hidden role="dialog" aria-modal="true" aria-labelledby="search-modal-title">
+        <div class="search-modal-backdrop" id="search-modal-backdrop"></div>
+        <div class="search-modal-panel" id="search-modal-panel">
+            <h2 id="search-modal-title" class="visually-hidden">Search</h2>
+            <div class="search-modal-header">
+                <div class="search-modal-input-wrap">
+                    <svg class="search-modal-input-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M20 20l-3.5-3.5"/>
+                    </svg>
+                    <label class="visually-hidden" for="search-modal-input">Search chapters</label>
+                    <input id="search-modal-input" type="search" role="searchbox" placeholder="Search chapters…" autocomplete="off">
+                </div>
+                <button type="button" class="search-modal-close" id="search-modal-close" aria-label="Close search">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M6 6l12 12M18 6L6 18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="search-modal-body">
+                <p class="search-modal-hint" id="search-modal-hint"><kbd>/</kbd> to search from any page</p>
+                <div class="search-results" id="search-results" hidden></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
