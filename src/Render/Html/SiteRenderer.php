@@ -44,6 +44,7 @@ final class SiteRenderer
         }
 
         $this->copyFontsIntoSite($assetsDir.'/fonts');
+        $this->copyProjectAssets($assetsDir);
         $this->copySiteBanner($assetsDir);
 
         $css = WebTheme::fontFaceCss('fonts/')
@@ -476,8 +477,13 @@ HTML;
 
         return sprintf(
             '<aside class="page-toc" aria-label="On this page">'
-            .'<p class="page-toc-title">On this page</p>'
-            .'<ul>%s</ul>'
+            .'<p class="page-toc-title">'
+            .'<svg class="page-toc-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false">'
+            .'<path d="M1.833 8h12.333M1.833 3.833h12.333M1.833 12.167H7.666" stroke="currentColor" stroke-width="1.25" stroke-linecap="square"/>'
+            .'</svg>'
+            .'On this page'
+            .'</p>'
+            .'<div class="page-toc-rail"><ul>%s</ul></div>'
             .'</aside>',
             $items,
         );
@@ -868,6 +874,53 @@ HTML;
 
         if (! copy($source, $destination)) {
             throw new HtmlException(sprintf('Unable to copy site banner: %s', $banner));
+        }
+    }
+
+    /**
+     * Copy project assets/ into the site (banners, example images, …), excluding fonts/.
+     */
+    private function copyProjectAssets(string $assetsDir): void
+    {
+        $source = $this->project->assetsDir;
+
+        if (! is_dir($source)) {
+            return;
+        }
+
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($source, \FilesystemIterator::SKIP_DOTS),
+            \RecursiveIteratorIterator::SELF_FIRST,
+        );
+
+        foreach ($iterator as $file) {
+            /** @var \SplFileInfo $file */
+            $relative = substr($file->getPathname(), strlen(rtrim($source, DIRECTORY_SEPARATOR)) + 1);
+            $relative = str_replace('\\', '/', $relative);
+
+            if ($relative === 'fonts' || str_starts_with($relative, 'fonts/')) {
+                continue;
+            }
+
+            $destination = $assetsDir.'/'.$relative;
+
+            if ($file->isDir()) {
+                if (! is_dir($destination) && ! mkdir($destination, 0755, true) && ! is_dir($destination)) {
+                    throw new HtmlException(sprintf('Unable to create site asset directory: %s', $destination));
+                }
+
+                continue;
+            }
+
+            $parent = dirname($destination);
+
+            if (! is_dir($parent) && ! mkdir($parent, 0755, true) && ! is_dir($parent)) {
+                throw new HtmlException(sprintf('Unable to create site asset directory: %s', $parent));
+            }
+
+            if (! copy($file->getPathname(), $destination)) {
+                throw new HtmlException(sprintf('Unable to copy site asset: %s', $relative));
+            }
         }
     }
 

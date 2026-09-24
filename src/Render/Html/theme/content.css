@@ -198,25 +198,33 @@ pre {
 }
 
 .code-block {
-    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
     margin-bottom: 1.875em;
+    border-left: solid 4px var(--pre-border);
+    background-color: var(--pre-bg);
 }
 
 .code-block pre {
-    margin-bottom: 0;
-    padding-right: 3.25rem;
+    grid-column: 1;
+    min-width: 0;
+    margin: 0;
+    border-left: none;
+    background: transparent;
 }
 
 .code-copy {
-    position: absolute;
+    grid-column: 2;
+    position: sticky;
     top: 0.5rem;
-    right: 0.5rem;
     z-index: 1;
-    margin: 0;
+    align-self: start;
+    margin: 0.5rem 0.5rem 0 0;
     padding: 0.25rem 0.55rem;
     border: 1px solid var(--toggle-border);
     border-radius: 0;
-    background: var(--toggle-bg);
+    background: var(--pre-bg);
     color: var(--muted);
     font-family: inherit;
     font-size: 0.7rem;

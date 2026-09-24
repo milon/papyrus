@@ -317,7 +317,9 @@ Automatic page breaks before headings (`1` = H1, `2` = H1 and H2). Explicit
 ## CommonMark hook
 
 ```php
-'configure_commonmark' => function (\League\CommonMark\Environment\Environment $environment): void {
+'configure_commonmark' => function (
+    \League\CommonMark\Environment\Environment $environment
+): void {
     // register custom extensions
 },
 ```

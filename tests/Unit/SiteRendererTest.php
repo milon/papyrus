@@ -412,6 +412,8 @@ PHP);
             $this->assertIsString($html);
             $this->assertStringContainsString('class="page-toc"', $html);
             $this->assertStringContainsString('On this page', $html);
+            $this->assertStringContainsString('page-toc-rail', $html);
+            $this->assertStringContainsString('page-toc-icon', $html);
             $this->assertStringContainsString('href="#one-dimensional"', $html);
             $this->assertStringContainsString('href="#code-39"', $html);
             $this->assertStringContainsString('href="#two-dimensional"', $html);

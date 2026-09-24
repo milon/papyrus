@@ -248,25 +248,33 @@ pre {
 }
 
 .code-block {
-    position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
     margin-bottom: 1.875em;
+    border-left: solid 4px var(--pre-border);
+    background-color: var(--pre-bg);
 }
 
 .code-block pre {
-    margin-bottom: 0;
-    padding-right: 3.25rem;
+    grid-column: 1;
+    min-width: 0;
+    margin: 0;
+    border-left: none;
+    background: transparent;
 }
 
 .code-copy {
-    position: absolute;
+    grid-column: 2;
+    position: sticky;
     top: 0.5rem;
-    right: 0.5rem;
     z-index: 1;
-    margin: 0;
+    align-self: start;
+    margin: 0.5rem 0.5rem 0 0;
     padding: 0.25rem 0.55rem;
     border: 1px solid var(--toggle-border);
     border-radius: 0;
-    background: var(--toggle-bg);
+    background: var(--pre-bg);
     color: var(--muted);
     font-family: inherit;
     font-size: 0.7rem;
@@ -779,12 +787,28 @@ html[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
 }
 
 .page-toc-title {
-    margin: 0 0 0.65rem;
-    font-size: 0.7rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0 0 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    letter-spacing: normal;
+    text-transform: none;
     color: var(--muted);
+    line-height: 1.3;
+}
+
+.page-toc-icon {
+    flex: 0 0 auto;
+    width: 1rem;
+    height: 1rem;
+    color: var(--muted);
+    opacity: 0.75;
+}
+
+.page-toc-rail {
+    border-left: 1px solid var(--sidebar-border);
 }
 
 .page-toc ul {
@@ -793,43 +817,48 @@ html[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
     padding: 0;
 }
 
-.page-toc > ul > li + li {
-    margin-top: 0.35rem;
+.page-toc-rail > ul > li + li {
+    margin-top: 0.15rem;
 }
 
 .page-toc ul ul {
-    margin: 0.3rem 0 0.15rem 0.75rem;
+    margin: 0.35rem 0 0;
     padding: 0;
-    border-left: 1px solid var(--sidebar-border);
+    border-left: none;
 }
 
 .page-toc ul ul li {
     margin: 0;
 }
 
-.page-toc ul ul a {
-    padding-left: 0.75rem;
-}
-
 .page-toc a {
-    display: block;
-    padding: 0.2rem 0;
-    font-size: 0.8rem;
-    line-height: 1.35;
+    display: inline-block;
+    max-width: 100%;
+    margin: 0 0 0 -1px;
+    padding: 0.15rem 0.5rem 0.15rem 1rem;
+    border-left: 3px solid transparent;
+    box-sizing: border-box;
+    font-size: 0.8125rem;
+    font-weight: 400;
+    line-height: 1.5;
     color: var(--muted);
     text-decoration: none;
-    border-left: 2px solid transparent;
+}
+
+.page-toc ul ul a {
+    padding-left: 2rem;
 }
 
 .page-toc a:hover {
     color: var(--fg);
+    border-left-color: color-mix(in srgb, var(--fg) 22%, transparent);
     text-decoration: none;
 }
 
 .page-toc a.is-active {
-    color: var(--sidebar-active);
+    color: var(--fg);
     border-left-color: var(--sidebar-active);
-    font-weight: 600;
+    font-weight: 400;
 }
 
 .edit-page {
