@@ -10,9 +10,9 @@ namespace Milon\Papyrus\Markdown;
 final class HeadingAnchors
 {
     /**
-     * @return array{0: string, 1: list<array{id: string, title: string}>}
+     * @return array{0: string, 1: list<array{id: string, title: string, level: int}>}
      */
-    public static function process(string $html, int $minLevel = 2, int $maxLevel = 2): array
+    public static function process(string $html, int $minLevel = 2, int $maxLevel = 3): array
     {
         $used = [];
         $headings = [];
@@ -36,7 +36,11 @@ final class HeadingAnchors
 
                 $id = self::existingId($attrs) ?? self::uniqueSlug($title, $used);
                 $used[$id] = true;
-                $headings[] = ['id' => $id, 'title' => $title];
+                $headings[] = [
+                    'id' => $id,
+                    'title' => $title,
+                    'level' => $level,
+                ];
 
                 if (self::existingId($attrs) === null) {
                     $attrs = rtrim($attrs).' id="'.htmlspecialchars($id, ENT_QUOTES | ENT_HTML5).'"';
@@ -59,7 +63,7 @@ final class HeadingAnchors
         return [is_string($result) ? $result : $html, $headings];
     }
 
-    public static function decorate(string $html, int $minLevel = 2, int $maxLevel = 2): string
+    public static function decorate(string $html, int $minLevel = 2, int $maxLevel = 3): string
     {
         return self::process($html, $minLevel, $maxLevel)[0];
     }

@@ -152,7 +152,8 @@ h2 {
     position: relative;
 }
 
-h2 .heading-permalink {
+h2 .heading-permalink,
+h3 .heading-permalink {
     position: absolute;
     left: -0.9em;
     width: 0.85em;
@@ -165,6 +166,8 @@ h2 .heading-permalink {
 
 h2:hover .heading-permalink,
 h2:focus-within .heading-permalink,
+h3:hover .heading-permalink,
+h3:focus-within .heading-permalink,
 .heading-permalink:focus {
     opacity: 1;
 }
@@ -175,6 +178,8 @@ h3 {
     margin-top: 1.6em;
     padding-top: 1.05em;
     padding-bottom: 0;
+    scroll-margin-top: 4rem;
+    position: relative;
 }
 
 p, ul, ol { margin-bottom: 1.25em; }

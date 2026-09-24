@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `init --preset=docs` — documentation-site scaffold (YAML by default, starter chapters, no KDP/sample; reads nearby `composer.json` for title/links/`base_path`)
 - `site.mode: docs` — package-style home page (Get started CTA, secondary GitHub/Packagist links; skips “Start reading”)
 - `site.nav` — grouped sidebar sections; orders Prev/Next; unlisted chapters under More
+- Site chapter pages: sticky **On this page** outline for `h2` / `h3` (wide screens); `###` headings get permalink anchors too
 
 ## [1.1.0] - 2026-09-04
 

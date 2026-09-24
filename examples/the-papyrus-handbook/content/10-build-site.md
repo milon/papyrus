@@ -5,7 +5,8 @@ title: build:site
 # build:site
 
 Build a multi-page static site: Home index, one HTML page per chapter,
-sidebar navigation, light / dark mode, and Prev / Next links.
+sidebar navigation, light / dark mode, Prev / Next links, and an
+**On this page** outline of `h2` / `h3` headings on wide screens.
 
 ```bash
 papyrus build:site
@@ -121,6 +122,12 @@ Chapter names match the same way as `links.chapter` (filename, stem, or path).
 When `nav` is set, the sidebar shows labeled groups and Prev/Next follow that
 order. Chapters not listed still appear under **More**. Omit `nav` to keep the
 default natural filename order.
+
+### On this page
+
+Chapter pages with `##` / `###` headings get a sticky right-rail outline (wide
+viewports only). Links reuse the same fragment ids as heading permalinks.
+Scroll position highlights the active section.
 
 With `mode: docs`, the primary button prefers a chapter whose slug or title
 contains “install”, “quick start”, or “getting started”; otherwise it skips a

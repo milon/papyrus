@@ -393,5 +393,42 @@
                 openSearch();
             }
         });
+
+        var pageToc = document.querySelector(".page-toc");
+        if (pageToc && "IntersectionObserver" in window) {
+            var tocLinks = Array.prototype.slice.call(pageToc.querySelectorAll('a[href^="#"]'));
+            var tocById = {};
+            tocLinks.forEach(function (link) {
+                var id = decodeURIComponent((link.getAttribute("href") || "").slice(1));
+                if (id) tocById[id] = link;
+            });
+            var observed = Object.keys(tocById)
+                .map(function (id) { return document.getElementById(id); })
+                .filter(Boolean);
+            var activeId = null;
+
+            function setActiveToc(id) {
+                if (id === activeId) return;
+                activeId = id;
+                tocLinks.forEach(function (link) {
+                    var on = link === tocById[id];
+                    link.classList.toggle("is-active", on);
+                    if (on) link.setAttribute("aria-current", "true");
+                    else link.removeAttribute("aria-current");
+                });
+            }
+
+            if (observed.length > 0) {
+                var observer = new IntersectionObserver(function (entries) {
+                    var visible = entries
+                        .filter(function (entry) { return entry.isIntersecting; })
+                        .sort(function (a, b) { return a.boundingClientRect.top - b.boundingClientRect.top; });
+                    if (visible.length > 0) {
+                        setActiveToc(visible[0].target.id);
+                    }
+                }, { rootMargin: "-20% 0px -65% 0px", threshold: [0, 1] });
+                observed.forEach(function (el) { observer.observe(el); });
+            }
+        }
     });
 })();

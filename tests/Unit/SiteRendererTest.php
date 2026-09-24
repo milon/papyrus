@@ -366,6 +366,75 @@ PHP);
         }
     }
 
+    #[Test]
+    public function chapter_pages_include_on_this_page_toc_for_h2_and_h3(): void
+    {
+        $bookDir = sys_get_temp_dir().'/papyrus-page-toc-'.uniqid('', true);
+        $export = sys_get_temp_dir().'/papyrus-page-toc-export-'.uniqid('', true);
+        mkdir($bookDir.'/content', 0755, true);
+        mkdir($bookDir.'/assets', 0755, true);
+        mkdir($export);
+
+        file_put_contents($bookDir.'/content/01-types.md', <<<'MD'
+---
+title: Types
+---
+
+# Types
+
+## One-dimensional
+
+Intro.
+
+### Code 39
+
+Details.
+
+## Two-dimensional
+
+More.
+
+MD);
+        file_put_contents($bookDir.'/papyrus.php', <<<'PHP'
+<?php
+
+return [
+    'title' => 'TOC Docs',
+    'themes' => ['light'],
+    'mermaid' => ['enabled' => false],
+];
+PHP);
+
+        try {
+            $project = Project::load($bookDir)->withExportDir($export);
+            $siteDir = (new SiteRenderer($project))->render();
+            $html = file_get_contents($siteDir.'/01-types.html');
+            $this->assertIsString($html);
+            $this->assertStringContainsString('class="page-toc"', $html);
+            $this->assertStringContainsString('On this page', $html);
+            $this->assertStringContainsString('href="#one-dimensional"', $html);
+            $this->assertStringContainsString('href="#code-39"', $html);
+            $this->assertStringContainsString('href="#two-dimensional"', $html);
+            $this->assertStringContainsString('<h3 id="code-39"', $html);
+            $this->assertStringContainsString('content-with-toc', $html);
+
+            $index = file_get_contents($siteDir.'/index.html');
+            $this->assertIsString($index);
+            $this->assertStringNotContainsString('page-toc', $index);
+
+            $css = file_get_contents($siteDir.'/assets/site.css');
+            $this->assertIsString($css);
+            $this->assertStringContainsString('.page-toc', $css);
+
+            $js = file_get_contents($siteDir.'/assets/site.js');
+            $this->assertIsString($js);
+            $this->assertStringContainsString('page-toc', $js);
+        } finally {
+            $this->removeDir($bookDir);
+            $this->removeDir($export);
+        }
+    }
+
     private function removeDir(string $dir): void
     {
         if (! is_dir($dir)) {

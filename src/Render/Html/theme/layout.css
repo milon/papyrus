@@ -204,6 +204,72 @@ html[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
     box-sizing: border-box;
 }
 
+.content-with-toc {
+    display: block;
+}
+
+.content-main {
+    min-width: 0;
+}
+
+.page-toc {
+    display: none;
+}
+
+.page-toc-title {
+    margin: 0 0 0.65rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.page-toc ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.page-toc > ul > li + li {
+    margin-top: 0.35rem;
+}
+
+.page-toc ul ul {
+    margin: 0.3rem 0 0.15rem 0.75rem;
+    padding: 0;
+    border-left: 1px solid var(--sidebar-border);
+}
+
+.page-toc ul ul li {
+    margin: 0;
+}
+
+.page-toc ul ul a {
+    padding-left: 0.75rem;
+}
+
+.page-toc a {
+    display: block;
+    padding: 0.2rem 0;
+    font-size: 0.8rem;
+    line-height: 1.35;
+    color: var(--muted);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+}
+
+.page-toc a:hover {
+    color: var(--fg);
+    text-decoration: none;
+}
+
+.page-toc a.is-active {
+    color: var(--sidebar-active);
+    border-left-color: var(--sidebar-active);
+    font-weight: 600;
+}
+
 .chapter-nav {
     display: flex;
     justify-content: space-between;
@@ -275,6 +341,26 @@ html[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
 
     .content {
         padding-top: 2.5rem;
+    }
+}
+
+@media (min-width: 72em) {
+    .content-with-toc {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 13.5rem;
+        gap: 2.5rem;
+        align-items: start;
+        max-width: 58rem;
+        margin: 0 auto;
+    }
+
+    .page-toc {
+        display: block;
+        position: sticky;
+        top: 4.5rem;
+        max-height: calc(100vh - 5.5rem);
+        overflow: auto;
+        padding-left: 0.25rem;
     }
 }
 

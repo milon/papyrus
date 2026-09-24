@@ -401,7 +401,12 @@ HTML;
 
         $nav .= '</nav>';
 
-        $body = HeadingAnchors::decorate($page['chapter']->html).$nav;
+        [$anchoredHtml, $headings] = HeadingAnchors::process($page['chapter']->html);
+        $main = $anchoredHtml.$nav;
+        $toc = $this->pageTocHtml($headings);
+        $body = $toc === ''
+            ? $main
+            : '<div class="content-with-toc"><div class="content-main">'.$main.'</div>'.$toc.'</div>';
         $documentTitle = $page['title'].' — '.$this->project->title();
 
         return $this->document(
@@ -410,6 +415,68 @@ HTML;
             activeFile: $page['file'],
             body: $body,
             topbarTitle: $page['title'],
+        );
+    }
+
+    /**
+     * @param  list<array{id: string, title: string, level: int}>  $headings
+     */
+    private function pageTocHtml(array $headings): string
+    {
+        if ($headings === []) {
+            return '';
+        }
+
+        $items = '';
+        $count = count($headings);
+
+        for ($i = 0; $i < $count; $i++) {
+            $heading = $headings[$i];
+
+            if ($heading['level'] > 2) {
+                // Orphan h3 (no preceding h2) — treat as a top-level link.
+                $items .= $this->pageTocItem($heading);
+
+                continue;
+            }
+
+            $children = '';
+
+            while ($i + 1 < $count && $headings[$i + 1]['level'] > 2) {
+                $i++;
+                $children .= $this->pageTocItem($headings[$i]);
+            }
+
+            if ($children === '') {
+                $items .= $this->pageTocItem($heading);
+            } else {
+                $items .= sprintf(
+                    '<li><a href="#%s">%s</a><ul>%s</ul></li>',
+                    htmlspecialchars($heading['id'], ENT_QUOTES | ENT_HTML5),
+                    htmlspecialchars($heading['title'], ENT_QUOTES | ENT_HTML5),
+                    $children,
+                );
+            }
+        }
+
+        return sprintf(
+            '<aside class="page-toc" aria-label="On this page">'
+            .'<p class="page-toc-title">On this page</p>'
+            .'<ul>%s</ul>'
+            .'</aside>',
+            $items,
+        );
+    }
+
+    /**
+     * @param  array{id: string, title: string, level: int}  $heading
+     */
+    private function pageTocItem(array $heading): string
+    {
+        return sprintf(
+            '<li><a href="#%s">%s</a></li>',
+            htmlspecialchars($heading['id'], ENT_QUOTES | ENT_HTML5),
+            htmlspecialchars($heading['title'], ENT_QUOTES | ENT_HTML5),
         );
     }
 
