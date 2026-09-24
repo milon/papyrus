@@ -31,6 +31,7 @@ title: Command reference
 | Command         | Purpose                                                                    | Notable options                                                  |
 |-----------------|----------------------------------------------------------------------------|------------------------------------------------------------------|
 | `init`          | Scaffold book or docs site                                         | `--force`, `--preset=book\|docs`, `--format=php\|yml\|yaml\|json` |
+| `import-readme` | Split `README.md` into `content/` chapters on `##`                 | `--file`, `--force`, `--dry-run`                                  |
 | `asset:publish` | Publish bundled themes, CSS, and fonts into `assets/`                      | `--force`, `--only=themes,css,fonts`                             |
 | `doctor`        | Validate config, paths, Mermaid, KDP readiness                             | `-d`                                                             |
 | `sizes`         | List page-size presets (+ KDP in-bounds)                                   | (no `-d` / `-e`)                                                 |

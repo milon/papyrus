@@ -10,6 +10,7 @@ use Milon\Papyrus\Commands\BuildCommand;
 use Milon\Papyrus\Commands\DoctorCommand;
 use Milon\Papyrus\Commands\EpubCommand;
 use Milon\Papyrus\Commands\HtmlCommand;
+use Milon\Papyrus\Commands\ImportReadmeCommand;
 use Milon\Papyrus\Commands\InitCommand;
 use Milon\Papyrus\Commands\Kdp\KdpCommand;
 use Milon\Papyrus\Commands\Kdp\KdpCoverCommand;
@@ -38,6 +39,7 @@ final class Application extends SymfonyApplication
 
         $this->addCommands([
             new InitCommand,
+            new ImportReadmeCommand,
             new AssetPublishCommand,
             new DoctorCommand,
             new BuildCommand,

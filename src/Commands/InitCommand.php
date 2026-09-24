@@ -95,11 +95,44 @@ final class InitCommand extends BookCommand
 
         if ($preset === InitPreset::Docs) {
             $output->writeln('');
-            $output->writeln('<comment>Next:</comment> edit content/, then <info>papyrus build:site</info> and <info>papyrus serve</info>.');
-            $output->writeln('<comment>Tip:</comment> adjust <info>site.base_path</info> for project GitHub Pages (e.g. /barcode).');
+            $output->writeln('<comment>Next:</comment> edit content/, then <info>papyrus build:site -e docs</info> and <info>papyrus serve</info>.');
+            $output->writeln('<comment>Tip:</comment> adjust <info>site.base_path</info> for project GitHub Pages; copy <info>github/workflows/docs-site.yml</info> to <info>.github/workflows/</info>.');
+            $output->writeln('<comment>Tip:</comment> <info>papyrus import-readme</info> splits an existing README.md into chapters.');
         }
 
         return self::SUCCESS;
+    }
+
+    private function guessEditPath(string $dir): string
+    {
+        $normalized = rtrim(str_replace('\\', '/', $dir), '/');
+        $real = realpath($dir);
+        $cwd = getcwd();
+        $cwdReal = is_string($cwd) ? realpath($cwd) : false;
+
+        if ($real !== false && $cwdReal !== false && str_starts_with($real, $cwdReal.'/')) {
+            $relative = substr($real, strlen($cwdReal) + 1);
+            $relative = str_replace('\\', '/', $relative);
+
+            if ($relative !== '') {
+                return $relative.'/content';
+            }
+
+            return 'content';
+        }
+
+        $leaf = basename($normalized);
+        $parent = dirname($normalized);
+
+        if ($leaf !== '' && $leaf !== '.' && (
+            is_file($parent.'/composer.json')
+            || is_file($parent.'/README.md')
+            || is_file($parent.'/readme.md')
+        )) {
+            return $leaf.'/content';
+        }
+
+        return 'content';
     }
 
     private function resolveFormat(InputInterface $input, InitPreset $preset): ConfigFormat
@@ -170,7 +203,7 @@ final class InitCommand extends BookCommand
     ): array {
         $written = [];
         $hint = ComposerProjectHint::discover($dir);
-        $config = DocsPresetConfig::build($hint);
+        $config = DocsPresetConfig::build($hint, $this->guessEditPath($dir));
         $title = is_string($config['title'] ?? null) ? $config['title'] : 'My Package';
 
         foreach ($repo->presetFiles('docs') as $relative) {

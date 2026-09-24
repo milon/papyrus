@@ -192,13 +192,16 @@ face is registered.
 
 | Key         | Default                                     | Notes                                                                                                                     |
 |-------------|---------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
-| `mode`      | `book`                                      | `docs` → package documentation home (Get started); set by `init --preset=docs`                                            |
-| `banner`    | auto `banner.jpg` / `banner.png` if present | Under `assets/`                                                                                                           |
-| `lead`      | unset                                       | Home page pitch                                                                                                           |
-| `cname`     | unset                                       | Custom domain; writes a `CNAME` file in the site root for GitHub Pages; absolute `sitemap.xml` / `robots.txt` Sitemap URL |
-| `base_path` | unset (site at `/`)                         | Path prefix for project GitHub Pages (e.g. `/my-repo`); injects `<base href>`; also prefixes sitemap locs                 |
-| `links`     | unset                                       | Explicit home-page links; each item needs `label` plus either `url` or `chapter`                                          |
-| `nav`       | unset                                       | Grouped sidebar: list of `{ group, chapters: [...] }`; orders Prev/Next too                                               |
+| `mode`         | `book`                                      | `docs` → package documentation home (Get started); set by `init --preset=docs`                                            |
+| `banner`       | auto `banner.jpg` / `banner.png` if present | Under `assets/`                                                                                                           |
+| `lead`         | unset                                       | Home page pitch                                                                                                           |
+| `cname`        | unset                                       | Custom domain; writes a `CNAME` file in the site root for GitHub Pages; absolute `sitemap.xml` / `robots.txt` Sitemap URL |
+| `base_path`    | unset (site at `/`)                         | Path prefix for project GitHub Pages (e.g. `/my-repo`); injects `<base href>`; also prefixes sitemap locs                 |
+| `links`        | unset                                       | Explicit home-page links; each item needs `label` plus either `url` or `chapter`                                          |
+| `nav`          | unset                                       | Grouped sidebar: list of `{ group, chapters: [...] }`; orders Prev/Next too                                               |
+| `repository`   | unset                                       | GitHub repo URL; enables **Edit this page** on chapters (also legacy home links when `links` is unset)                    |
+| `edit_path`    | `content`                                   | Path from repo root to `content/` (e.g. `docs/content`)                                                                   |
+| `edit_branch`  | `main`                                      | Branch used in edit URLs                                                                                                  |
 
 `chapter` matches a chapter source name like `19-downloads.md`, `19-downloads`,
 or a full relative source path, and links to that generated page.

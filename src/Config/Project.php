@@ -553,6 +553,102 @@ final class Project
         return $sections;
     }
 
+    /**
+     * GitHub (or compatible) repository URL for edit-on-GitHub links.
+     */
+    public function siteRepository(): ?string
+    {
+        $site = $this->config['site'] ?? [];
+
+        if (! is_array($site)) {
+            return null;
+        }
+
+        $repository = $site['repository'] ?? null;
+
+        if (! is_string($repository)) {
+            return null;
+        }
+
+        $repository = rtrim(trim($repository), '/');
+
+        if ($repository === '') {
+            return null;
+        }
+
+        if (str_ends_with(strtolower($repository), '.git')) {
+            $repository = substr($repository, 0, -4);
+        }
+
+        return $repository;
+    }
+
+    /**
+     * Path from the repository root to the content directory (e.g. content or docs/content).
+     */
+    public function siteEditPath(): string
+    {
+        $site = $this->config['site'] ?? [];
+
+        if (! is_array($site)) {
+            return 'content';
+        }
+
+        $editPath = $site['edit_path'] ?? null;
+
+        if (! is_string($editPath) || trim($editPath) === '') {
+            return 'content';
+        }
+
+        return trim(str_replace('\\', '/', $editPath), '/');
+    }
+
+    /**
+     * Branch used for “Edit this page” URLs (default main).
+     */
+    public function siteEditBranch(): string
+    {
+        $site = $this->config['site'] ?? [];
+
+        if (! is_array($site)) {
+            return 'main';
+        }
+
+        $branch = $site['edit_branch'] ?? null;
+
+        if (! is_string($branch) || trim($branch) === '') {
+            return 'main';
+        }
+
+        return trim($branch);
+    }
+
+    /**
+     * Full URL to edit a chapter on GitHub, or null when repository is unset.
+     */
+    public function chapterEditUrl(string $chapterSource): ?string
+    {
+        $repository = $this->siteRepository();
+
+        if ($repository === null) {
+            return null;
+        }
+
+        if (! str_contains(strtolower($repository), 'github.com')) {
+            return null;
+        }
+
+        $source = ltrim(str_replace('\\', '/', $chapterSource), '/');
+        $path = $this->siteEditPath().'/'.$source;
+
+        return sprintf(
+            '%s/edit/%s/%s',
+            $repository,
+            rawurlencode($this->siteEditBranch()),
+            implode('/', array_map('rawurlencode', explode('/', $path))),
+        );
+    }
+
     public function outputSlug(): string
     {
         $slug = strtolower(trim($this->title()));

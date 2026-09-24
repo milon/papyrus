@@ -15,6 +15,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `site.mode: docs` — package-style home page (Get started CTA, secondary GitHub/Packagist links; skips “Start reading”)
 - `site.nav` — grouped sidebar sections; orders Prev/Next; unlisted chapters under More
 - Site chapter pages: sticky **On this page** outline for `h2` / `h3` (wide screens); `###` headings get permalink anchors too
+- `import-readme` — split a `README.md` into `content/` chapters on `##` headings (`--file`, `--force`, `--dry-run`)
+- `site.repository` / `site.edit_path` / `site.edit_branch` — **Edit this page** links on chapter pages (docs preset fills these from `composer.json`)
+- Copy button on site code fences
+- Docs preset GitHub Pages workflow stub builds with `-e docs` and deploys via `actions/deploy-pages`
 
 ## [1.1.0] - 2026-09-04
 

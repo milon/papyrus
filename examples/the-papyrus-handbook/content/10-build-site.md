@@ -129,6 +129,23 @@ Chapter pages with `##` / `###` headings get a sticky right-rail outline (wide
 viewports only). Links reuse the same fragment ids as heading permalinks.
 Scroll position highlights the active section.
 
+### Edit on GitHub
+
+```php
+'site' => [
+    'repository' => 'https://github.com/milon/barcode',
+    'edit_path' => 'docs/content', // path from repo root to content/
+    'edit_branch' => 'main',       // optional; default main
+],
+```
+
+Each chapter page then shows **Edit this page** linking to the file on GitHub.
+`init --preset=docs` fills these from nearby `composer.json` when possible.
+
+### Copy on code fences
+
+Site pages wrap fenced code blocks with a **Copy** button (clipboard API).
+
 With `mode: docs`, the primary button prefers a chapter whose slug or title
 contains “install”, “quick start”, or “getting started”; otherwise it skips a
 Welcome/`00-` chapter and links to the next page. Secondary `links` stay below

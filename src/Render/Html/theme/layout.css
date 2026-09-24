@@ -270,6 +270,25 @@ html[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
     font-weight: 600;
 }
 
+.edit-page {
+    margin: 2.5rem 0 0;
+    font-size: 0.85rem;
+}
+
+.edit-page a {
+    color: var(--muted);
+    text-decoration: none;
+}
+
+.edit-page a:hover {
+    color: var(--fg);
+    text-decoration: underline;
+}
+
+.edit-page + .chapter-nav {
+    margin-top: 1rem;
+}
+
 .chapter-nav {
     display: flex;
     justify-content: space-between;

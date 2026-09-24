@@ -393,5 +393,75 @@
                 openSearch();
             }
         });
+
+        var pageToc = document.querySelector(".page-toc");
+        if (pageToc && "IntersectionObserver" in window) {
+            var tocLinks = Array.prototype.slice.call(pageToc.querySelectorAll('a[href^="#"]'));
+            var tocById = {};
+            tocLinks.forEach(function (link) {
+                var id = decodeURIComponent((link.getAttribute("href") || "").slice(1));
+                if (id) tocById[id] = link;
+            });
+            var observed = Object.keys(tocById)
+                .map(function (id) { return document.getElementById(id); })
+                .filter(Boolean);
+            var activeId = null;
+
+            function setActiveToc(id) {
+                if (id === activeId) return;
+                activeId = id;
+                tocLinks.forEach(function (link) {
+                    var on = link === tocById[id];
+                    link.classList.toggle("is-active", on);
+                    if (on) link.setAttribute("aria-current", "true");
+                    else link.removeAttribute("aria-current");
+                });
+            }
+
+            if (observed.length > 0) {
+                var observer = new IntersectionObserver(function (entries) {
+                    var visible = entries
+                        .filter(function (entry) { return entry.isIntersecting; })
+                        .sort(function (a, b) { return a.boundingClientRect.top - b.boundingClientRect.top; });
+                    if (visible.length > 0) {
+                        setActiveToc(visible[0].target.id);
+                    }
+                }, { rootMargin: "-20% 0px -65% 0px", threshold: [0, 1] });
+                observed.forEach(function (el) { observer.observe(el); });
+            }
+        }
+
+        var contentRoot = document.querySelector("main.content");
+        if (contentRoot && navigator.clipboard && navigator.clipboard.writeText) {
+            Array.prototype.forEach.call(contentRoot.querySelectorAll("pre"), function (pre) {
+                if (pre.closest(".code-block") || pre.closest("figure.mermaid")) {
+                    return;
+                }
+
+                var wrap = document.createElement("div");
+                wrap.className = "code-block";
+                pre.parentNode.insertBefore(wrap, pre);
+                wrap.appendChild(pre);
+
+                var button = document.createElement("button");
+                button.type = "button";
+                button.className = "code-copy";
+                button.setAttribute("aria-label", "Copy code");
+                button.textContent = "Copy";
+                wrap.appendChild(button);
+
+                button.addEventListener("click", function () {
+                    var text = pre.innerText || pre.textContent || "";
+                    navigator.clipboard.writeText(text).then(function () {
+                        button.textContent = "Copied";
+                        button.classList.add("is-copied");
+                        window.setTimeout(function () {
+                            button.textContent = "Copy";
+                            button.classList.remove("is-copied");
+                        }, 1600);
+                    }).catch(function () {});
+                });
+            });
+        }
     });
 })();

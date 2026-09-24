@@ -1,10 +1,19 @@
-# Copy to .github/workflows/docs-site.yml (adjust paths if your Papyrus root differs).
+# Copy this file to .github/workflows/docs-site.yml (adjust -d if papyrus.yml is not at the repo root).
 name: docs-site
 
 on:
   push:
     branches: [main, master]
   pull_request:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -23,11 +32,26 @@ jobs:
         run: composer install --no-interaction --prefer-dist
 
       - name: Build documentation site
-        # If papyrus.yml lives in docs/, use: -d docs -e docs
-        run: vendor/bin/papyrus build:site
+        # Project at repo root → export to docs/<slug>-site
+        # Papyrus root in docs/ → use: vendor/bin/papyrus build:site -d docs -e docs
+        run: vendor/bin/papyrus build:site -e docs
 
-      - name: Upload site artifact
-        uses: actions/upload-artifact@v4
+      - name: Locate site output
+        id: site
+        run: echo "dir=$(ls -d docs/*-site | head -n 1)" >> "$GITHUB_OUTPUT"
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          name: docs-site
-          path: export/*-site
+          path: ${{ steps.site.outputs.dir }}
+
+  deploy:
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

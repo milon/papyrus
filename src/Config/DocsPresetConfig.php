@@ -10,15 +10,20 @@ namespace Milon\Papyrus\Config;
 final class DocsPresetConfig
 {
     /**
+     * @param  string|null  $editPath  Path from repo root to content/ (e.g. content or docs/content)
      * @return array<string, mixed>
      */
-    public static function build(?ComposerProjectHint $hint = null): array
+    public static function build(?ComposerProjectHint $hint = null, ?string $editPath = null): array
     {
         $title = $hint?->displayTitle() ?? 'My Package';
         $lead = $hint?->description !== null && $hint->description !== ''
             ? $hint->description
             : 'Documentation for this package.';
         $basePath = $hint?->suggestedBasePath() ?? '/your-repo';
+        $repository = $hint?->sourceUrl ?? 'https://github.com/you/your-package';
+        $editPath = $editPath !== null && trim($editPath) !== ''
+            ? trim(str_replace('\\', '/', $editPath), '/')
+            : 'content';
 
         $links = [];
 
@@ -63,6 +68,9 @@ final class DocsPresetConfig
                 'lead' => $lead,
                 // Project GitHub Pages: set to /<repo>. Omit (or use cname) for a custom domain.
                 'base_path' => $basePath,
+                'repository' => $repository,
+                'edit_path' => $editPath,
+                'edit_branch' => 'main',
                 'links' => $links,
                 'nav' => [
                     [

@@ -130,20 +130,34 @@ papyrus init --preset=docs -d docs
 That writes `papyrus.yml` by default (override with `--format=php|json`),
 starter chapters (welcome, install, usage, reference, changelog), an empty
 `assets/`, and a sample GitHub Actions workflow under
-`github/workflows/docs-site.yml`.
+`github/workflows/docs-site.yml` (copy it to `.github/workflows/`).
 
 If a `composer.json` is found in the target directory or its parent, Papyrus
-fills `title`, `site.lead`, `site.links` (GitHub / Packagist), and a suggested
+fills `title`, `site.lead`, `site.links` (GitHub / Packagist),
+`site.repository` / `site.edit_path` (for **Edit this page**), and a suggested
 `site.base_path` (e.g. `/barcode` for `milon/barcode`). There is no KDP or
 sample-PDF config in this preset.
 
 ```bash
-papyrus build:site
-papyrus serve
+papyrus build:site -e docs
+papyrus serve -s docs/<slug>-site
 ```
 
 `site.mode: docs` is set so the home page uses a **Get started** CTA (and
 secondary GitHub/Packagist links) instead of “Start reading.”
+
+### Import an existing README
+
+Most PHP packages start as one fat `README.md`. Split it into chapters on
+`##` headings:
+
+```bash
+papyrus import-readme
+papyrus import-readme --file ../README.md --dry-run
+papyrus import-readme -d docs --force
+```
+
+Then update `site.nav` to match the new files.
 
 ## Config without PHP (YAML or JSON)
 

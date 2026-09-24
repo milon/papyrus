@@ -402,7 +402,8 @@ HTML;
         $nav .= '</nav>';
 
         [$anchoredHtml, $headings] = HeadingAnchors::process($page['chapter']->html);
-        $main = $anchoredHtml.$nav;
+        $edit = $this->editPageHtml($page['chapter']->source);
+        $main = $anchoredHtml.$edit.$nav;
         $toc = $this->pageTocHtml($headings);
         $body = $toc === ''
             ? $main
@@ -415,6 +416,20 @@ HTML;
             activeFile: $page['file'],
             body: $body,
             topbarTitle: $page['title'],
+        );
+    }
+
+    private function editPageHtml(string $chapterSource): string
+    {
+        $url = $this->project->chapterEditUrl($chapterSource);
+
+        if ($url === null) {
+            return '';
+        }
+
+        return sprintf(
+            '<p class="edit-page"><a href="%s" target="_blank" rel="noopener noreferrer">Edit this page</a></p>',
+            htmlspecialchars($url, ENT_QUOTES | ENT_HTML5),
         );
     }
 

@@ -430,5 +430,38 @@
                 observed.forEach(function (el) { observer.observe(el); });
             }
         }
+
+        var contentRoot = document.querySelector("main.content");
+        if (contentRoot && navigator.clipboard && navigator.clipboard.writeText) {
+            Array.prototype.forEach.call(contentRoot.querySelectorAll("pre"), function (pre) {
+                if (pre.closest(".code-block") || pre.closest("figure.mermaid")) {
+                    return;
+                }
+
+                var wrap = document.createElement("div");
+                wrap.className = "code-block";
+                pre.parentNode.insertBefore(wrap, pre);
+                wrap.appendChild(pre);
+
+                var button = document.createElement("button");
+                button.type = "button";
+                button.className = "code-copy";
+                button.setAttribute("aria-label", "Copy code");
+                button.textContent = "Copy";
+                wrap.appendChild(button);
+
+                button.addEventListener("click", function () {
+                    var text = pre.innerText || pre.textContent || "";
+                    navigator.clipboard.writeText(text).then(function () {
+                        button.textContent = "Copied";
+                        button.classList.add("is-copied");
+                        window.setTimeout(function () {
+                            button.textContent = "Copy";
+                            button.classList.remove("is-copied");
+                        }, 1600);
+                    }).catch(function () {});
+                });
+            });
+        }
     });
 })();

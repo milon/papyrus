@@ -435,6 +435,61 @@ PHP);
         }
     }
 
+    #[Test]
+    public function chapter_pages_include_edit_link_when_repository_is_set(): void
+    {
+        $bookDir = sys_get_temp_dir().'/papyrus-edit-link-'.uniqid('', true);
+        $export = sys_get_temp_dir().'/papyrus-edit-link-export-'.uniqid('', true);
+        mkdir($bookDir.'/content', 0755, true);
+        mkdir($bookDir.'/assets', 0755, true);
+        mkdir($export);
+
+        file_put_contents($bookDir.'/content/01-install.md', "---\ntitle: Install\n---\n\n# Install\n\n```bash\ncomposer require demo/pkg\n```\n");
+        file_put_contents($bookDir.'/papyrus.php', <<<'PHP'
+<?php
+
+return [
+    'title' => 'Edit Docs',
+    'themes' => ['light'],
+    'site' => [
+        'repository' => 'https://github.com/milon/barcode.git',
+        'edit_path' => 'docs/content',
+        'edit_branch' => 'main',
+    ],
+    'mermaid' => ['enabled' => false],
+];
+PHP);
+
+        try {
+            $project = Project::load($bookDir)->withExportDir($export);
+            $this->assertSame(
+                'https://github.com/milon/barcode/edit/main/docs/content/01-install.md',
+                $project->chapterEditUrl('01-install.md'),
+            );
+
+            $siteDir = (new SiteRenderer($project))->render();
+            $html = file_get_contents($siteDir.'/01-install.html');
+            $this->assertIsString($html);
+            $this->assertStringContainsString('class="edit-page"', $html);
+            $this->assertStringContainsString('Edit this page', $html);
+            $this->assertStringContainsString(
+                'href="https://github.com/milon/barcode/edit/main/docs/content/01-install.md"',
+                $html,
+            );
+
+            $css = file_get_contents($siteDir.'/assets/site.css');
+            $this->assertIsString($css);
+            $this->assertStringContainsString('.code-copy', $css);
+
+            $js = file_get_contents($siteDir.'/assets/site.js');
+            $this->assertIsString($js);
+            $this->assertStringContainsString('code-copy', $js);
+        } finally {
+            $this->removeDir($bookDir);
+            $this->removeDir($export);
+        }
+    }
+
     private function removeDir(string $dir): void
     {
         if (! is_dir($dir)) {

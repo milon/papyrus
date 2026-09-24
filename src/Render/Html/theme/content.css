@@ -197,6 +197,47 @@ pre {
     color: var(--pre-fg);
 }
 
+.code-block {
+    position: relative;
+    margin-bottom: 1.875em;
+}
+
+.code-block pre {
+    margin-bottom: 0;
+    padding-right: 3.25rem;
+}
+
+.code-copy {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    z-index: 1;
+    margin: 0;
+    padding: 0.25rem 0.55rem;
+    border: 1px solid var(--toggle-border);
+    border-radius: 0;
+    background: var(--toggle-bg);
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 0.7rem;
+    line-height: 1.2;
+    cursor: pointer;
+}
+
+.code-copy:hover {
+    color: var(--fg);
+    border-color: var(--fg);
+}
+
+.code-copy:focus-visible {
+    outline: 2px solid var(--link);
+    outline-offset: 2px;
+}
+
+.code-copy.is-copied {
+    color: var(--fg);
+}
+
 pre code {
     background: none;
     font-family: inherit;
