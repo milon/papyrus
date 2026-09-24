@@ -142,8 +142,8 @@ papyrus build:site
 papyrus serve
 ```
 
-`site.mode: docs` is set for upcoming docs-oriented home UI; the site builds
-with the current multi-page theme today.
+`site.mode: docs` is set so the home page uses a **Get started** CTA (and
+secondary GitHub/Packagist links) instead of “Start reading.”
 
 ## Config without PHP (YAML or JSON)
 

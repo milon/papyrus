@@ -90,6 +90,18 @@ final class SiteRenderer
      */
     private function renderIndex(array $pages): string
     {
+        if ($this->project->isDocsSite()) {
+            return $this->renderDocsIndex($pages);
+        }
+
+        return $this->renderBookIndex($pages);
+    }
+
+    /**
+     * @param  list<array{chapter: Chapter, file: string, title: string}>  $pages
+     */
+    private function renderBookIndex(array $pages): string
+    {
         $first = $pages[0];
         $title = htmlspecialchars($this->project->title(), ENT_QUOTES | ENT_HTML5);
         $subtitle = htmlspecialchars($this->project->subtitle(), ENT_QUOTES | ENT_HTML5);
@@ -97,33 +109,24 @@ final class SiteRenderer
         $firstFile = htmlspecialchars($first['file'], ENT_QUOTES | ENT_HTML5);
         $firstTitle = htmlspecialchars($first['title'], ENT_QUOTES | ENT_HTML5);
 
-        $bannerHtml = '';
-        $banner = $this->project->siteBanner();
-
-        if ($banner !== null && is_file($this->project->assetsDir.'/'.$banner)) {
-            $bannerHtml = sprintf(
-                '<p class="book-banner"><img src="assets/%s" alt="%s"/></p>',
-                htmlspecialchars($banner, ENT_QUOTES | ENT_HTML5),
-                $title,
-            );
-        }
-
-        $leadHtml = '';
-        $lead = $this->project->siteLead();
-
-        if ($lead !== null) {
-            $leadHtml = '<p class="book-lead">'.htmlspecialchars($lead, ENT_QUOTES | ENT_HTML5).'</p>';
-        }
-
+        $bannerHtml = $this->homeBannerHtml($title);
+        $leadHtml = $this->homeLeadHtml();
         $linksHtml = $this->homeLinksHtml($pages);
+
+        $subtitleHtml = $this->project->subtitle() !== ''
+            ? '<p class="book-subtitle">'.$subtitle.'</p>'
+            : '';
+        $authorHtml = $this->project->author() !== ''
+            ? '<p class="book-author">'.$author.'</p>'
+            : '';
 
         $body = <<<HTML
 <div class="title-page">
     {$bannerHtml}
     <h1 class="book-title">{$title}</h1>
-    <p class="book-subtitle">{$subtitle}</p>
+    {$subtitleHtml}
     {$leadHtml}
-    <p class="book-author">{$author}</p>
+    {$authorHtml}
     {$linksHtml}
     <a class="start-reading" href="{$firstFile}">Start reading — {$firstTitle}</a>
 </div>
@@ -136,6 +139,152 @@ HTML;
             body: $body,
             topbarTitle: $this->project->title(),
         );
+    }
+
+    /**
+     * @param  list<array{chapter: Chapter, file: string, title: string}>  $pages
+     */
+    private function renderDocsIndex(array $pages): string
+    {
+        $cta = $this->docsStartPage($pages);
+        $title = htmlspecialchars($this->project->title(), ENT_QUOTES | ENT_HTML5);
+        $ctaFile = htmlspecialchars($cta['file'], ENT_QUOTES | ENT_HTML5);
+        $ctaTitle = htmlspecialchars($cta['title'], ENT_QUOTES | ENT_HTML5);
+
+        $bannerHtml = $this->homeBannerHtml($title);
+        $leadHtml = $this->homeLeadHtml();
+
+        $subtitleHtml = '';
+        if ($this->project->subtitle() !== '') {
+            $subtitleHtml = '<p class="book-subtitle">'.htmlspecialchars($this->project->subtitle(), ENT_QUOTES | ENT_HTML5).'</p>';
+        }
+
+        $linksHtml = $this->homeLinksHtml($pages, 'docs-home-links');
+
+        $body = <<<HTML
+<div class="title-page docs-home">
+    {$bannerHtml}
+    <p class="docs-kicker">Documentation</p>
+    <h1 class="book-title">{$title}</h1>
+    {$subtitleHtml}
+    {$leadHtml}
+    <p class="docs-actions">
+        <a class="docs-cta-primary" href="{$ctaFile}">Get started — {$ctaTitle}</a>
+    </p>
+    {$linksHtml}
+</div>
+HTML;
+
+        return $this->document(
+            pages: $pages,
+            pageTitle: $this->project->title(),
+            activeFile: 'index.html',
+            body: $body,
+            topbarTitle: $this->project->title(),
+        );
+    }
+
+    private function homeBannerHtml(string $escapedTitle): string
+    {
+        $banner = $this->project->siteBanner();
+
+        if ($banner === null || ! is_file($this->project->assetsDir.'/'.$banner)) {
+            return '';
+        }
+
+        return sprintf(
+            '<p class="book-banner"><img src="assets/%s" alt="%s"/></p>',
+            htmlspecialchars($banner, ENT_QUOTES | ENT_HTML5),
+            $escapedTitle,
+        );
+    }
+
+    private function homeLeadHtml(): string
+    {
+        $lead = $this->project->siteLead();
+
+        if ($lead === null) {
+            return '';
+        }
+
+        return '<p class="book-lead">'.htmlspecialchars($lead, ENT_QUOTES | ENT_HTML5).'</p>';
+    }
+
+    /**
+     * Prefer Install / Getting started chapters for the docs CTA.
+     *
+     * @param  list<array{chapter: Chapter, file: string, title: string}>  $pages
+     * @return array{chapter: Chapter, file: string, title: string}
+     */
+    private function docsStartPage(array $pages): array
+    {
+        foreach ($pages as $page) {
+            $slug = strtolower($page['chapter']->webSlug());
+            $title = strtolower($page['title']);
+
+            if (
+                str_contains($slug, 'install')
+                || str_contains($title, 'install')
+                || str_contains($slug, 'quick-start')
+                || str_contains($title, 'quick start')
+                || str_contains($slug, 'getting-started')
+                || str_contains($title, 'getting started')
+            ) {
+                return $page;
+            }
+        }
+
+        foreach ($pages as $page) {
+            $slug = strtolower($page['chapter']->webSlug());
+            $title = strtolower($page['title']);
+
+            if (
+                str_contains($slug, 'welcome')
+                || $title === 'welcome'
+                || str_starts_with($slug, '00-')
+            ) {
+                continue;
+            }
+
+            return $page;
+        }
+
+        return $pages[0];
+    }
+
+    /**
+     * @param  list<array{chapter: Chapter, file: string, title: string}>  $pages
+     */
+    private function homeLinksHtml(array $pages, string $class = 'home-links'): string
+    {
+        $items = '';
+        $links = $this->project->siteLinks();
+
+        foreach ($links as $link) {
+            $href = $link['url'] ?? $this->chapterHref($pages, $link['chapter'] ?? null);
+
+            if ($href === null) {
+                continue;
+            }
+
+            $items .= sprintf(
+                '<a href="%s"%s>%s</a>',
+                htmlspecialchars($href, ENT_QUOTES | ENT_HTML5),
+                $this->isExternalUrl($href) ? ' rel="noopener noreferrer"' : '',
+                htmlspecialchars($link['label'], ENT_QUOTES | ENT_HTML5),
+            );
+        }
+
+        if ($items === '') {
+            return '';
+        }
+
+        return '<p class="'.htmlspecialchars($class, ENT_QUOTES | ENT_HTML5).'">'.$items.'</p>';
+    }
+
+    private function isExternalUrl(string $href): bool
+    {
+        return preg_match('#^https?://#i', $href) === 1;
     }
 
     /**
@@ -161,35 +310,6 @@ HTML;
             topbarTitle: 'Page not found',
             extraHead: '<meta name="robots" content="noindex">',
         );
-    }
-
-    /**
-     * @param  list<array{chapter: Chapter, file: string, title: string}>  $pages
-     */
-    private function homeLinksHtml(array $pages): string
-    {
-        $items = '';
-        $links = $this->project->siteLinks();
-
-        foreach ($links as $link) {
-            $href = $link['url'] ?? $this->chapterHref($pages, $link['chapter'] ?? null);
-
-            if ($href === null) {
-                continue;
-            }
-
-            $items .= sprintf(
-                '<a href="%s">%s</a>',
-                htmlspecialchars($href, ENT_QUOTES | ENT_HTML5),
-                htmlspecialchars($link['label'], ENT_QUOTES | ENT_HTML5),
-            );
-        }
-
-        if ($items === '') {
-            return '';
-        }
-
-        return '<p class="home-links">'.$items.'</p>';
     }
 
     /**

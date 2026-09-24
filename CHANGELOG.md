@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Alternate book config formats: `papyrus.yml` / `papyrus.yaml` / `papyrus.json` (auto-discovered; only one allowed)
 - `init --format=php|yml|json` and `migrate-ibis --format=php|yml|json` (default `php`)
 - `init --preset=docs` — documentation-site scaffold (YAML by default, starter chapters, no KDP/sample; reads nearby `composer.json` for title/links/`base_path`)
+- `site.mode: docs` — package-style home page (Get started CTA, secondary GitHub/Packagist links; skips “Start reading”)
 
 ## [1.1.0] - 2026-09-04
 

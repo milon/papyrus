@@ -236,6 +236,63 @@ PHP);
         }
     }
 
+    #[Test]
+    public function docs_mode_home_uses_get_started_cta(): void
+    {
+        $bookDir = sys_get_temp_dir().'/papyrus-site-docs-'.uniqid('', true);
+        $export = sys_get_temp_dir().'/papyrus-site-docs-export-'.uniqid('', true);
+        mkdir($bookDir.'/content', 0755, true);
+        mkdir($bookDir.'/assets', 0755, true);
+        mkdir($export);
+
+        file_put_contents($bookDir.'/content/00-welcome.md', "---\ntitle: Welcome\n---\n\nHi.\n");
+        file_put_contents($bookDir.'/content/01-install.md', "---\ntitle: Install\n---\n\ncomposer require.\n");
+        file_put_contents($bookDir.'/content/02-usage.md', "---\ntitle: Usage\n---\n\nUse it.\n");
+        file_put_contents($bookDir.'/papyrus.php', <<<'PHP'
+<?php
+
+return [
+    'title' => 'Barcode',
+    'themes' => ['light'],
+    'site' => [
+        'mode' => 'docs',
+        'lead' => 'Barcode generator for PHP and Laravel',
+        'links' => [
+            ['label' => 'GitHub', 'url' => 'https://github.com/milon/barcode'],
+            ['label' => 'Packagist', 'url' => 'https://packagist.org/packages/milon/barcode'],
+        ],
+    ],
+    'mermaid' => ['enabled' => false],
+];
+PHP);
+
+        try {
+            $project = Project::load($bookDir)->withExportDir($export);
+            $this->assertTrue($project->isDocsSite());
+
+            $siteDir = (new SiteRenderer($project))->render();
+            $index = file_get_contents($siteDir.'/index.html');
+            $this->assertIsString($index);
+            $this->assertStringContainsString('class="title-page docs-home"', $index);
+            $this->assertStringContainsString('Documentation', $index);
+            $this->assertStringContainsString('Barcode generator for PHP and Laravel', $index);
+            $this->assertStringContainsString('Get started — Install', $index);
+            $this->assertStringContainsString('href="01-install.html"', $index);
+            $this->assertStringContainsString('docs-home-links', $index);
+            $this->assertStringContainsString('https://github.com/milon/barcode', $index);
+            $this->assertStringContainsString('rel="noopener noreferrer"', $index);
+            $this->assertStringNotContainsString('Start reading', $index);
+            $this->assertStringNotContainsString('class="book-author"', $index);
+
+            $css = file_get_contents($siteDir.'/assets/site.css');
+            $this->assertIsString($css);
+            $this->assertStringContainsString('.docs-cta-primary', $css);
+        } finally {
+            $this->removeDir($bookDir);
+            $this->removeDir($export);
+        }
+    }
+
     private function removeDir(string $dir): void
     {
         if (! is_dir($dir)) {

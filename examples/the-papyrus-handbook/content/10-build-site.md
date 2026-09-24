@@ -77,6 +77,7 @@ Optional `site` block in `papyrus.php`:
 
 ```php
 'site' => [
+    'mode' => 'book',                   // or 'docs' for a package documentation home
     'banner' => 'banner.jpg',           // under assets/; auto-detects banner.jpg / banner.png
     'lead' => 'A one-line pitch for the home page.',
     'cname' => 'docs.example.com',      // GitHub Pages custom domain
@@ -90,13 +91,19 @@ Optional `site` block in `papyrus.php`:
 
 | Key         | Default                                   | Meaning                                                                 |
 |-------------|-------------------------------------------|-------------------------------------------------------------------------|
+| `mode`      | `book`                                    | `docs` uses a package-style home (Get started CTA); `book` keeps Start reading |
 | `banner`    | `banner.jpg` then `banner.png` if present | Hero image on Home                                                      |
 | `lead`      | unset                                     | Short pitch under the title on Home                                     |
 | `cname`     | unset                                     | Writes `CNAME` in the site root for a GitHub Pages custom domain        |
 | `base_path` | unset                                     | URL prefix for project Pages (writes `<base href="/prefix/">`)          |
 | `links`     | unset                                     | Home-page links; each item needs `label` plus either `url` or `chapter` |
 
-Nothing is inferred from chapter titles. If you want a Downloads link on Home,
+With `mode: docs`, the primary button prefers a chapter whose slug or title
+contains “install”, “quick start”, or “getting started”; otherwise it skips a
+Welcome/`00-` chapter and links to the next page. Secondary `links` stay below
+the CTA (GitHub, Packagist, …).
+
+Nothing is inferred from chapter titles for `links`. If you want a Downloads link on Home,
 add it explicitly with `['label' => 'Downloads', 'chapter' => '19-downloads.md']`.
 
 Use `base_path` when the site is not at the domain root (for example

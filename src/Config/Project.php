@@ -332,6 +332,34 @@ final class Project
     }
 
     /**
+     * Site presentation mode: `book` (default) or `docs`.
+     */
+    public function siteMode(): string
+    {
+        $site = $this->config['site'] ?? [];
+
+        if (! is_array($site)) {
+            return 'book';
+        }
+
+        $mode = $site['mode'] ?? null;
+
+        if (! is_string($mode)) {
+            return 'book';
+        }
+
+        return match (strtolower(trim($mode))) {
+            'docs', 'doc', 'documentation' => 'docs',
+            default => 'book',
+        };
+    }
+
+    public function isDocsSite(): bool
+    {
+        return $this->siteMode() === 'docs';
+    }
+
+    /**
      * Optional custom domain for GitHub Pages (`CNAME` file in the site root).
      * Accepts a bare host or a URL; stores the hostname only.
      */

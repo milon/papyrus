@@ -375,6 +375,47 @@ div[style*="page-break"] { display: none; }
     text-decoration: underline;
 }
 
+.title-page.docs-home {
+    padding-top: 1.5em;
+}
+.title-page .docs-kicker {
+    margin: 0 0 0.75em;
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+.title-page .docs-actions {
+    margin: 2rem 0 0;
+}
+.title-page .docs-cta-primary {
+    display: inline-block;
+    padding: 0.7rem 1.25rem;
+    border: 1px solid var(--fg);
+    background: var(--heading);
+    color: var(--bg);
+    text-decoration: none;
+    font-family: "Linux Libertine", "Libertinus Serif", Georgia, serif;
+}
+.title-page .docs-cta-primary:hover {
+    text-decoration: none;
+    opacity: 0.92;
+}
+.title-page .docs-home-links {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.75rem 1.5rem;
+    margin: 1.5rem 0 0;
+}
+.title-page .docs-home-links a {
+    color: var(--link);
+    text-decoration: none;
+}
+.title-page .docs-home-links a:hover {
+    text-decoration: underline;
+}
+
 .not-found { text-align: center; padding: 3em 0 4em; }
 .not-found-code {
     margin: 0;
