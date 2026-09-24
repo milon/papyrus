@@ -16,6 +16,8 @@ final class StubRepository
     }
 
     /**
+     * Default book scaffold files (excludes assets/ and presets/).
+     *
      * @return list<string> paths relative to book root
      */
     public function bookFiles(): array
@@ -33,11 +35,43 @@ final class StubRepository
             $relative = substr($file->getPathname(), strlen($this->stubsDir) + 1);
             $relative = str_replace('\\', '/', $relative);
 
-            if (str_starts_with($relative, 'assets/')) {
+            if (str_starts_with($relative, 'assets/') || str_starts_with($relative, 'presets/')) {
                 continue;
             }
 
             $files[] = $relative;
+        }
+
+        sort($files);
+
+        return $files;
+    }
+
+    /**
+     * Files under stubs/presets/{name}/, returned as book-root-relative paths.
+     *
+     * @return list<string>
+     */
+    public function presetFiles(string $preset): array
+    {
+        $presetDir = $this->stubsDir.'/presets/'.$preset;
+
+        if (! is_dir($presetDir)) {
+            throw new \InvalidArgumentException(sprintf('Unknown stub preset: %s', $preset));
+        }
+
+        $files = [];
+        $iterator = new \RecursiveIteratorIterator(
+            new \RecursiveDirectoryIterator($presetDir, \FilesystemIterator::SKIP_DOTS),
+        );
+
+        foreach ($iterator as $file) {
+            if (! $file->isFile()) {
+                continue;
+            }
+
+            $relative = substr($file->getPathname(), strlen($presetDir) + 1);
+            $files[] = str_replace('\\', '/', $relative);
         }
 
         sort($files);
@@ -86,5 +120,10 @@ final class StubRepository
         }
 
         return $contents;
+    }
+
+    public function readPreset(string $preset, string $relativePath): string
+    {
+        return $this->read('presets/'.$preset.'/'.ltrim($relativePath, '/'));
     }
 }

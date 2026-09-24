@@ -112,6 +112,7 @@ composer install
 
 ```bash
 papyrus init                 # or: --format=yml|yaml|json
+papyrus init --preset=docs   # documentation site (yml by default)
 papyrus doctor
 papyrus build:site
 papyrus serve               # http://127.0.0.1:8000/ — needed for site search
@@ -127,8 +128,9 @@ papyrus build:site -d my-book
 
 Open `export/<slug>-site/index.html` in a browser, or deploy that folder as a static site.
 
-`init` writes `papyrus.php` by default (`--format=yml` or `json` for
-`papyrus.yml` / `papyrus.json`). It also creates an empty `assets/` directory.
+`init` writes `papyrus.php` by default for books (`--format=yml|json` for
+YAML/JSON). Use `--preset=docs` for a documentation site (`papyrus.yml` by
+default, starter chapters, no KDP). Both create an empty `assets/` directory.
 To customize the bundled theme or fonts later:
 
 ```bash
@@ -140,7 +142,7 @@ papyrus asset:publish --only=themes
 
 | Command                                                                  | Description                                                                |
 |--------------------------------------------------------------------------|----------------------------------------------------------------------------|
-| `init`                                                                   | Scaffold config + `content/` + `assets/` (`--format=php\|yml\|yaml\|json`) |
+| `init`                                                                   | Scaffold book or docs site (`--preset=book\|docs`, `--format=…`)           |
 | `asset:publish`                                                          | Copy bundled themes, CSS, fonts into `assets/` (`--only`, `--force`)       |
 | `doctor`                                                                 | Validate config, assets, Mermaid, KDP readiness                            |
 | `build`                                                                  | PDF / EPUB / HTML / enabled KDP (`--with-site`, `--with-sample`)           |

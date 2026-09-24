@@ -1,0 +1,33 @@
+# Copy to .github/workflows/docs-site.yml (adjust paths if your Papyrus root differs).
+name: docs-site
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: dom, gd, mbstring, zip, zlib
+          coverage: none
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Build documentation site
+        # If papyrus.yml lives in docs/, use: -d docs -e docs
+        run: vendor/bin/papyrus build:site
+
+      - name: Upload site artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs-site
+          path: export/*-site

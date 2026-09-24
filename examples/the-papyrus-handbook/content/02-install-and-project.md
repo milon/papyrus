@@ -118,6 +118,33 @@ Use `--force` / `-f` to overwrite files during `init`, or with
 `asset:publish` to overwrite published assets. `--only` limits publishing to
 `themes`, `css`, and/or `fonts`.
 
+## Scaffold a documentation site
+
+For a library or tool (not a print book), use the **docs** preset:
+
+```bash
+papyrus init --preset=docs
+papyrus init --preset=docs -d docs
+```
+
+That writes `papyrus.yml` by default (override with `--format=php|json`),
+starter chapters (welcome, install, usage, reference, changelog), an empty
+`assets/`, and a sample GitHub Actions workflow under
+`github/workflows/docs-site.yml`.
+
+If a `composer.json` is found in the target directory or its parent, Papyrus
+fills `title`, `site.lead`, `site.links` (GitHub / Packagist), and a suggested
+`site.base_path` (e.g. `/barcode` for `milon/barcode`). There is no KDP or
+sample-PDF config in this preset.
+
+```bash
+papyrus build:site
+papyrus serve
+```
+
+`site.mode: docs` is set for upcoming docs-oriented home UI; the site builds
+with the current multi-page theme today.
+
 ## Config without PHP (YAML or JSON)
 
 You still need PHP installed to *run* Papyrus — but you do **not** need to

@@ -82,6 +82,71 @@ final class InitCommandTest extends TestCase
         $this->removeDir($target);
     }
 
+    public function test_init_docs_preset_scaffolds_yml_site(): void
+    {
+        $target = sys_get_temp_dir().'/papyrus-init-docs-'.uniqid('', true);
+        mkdir($target);
+        file_put_contents($target.'/composer.json', json_encode([
+            'name' => 'milon/barcode',
+            'description' => 'Barcode generator for PHP and Laravel',
+            'support' => ['source' => 'https://github.com/milon/barcode'],
+        ], JSON_THROW_ON_ERROR));
+
+        $tester = new CommandTester(new InitCommand);
+        $exitCode = $tester->execute([
+            '--dir' => $target.'/docs',
+            '--preset' => 'docs',
+        ]);
+
+        $this->assertSame(0, $exitCode);
+        $docs = $target.'/docs';
+        $this->assertFileExists($docs.'/papyrus.yml');
+        $this->assertFileDoesNotExist($docs.'/papyrus.php');
+        $this->assertFileExists($docs.'/content/00-welcome.md');
+        $this->assertFileExists($docs.'/content/01-install.md');
+        $this->assertFileExists($docs.'/content/02-usage.md');
+        $this->assertFileExists($docs.'/content/03-api.md');
+        $this->assertFileExists($docs.'/content/04-changelog.md');
+        $this->assertFileExists($docs.'/github/workflows/docs-site.yml');
+        $this->assertFileDoesNotExist($docs.'/content/01-introduction.md');
+
+        $project = Project::load($docs);
+        $this->assertSame('Barcode', $project->title());
+        $this->assertSame('Barcode generator for PHP and Laravel', $project->siteLead());
+        $this->assertSame('/barcode', $project->siteBasePath());
+
+        $yml = file_get_contents($docs.'/papyrus.yml');
+        $this->assertIsString($yml);
+        $this->assertStringContainsString('mode: docs', $yml);
+        $this->assertStringNotContainsString('kdp:', $yml);
+        $this->assertStringNotContainsString('sample:', $yml);
+
+        $welcome = file_get_contents($docs.'/content/00-welcome.md');
+        $this->assertIsString($welcome);
+        $this->assertStringContainsString('Barcode', $welcome);
+        $this->assertStringNotContainsString('{{title}}', $welcome);
+
+        $this->removeDir($target);
+    }
+
+    public function test_init_docs_preset_respects_format_override(): void
+    {
+        $target = sys_get_temp_dir().'/papyrus-init-docs-json-'.uniqid('', true);
+
+        $tester = new CommandTester(new InitCommand);
+        $exitCode = $tester->execute([
+            '--dir' => $target,
+            '--preset' => 'docs',
+            '--format' => 'json',
+        ]);
+
+        $this->assertSame(0, $exitCode);
+        $this->assertFileExists($target.'/papyrus.json');
+        $this->assertFileDoesNotExist($target.'/papyrus.yml');
+
+        $this->removeDir($target);
+    }
+
     public function test_stub_repository_lists_book_files(): void
     {
         $repo = StubRepository::default();
@@ -90,6 +155,17 @@ final class InitCommandTest extends TestCase
         $this->assertContains('papyrus.php', $files);
         $this->assertContains('content/01-introduction.md', $files);
         $this->assertNotContains('assets/theme-light.html', $files);
+        $this->assertNotContains('presets/docs/content/00-welcome.md', $files);
+    }
+
+    public function test_stub_repository_lists_docs_preset_files(): void
+    {
+        $repo = StubRepository::default();
+        $files = $repo->presetFiles('docs');
+
+        $this->assertContains('content/00-welcome.md', $files);
+        $this->assertContains('github/workflows/docs-site.yml', $files);
+        $this->assertNotContains('papyrus.php', $files);
     }
 
     public function test_stub_repository_lists_publishable_assets(): void
