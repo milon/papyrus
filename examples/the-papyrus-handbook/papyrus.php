@@ -40,6 +40,53 @@ return [
             ['label' => 'Packagist', 'url' => 'https://packagist.org/packages/milon/papyrus'],
             ['label' => 'Issues', 'url' => 'https://github.com/milon/papyrus/issues'],
         ],
+        'nav' => [
+            [
+                'group' => 'Start here',
+                'chapters' => [
+                    '00-welcome.md',
+                    '01-introduction.md',
+                    '02-install-and-project.md',
+                ],
+            ],
+            [
+                'group' => 'Authoring',
+                'chapters' => [
+                    '03-configuration.md',
+                    '04-writing-content.md',
+                    '05-themes-and-assets.md',
+                ],
+            ],
+            [
+                'group' => 'Build',
+                'chapters' => [
+                    '06-build.md',
+                    '07-build-pdf.md',
+                    '08-build-epub.md',
+                    '09-build-html.md',
+                    '10-build-site.md',
+                    '11-build-sample.md',
+                ],
+            ],
+            [
+                'group' => 'Amazon KDP',
+                'chapters' => [
+                    '12-kdp.md',
+                    '13-kdp-ebook.md',
+                    '14-kdp-print.md',
+                    '15-kdp-cover.md',
+                    '16-kdp-metadata.md',
+                ],
+            ],
+            [
+                'group' => 'Ship it',
+                'chapters' => [
+                    '17-migration-and-ci.md',
+                    '18-command-reference.md',
+                    '19-downloads.md',
+                ],
+            ],
+        ],
     ],
 
     'fonts' => [
