@@ -13,8 +13,9 @@
         <div class="sidebar-header">
             <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
             <p class="sidebar-subtitle">Markdown to PDF, EPUB, HTML sites, and KDP</p>
+            
         </div>
-        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-welcome.html">Welcome</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a href="03-configuration.html">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li><li><a href="06-build.html">build</a></li><li><a href="07-build-pdf.html">build:pdf</a></li><li><a href="08-build-epub.html">build:epub</a></li><li><a href="09-build-html.html">build:html</a></li><li><a href="10-build-site.html">build:site</a></li><li><a href="11-build-sample.html">build:sample</a></li><li><a class="is-active" href="12-kdp.html" aria-current="page">kdp</a></li><li><a href="13-kdp-ebook.html">kdp:ebook</a></li><li><a href="14-kdp-print.html">kdp:print</a></li><li><a href="15-kdp-cover.html">kdp:cover</a></li><li><a href="16-kdp-metadata.html">kdp:metadata</a></li><li><a href="17-migration-and-ci.html">Migration and CI</a></li><li><a href="18-command-reference.html">Command reference</a></li><li><a href="19-downloads.html">Downloads</a></li></ul></nav>
+        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li class="sidebar-group"><span class="sidebar-group-label">Start here</span><ul><li><a href="00-welcome.html">Welcome</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li></ul></li><li class="sidebar-group"><span class="sidebar-group-label">Authoring</span><ul><li><a href="03-configuration.html">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li></ul></li><li class="sidebar-group"><span class="sidebar-group-label">Build</span><ul><li><a href="06-build.html">build</a></li><li><a href="07-build-pdf.html">build:pdf</a></li><li><a href="08-build-epub.html">build:epub</a></li><li><a href="09-build-html.html">build:html</a></li><li><a href="10-build-site.html">build:site</a></li><li><a href="11-build-sample.html">build:sample</a></li></ul></li><li class="sidebar-group"><span class="sidebar-group-label">Amazon KDP</span><ul><li><a class="is-active" href="12-kdp.html" aria-current="page">kdp</a></li><li><a href="13-kdp-ebook.html">kdp:ebook</a></li><li><a href="14-kdp-print.html">kdp:print</a></li><li><a href="15-kdp-cover.html">kdp:cover</a></li><li><a href="16-kdp-metadata.html">kdp:metadata</a></li></ul></li><li class="sidebar-group"><span class="sidebar-group-label">Ship it</span><ul><li><a href="17-migration-and-ci.html">Migration and CI</a></li><li><a href="18-command-reference.html">Command reference</a></li><li><a href="19-downloads.html">Downloads</a></li></ul></li></ul></nav>
     </aside>
     <div class="layout">
         <header class="topbar">
@@ -43,7 +44,7 @@
             </div>
         </header>
         <main class="content">
-            <div style="page-break-after: always;"></div><h1>kdp</h1>
+            <div class="content-with-toc"><div class="content-main"><div style="page-break-after: always;"></div><h1>kdp</h1>
 <p><code>papyrus kdp</code> builds every <strong>enabled</strong> Amazon KDP artifact in one shot:
 Kindle EPUB (if enabled), print interior PDF (if enabled), cover asset
 copies, and the metadata JSON sidecar.</p>
@@ -229,7 +230,7 @@ papyrus kdp --package
 print / cover / metadata files plus a <code>KDP-CHECKLIST.txt</code> reminder. It does
 not talk to Amazon — upload the zip contents through KDP’s web UI.</p>
 <p>The next chapters document each <code>kdp:*</code> command.</p>
-<nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="11-build-sample.html"><span class="label">Previous</span>build:sample</a><a class="next" href="13-kdp-ebook.html"><span class="label">Next</span>kdp:ebook</a></nav>
+<p class="edit-page"><a href="https://github.com/milon/papyrus/edit/master/examples/the-papyrus-handbook/content/12-kdp.md" target="_blank" rel="noopener noreferrer">Edit this page</a></p><nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="11-build-sample.html"><span class="label">Previous</span>build:sample</a><a class="next" href="13-kdp-ebook.html"><span class="label">Next</span>kdp:ebook</a></nav></div><aside class="page-toc" aria-label="On this page"><p class="page-toc-title"><svg class="page-toc-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false"><path d="M1.833 8h12.333M1.833 3.833h12.333M1.833 12.167H7.666" stroke="currentColor" stroke-width="1.25" stroke-linecap="square"/></svg>On this page</p><div class="page-toc-rail"><ul><li><a href="#options">Options</a></li><li><a href="#enable-flags">Enable flags</a></li><li><a href="#typical-artifacts">Typical artifacts</a></li><li><a href="#package-for-upload">Package for upload</a></li></ul></div></aside></div>
         </main>
     </div>
     <div class="search-modal" id="search-modal" hidden role="dialog" aria-modal="true" aria-labelledby="search-modal-title">

@@ -12,7 +12,8 @@ Influenced by [ibis-next](https://github.com/Hi-Folks/ibis-next), with first-cla
 
 ## Features
 
-- **Site** — `build:site` + `serve`: sidebar, ranked popup search, heading permalinks, sitemap/robots, light/dark, `404.html` (GitHub Pages / Netlify ready)
+- **Site** — `build:site` + `serve`: sidebar groups (`site.nav`), **On this page** rail, ranked popup search, code **Copy**, **Edit this page**, optional version switcher, heading permalinks, sitemap/robots, light/dark, `404.html` (GitHub Pages / Netlify ready)
+- **Docs preset** — `init --preset=docs` and `import-readme` for package documentation sites
 - **KDP** — Kindle EPUB, print interior, wraparound cover PDF, metadata, package zip (`kdp` / `kdp:*`)
 - **PDF / EPUB / HTML** — light & dark themes, `--parallel` PDF builds, single-file HTML
 - **Writing** — Mermaid at build time, draft chapters (`draft: true`), sample PDFs, multi-script fonts
@@ -143,6 +144,7 @@ papyrus asset:publish --only=themes
 | Command                                                                  | Description                                                                |
 |--------------------------------------------------------------------------|----------------------------------------------------------------------------|
 | `init`                                                                   | Scaffold book or docs site (`--preset=book\|docs`, `--format=…`)           |
+| `import-readme`                                                          | Split `README.md` into `content/` chapters on `##` (`--file`, `--force`)   |
 | `asset:publish`                                                          | Copy bundled themes, CSS, fonts into `assets/` (`--only`, `--force`)       |
 | `doctor`                                                                 | Validate config, assets, Mermaid, KDP readiness                            |
 | `build`                                                                  | PDF / EPUB / HTML / enabled KDP (`--with-site`, `--with-sample`)           |

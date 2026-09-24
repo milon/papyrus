@@ -131,8 +131,9 @@ default natural filename order.
 ### On this page
 
 Chapter pages with `##` / `###` headings get a sticky right-rail outline (wide
-viewports only). Links reuse the same fragment ids as heading permalinks.
-Scroll position highlights the active section.
+viewports only), styled like Laravel’s docs: list icon, left border rail, and an
+active-section indicator as you scroll. Links reuse the same fragment ids as
+heading permalinks.
 
 ### Edit on GitHub
 
@@ -170,10 +171,29 @@ List peers so the sidebar shows a version select:
 ],
 ```
 
+| Entry key | Required | Meaning |
+|-----------|----------|---------|
+| `label`   | yes      | Shown in the select (also accepted as `version`) |
+| `path`    | one of `path` / `url` | Absolute site path prefix (same rules as `base_path`) |
+| `url`     | one of `path` / `url` | Full `https://…` override when peers live on another host |
+
+Current build: match `site.version` to a label, else match `site.base_path` to a
+`path`, else the first entry. The control appears only when `versions` has two
+or more valid entries.
+
 Switching keeps the same page filename when it exists in the other build
 (e.g. `01-install.html` → `/barcode/v11/01-install.html`); otherwise it opens
 that version’s home. Use the same chapter filenames across versions when you
-can. The control appears only when `versions` has two or more entries.
+can.
+
+### Images and other assets
+
+`build:site` copies everything under project `assets/` into the site’s
+`assets/` folder **except** `fonts/` (fonts are published separately). Put
+screenshots at `assets/examples/foo.png` and reference them from Markdown as
+`assets/examples/foo.png` so they work with `site.base_path` and `<base href>`.
+
+### Docs home CTA (`mode: docs`)
 
 With `mode: docs`, the primary button prefers a chapter whose slug or title
 contains “install”, “quick start”, or “getting started”; otherwise it skips a

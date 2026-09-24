@@ -13,8 +13,9 @@
         <div class="sidebar-header">
             <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
             <p class="sidebar-subtitle">Markdown to PDF, EPUB, HTML sites, and KDP</p>
+            
         </div>
-        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li><a href="00-welcome.html">Welcome</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li><li><a class="is-active" href="03-configuration.html" aria-current="page">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li><li><a href="06-build.html">build</a></li><li><a href="07-build-pdf.html">build:pdf</a></li><li><a href="08-build-epub.html">build:epub</a></li><li><a href="09-build-html.html">build:html</a></li><li><a href="10-build-site.html">build:site</a></li><li><a href="11-build-sample.html">build:sample</a></li><li><a href="12-kdp.html">kdp</a></li><li><a href="13-kdp-ebook.html">kdp:ebook</a></li><li><a href="14-kdp-print.html">kdp:print</a></li><li><a href="15-kdp-cover.html">kdp:cover</a></li><li><a href="16-kdp-metadata.html">kdp:metadata</a></li><li><a href="17-migration-and-ci.html">Migration and CI</a></li><li><a href="18-command-reference.html">Command reference</a></li><li><a href="19-downloads.html">Downloads</a></li></ul></nav>
+        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li class="sidebar-group"><span class="sidebar-group-label">Start here</span><ul><li><a href="00-welcome.html">Welcome</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li></ul></li><li class="sidebar-group"><span class="sidebar-group-label">Authoring</span><ul><li><a class="is-active" href="03-configuration.html" aria-current="page">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li></ul></li><li class="sidebar-group"><span class="sidebar-group-label">Build</span><ul><li><a href="06-build.html">build</a></li><li><a href="07-build-pdf.html">build:pdf</a></li><li><a href="08-build-epub.html">build:epub</a></li><li><a href="09-build-html.html">build:html</a></li><li><a href="10-build-site.html">build:site</a></li><li><a href="11-build-sample.html">build:sample</a></li></ul></li><li class="sidebar-group"><span class="sidebar-group-label">Amazon KDP</span><ul><li><a href="12-kdp.html">kdp</a></li><li><a href="13-kdp-ebook.html">kdp:ebook</a></li><li><a href="14-kdp-print.html">kdp:print</a></li><li><a href="15-kdp-cover.html">kdp:cover</a></li><li><a href="16-kdp-metadata.html">kdp:metadata</a></li></ul></li><li class="sidebar-group"><span class="sidebar-group-label">Ship it</span><ul><li><a href="17-migration-and-ci.html">Migration and CI</a></li><li><a href="18-command-reference.html">Command reference</a></li><li><a href="19-downloads.html">Downloads</a></li></ul></li></ul></nav>
     </aside>
     <div class="layout">
         <header class="topbar">
@@ -43,8 +44,15 @@
             </div>
         </header>
         <main class="content">
-            <div style="page-break-after: always;"></div><h1>Configuration</h1>
-<p>All settings live in <code>papyrus.php</code>, which returns a PHP array.</p>
+            <div class="content-with-toc"><div class="content-main"><div style="page-break-after: always;"></div><h1>Configuration</h1>
+<p>Book settings live in <strong>one</strong> of:</p>
+<ul>
+<li><code>papyrus.php</code> — PHP array (default; supports callables like <code>configure_commonmark</code>)</li>
+<li><code>papyrus.yml</code> / <code>papyrus.yaml</code></li>
+<li><code>papyrus.json</code></li>
+</ul>
+<p>Papyrus auto-discovers which file is present and errors if more than one exists.
+Examples below use PHP; the same keys work in YAML/JSON.</p>
 <h2 id="identity-and-paths"><a class="heading-permalink" href="#identity-and-paths" aria-hidden="true" tabindex="-1">#</a>Identity and paths</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-keyword">return</span> [
     <span class="hljs-string">'title'</span> =&gt; <span class="hljs-string">'My Book'</span>,
@@ -177,13 +185,13 @@ First matching <code>script</code> rule wins.</p>
     ],
 ],
 </code></pre>
-<h3>Faces</h3>
+<h3 id="faces"><a class="heading-permalink" href="#faces" aria-hidden="true" tabindex="-1">#</a>Faces</h3>
 <p>Each face needs a <code>name</code> and a <code>regular</code> file that exists under <code>assets/fonts/</code>.
 Optional keys: <code>bold</code>, <code>italic</code>, <code>bold_italic</code>, and <code>otl</code> (sets mPDF
 <code>useOTL</code> when true — common for code fonts and Indic / Arabic scripts).</p>
 <p>Papyrus merges these into mPDF’s <code>fontdata</code> when building PDF
 (<code>FontRegistry</code> → <code>MpdfFactory</code>).</p>
-<h3>Script rules</h3>
+<h3 id="script-rules"><a class="heading-permalink" href="#script-rules" aria-hidden="true" tabindex="-1">#</a>Script rules</h3>
 <p><code>fonts.script</code> is a list of <code>{ match, face }</code> rules used only for <strong>PDF</strong>.
 They do not change EPUB or HTML typography.</p>
 <p>When any applicable rule exists, Papyrus turns on mPDF’s
@@ -238,10 +246,23 @@ non-Latin runs often show as tofu (missing glyphs) in the default font.</p>
     <span class="hljs-string">'lead'</span> =&gt; <span class="hljs-string">'A one-line pitch for the home page.'</span>,
     <span class="hljs-string">'cname'</span> =&gt; <span class="hljs-string">'docs.example.com'</span>,
     <span class="hljs-string">'base_path'</span> =&gt; <span class="hljs-string">'/my-repo'</span>, <span class="hljs-comment">// project Pages path; omit for custom domains at /</span>
+    <span class="hljs-string">'repository'</span> =&gt; <span class="hljs-string">'https://github.com/you/your-book'</span>,
+    <span class="hljs-string">'edit_path'</span> =&gt; <span class="hljs-string">'content'</span>,
+    <span class="hljs-string">'edit_branch'</span> =&gt; <span class="hljs-string">'main'</span>,
     <span class="hljs-string">'links'</span> =&gt; [
         [<span class="hljs-string">'label'</span> =&gt; <span class="hljs-string">'Downloads'</span>, <span class="hljs-string">'chapter'</span> =&gt; <span class="hljs-string">'19-downloads.md'</span>],
         [<span class="hljs-string">'label'</span> =&gt; <span class="hljs-string">'Source on GitHub'</span>, <span class="hljs-string">'url'</span> =&gt; <span class="hljs-string">'https://github.com/you/your-book'</span>],
         [<span class="hljs-string">'label'</span> =&gt; <span class="hljs-string">'Issues'</span>, <span class="hljs-string">'url'</span> =&gt; <span class="hljs-string">'https://github.com/you/your-book/issues'</span>],
+    ],
+    <span class="hljs-string">'nav'</span> =&gt; [
+        [
+            <span class="hljs-string">'group'</span> =&gt; <span class="hljs-string">'Start here'</span>,
+            <span class="hljs-string">'chapters'</span> =&gt; [<span class="hljs-string">'00-welcome.md'</span>, <span class="hljs-string">'01-introduction.md'</span>],
+        ],
+        [
+            <span class="hljs-string">'group'</span> =&gt; <span class="hljs-string">'Build'</span>,
+            <span class="hljs-string">'chapters'</span> =&gt; [<span class="hljs-string">'10-build-site.md'</span>],
+        ],
     ],
 ],
 </code></pre>
@@ -254,6 +275,11 @@ non-Latin runs often show as tofu (missing glyphs) in the default font.</p>
 </tr>
 </thead>
 <tbody>
+<tr>
+<td><code>mode</code></td>
+<td><code>book</code></td>
+<td><code>docs</code> → package documentation home (Get started); set by <code>init --preset=docs</code></td>
+</tr>
 <tr>
 <td><code>banner</code></td>
 <td>auto <code>banner.jpg</code> / <code>banner.png</code> if present</td>
@@ -279,6 +305,36 @@ non-Latin runs often show as tofu (missing glyphs) in the default font.</p>
 <td>unset</td>
 <td>Explicit home-page links; each item needs <code>label</code> plus either <code>url</code> or <code>chapter</code></td>
 </tr>
+<tr>
+<td><code>nav</code></td>
+<td>unset</td>
+<td>Grouped sidebar: list of <code>{ group, chapters: [...] }</code>; orders Prev/Next too</td>
+</tr>
+<tr>
+<td><code>repository</code></td>
+<td>unset</td>
+<td>GitHub repo URL; enables <strong>Edit this page</strong> on chapters (also legacy home links when <code>links</code> is unset)</td>
+</tr>
+<tr>
+<td><code>edit_path</code></td>
+<td><code>content</code></td>
+<td>Path from repo root to <code>content/</code> (e.g. <code>docs/content</code>)</td>
+</tr>
+<tr>
+<td><code>edit_branch</code></td>
+<td><code>main</code></td>
+<td>Branch used in edit URLs</td>
+</tr>
+<tr>
+<td><code>version</code></td>
+<td>unset</td>
+<td>Current version label for the switcher (e.g. <code>v12</code>)</td>
+</tr>
+<tr>
+<td><code>versions</code></td>
+<td>unset</td>
+<td>Peer builds for the version switcher; see below</td>
+</tr>
 </tbody>
 </table>
 <p><code>chapter</code> matches a chapter source name like <code>19-downloads.md</code>, <code>19-downloads</code>,
@@ -286,6 +342,20 @@ or a full relative source path, and links to that generated page.
 <code>repository</code> still works as a legacy fallback that auto-adds GitHub, Packagist,
 and Issues links when <code>links</code> is not set. Chapters are never linked
 automatically; add them explicitly through <code>links</code>.</p>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'site'</span> =&gt; [
+    <span class="hljs-string">'base_path'</span> =&gt; <span class="hljs-string">'/barcode/v12'</span>,
+    <span class="hljs-string">'version'</span> =&gt; <span class="hljs-string">'v12'</span>,
+    <span class="hljs-string">'versions'</span> =&gt; [
+        [<span class="hljs-string">'label'</span> =&gt; <span class="hljs-string">'v12'</span>, <span class="hljs-string">'path'</span> =&gt; <span class="hljs-string">'/barcode/v12'</span>],
+        [<span class="hljs-string">'label'</span> =&gt; <span class="hljs-string">'v11'</span>, <span class="hljs-string">'path'</span> =&gt; <span class="hljs-string">'/barcode/v11'</span>],
+    ],
+],
+</code></pre>
+<p><code>versions</code> drives the sidebar version switcher (two or more entries). Each item
+needs a <code>label</code> (or <code>version</code>) plus either <code>path</code> (like <code>base_path</code>) or absolute
+<code>url</code>. Mark the current build with <code>site.version</code> and/or a matching <code>base_path</code>.
+Each listed build is a separate <code>build:site</code> deploy under that path prefix.
+See the <code>build:site</code> chapter for navigation behaviour and filename conventions.</p>
 <h2 id="mermaid"><a class="heading-permalink" href="#mermaid" aria-hidden="true" tabindex="-1">#</a>Mermaid</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'mermaid'</span> =&gt; [
     <span class="hljs-string">'enabled'</span> =&gt; <span class="hljs-keyword">true</span>,
@@ -375,11 +445,13 @@ is.</p>
 <p>Automatic page breaks before headings (<code>1</code> = H1, <code>2</code> = H1 and H2). Explicit
 <code>[break]</code> markers always insert a break.</p>
 <h2 id="commonmark-hook"><a class="heading-permalink" href="#commonmark-hook" aria-hidden="true" tabindex="-1">#</a>CommonMark hook</h2>
-<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'configure_commonmark'</span> =&gt; <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(\League\CommonMark\Environment\Environment $environment)</span>: <span class="hljs-title">void</span> </span>{
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'configure_commonmark'</span> =&gt; <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(
+    \League\CommonMark\Environment\Environment $environment
+)</span>: <span class="hljs-title">void</span> </span>{
     <span class="hljs-comment">// register custom extensions</span>
 },
 </code></pre>
-<nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="02-install-and-project.html"><span class="label">Previous</span>Install and project layout</a><a class="next" href="04-writing-content.html"><span class="label">Next</span>Writing content</a></nav>
+<p class="edit-page"><a href="https://github.com/milon/papyrus/edit/master/examples/the-papyrus-handbook/content/03-configuration.md" target="_blank" rel="noopener noreferrer">Edit this page</a></p><nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="02-install-and-project.html"><span class="label">Previous</span>Install and project layout</a><a class="next" href="04-writing-content.html"><span class="label">Next</span>Writing content</a></nav></div><aside class="page-toc" aria-label="On this page"><p class="page-toc-title"><svg class="page-toc-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false"><path d="M1.833 8h12.333M1.833 3.833h12.333M1.833 12.167H7.666" stroke="currentColor" stroke-width="1.25" stroke-linecap="square"/></svg>On this page</p><div class="page-toc-rail"><ul><li><a href="#identity-and-paths">Identity and paths</a></li><li><a href="#page-size-and-margins">Page size and margins</a></li><li><a href="#table-of-contents">Table of contents</a></li><li><a href="#cover-images">Cover images</a></li><li><a href="#running-header">Running header</a></li><li><a href="#fonts">Fonts</a><ul><li><a href="#faces">Faces</a></li><li><a href="#script-rules">Script rules</a></li></ul></li><li><a href="#site-home-build-site">Site home (build:site)</a></li><li><a href="#mermaid">Mermaid</a></li><li><a href="#sample-pdf">Sample PDF</a></li><li><a href="#kdp">KDP</a></li><li><a href="#break-level">Break level</a></li><li><a href="#commonmark-hook">CommonMark hook</a></li></ul></div></aside></div>
         </main>
     </div>
     <div class="search-modal" id="search-modal" hidden role="dialog" aria-modal="true" aria-labelledby="search-modal-title">

@@ -159,6 +159,44 @@ papyrus import-readme -d docs --force
 
 Then update `site.nav` to match the new files.
 
+### Typical docs-site config
+
+After `init --preset=docs` (or `import-readme`), a package docs root usually looks
+like:
+
+```yaml
+# papyrus.yml
+title: milon/barcode
+site:
+  mode: docs
+  lead: Short pitch for the home page.
+  base_path: /barcode          # omit with a custom domain / cname
+  repository: https://github.com/milon/barcode
+  edit_path: docs-src/content # path from repo root to content/
+  edit_branch: master         # default main
+  links:
+    - { label: GitHub, url: https://github.com/milon/barcode }
+    - { label: Packagist, url: https://packagist.org/packages/milon/barcode }
+  nav:
+    - group: Getting started
+      chapters: [00-welcome.md, 01-installation.md, 02-quick-start.md]
+    - group: API
+      chapters: [04-output-methods.md, 06-examples-with-screenshots.md]
+```
+
+Optional multi-version peers (each version is its own `build:site`):
+
+```yaml
+site:
+  version: v12
+  versions:
+    - { label: v12, path: /barcode/v12 }
+    - { label: v11, path: /barcode/v11 }
+```
+
+Full key tables live in [Configuration](03-configuration.html) and
+[build:site](10-build-site.html).
+
 ## Config without PHP (YAML or JSON)
 
 You still need PHP installed to *run* Papyrus — but you do **not** need to

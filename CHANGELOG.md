@@ -5,21 +5,31 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.2.0]
+## [1.3.0] - 2026-09-24
+
+### Added
+
+- `init --preset=docs` — documentation-site scaffold (YAML by default, starter chapters, no KDP/sample; reads nearby `composer.json` for title/links/`base_path`/edit URLs)
+- `site.mode: docs` — package-style home page (Get started CTA, secondary GitHub/Packagist links; skips “Start reading”)
+- `site.nav` — grouped sidebar sections; orders Prev/Next; unlisted chapters under More
+- Site chapter pages: sticky **On this page** outline for `h2` / `h3` (wide screens; Laravel-style rail); `###` headings get permalink anchors too
+- `import-readme` — split a `README.md` into `content/` chapters on `##` headings (`--file`, `--force`, `--dry-run`)
+- `site.repository` / `site.edit_path` / `site.edit_branch` — **Edit this page** links on chapter pages (docs preset fills these from `composer.json`)
+- Copy button on site code fences
+- Docs preset GitHub Pages workflow stub builds with `-e docs` and deploys via `actions/deploy-pages`
+- `site.versions` (+ optional `site.version`) — sidebar version switcher across peer deploys (`path` or absolute `url`)
+- `build:site` copies project `assets/` (except `fonts/`) into the site so example images and other files resolve
+
+### Fixed
+
+- Code **Copy** control no longer overlaps long fences in the narrowed article column
+
+## [1.2.0] - 2026-09-08
 
 ### Added
 
 - Alternate book config formats: `papyrus.yml` / `papyrus.yaml` / `papyrus.json` (auto-discovered; only one allowed)
 - `init --format=php|yml|json` and `migrate-ibis --format=php|yml|json` (default `php`)
-- `init --preset=docs` — documentation-site scaffold (YAML by default, starter chapters, no KDP/sample; reads nearby `composer.json` for title/links/`base_path`)
-- `site.mode: docs` — package-style home page (Get started CTA, secondary GitHub/Packagist links; skips “Start reading”)
-- `site.nav` — grouped sidebar sections; orders Prev/Next; unlisted chapters under More
-- Site chapter pages: sticky **On this page** outline for `h2` / `h3` (wide screens); `###` headings get permalink anchors too
-- `import-readme` — split a `README.md` into `content/` chapters on `##` headings (`--file`, `--force`, `--dry-run`)
-- `site.repository` / `site.edit_path` / `site.edit_branch` — **Edit this page** links on chapter pages (docs preset fills these from `composer.json`)
-- Copy button on site code fences
-- Docs preset GitHub Pages workflow stub builds with `-e docs` and deploys via `actions/deploy-pages`
-- `site.versions` (+ optional `site.version`) — sidebar version switcher across peer deploys (`/v12/`, `/v13/`, …)
 
 ## [1.1.0] - 2026-09-04
 
@@ -69,6 +79,9 @@ Site, sample PDF, and KDP-oriented export surface for Markdown books.
 
 See Git tags `v0.1.0` … `v0.5.2` for pre-1.0 history.
 
+[1.3.0]: https://github.com/milon/papyrus/releases/tag/v1.3.0
+[1.2.0]: https://github.com/milon/papyrus/releases/tag/v1.2.0
+[1.1.0]: https://github.com/milon/papyrus/releases/tag/v1.1.0
 [1.0.0]: https://github.com/milon/papyrus/releases/tag/v1.0.0
 [0.5.2]: https://github.com/milon/papyrus/releases/tag/v0.5.2
 [0.5.0]: https://github.com/milon/papyrus/releases/tag/v0.5.0

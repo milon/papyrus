@@ -172,6 +172,36 @@ papyrus import-readme --file ../README.md --dry-run
 papyrus import-readme -d docs --force
 </code></pre>
 <p>Then update <code>site.nav</code> to match the new files.</p>
+<h3 id="typical-docs-site-config"><a class="heading-permalink" href="#typical-docs-site-config" aria-hidden="true" tabindex="-1">#</a>Typical docs-site config</h3>
+<p>After <code>init --preset=docs</code> (or <code>import-readme</code>), a package docs root usually looks
+like:</p>
+<pre><code class="language-yaml hljs yaml" data-lang="yaml"><span class="hljs-comment"># papyrus.yml</span>
+<span class="hljs-attr">title:</span> <span class="hljs-string">milon/barcode</span>
+<span class="hljs-attr">site:</span>
+  <span class="hljs-attr">mode:</span> <span class="hljs-string">docs</span>
+  <span class="hljs-attr">lead:</span> <span class="hljs-string">Short</span> <span class="hljs-string">pitch</span> <span class="hljs-string">for</span> <span class="hljs-string">the</span> <span class="hljs-string">home</span> <span class="hljs-string">page.</span>
+  <span class="hljs-attr">base_path:</span> <span class="hljs-string">/barcode</span>          <span class="hljs-comment"># omit with a custom domain / cname</span>
+  <span class="hljs-attr">repository:</span> <span class="hljs-string">https://github.com/milon/barcode</span>
+  <span class="hljs-attr">edit_path:</span> <span class="hljs-string">docs-src/content</span> <span class="hljs-comment"># path from repo root to content/</span>
+  <span class="hljs-attr">edit_branch:</span> <span class="hljs-string">master</span>         <span class="hljs-comment"># default main</span>
+  <span class="hljs-attr">links:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">label:</span> <span class="hljs-string">GitHub,</span> <span class="hljs-attr">url:</span> <span class="hljs-string">https://github.com/milon/barcode</span> <span class="hljs-string">}</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">label:</span> <span class="hljs-string">Packagist,</span> <span class="hljs-attr">url:</span> <span class="hljs-string">https://packagist.org/packages/milon/barcode</span> <span class="hljs-string">}</span>
+  <span class="hljs-attr">nav:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">group:</span> <span class="hljs-string">Getting</span> <span class="hljs-string">started</span>
+      <span class="hljs-attr">chapters:</span> <span class="hljs-string">[00-welcome.md,</span> <span class="hljs-number">01</span><span class="hljs-string">-installation.md,</span> <span class="hljs-number">02</span><span class="hljs-string">-quick-start.md]</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-attr">group:</span> <span class="hljs-string">API</span>
+      <span class="hljs-attr">chapters:</span> <span class="hljs-string">[04-output-methods.md,</span> <span class="hljs-number">06</span><span class="hljs-string">-examples-with-screenshots.md]</span>
+</code></pre>
+<p>Optional multi-version peers (each version is its own <code>build:site</code>):</p>
+<pre><code class="language-yaml hljs yaml" data-lang="yaml"><span class="hljs-attr">site:</span>
+  <span class="hljs-attr">version:</span> <span class="hljs-string">v12</span>
+  <span class="hljs-attr">versions:</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">label:</span> <span class="hljs-string">v12,</span> <span class="hljs-attr">path:</span> <span class="hljs-string">/barcode/v12</span> <span class="hljs-string">}</span>
+    <span class="hljs-bullet">-</span> <span class="hljs-string">{</span> <span class="hljs-attr">label:</span> <span class="hljs-string">v11,</span> <span class="hljs-attr">path:</span> <span class="hljs-string">/barcode/v11</span> <span class="hljs-string">}</span>
+</code></pre>
+<p>Full key tables live in <a href="03-configuration.html">Configuration</a> and
+<a href="10-build-site.html">build:site</a>.</p>
 <h2 id="config-without-php-yaml-or-json"><a class="heading-permalink" href="#config-without-php-yaml-or-json" aria-hidden="true" tabindex="-1">#</a>Config without PHP (YAML or JSON)</h2>
 <p>You still need PHP installed to <em>run</em> Papyrus — but you do <strong>not</strong> need to
 edit PHP to configure a book. If you are more comfortable with YAML or JSON,
@@ -279,7 +309,7 @@ papyrus build:site -d /path/to/book -e /path/to/out
 <p>Browse the Papyrus source on
 <a href="https://github.com/milon/papyrus">GitHub</a> if you want to follow along with
 this handbook’s own project under <code>examples/the-papyrus-handbook/</code>.</p>
-<p class="edit-page"><a href="https://github.com/milon/papyrus/edit/master/examples/the-papyrus-handbook/content/02-install-and-project.md" target="_blank" rel="noopener noreferrer">Edit this page</a></p><nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="01-introduction.html"><span class="label">Previous</span>Introduction</a><a class="next" href="03-configuration.html"><span class="label">Next</span>Configuration</a></nav></div><aside class="page-toc" aria-label="On this page"><p class="page-toc-title"><svg class="page-toc-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false"><path d="M1.833 8h12.333M1.833 3.833h12.333M1.833 12.167H7.666" stroke="currentColor" stroke-width="1.25" stroke-linecap="square"/></svg>On this page</p><div class="page-toc-rail"><ul><li><a href="#requirements">Requirements</a><ul><li><a href="#macos-homebrew">macOS (Homebrew)</a></li><li><a href="#npm-linux">npm / Linux</a></li><li><a href="#check-the-toolchain">Check the toolchain</a></li></ul></li><li><a href="#install-per-project">Install per project</a></li><li><a href="#install-globally">Install globally</a></li><li><a href="#scaffold-a-book">Scaffold a book</a></li><li><a href="#scaffold-a-documentation-site">Scaffold a documentation site</a><ul><li><a href="#import-an-existing-readme">Import an existing README</a></li></ul></li><li><a href="#config-without-php-yaml-or-json">Config without PHP (YAML or JSON)</a></li><li><a href="#layout">Layout</a></li></ul></div></aside></div>
+<p class="edit-page"><a href="https://github.com/milon/papyrus/edit/master/examples/the-papyrus-handbook/content/02-install-and-project.md" target="_blank" rel="noopener noreferrer">Edit this page</a></p><nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="01-introduction.html"><span class="label">Previous</span>Introduction</a><a class="next" href="03-configuration.html"><span class="label">Next</span>Configuration</a></nav></div><aside class="page-toc" aria-label="On this page"><p class="page-toc-title"><svg class="page-toc-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false"><path d="M1.833 8h12.333M1.833 3.833h12.333M1.833 12.167H7.666" stroke="currentColor" stroke-width="1.25" stroke-linecap="square"/></svg>On this page</p><div class="page-toc-rail"><ul><li><a href="#requirements">Requirements</a><ul><li><a href="#macos-homebrew">macOS (Homebrew)</a></li><li><a href="#npm-linux">npm / Linux</a></li><li><a href="#check-the-toolchain">Check the toolchain</a></li></ul></li><li><a href="#install-per-project">Install per project</a></li><li><a href="#install-globally">Install globally</a></li><li><a href="#scaffold-a-book">Scaffold a book</a></li><li><a href="#scaffold-a-documentation-site">Scaffold a documentation site</a><ul><li><a href="#import-an-existing-readme">Import an existing README</a></li><li><a href="#typical-docs-site-config">Typical docs-site config</a></li></ul></li><li><a href="#config-without-php-yaml-or-json">Config without PHP (YAML or JSON)</a></li><li><a href="#layout">Layout</a></li></ul></div></aside></div>
         </main>
     </div>
     <div class="search-modal" id="search-modal" hidden role="dialog" aria-modal="true" aria-labelledby="search-modal-title">

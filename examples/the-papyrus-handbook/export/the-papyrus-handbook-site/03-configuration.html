@@ -351,9 +351,11 @@ automatically; add them explicitly through <code>links</code>.</p>
     ],
 ],
 </code></pre>
-<p><code>versions</code> drives the sidebar version switcher (two or more entries). Mark the
-current build with <code>version</code> and/or a matching <code>base_path</code>. Each listed build
-is a separate <code>build:site</code> deploy under that path prefix.</p>
+<p><code>versions</code> drives the sidebar version switcher (two or more entries). Each item
+needs a <code>label</code> (or <code>version</code>) plus either <code>path</code> (like <code>base_path</code>) or absolute
+<code>url</code>. Mark the current build with <code>site.version</code> and/or a matching <code>base_path</code>.
+Each listed build is a separate <code>build:site</code> deploy under that path prefix.
+See the <code>build:site</code> chapter for navigation behaviour and filename conventions.</p>
 <h2 id="mermaid"><a class="heading-permalink" href="#mermaid" aria-hidden="true" tabindex="-1">#</a>Mermaid</h2>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'mermaid'</span> =&gt; [
     <span class="hljs-string">'enabled'</span> =&gt; <span class="hljs-keyword">true</span>,

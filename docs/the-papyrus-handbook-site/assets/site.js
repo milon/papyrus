@@ -393,5 +393,119 @@
                 openSearch();
             }
         });
+
+        var pageToc = document.querySelector(".page-toc");
+        if (pageToc && "IntersectionObserver" in window) {
+            var tocLinks = Array.prototype.slice.call(pageToc.querySelectorAll('a[href^="#"]'));
+            var tocById = {};
+            tocLinks.forEach(function (link) {
+                var id = decodeURIComponent((link.getAttribute("href") || "").slice(1));
+                if (id) tocById[id] = link;
+            });
+            var observed = Object.keys(tocById)
+                .map(function (id) { return document.getElementById(id); })
+                .filter(Boolean);
+            var activeId = null;
+
+            function setActiveToc(id) {
+                if (id === activeId) return;
+                activeId = id;
+                tocLinks.forEach(function (link) {
+                    var on = link === tocById[id];
+                    link.classList.toggle("is-active", on);
+                    if (on) link.setAttribute("aria-current", "true");
+                    else link.removeAttribute("aria-current");
+                });
+            }
+
+            if (observed.length > 0) {
+                var observer = new IntersectionObserver(function (entries) {
+                    var visible = entries
+                        .filter(function (entry) { return entry.isIntersecting; })
+                        .sort(function (a, b) { return a.boundingClientRect.top - b.boundingClientRect.top; });
+                    if (visible.length > 0) {
+                        setActiveToc(visible[0].target.id);
+                    }
+                }, { rootMargin: "-20% 0px -65% 0px", threshold: [0, 1] });
+                observed.forEach(function (el) { observer.observe(el); });
+            }
+        }
+
+        var contentRoot = document.querySelector("main.content");
+        if (contentRoot && navigator.clipboard && navigator.clipboard.writeText) {
+            Array.prototype.forEach.call(contentRoot.querySelectorAll("pre"), function (pre) {
+                if (pre.closest(".code-block") || pre.closest("figure.mermaid")) {
+                    return;
+                }
+
+                var wrap = document.createElement("div");
+                wrap.className = "code-block";
+                pre.parentNode.insertBefore(wrap, pre);
+                wrap.appendChild(pre);
+
+                var button = document.createElement("button");
+                button.type = "button";
+                button.className = "code-copy";
+                button.setAttribute("aria-label", "Copy code");
+                button.textContent = "Copy";
+                wrap.appendChild(button);
+
+                button.addEventListener("click", function () {
+                    var text = pre.innerText || pre.textContent || "";
+                    navigator.clipboard.writeText(text).then(function () {
+                        button.textContent = "Copied";
+                        button.classList.add("is-copied");
+                        window.setTimeout(function () {
+                            button.textContent = "Copy";
+                            button.classList.remove("is-copied");
+                        }, 1600);
+                    }).catch(function () {});
+                });
+            });
+        }
+
+        var versionSwitcher = document.querySelector("[data-version-switcher]");
+        if (versionSwitcher) {
+            versionSwitcher.addEventListener("change", function () {
+                var base = versionSwitcher.value;
+                if (!base) return;
+
+                var file = "index.html";
+                try {
+                    var path = window.location.pathname || "";
+                    var parts = path.split("/").filter(Boolean);
+                    if (parts.length > 0) {
+                        var last = parts[parts.length - 1];
+                        if (/\.html?$/i.test(last)) {
+                            file = last;
+                        }
+                    }
+                } catch (e) {}
+
+                var targetBase = base.replace(/\/+$/, "");
+                if (targetBase === "") targetBase = "";
+                var pageUrl = (targetBase === "" ? "" : targetBase) + "/" + file;
+                var homeUrl = (targetBase === "" ? "/" : targetBase + "/");
+
+                function go(url) {
+                    window.location.href = url;
+                }
+
+                if (!window.fetch) {
+                    go(pageUrl);
+                    return;
+                }
+
+                fetch(pageUrl, { method: "HEAD", redirect: "follow" }).then(function (response) {
+                    if (response.status === 404) {
+                        go(homeUrl);
+                    } else {
+                        go(pageUrl);
+                    }
+                }).catch(function () {
+                    go(pageUrl);
+                });
+            });
+        }
     });
 })();

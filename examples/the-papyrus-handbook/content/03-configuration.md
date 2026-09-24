@@ -235,9 +235,11 @@ automatically; add them explicitly through `links`.
 ],
 ```
 
-`versions` drives the sidebar version switcher (two or more entries). Mark the
-current build with `version` and/or a matching `base_path`. Each listed build
-is a separate `build:site` deploy under that path prefix.
+`versions` drives the sidebar version switcher (two or more entries). Each item
+needs a `label` (or `version`) plus either `path` (like `base_path`) or absolute
+`url`. Mark the current build with `site.version` and/or a matching `base_path`.
+Each listed build is a separate `build:site` deploy under that path prefix.
+See the `build:site` chapter for navigation behaviour and filename conventions.
 
 ## Mermaid
 
