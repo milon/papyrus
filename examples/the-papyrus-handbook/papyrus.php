@@ -34,6 +34,9 @@ return [
         'banner' => 'banner.jpg', // book-specific site home image
         'lead' => 'Official handbook for milon/papyrus — the same Markdown chapters build the PDF, HTML file, and this site.',
         'cname' => 'papyrus.milon.im',
+        'repository' => 'https://github.com/milon/papyrus',
+        'edit_path' => 'examples/the-papyrus-handbook/content',
+        'edit_branch' => 'master',
         'links' => [
             ['label' => 'Downloads', 'chapter' => '19-downloads.md'],
             ['label' => 'Source on GitHub', 'url' => 'https://github.com/milon/papyrus'],

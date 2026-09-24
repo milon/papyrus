@@ -99,6 +99,11 @@ Optional `site` block in `papyrus.php`:
 | `base_path` | unset                                     | URL prefix for project Pages (writes `<base href="/prefix/">`)          |
 | `links`     | unset                                     | Home-page links; each item needs `label` plus either `url` or `chapter` |
 | `nav`       | unset (filename order)                    | Grouped sidebar sections; see below                                     |
+| `repository` | unset                                    | GitHub URL; enables **Edit this page** on chapters                      |
+| `edit_path` | `content`                                 | Path from repo root to `content/`                                       |
+| `edit_branch` | `main`                                  | Branch used in edit URLs                                                |
+| `version`   | unset                                     | Current label for the version switcher                                  |
+| `versions`  | unset                                     | Peer deploys for the version switcher (needs 2+)                        |
 
 ### Sidebar groups (`site.nav`)
 
@@ -133,14 +138,16 @@ Scroll position highlights the active section.
 
 ```php
 'site' => [
-    'repository' => 'https://github.com/milon/barcode',
-    'edit_path' => 'docs/content', // path from repo root to content/
-    'edit_branch' => 'main',       // optional; default main
+    'repository' => 'https://github.com/milon/papyrus',
+    'edit_path' => 'examples/the-papyrus-handbook/content',
+    'edit_branch' => 'master', // optional; default main
 ],
 ```
 
 Each chapter page then shows **Edit this page** linking to the file on GitHub.
-`init --preset=docs` fills these from nearby `composer.json` when possible.
+This handbook uses the settings above. `init --preset=docs` fills these from
+`composer.json` when possible (often `edit_path` → `docs/content` and
+`edit_branch` → `main`).
 
 ### Copy on code fences
 

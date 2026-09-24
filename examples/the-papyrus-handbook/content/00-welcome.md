@@ -5,10 +5,11 @@ pretoc: true
 
 # Welcome
 
-Thanks for opening **The Papyrus Handbook**. Use the sidebar to browse chapters,
-or continue from Introduction. The home page has the project banner, a
+Thanks for opening **The Papyrus Handbook**. Use the sidebar groups to browse
+chapters, or continue from Introduction. The home page has the project banner, a
 **Downloads** link for PDF previews from GitHub, and links to GitHub and
-Packagist.
+Packagist. On chapter pages you will also see **On this page**, code **Copy**,
+and **Edit this page** linking back to this Markdown on GitHub.
 
 This guide is the companion for **[milon/papyrus](https://github.com/milon/papyrus)** —
 a PHP CLI that turns Markdown into PDF, EPUB, HTML, a multi-page site, and

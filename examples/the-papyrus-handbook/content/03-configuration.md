@@ -182,10 +182,23 @@ face is registered.
     'lead' => 'A one-line pitch for the home page.',
     'cname' => 'docs.example.com',
     'base_path' => '/my-repo', // project Pages path; omit for custom domains at /
+    'repository' => 'https://github.com/you/your-book',
+    'edit_path' => 'content',
+    'edit_branch' => 'main',
     'links' => [
         ['label' => 'Downloads', 'chapter' => '19-downloads.md'],
         ['label' => 'Source on GitHub', 'url' => 'https://github.com/you/your-book'],
         ['label' => 'Issues', 'url' => 'https://github.com/you/your-book/issues'],
+    ],
+    'nav' => [
+        [
+            'group' => 'Start here',
+            'chapters' => ['00-welcome.md', '01-introduction.md'],
+        ],
+        [
+            'group' => 'Build',
+            'chapters' => ['10-build-site.md'],
+        ],
     ],
 ],
 ```
