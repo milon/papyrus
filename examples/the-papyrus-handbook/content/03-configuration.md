@@ -202,12 +202,29 @@ face is registered.
 | `repository`   | unset                                       | GitHub repo URL; enables **Edit this page** on chapters (also legacy home links when `links` is unset)                    |
 | `edit_path`    | `content`                                   | Path from repo root to `content/` (e.g. `docs/content`)                                                                   |
 | `edit_branch`  | `main`                                      | Branch used in edit URLs                                                                                                  |
+| `version`      | unset                                       | Current version label for the switcher (e.g. `v12`)                                                                       |
+| `versions`     | unset                                       | Peer builds for the version switcher; see below                                                                           |
 
 `chapter` matches a chapter source name like `19-downloads.md`, `19-downloads`,
 or a full relative source path, and links to that generated page.
 `repository` still works as a legacy fallback that auto-adds GitHub, Packagist,
 and Issues links when `links` is not set. Chapters are never linked
 automatically; add them explicitly through `links`.
+
+```php
+'site' => [
+    'base_path' => '/barcode/v12',
+    'version' => 'v12',
+    'versions' => [
+        ['label' => 'v12', 'path' => '/barcode/v12'],
+        ['label' => 'v11', 'path' => '/barcode/v11'],
+    ],
+],
+```
+
+`versions` drives the sidebar version switcher (two or more entries). Mark the
+current build with `version` and/or a matching `base_path`. Each listed build
+is a separate `build:site` deploy under that path prefix.
 
 ## Mermaid
 

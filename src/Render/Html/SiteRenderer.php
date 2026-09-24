@@ -511,6 +511,7 @@ HTML;
         $bookSubtitle = htmlspecialchars($this->project->subtitle(), ENT_QUOTES | ENT_HTML5);
         $topbar = htmlspecialchars($topbarTitle, ENT_QUOTES | ENT_HTML5);
         $sidebar = $this->sidebarHtml($pages, $activeFile);
+        $versionSwitcher = $this->versionSwitcherHtml();
         $headExtra = $extraHead !== '' ? "\n    ".$extraHead : '';
         $baseHref = $this->baseHrefTag();
 
@@ -521,6 +522,7 @@ HTML;
                 '{{headExtra}}',
                 '{{bookTitle}}',
                 '{{bookSubtitle}}',
+                '{{versionSwitcher}}',
                 '{{sidebar}}',
                 '{{topbarTitle}}',
                 '{{body}}',
@@ -531,12 +533,40 @@ HTML;
                 $headExtra,
                 $bookTitle,
                 $bookSubtitle,
+                $versionSwitcher,
                 $sidebar,
                 $topbar,
                 $body,
             ],
             WebTheme::documentHtml(),
         );
+    }
+
+    private function versionSwitcherHtml(): string
+    {
+        $versions = $this->project->siteVersions();
+
+        if (count($versions) < 2) {
+            return '';
+        }
+
+        $options = '';
+
+        foreach ($versions as $version) {
+            $options .= sprintf(
+                '<option value="%s"%s>%s</option>',
+                htmlspecialchars($version['href'], ENT_QUOTES | ENT_HTML5),
+                $version['current'] ? ' selected' : '',
+                htmlspecialchars($version['label'], ENT_QUOTES | ENT_HTML5),
+            );
+        }
+
+        return '<div class="version-switcher-wrap">'
+            .'<label class="visually-hidden" for="version-switcher">Documentation version</label>'
+            .'<select class="version-switcher" id="version-switcher" data-version-switcher>'
+            .$options
+            .'</select>'
+            .'</div>';
     }
 
     private function baseHrefTag(): string

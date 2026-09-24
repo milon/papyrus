@@ -146,6 +146,28 @@ Each chapter page then shows **Edit this page** linking to the file on GitHub.
 
 Site pages wrap fenced code blocks with a **Copy** button (clipboard API).
 
+### Version switcher
+
+Each matrix version is its own Papyrus build (own `content/` + `base_path`).
+List peers so the sidebar shows a version select:
+
+```php
+'site' => [
+    'base_path' => '/barcode/v12',
+    'version' => 'v12',
+    'versions' => [
+        ['label' => 'v12', 'path' => '/barcode/v12'],
+        ['label' => 'v11', 'path' => '/barcode/v11'],
+        // Or absolute: ['label' => 'v10', 'url' => 'https://docs.example.com/v10'],
+    ],
+],
+```
+
+Switching keeps the same page filename when it exists in the other build
+(e.g. `01-install.html` → `/barcode/v11/01-install.html`); otherwise it opens
+that version’s home. Use the same chapter filenames across versions when you
+can. The control appears only when `versions` has two or more entries.
+
 With `mode: docs`, the primary button prefers a chapter whose slug or title
 contains “install”, “quick start”, or “getting started”; otherwise it skips a
 Welcome/`00-` chapter and links to the next page. Secondary `links` stay below

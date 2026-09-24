@@ -463,5 +463,49 @@
                 });
             });
         }
+
+        var versionSwitcher = document.querySelector("[data-version-switcher]");
+        if (versionSwitcher) {
+            versionSwitcher.addEventListener("change", function () {
+                var base = versionSwitcher.value;
+                if (!base) return;
+
+                var file = "index.html";
+                try {
+                    var path = window.location.pathname || "";
+                    var parts = path.split("/").filter(Boolean);
+                    if (parts.length > 0) {
+                        var last = parts[parts.length - 1];
+                        if (/\.html?$/i.test(last)) {
+                            file = last;
+                        }
+                    }
+                } catch (e) {}
+
+                var targetBase = base.replace(/\/+$/, "");
+                if (targetBase === "") targetBase = "";
+                var pageUrl = (targetBase === "" ? "" : targetBase) + "/" + file;
+                var homeUrl = (targetBase === "" ? "/" : targetBase + "/");
+
+                function go(url) {
+                    window.location.href = url;
+                }
+
+                if (!window.fetch) {
+                    go(pageUrl);
+                    return;
+                }
+
+                fetch(pageUrl, { method: "HEAD", redirect: "follow" }).then(function (response) {
+                    if (response.status === 404) {
+                        go(homeUrl);
+                    } else {
+                        go(pageUrl);
+                    }
+                }).catch(function () {
+                    go(pageUrl);
+                });
+            });
+        }
     });
 })();

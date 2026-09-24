@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `site.repository` / `site.edit_path` / `site.edit_branch` — **Edit this page** links on chapter pages (docs preset fills these from `composer.json`)
 - Copy button on site code fences
 - Docs preset GitHub Pages workflow stub builds with `-e docs` and deploys via `actions/deploy-pages`
+- `site.versions` (+ optional `site.version`) — sidebar version switcher across peer deploys (`/v12/`, `/v13/`, …)
 
 ## [1.1.0] - 2026-09-04
 

@@ -554,6 +554,136 @@ final class Project
     }
 
     /**
+     * Optional current version label (e.g. v12) for the version switcher.
+     */
+    public function siteVersion(): ?string
+    {
+        $site = $this->config['site'] ?? [];
+
+        if (! is_array($site)) {
+            return null;
+        }
+
+        $version = $site['version'] ?? null;
+
+        if (! is_string($version) || trim($version) === '') {
+            return null;
+        }
+
+        return trim($version);
+    }
+
+    /**
+     * Peer documentation versions for the site switcher.
+     *
+     * @return list<array{label: string, href: string, current: bool}>
+     */
+    public function siteVersions(): array
+    {
+        $site = $this->config['site'] ?? [];
+
+        if (! is_array($site)) {
+            return [];
+        }
+
+        $raw = $site['versions'] ?? null;
+
+        if (! is_array($raw)) {
+            return [];
+        }
+
+        $items = [];
+
+        foreach ($raw as $item) {
+            if (! is_array($item)) {
+                continue;
+            }
+
+            $label = $item['label'] ?? $item['version'] ?? null;
+
+            if (! is_string($label) || trim($label) === '') {
+                continue;
+            }
+
+            $href = $this->normalizeVersionHref($item);
+
+            if ($href === null) {
+                continue;
+            }
+
+            $items[] = [
+                'label' => trim($label),
+                'href' => $href,
+                'current' => false,
+            ];
+        }
+
+        if ($items === []) {
+            return [];
+        }
+
+        $currentIndex = $this->resolveCurrentVersionIndex($items);
+
+        $items[$currentIndex]['current'] = true;
+
+        return $items;
+    }
+
+    /**
+     * @param  array<string, mixed>  $item
+     */
+    private function normalizeVersionHref(array $item): ?string
+    {
+        $url = $item['url'] ?? null;
+
+        if (is_string($url) && trim($url) !== '') {
+            return rtrim(trim($url), '/');
+        }
+
+        $path = $item['path'] ?? null;
+
+        if (! is_string($path)) {
+            return null;
+        }
+
+        $path = trim(str_replace('\\', '/', $path));
+
+        if ($path === '' || $path === '/') {
+            return '/';
+        }
+
+        return '/'.trim($path, '/');
+    }
+
+    /**
+     * @param  list<array{label: string, href: string, current: bool}>  $items
+     */
+    private function resolveCurrentVersionIndex(array $items): int
+    {
+        $version = $this->siteVersion();
+
+        if ($version !== null) {
+            foreach ($items as $index => $item) {
+                if (strcasecmp($item['label'], $version) === 0) {
+                    return $index;
+                }
+            }
+        }
+
+        $basePath = $this->siteBasePath();
+
+        if ($basePath !== '') {
+            foreach ($items as $index => $item) {
+                if ($item['href'] === $basePath || $item['href'] === $basePath.'/') {
+                    return $index;
+                }
+            }
+        }
+
+        return 0;
+    }
+
+    /**
      * GitHub (or compatible) repository URL for edit-on-GitHub links.
      */
     public function siteRepository(): ?string

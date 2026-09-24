@@ -490,6 +490,105 @@ PHP);
         }
     }
 
+    #[Test]
+    public function site_versions_render_sidebar_switcher(): void
+    {
+        $bookDir = sys_get_temp_dir().'/papyrus-versions-'.uniqid('', true);
+        $export = sys_get_temp_dir().'/papyrus-versions-export-'.uniqid('', true);
+        mkdir($bookDir.'/content', 0755, true);
+        mkdir($bookDir.'/assets', 0755, true);
+        mkdir($export);
+
+        file_put_contents($bookDir.'/content/01-install.md', "---\ntitle: Install\n---\n\n# Install\n\nHi.\n");
+        file_put_contents($bookDir.'/papyrus.php', <<<'PHP'
+<?php
+
+return [
+    'title' => 'Versioned Docs',
+    'themes' => ['light'],
+    'site' => [
+        'base_path' => '/barcode/v12',
+        'version' => 'v12',
+        'versions' => [
+            ['label' => 'v12', 'path' => '/barcode/v12'],
+            ['label' => 'v11', 'path' => '/barcode/v11'],
+            ['label' => 'legacy', 'url' => 'https://docs.example.com/v10'],
+        ],
+    ],
+    'mermaid' => ['enabled' => false],
+];
+PHP);
+
+        try {
+            $project = Project::load($bookDir)->withExportDir($export);
+            $versions = $project->siteVersions();
+            $this->assertCount(3, $versions);
+            $this->assertSame('v12', $versions[0]['label']);
+            $this->assertTrue($versions[0]['current']);
+            $this->assertSame('/barcode/v12', $versions[0]['href']);
+            $this->assertSame('/barcode/v11', $versions[1]['href']);
+            $this->assertSame('https://docs.example.com/v10', $versions[2]['href']);
+            $this->assertFalse($versions[1]['current']);
+
+            $siteDir = (new SiteRenderer($project))->render();
+            $html = file_get_contents($siteDir.'/01-install.html');
+            $this->assertIsString($html);
+            $this->assertStringContainsString('data-version-switcher', $html);
+            $this->assertStringContainsString('value="/barcode/v12"', $html);
+            $this->assertStringContainsString('value="/barcode/v11"', $html);
+            $this->assertStringContainsString('value="https://docs.example.com/v10"', $html);
+            $this->assertStringContainsString('selected', $html);
+
+            $css = file_get_contents($siteDir.'/assets/site.css');
+            $this->assertIsString($css);
+            $this->assertStringContainsString('.version-switcher', $css);
+
+            $js = file_get_contents($siteDir.'/assets/site.js');
+            $this->assertIsString($js);
+            $this->assertStringContainsString('data-version-switcher', $js);
+        } finally {
+            $this->removeDir($bookDir);
+            $this->removeDir($export);
+        }
+    }
+
+    #[Test]
+    public function site_versions_omitted_when_fewer_than_two(): void
+    {
+        $bookDir = sys_get_temp_dir().'/papyrus-versions-one-'.uniqid('', true);
+        $export = sys_get_temp_dir().'/papyrus-versions-one-export-'.uniqid('', true);
+        mkdir($bookDir.'/content', 0755, true);
+        mkdir($bookDir.'/assets', 0755, true);
+        mkdir($export);
+
+        file_put_contents($bookDir.'/content/01-install.md', "---\ntitle: Install\n---\n\nHi.\n");
+        file_put_contents($bookDir.'/papyrus.php', <<<'PHP'
+<?php
+
+return [
+    'title' => 'One Version',
+    'themes' => ['light'],
+    'site' => [
+        'versions' => [
+            ['label' => 'v12', 'path' => '/v12'],
+        ],
+    ],
+    'mermaid' => ['enabled' => false],
+];
+PHP);
+
+        try {
+            $project = Project::load($bookDir)->withExportDir($export);
+            $siteDir = (new SiteRenderer($project))->render();
+            $html = file_get_contents($siteDir.'/01-install.html');
+            $this->assertIsString($html);
+            $this->assertStringNotContainsString('version-switcher', $html);
+        } finally {
+            $this->removeDir($bookDir);
+            $this->removeDir($export);
+        }
+    }
+
     private function removeDir(string $dir): void
     {
         if (! is_dir($dir)) {
