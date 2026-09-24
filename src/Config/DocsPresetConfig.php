@@ -64,6 +64,16 @@ final class DocsPresetConfig
                 // Project GitHub Pages: set to /<repo>. Omit (or use cname) for a custom domain.
                 'base_path' => $basePath,
                 'links' => $links,
+                'nav' => [
+                    [
+                        'group' => 'Getting started',
+                        'chapters' => ['00-welcome.md', '01-install.md', '02-usage.md'],
+                    ],
+                    [
+                        'group' => 'Reference',
+                        'chapters' => ['03-api.md', '04-changelog.md'],
+                    ],
+                ],
             ],
 
             'header' => [

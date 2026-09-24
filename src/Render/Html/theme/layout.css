@@ -130,6 +130,32 @@ html[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
     background: var(--sidebar-hover);
 }
 
+.sidebar-group {
+    list-style: none;
+    margin: 0.85rem 0 0;
+    padding: 0;
+}
+
+.sidebar-group:first-child {
+    margin-top: 0.35rem;
+}
+
+.sidebar-group-label {
+    display: block;
+    padding: 0.35rem 1rem 0.25rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--muted);
+}
+
+.sidebar-group > ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
 .sidebar-backdrop {
     display: none;
     position: fixed;

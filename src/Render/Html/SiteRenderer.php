@@ -68,6 +68,8 @@ final class SiteRenderer
             ];
         }
 
+        $pages = $this->orderPagesByNav($pages);
+
         $this->writeFile($siteDir.'/index.html', $this->renderIndex($pages));
         $this->writeFile($siteDir.'/404.html', $this->renderNotFound($pages));
 
@@ -471,28 +473,146 @@ HTML;
      */
     private function sidebarHtml(array $pages, string $activeFile): string
     {
-        $items = '';
-
         $homeClass = $activeFile === 'index.html' ? ' class="is-active"' : '';
         $homeCurrent = $activeFile === 'index.html' ? ' aria-current="page"' : '';
-        $items .= sprintf(
+        $home = sprintf(
             '<li><a%s href="index.html"%s>Home</a></li>',
             $homeClass,
             $homeCurrent,
         );
 
+        $nav = $this->project->siteNav();
+
+        if ($nav === []) {
+            $items = $home;
+
+            foreach ($pages as $page) {
+                $items .= $this->sidebarPageItem($page, $activeFile);
+            }
+
+            return '<nav class="sidebar-nav"><ul>'.$items.'</ul></nav>';
+        }
+
+        $sectionsHtml = $home;
+        $used = [];
+
+        foreach ($nav as $section) {
+            $sectionItems = '';
+
+            foreach ($section['chapters'] as $chapterName) {
+                $page = $this->findPageByChapterName($pages, $chapterName);
+
+                if ($page === null) {
+                    continue;
+                }
+
+                $used[$page['file']] = true;
+                $sectionItems .= $this->sidebarPageItem($page, $activeFile);
+            }
+
+            if ($sectionItems === '') {
+                continue;
+            }
+
+            if ($section['group'] !== null) {
+                $sectionsHtml .= sprintf(
+                    '<li class="sidebar-group"><span class="sidebar-group-label">%s</span><ul>%s</ul></li>',
+                    htmlspecialchars($section['group'], ENT_QUOTES | ENT_HTML5),
+                    $sectionItems,
+                );
+            } else {
+                $sectionsHtml .= $sectionItems;
+            }
+        }
+
+        $extra = '';
+
         foreach ($pages as $page) {
-            $isActive = $page['file'] === $activeFile;
-            $items .= sprintf(
-                '<li><a%s href="%s"%s>%s</a></li>',
-                $isActive ? ' class="is-active"' : '',
-                htmlspecialchars($page['file'], ENT_QUOTES | ENT_HTML5),
-                $isActive ? ' aria-current="page"' : '',
-                htmlspecialchars($page['title'], ENT_QUOTES | ENT_HTML5),
+            if (isset($used[$page['file']])) {
+                continue;
+            }
+
+            $extra .= $this->sidebarPageItem($page, $activeFile);
+        }
+
+        if ($extra !== '') {
+            $sectionsHtml .= sprintf(
+                '<li class="sidebar-group"><span class="sidebar-group-label">More</span><ul>%s</ul></li>',
+                $extra,
             );
         }
 
-        return '<nav class="sidebar-nav"><ul>'.$items.'</ul></nav>';
+        return '<nav class="sidebar-nav"><ul>'.$sectionsHtml.'</ul></nav>';
+    }
+
+    /**
+     * @param  array{chapter: Chapter, file: string, title: string}  $page
+     */
+    private function sidebarPageItem(array $page, string $activeFile): string
+    {
+        $isActive = $page['file'] === $activeFile;
+
+        return sprintf(
+            '<li><a%s href="%s"%s>%s</a></li>',
+            $isActive ? ' class="is-active"' : '',
+            htmlspecialchars($page['file'], ENT_QUOTES | ENT_HTML5),
+            $isActive ? ' aria-current="page"' : '',
+            htmlspecialchars($page['title'], ENT_QUOTES | ENT_HTML5),
+        );
+    }
+
+    /**
+     * @param  list<array{chapter: Chapter, file: string, title: string}>  $pages
+     * @return list<array{chapter: Chapter, file: string, title: string}>
+     */
+    private function orderPagesByNav(array $pages): array
+    {
+        $nav = $this->project->siteNav();
+
+        if ($nav === []) {
+            return $pages;
+        }
+
+        $ordered = [];
+        $used = [];
+
+        foreach ($nav as $section) {
+            foreach ($section['chapters'] as $chapterName) {
+                $page = $this->findPageByChapterName($pages, $chapterName);
+
+                if ($page === null || isset($used[$page['file']])) {
+                    continue;
+                }
+
+                $ordered[] = $page;
+                $used[$page['file']] = true;
+            }
+        }
+
+        foreach ($pages as $page) {
+            if (isset($used[$page['file']])) {
+                continue;
+            }
+
+            $ordered[] = $page;
+        }
+
+        return $ordered;
+    }
+
+    /**
+     * @param  list<array{chapter: Chapter, file: string, title: string}>  $pages
+     * @return array{chapter: Chapter, file: string, title: string}|null
+     */
+    private function findPageByChapterName(array $pages, string $chapterName): ?array
+    {
+        foreach ($pages as $page) {
+            if ($this->pageMatchesChapterName($page, $chapterName)) {
+                return $page;
+            }
+        }
+
+        return null;
     }
 
     private function writeCname(string $siteDir): void

@@ -498,6 +498,61 @@ final class Project
         return $links;
     }
 
+    /**
+     * Optional grouped sidebar navigation.
+     *
+     * @return list<array{group: string|null, chapters: list<string>}>
+     */
+    public function siteNav(): array
+    {
+        $site = $this->config['site'] ?? [];
+
+        if (! is_array($site)) {
+            return [];
+        }
+
+        $rawNav = $site['nav'] ?? null;
+
+        if (! is_array($rawNav)) {
+            return [];
+        }
+
+        $sections = [];
+
+        foreach ($rawNav as $item) {
+            if (! is_array($item)) {
+                continue;
+            }
+
+            $group = $item['group'] ?? $item['label'] ?? null;
+            $groupLabel = is_string($group) && trim($group) !== '' ? trim($group) : null;
+
+            $chapters = [];
+            $rawChapters = $item['chapters'] ?? null;
+
+            if (! is_array($rawChapters)) {
+                continue;
+            }
+
+            foreach ($rawChapters as $chapter) {
+                if (is_string($chapter) && trim($chapter) !== '') {
+                    $chapters[] = trim($chapter);
+                }
+            }
+
+            if ($chapters === []) {
+                continue;
+            }
+
+            $sections[] = [
+                'group' => $groupLabel,
+                'chapters' => $chapters,
+            ];
+        }
+
+        return $sections;
+    }
+
     public function outputSlug(): string
     {
         $slug = strtolower(trim($this->title()));

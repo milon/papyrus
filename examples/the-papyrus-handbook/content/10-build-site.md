@@ -97,6 +97,30 @@ Optional `site` block in `papyrus.php`:
 | `cname`     | unset                                     | Writes `CNAME` in the site root for a GitHub Pages custom domain        |
 | `base_path` | unset                                     | URL prefix for project Pages (writes `<base href="/prefix/">`)          |
 | `links`     | unset                                     | Home-page links; each item needs `label` plus either `url` or `chapter` |
+| `nav`       | unset (filename order)                    | Grouped sidebar sections; see below                                     |
+
+### Sidebar groups (`site.nav`)
+
+```php
+'site' => [
+    'mode' => 'docs',
+    'nav' => [
+        [
+            'group' => 'Getting started',
+            'chapters' => ['01-install.md', '02-usage.md'],
+        ],
+        [
+            'group' => 'Reference',
+            'chapters' => ['03-api.md', '04-changelog.md'],
+        ],
+    ],
+],
+```
+
+Chapter names match the same way as `links.chapter` (filename, stem, or path).
+When `nav` is set, the sidebar shows labeled groups and Prev/Next follow that
+order. Chapters not listed still appear under **More**. Omit `nav` to keep the
+default natural filename order.
 
 With `mode: docs`, the primary button prefers a chapter whose slug or title
 contains “install”, “quick start”, or “getting started”; otherwise it skips a

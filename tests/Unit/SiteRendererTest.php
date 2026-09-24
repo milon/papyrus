@@ -293,6 +293,79 @@ PHP);
         }
     }
 
+    #[Test]
+    public function site_nav_groups_sidebar_and_orders_pages(): void
+    {
+        $bookDir = sys_get_temp_dir().'/papyrus-site-nav-'.uniqid('', true);
+        $export = sys_get_temp_dir().'/papyrus-site-nav-export-'.uniqid('', true);
+        mkdir($bookDir.'/content', 0755, true);
+        mkdir($bookDir.'/assets', 0755, true);
+        mkdir($export);
+
+        file_put_contents($bookDir.'/content/00-welcome.md', "---\ntitle: Welcome\n---\n\nHi.\n");
+        file_put_contents($bookDir.'/content/01-install.md', "---\ntitle: Install\n---\n\nInstall.\n");
+        file_put_contents($bookDir.'/content/02-usage.md', "---\ntitle: Usage\n---\n\nUse.\n");
+        file_put_contents($bookDir.'/content/03-api.md', "---\ntitle: API\n---\n\nAPI.\n");
+        file_put_contents($bookDir.'/content/99-extra.md', "---\ntitle: Extra\n---\n\nExtra.\n");
+        file_put_contents($bookDir.'/papyrus.php', <<<'PHP'
+<?php
+
+return [
+    'title' => 'Nav Docs',
+    'themes' => ['light'],
+    'site' => [
+        'mode' => 'docs',
+        'nav' => [
+            [
+                'group' => 'Getting started',
+                'chapters' => ['01-install.md', '02-usage.md'],
+            ],
+            [
+                'group' => 'Reference',
+                'chapters' => ['03-api.md'],
+            ],
+        ],
+    ],
+    'mermaid' => ['enabled' => false],
+];
+PHP);
+
+        try {
+            $project = Project::load($bookDir)->withExportDir($export);
+            $this->assertCount(2, $project->siteNav());
+
+            $siteDir = (new SiteRenderer($project))->render();
+            $index = file_get_contents($siteDir.'/index.html');
+            $this->assertIsString($index);
+            $this->assertStringContainsString('sidebar-group-label', $index);
+            $this->assertStringContainsString('Getting started', $index);
+            $this->assertStringContainsString('Reference', $index);
+            $this->assertStringContainsString('More', $index);
+
+            // Nav order: Install before Usage; Welcome/Extra fall into More.
+            $installPos = strpos($index, '01-install.html');
+            $usagePos = strpos($index, '02-usage.html');
+            $apiPos = strpos($index, '03-api.html');
+            $this->assertNotFalse($installPos);
+            $this->assertNotFalse($usagePos);
+            $this->assertNotFalse($apiPos);
+            $this->assertTrue($installPos < $usagePos);
+            $this->assertTrue($usagePos < $apiPos);
+
+            $install = file_get_contents($siteDir.'/01-install.html');
+            $this->assertIsString($install);
+            $this->assertStringContainsString('href="02-usage.html"', $install);
+            $this->assertStringContainsString('Next</span>Usage', $install);
+
+            $css = file_get_contents($siteDir.'/assets/site.css');
+            $this->assertIsString($css);
+            $this->assertStringContainsString('.sidebar-group-label', $css);
+        } finally {
+            $this->removeDir($bookDir);
+            $this->removeDir($export);
+        }
+    }
+
     private function removeDir(string $dir): void
     {
         if (! is_dir($dir)) {

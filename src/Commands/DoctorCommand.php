@@ -90,6 +90,7 @@ final class DoctorCommand extends BookCommand
         $this->reportSiteAssets($project, $output);
         $this->reportDraftChapters($project, $output);
         $this->reportSiteLinkChapters($project, $output);
+        $this->reportSiteNavChapters($project, $output);
         $this->reportKdpReadiness($project, $output);
 
         if ($project->mermaidConfig()->enabled) {
@@ -300,6 +301,31 @@ final class DoctorCommand extends BookCommand
             $chapterNames[] = $link['chapter'];
         }
 
+        $this->reportMissingSiteChapters($project, $output, $chapterNames, 'site.links');
+    }
+
+    private function reportSiteNavChapters(Project $project, OutputInterface $output): void
+    {
+        $chapterNames = [];
+
+        foreach ($project->siteNav() as $section) {
+            foreach ($section['chapters'] as $chapter) {
+                $chapterNames[] = $chapter;
+            }
+        }
+
+        $this->reportMissingSiteChapters($project, $output, $chapterNames, 'site.nav');
+    }
+
+    /**
+     * @param  list<string>  $chapterNames
+     */
+    private function reportMissingSiteChapters(
+        Project $project,
+        OutputInterface $output,
+        array $chapterNames,
+        string $source,
+    ): void {
         if ($chapterNames === []) {
             return;
         }
@@ -312,7 +338,7 @@ final class DoctorCommand extends BookCommand
         $missing = $book->missingChapterNames($chapterNames);
 
         foreach ($missing as $name) {
-            $output->writeln(sprintf('<comment>! site.links chapter not found: %s</comment>', $name));
+            $output->writeln(sprintf('<comment>! %s chapter not found: %s</comment>', $source, $name));
         }
 
         $published = $book->withoutDrafts();
@@ -324,7 +350,8 @@ final class DoctorCommand extends BookCommand
 
             if ($published->missingChapterNames([$name]) !== []) {
                 $output->writeln(sprintf(
-                    '<comment>! site.links chapter is a draft (omitted from builds): %s</comment>',
+                    '<comment>! %s chapter is a draft (omitted from builds): %s</comment>',
+                    $source,
                     $name,
                 ));
             }

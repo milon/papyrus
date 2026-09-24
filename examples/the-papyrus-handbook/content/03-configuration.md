@@ -198,6 +198,7 @@ face is registered.
 | `cname`     | unset                                       | Custom domain; writes a `CNAME` file in the site root for GitHub Pages; absolute `sitemap.xml` / `robots.txt` Sitemap URL |
 | `base_path` | unset (site at `/`)                         | Path prefix for project GitHub Pages (e.g. `/my-repo`); injects `<base href>`; also prefixes sitemap locs                 |
 | `links`     | unset                                       | Explicit home-page links; each item needs `label` plus either `url` or `chapter`                                          |
+| `nav`       | unset                                       | Grouped sidebar: list of `{ group, chapters: [...] }`; orders Prev/Next too                                               |
 
 `chapter` matches a chapter source name like `19-downloads.md`, `19-downloads`,
 or a full relative source path, and links to that generated page.
