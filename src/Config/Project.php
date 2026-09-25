@@ -807,6 +807,22 @@ final class Project
     }
 
     /**
+     * Whether chapter pages show Copy as Markdown. Default true.
+     */
+    public function siteCopyMarkdownEnabled(): bool
+    {
+        return $this->siteFlag('copy_markdown', true);
+    }
+
+    /**
+     * Whether chapter pages show Print this page. Default true.
+     */
+    public function sitePrintPageEnabled(): bool
+    {
+        return $this->siteFlag('print_page', true);
+    }
+
+    /**
      * Whether chapter pages show the On this page rail. Default true.
      */
     public function sitePageTocEnabled(): bool

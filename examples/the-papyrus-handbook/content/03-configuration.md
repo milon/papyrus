@@ -217,6 +217,8 @@ face is registered.
 | `repository`   | unset                                       | GitHub repo URL; used for **Edit this page** and legacy home links when `links` is unset                                  |
 | `edit`         | unset                                       | Nested edit-link settings; see below                                                                                      |
 | `copy_code`    | `true`                                      | Set `false` to disable the Copy control on code fences                                                                    |
+| `copy_markdown`| `true`                                      | Set `false` to hide **Copy as Markdown** on chapter pages                                                                 |
+| `print_page`   | `true`                                      | Set `false` to hide **Print this page** on chapter pages                                                                  |
 | `page_toc`     | `true`                                      | Set `false` to hide the **On this page** rail                                                                             |
 | `version`      | unset                                       | Current version label for the switcher (e.g. `v12`)                                                                       |
 | `versions`     | unset                                       | Peer builds for the version switcher; see below                                                                           |

@@ -100,6 +100,8 @@ Optional `site` block in `papyrus.php`:
 | `repository` | unset                                     | GitHub URL; used with `edit` for **Edit this page**                     |
 | `edit`       | unset                                     | `{ link, path, branch }` — see Edit on GitHub below                     |
 | `copy_code`  | `true`                                    | Set `false` to hide the Copy control on fences                          |
+| `copy_markdown` | `true`                                 | Set `false` to hide **Copy as Markdown** on chapters                    |
+| `print_page` | `true`                                    | Set `false` to hide **Print this page** on chapters                     |
 | `page_toc`   | `true`                                    | Set `false` to hide the **On this page** rail                           |
 | `version`    | unset                                     | Current label for the version switcher                                  |
 | `versions`   | unset                                     | Peer deploys for the version switcher (needs 2+)                        |
@@ -158,6 +160,13 @@ when possible (often `path` → `docs/content`, `branch` → `main`, `link` → 
 
 Site pages wrap fenced code blocks with an icon **Copy** button (clipboard API).
 Set `site.copy_code: false` to disable it.
+
+### Copy as Markdown / Print
+
+Chapter pages show **Copy as Markdown** (full source file, including front
+matter) and **Print this page** next to **Edit this page** when that is
+enabled. Print uses the browser dialog and hides chrome (sidebar, topbar, TOC,
+actions). Disable with `site.copy_markdown: false` and/or `site.print_page: false`.
 
 ### Version switcher
 

@@ -520,6 +520,47 @@
             });
         }
 
+        var copyPageMarkdown = document.getElementById("copy-page-markdown");
+        var pageMarkdownSource = document.getElementById("page-markdown-source");
+        if (
+            copyPageMarkdown
+            && pageMarkdownSource
+            && navigator.clipboard
+            && navigator.clipboard.writeText
+        ) {
+            copyPageMarkdown.addEventListener("click", function () {
+                var markdown = "";
+                try {
+                    markdown = JSON.parse(pageMarkdownSource.textContent || '""');
+                } catch (e) {
+                    return;
+                }
+                if (typeof markdown !== "string" || markdown === "") return;
+
+                navigator.clipboard.writeText(markdown).then(function () {
+                    var label = copyPageMarkdown.querySelector("span");
+                    var previous = label ? label.textContent : "";
+                    copyPageMarkdown.classList.add("is-copied");
+                    copyPageMarkdown.setAttribute("aria-label", "Copied");
+                    copyPageMarkdown.setAttribute("title", "Copied");
+                    if (label) label.textContent = "Copied";
+                    window.setTimeout(function () {
+                        copyPageMarkdown.classList.remove("is-copied");
+                        copyPageMarkdown.setAttribute("aria-label", "Copy page as Markdown");
+                        copyPageMarkdown.setAttribute("title", "Copy as Markdown");
+                        if (label) label.textContent = previous || "Copy as Markdown";
+                    }, 1600);
+                }).catch(function () {});
+            });
+        }
+
+        var printPage = document.getElementById("print-page");
+        if (printPage) {
+            printPage.addEventListener("click", function () {
+                window.print();
+            });
+        }
+
         var versionSwitcher = document.querySelector("[data-version-switcher]");
         if (versionSwitcher) {
             versionSwitcher.addEventListener("change", function () {

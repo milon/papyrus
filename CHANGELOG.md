@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **On this page** rail always renders on chapter pages when enabled — pages without `##` / `###` show the page title as the only entry
 - Unified `build:site` home (former docs layout): **Get started** CTA, optional author, `links` below; `site.mode` ignored
 - Collapsible `site.nav` sidebar groups (remembered in the browser; active group stays open)
+- **Copy as Markdown** and **Print this page** on chapter pages (`site.copy_markdown` / `site.print_page`, default `true`)
 
 ## [1.3.2] - 2026-09-24
 

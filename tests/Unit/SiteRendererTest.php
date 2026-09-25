@@ -485,9 +485,11 @@ PHP);
             $siteDir = (new SiteRenderer($project))->render();
             $html = file_get_contents($siteDir.'/01-install.html');
             $this->assertIsString($html);
-            $this->assertStringContainsString('class="edit-page"', $html);
+            $this->assertStringContainsString('class="page-actions"', $html);
             $this->assertStringContainsString('Edit this page', $html);
-            $this->assertStringContainsString('edit-page-icon', $html);
+            $this->assertStringContainsString('Copy as Markdown', $html);
+            $this->assertStringContainsString('Print this page', $html);
+            $this->assertStringContainsString('id="page-markdown-source"', $html);
             $this->assertStringContainsString(
                 'href="https://github.com/milon/barcode/edit/main/docs/content/01-install.md"',
                 $html,
@@ -496,11 +498,15 @@ PHP);
             $css = file_get_contents($siteDir.'/assets/site.css');
             $this->assertIsString($css);
             $this->assertStringContainsString('.code-copy', $css);
+            $this->assertStringContainsString('.page-actions', $css);
+            $this->assertStringContainsString('@media print', $css);
 
             $js = file_get_contents($siteDir.'/assets/site.js');
             $this->assertIsString($js);
             $this->assertStringContainsString('code-copy', $js);
             $this->assertStringContainsString('code-copy-clipboard', $js);
+            $this->assertStringContainsString('copy-page-markdown', $js);
+            $this->assertStringContainsString('print-page', $js);
             $this->assertStringNotContainsString('data-no-copy-code', $html);
         } finally {
             $this->removeDir($bookDir);
@@ -530,6 +536,8 @@ return [
             'link' => false,
         ],
         'copy_code' => false,
+        'copy_markdown' => false,
+        'print_page' => false,
         'page_toc' => false,
     ],
     'mermaid' => ['enabled' => false],
@@ -540,12 +548,16 @@ PHP);
             $project = Project::load($bookDir)->withExportDir($export);
             $this->assertNull($project->chapterEditUrl('01-install.md'));
             $this->assertFalse($project->siteCopyCodeEnabled());
+            $this->assertFalse($project->siteCopyMarkdownEnabled());
+            $this->assertFalse($project->sitePrintPageEnabled());
             $this->assertFalse($project->sitePageTocEnabled());
 
             $siteDir = (new SiteRenderer($project))->render();
             $html = file_get_contents($siteDir.'/01-install.html');
             $this->assertIsString($html);
-            $this->assertStringNotContainsString('edit-page', $html);
+            $this->assertStringNotContainsString('page-actions', $html);
+            $this->assertStringNotContainsString('copy-page-markdown', $html);
+            $this->assertStringNotContainsString('print-page', $html);
             $this->assertStringNotContainsString('page-toc', $html);
             $this->assertStringNotContainsString('content-with-toc', $html);
             $this->assertStringContainsString('data-no-copy-code', $html);

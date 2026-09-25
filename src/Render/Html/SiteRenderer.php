@@ -352,8 +352,8 @@ HTML;
         $nav .= '</nav>';
 
         [$anchoredHtml, $headings] = HeadingAnchors::process($page['chapter']->html);
-        $edit = $this->editPageHtml($page['chapter']->source);
-        $main = $anchoredHtml.$edit.$nav;
+        $actions = $this->pageActionsHtml($page['chapter']);
+        $main = $anchoredHtml.$actions.$nav;
         $toc = $this->pageTocHtml($headings, $page['title']);
         $body = $toc === ''
             ? $main
@@ -369,24 +369,75 @@ HTML;
         );
     }
 
-    private function editPageHtml(string $chapterSource): string
+    private function pageActionsHtml(Chapter $chapter): string
     {
-        $url = $this->project->chapterEditUrl($chapterSource);
+        $parts = [];
 
-        if ($url === null) {
+        if ($this->project->siteCopyMarkdownEnabled()) {
+            $markdown = $this->chapterMarkdownSource($chapter);
+
+            if ($markdown !== null) {
+                $encoded = json_encode(
+                    $markdown,
+                    JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES,
+                );
+
+                if (is_string($encoded)) {
+                    $icon = '<svg class="page-action-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">'
+                        .'<rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.75"/>'
+                        .'<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>'
+                        .'</svg>';
+                    $parts[] = '<button type="button" class="page-action" id="copy-page-markdown" aria-label="Copy page as Markdown" title="Copy as Markdown">'
+                        .$icon
+                        .'<span>Copy as Markdown</span>'
+                        .'</button>';
+                    $parts[] = '<script type="application/json" id="page-markdown-source">'.$encoded.'</script>';
+                }
+            }
+        }
+
+        if ($this->project->sitePrintPageEnabled()) {
+            $icon = '<svg class="page-action-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">'
+                .'<path d="M6 9V2h12v7" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>'
+                .'<path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>'
+                .'<path d="M6 14h12v8H6z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>'
+                .'</svg>';
+            $parts[] = '<button type="button" class="page-action" id="print-page" aria-label="Print this page" title="Print this page">'
+                .$icon
+                .'<span>Print this page</span>'
+                .'</button>';
+        }
+
+        $editUrl = $this->project->chapterEditUrl($chapter->source);
+
+        if ($editUrl !== null) {
+            $icon = '<svg class="page-action-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">'
+                .'<path d="M12 20h9" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>'
+                .'<path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>'
+                .'</svg>';
+            $parts[] = sprintf(
+                '<a class="page-action" href="%s" target="_blank" rel="noopener noreferrer">%s<span>Edit this page</span></a>',
+                htmlspecialchars($editUrl, ENT_QUOTES | ENT_HTML5),
+                $icon,
+            );
+        }
+
+        if ($parts === []) {
             return '';
         }
 
-        $icon = '<svg class="edit-page-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">'
-            .'<path d="M12 20h9" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>'
-            .'<path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>'
-            .'</svg>';
+        return '<div class="page-actions">'.implode('', $parts).'</div>';
+    }
 
-        return sprintf(
-            '<p class="edit-page"><a href="%s" target="_blank" rel="noopener noreferrer">%s<span>Edit this page</span></a></p>',
-            htmlspecialchars($url, ENT_QUOTES | ENT_HTML5),
-            $icon,
-        );
+    private function chapterMarkdownSource(Chapter $chapter): ?string
+    {
+        if (! is_file($chapter->path)) {
+            return null;
+        }
+
+        $markdown = file_get_contents($chapter->path);
+
+        return is_string($markdown) ? $markdown : null;
     }
 
     /**
