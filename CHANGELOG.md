@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.4.0] - 2026-09-24
+
 ### Added
 
 - Icon buttons for code **Copy** and **Edit this page**
@@ -97,6 +99,8 @@ Site, sample PDF, and KDP-oriented export surface for Markdown books.
 
 See Git tags `v0.1.0` … `v0.5.2` for pre-1.0 history.
 
+[1.4.0]: https://github.com/milon/papyrus/releases/tag/v1.4.0
+[1.3.2]: https://github.com/milon/papyrus/releases/tag/v1.3.2
 [1.3.1]: https://github.com/milon/papyrus/releases/tag/v1.3.1
 [1.3.0]: https://github.com/milon/papyrus/releases/tag/v1.3.0
 [1.2.0]: https://github.com/milon/papyrus/releases/tag/v1.2.0
