@@ -99,9 +99,10 @@ Optional `site` block in `papyrus.php`:
 | `base_path` | unset                                     | URL prefix for project Pages (writes `<base href="/prefix/">`)          |
 | `links`     | unset                                     | Home-page links; each item needs `label` plus either `url` or `chapter` |
 | `nav`       | unset (filename order)                    | Grouped sidebar sections; see below                                     |
-| `repository` | unset                                    | GitHub URL; enables **Edit this page** on chapters                      |
-| `edit_path` | `content`                                 | Path from repo root to `content/`                                       |
-| `edit_branch` | `main`                                  | Branch used in edit URLs                                                |
+| `repository` | unset                                    | GitHub URL; used with `edit` for **Edit this page**                     |
+| `edit`      | unset                                     | `{ link, path, branch }` — see Edit on GitHub below                     |
+| `copy_code` | `true`                                    | Set `false` to hide the Copy control on fences                          |
+| `page_toc`  | `true`                                    | Set `false` to hide the **On this page** rail                           |
 | `version`   | unset                                     | Current label for the version switcher                                  |
 | `versions`  | unset                                     | Peer deploys for the version switcher (needs 2+)                        |
 
@@ -130,29 +131,34 @@ default natural filename order.
 
 ### On this page
 
-Chapter pages with `##` / `###` headings get a sticky right-rail outline (wide
-viewports only), styled like Laravel’s docs: list icon, left border rail, and an
-active-section indicator as you scroll. Links reuse the same fragment ids as
-heading permalinks.
+Chapter pages get a sticky right-rail outline on wide viewports (Laravel-style:
+list icon, left border rail, active-section indicator). When the chapter has
+`##` / `###` headings, those appear as links; when it has none, the rail still
+shows with the page title linking to the top. Set `site.page_toc: false` to hide
+the rail entirely.
 
 ### Edit on GitHub
 
 ```php
 'site' => [
     'repository' => 'https://github.com/milon/papyrus',
-    'edit_path' => 'examples/the-papyrus-handbook/content',
-    'edit_branch' => 'master', // optional; default main
+    'edit' => [
+        'link' => true, // default false
+        'path' => 'examples/the-papyrus-handbook/content',
+        'branch' => 'master', // optional; default main
+    ],
 ],
 ```
 
-Each chapter page then shows **Edit this page** linking to the file on GitHub.
-This handbook uses the settings above. `init --preset=docs` fills these from
-`composer.json` when possible (often `edit_path` → `docs/content` and
-`edit_branch` → `main`).
+Each chapter page then shows **Edit this page** (pencil icon) linking to the
+file on GitHub when `edit.link` is `true`. This handbook uses the settings
+above. `init --preset=docs` fills `repository` / `edit` from `composer.json`
+when possible (often `path` → `docs/content`, `branch` → `main`, `link` → `true`).
 
 ### Copy on code fences
 
-Site pages wrap fenced code blocks with a **Copy** button (clipboard API).
+Site pages wrap fenced code blocks with an icon **Copy** button (clipboard API).
+Set `site.copy_code: false` to disable it.
 
 ### Version switcher
 

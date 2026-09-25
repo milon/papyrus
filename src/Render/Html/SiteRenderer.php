@@ -405,7 +405,7 @@ HTML;
         [$anchoredHtml, $headings] = HeadingAnchors::process($page['chapter']->html);
         $edit = $this->editPageHtml($page['chapter']->source);
         $main = $anchoredHtml.$edit.$nav;
-        $toc = $this->pageTocHtml($headings);
+        $toc = $this->pageTocHtml($headings, $page['title']);
         $body = $toc === ''
             ? $main
             : '<div class="content-with-toc"><div class="content-main">'.$main.'</div>'.$toc.'</div>';
@@ -428,50 +428,63 @@ HTML;
             return '';
         }
 
+        $icon = '<svg class="edit-page-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">'
+            .'<path d="M12 20h9" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/>'
+            .'<path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/>'
+            .'</svg>';
+
         return sprintf(
-            '<p class="edit-page"><a href="%s" target="_blank" rel="noopener noreferrer">Edit this page</a></p>',
+            '<p class="edit-page"><a href="%s" target="_blank" rel="noopener noreferrer">%s<span>Edit this page</span></a></p>',
             htmlspecialchars($url, ENT_QUOTES | ENT_HTML5),
+            $icon,
         );
     }
 
     /**
      * @param  list<array{id: string, title: string, level: int}>  $headings
      */
-    private function pageTocHtml(array $headings): string
+    private function pageTocHtml(array $headings, string $pageTitle): string
     {
-        if ($headings === []) {
+        if (! $this->project->sitePageTocEnabled()) {
             return '';
         }
 
-        $items = '';
-        $count = count($headings);
+        if ($headings === []) {
+            $items = sprintf(
+                '<li><a href="#">%s</a></li>',
+                htmlspecialchars($pageTitle, ENT_QUOTES | ENT_HTML5),
+            );
+        } else {
+            $items = '';
+            $count = count($headings);
 
-        for ($i = 0; $i < $count; $i++) {
-            $heading = $headings[$i];
+            for ($i = 0; $i < $count; $i++) {
+                $heading = $headings[$i];
 
-            if ($heading['level'] > 2) {
-                // Orphan h3 (no preceding h2) — treat as a top-level link.
-                $items .= $this->pageTocItem($heading);
+                if ($heading['level'] > 2) {
+                    // Orphan h3 (no preceding h2) — treat as a top-level link.
+                    $items .= $this->pageTocItem($heading);
 
-                continue;
-            }
+                    continue;
+                }
 
-            $children = '';
+                $children = '';
 
-            while ($i + 1 < $count && $headings[$i + 1]['level'] > 2) {
-                $i++;
-                $children .= $this->pageTocItem($headings[$i]);
-            }
+                while ($i + 1 < $count && $headings[$i + 1]['level'] > 2) {
+                    $i++;
+                    $children .= $this->pageTocItem($headings[$i]);
+                }
 
-            if ($children === '') {
-                $items .= $this->pageTocItem($heading);
-            } else {
-                $items .= sprintf(
-                    '<li><a href="#%s">%s</a><ul>%s</ul></li>',
-                    htmlspecialchars($heading['id'], ENT_QUOTES | ENT_HTML5),
-                    htmlspecialchars($heading['title'], ENT_QUOTES | ENT_HTML5),
-                    $children,
-                );
+                if ($children === '') {
+                    $items .= $this->pageTocItem($heading);
+                } else {
+                    $items .= sprintf(
+                        '<li><a href="#%s">%s</a><ul>%s</ul></li>',
+                        htmlspecialchars($heading['id'], ENT_QUOTES | ENT_HTML5),
+                        htmlspecialchars($heading['title'], ENT_QUOTES | ENT_HTML5),
+                        $children,
+                    );
+                }
             }
         }
 
@@ -520,6 +533,7 @@ HTML;
         $versionSwitcher = $this->versionSwitcherHtml();
         $headExtra = $extraHead !== '' ? "\n    ".$extraHead : '';
         $baseHref = $this->baseHrefTag();
+        $bodyAttrs = $this->bodyAttrs();
 
         return str_replace(
             [
@@ -531,6 +545,7 @@ HTML;
                 '{{versionSwitcher}}',
                 '{{sidebar}}',
                 '{{topbarTitle}}',
+                '{{bodyAttrs}}',
                 '{{body}}',
             ],
             [
@@ -542,10 +557,22 @@ HTML;
                 $versionSwitcher,
                 $sidebar,
                 $topbar,
+                $bodyAttrs,
                 $body,
             ],
             WebTheme::documentHtml(),
         );
+    }
+
+    private function bodyAttrs(): string
+    {
+        $attrs = '';
+
+        if (! $this->project->siteCopyCodeEnabled()) {
+            $attrs .= ' data-no-copy-code';
+        }
+
+        return $attrs;
     }
 
     private function versionSwitcherHtml(): string

@@ -116,12 +116,15 @@ final class InitCommandTest extends TestCase
         $this->assertSame('/barcode', $project->siteBasePath());
         $this->assertSame('https://github.com/milon/barcode', $project->siteRepository());
         $this->assertSame('docs/content', $project->siteEditPath());
+        $this->assertTrue($project->siteEditLinkEnabled());
 
         $yml = file_get_contents($docs.'/papyrus.yml');
         $this->assertIsString($yml);
         $this->assertStringContainsString('mode: docs', $yml);
         $this->assertStringContainsString('repository:', $yml);
-        $this->assertStringContainsString('edit_path: docs/content', $yml);
+        $this->assertStringContainsString('edit:', $yml);
+        $this->assertStringContainsString('path: docs/content', $yml);
+        $this->assertStringContainsString('link: true', $yml);
         $this->assertStringContainsString('build:site -e docs', (string) file_get_contents($docs.'/github/workflows/docs-site.yml'));
         $this->assertStringNotContainsString('kdp:', $yml);
         $this->assertStringNotContainsString('sample:', $yml);

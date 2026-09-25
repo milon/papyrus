@@ -193,6 +193,21 @@ those headings open the chapter at that section.</p>
 <td>Branch used in edit URLs</td>
 </tr>
 <tr>
+<td><code>edit_link</code></td>
+<td><code>true</code></td>
+<td>Set <code>false</code> to hide <strong>Edit this page</strong></td>
+</tr>
+<tr>
+<td><code>copy_code</code></td>
+<td><code>true</code></td>
+<td>Set <code>false</code> to hide the Copy control on fences</td>
+</tr>
+<tr>
+<td><code>page_toc</code></td>
+<td><code>true</code></td>
+<td>Set <code>false</code> to hide the <strong>On this page</strong> rail</td>
+</tr>
+<tr>
 <td><code>version</code></td>
 <td>unset</td>
 <td>Current label for the version switcher</td>
@@ -224,10 +239,11 @@ When <code>nav</code> is set, the sidebar shows labeled groups and Prev/Next fol
 order. Chapters not listed still appear under <strong>More</strong>. Omit <code>nav</code> to keep the
 default natural filename order.</p>
 <h3 id="on-this-page"><a class="heading-permalink" href="#on-this-page" aria-hidden="true" tabindex="-1">#</a>On this page</h3>
-<p>Chapter pages with <code>##</code> / <code>###</code> headings get a sticky right-rail outline (wide
-viewports only), styled like Laravel’s docs: list icon, left border rail, and an
-active-section indicator as you scroll. Links reuse the same fragment ids as
-heading permalinks.</p>
+<p>Chapter pages get a sticky right-rail outline on wide viewports (Laravel-style:
+list icon, left border rail, active-section indicator). When the chapter has
+<code>##</code> / <code>###</code> headings, those appear as links; when it has none, the rail still
+shows with the page title linking to the top. Set <code>site.page_toc: false</code> to hide
+the rail entirely.</p>
 <h3 id="edit-on-github"><a class="heading-permalink" href="#edit-on-github" aria-hidden="true" tabindex="-1">#</a>Edit on GitHub</h3>
 <pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'site'</span> =&gt; [
     <span class="hljs-string">'repository'</span> =&gt; <span class="hljs-string">'https://github.com/milon/papyrus'</span>,
@@ -235,12 +251,14 @@ heading permalinks.</p>
     <span class="hljs-string">'edit_branch'</span> =&gt; <span class="hljs-string">'master'</span>, <span class="hljs-comment">// optional; default main</span>
 ],
 </code></pre>
-<p>Each chapter page then shows <strong>Edit this page</strong> linking to the file on GitHub.
-This handbook uses the settings above. <code>init --preset=docs</code> fills these from
-<code>composer.json</code> when possible (often <code>edit_path</code> → <code>docs/content</code> and
-<code>edit_branch</code> → <code>main</code>).</p>
+<p>Each chapter page then shows <strong>Edit this page</strong> (pencil icon) linking to the
+file on GitHub. This handbook uses the settings above. Set <code>site.edit_link: false</code>
+to hide the link while keeping <code>repository</code> for other uses. <code>init --preset=docs</code>
+fills these from <code>composer.json</code> when possible (often <code>edit_path</code> → <code>docs/content</code>
+and <code>edit_branch</code> → <code>main</code>).</p>
 <h3 id="copy-on-code-fences"><a class="heading-permalink" href="#copy-on-code-fences" aria-hidden="true" tabindex="-1">#</a>Copy on code fences</h3>
-<p>Site pages wrap fenced code blocks with a <strong>Copy</strong> button (clipboard API).</p>
+<p>Site pages wrap fenced code blocks with an icon <strong>Copy</strong> button (clipboard API).
+Set <code>site.copy_code: false</code> to disable it.</p>
 <h3 id="version-switcher"><a class="heading-permalink" href="#version-switcher" aria-hidden="true" tabindex="-1">#</a>Version switcher</h3>
 <p>Each matrix version is its own Papyrus build (own <code>content/</code> + <code>base_path</code>).
 List peers so the sidebar shows a version select:</p>
@@ -313,7 +331,7 @@ papyrus build:site -d examples/the-papyrus-handbook -e docs
 <p>With <code>mermaid.theme =&gt; auto</code>, each diagram embeds light and dark SVG
 variants; CSS swaps them with <code>data-theme</code>. Diagrams stay within the
 reading column (same max-width ladder as the HTML theme).</p>
-<p class="edit-page"><a href="https://github.com/milon/papyrus/edit/master/examples/the-papyrus-handbook/content/10-build-site.md" target="_blank" rel="noopener noreferrer">Edit this page</a></p><nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="09-build-html.html"><span class="label">Previous</span>build:html</a><a class="next" href="11-build-sample.html"><span class="label">Next</span>build:sample</a></nav></div><aside class="page-toc" aria-label="On this page"><p class="page-toc-title"><svg class="page-toc-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false"><path d="M1.833 8h12.333M1.833 3.833h12.333M1.833 12.167H7.666" stroke="currentColor" stroke-width="1.25" stroke-linecap="square"/></svg>On this page</p><div class="page-toc-rail"><ul><li><a href="#options">Options</a></li><li><a href="#output">Output</a></li><li><a href="#site-config">Site config</a><ul><li><a href="#sidebar-groups-site-nav">Sidebar groups (site.nav)</a></li><li><a href="#on-this-page">On this page</a></li><li><a href="#edit-on-github">Edit on GitHub</a></li><li><a href="#copy-on-code-fences">Copy on code fences</a></li><li><a href="#version-switcher">Version switcher</a></li><li><a href="#images-and-other-assets">Images and other assets</a></li><li><a href="#docs-home-cta-mode-docs">Docs home CTA (mode: docs)</a></li></ul></li><li><a href="#hosting-this-handbook">Hosting this handbook</a></li><li><a href="#mermaid-on-the-site">Mermaid on the site</a></li></ul></div></aside></div>
+<p class="edit-page"><a href="https://github.com/milon/papyrus/edit/master/examples/the-papyrus-handbook/content/10-build-site.md" target="_blank" rel="noopener noreferrer"><svg class="edit-page-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M12 20h9" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/></svg><span>Edit this page</span></a></p><nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="09-build-html.html"><span class="label">Previous</span>build:html</a><a class="next" href="11-build-sample.html"><span class="label">Next</span>build:sample</a></nav></div><aside class="page-toc" aria-label="On this page"><p class="page-toc-title"><svg class="page-toc-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false"><path d="M1.833 8h12.333M1.833 3.833h12.333M1.833 12.167H7.666" stroke="currentColor" stroke-width="1.25" stroke-linecap="square"/></svg>On this page</p><div class="page-toc-rail"><ul><li><a href="#options">Options</a></li><li><a href="#output">Output</a></li><li><a href="#site-config">Site config</a><ul><li><a href="#sidebar-groups-site-nav">Sidebar groups (site.nav)</a></li><li><a href="#on-this-page">On this page</a></li><li><a href="#edit-on-github">Edit on GitHub</a></li><li><a href="#copy-on-code-fences">Copy on code fences</a></li><li><a href="#version-switcher">Version switcher</a></li><li><a href="#images-and-other-assets">Images and other assets</a></li><li><a href="#docs-home-cta-mode-docs">Docs home CTA (mode: docs)</a></li></ul></li><li><a href="#hosting-this-handbook">Hosting this handbook</a></li><li><a href="#mermaid-on-the-site">Mermaid on the site</a></li></ul></div></aside></div>
         </main>
     </div>
     <div class="search-modal" id="search-modal" hidden role="dialog" aria-modal="true" aria-labelledby="search-modal-title">

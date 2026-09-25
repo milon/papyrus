@@ -456,8 +456,11 @@ return [
     'themes' => ['light'],
     'site' => [
         'repository' => 'https://github.com/milon/barcode.git',
-        'edit_path' => 'docs/content',
-        'edit_branch' => 'main',
+        'edit' => [
+            'link' => true,
+            'path' => 'docs/content',
+            'branch' => 'main',
+        ],
     ],
     'mermaid' => ['enabled' => false],
 ];
@@ -475,6 +478,7 @@ PHP);
             $this->assertIsString($html);
             $this->assertStringContainsString('class="edit-page"', $html);
             $this->assertStringContainsString('Edit this page', $html);
+            $this->assertStringContainsString('edit-page-icon', $html);
             $this->assertStringContainsString(
                 'href="https://github.com/milon/barcode/edit/main/docs/content/01-install.md"',
                 $html,
@@ -487,6 +491,89 @@ PHP);
             $js = file_get_contents($siteDir.'/assets/site.js');
             $this->assertIsString($js);
             $this->assertStringContainsString('code-copy', $js);
+            $this->assertStringContainsString('code-copy-clipboard', $js);
+            $this->assertStringNotContainsString('data-no-copy-code', $html);
+        } finally {
+            $this->removeDir($bookDir);
+            $this->removeDir($export);
+        }
+    }
+
+    #[Test]
+    public function site_flags_can_disable_edit_copy_and_page_toc(): void
+    {
+        $bookDir = sys_get_temp_dir().'/papyrus-site-flags-'.uniqid('', true);
+        $export = sys_get_temp_dir().'/papyrus-site-flags-export-'.uniqid('', true);
+        mkdir($bookDir.'/content', 0755, true);
+        mkdir($bookDir.'/assets', 0755, true);
+        mkdir($export);
+
+        file_put_contents($bookDir.'/content/01-install.md', "---\ntitle: Install\n---\n\n# Install\n\n## Steps\n\n```bash\necho hi\n```\n");
+        file_put_contents($bookDir.'/papyrus.php', <<<'PHP'
+<?php
+
+return [
+    'title' => 'Flags Docs',
+    'themes' => ['light'],
+    'site' => [
+        'repository' => 'https://github.com/milon/barcode',
+        'edit' => [
+            'link' => false,
+        ],
+        'copy_code' => false,
+        'page_toc' => false,
+    ],
+    'mermaid' => ['enabled' => false],
+];
+PHP);
+
+        try {
+            $project = Project::load($bookDir)->withExportDir($export);
+            $this->assertNull($project->chapterEditUrl('01-install.md'));
+            $this->assertFalse($project->siteCopyCodeEnabled());
+            $this->assertFalse($project->sitePageTocEnabled());
+
+            $siteDir = (new SiteRenderer($project))->render();
+            $html = file_get_contents($siteDir.'/01-install.html');
+            $this->assertIsString($html);
+            $this->assertStringNotContainsString('edit-page', $html);
+            $this->assertStringNotContainsString('page-toc', $html);
+            $this->assertStringNotContainsString('content-with-toc', $html);
+            $this->assertStringContainsString('data-no-copy-code', $html);
+        } finally {
+            $this->removeDir($bookDir);
+            $this->removeDir($export);
+        }
+    }
+
+    #[Test]
+    public function on_this_page_appears_when_chapter_has_no_subheadings(): void
+    {
+        $bookDir = sys_get_temp_dir().'/papyrus-toc-empty-'.uniqid('', true);
+        $export = sys_get_temp_dir().'/papyrus-toc-empty-export-'.uniqid('', true);
+        mkdir($bookDir.'/content', 0755, true);
+        mkdir($bookDir.'/assets', 0755, true);
+        mkdir($export);
+
+        file_put_contents($bookDir.'/content/01-plain.md', "---\ntitle: Plain\n---\n\n# Plain\n\nJust a paragraph.\n");
+        file_put_contents($bookDir.'/papyrus.php', <<<'PHP'
+<?php
+
+return [
+    'title' => 'Empty TOC',
+    'themes' => ['light'],
+    'mermaid' => ['enabled' => false],
+];
+PHP);
+
+        try {
+            $project = Project::load($bookDir)->withExportDir($export);
+            $siteDir = (new SiteRenderer($project))->render();
+            $html = file_get_contents($siteDir.'/01-plain.html');
+            $this->assertIsString($html);
+            $this->assertStringContainsString('class="page-toc"', $html);
+            $this->assertStringContainsString('content-with-toc', $html);
+            $this->assertStringContainsString('href="#">Plain</a>', $html);
         } finally {
             $this->removeDir($bookDir);
             $this->removeDir($export);

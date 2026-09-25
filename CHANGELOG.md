@@ -5,6 +5,15 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Added
+
+- Icon buttons for code **Copy** and **Edit this page**
+- `site.copy_code` / `site.page_toc` (default `true`) and `site.edit.link` (default `false`) to toggle those controls
+- `site.edit` nests `link` / `path` / `branch` for **Edit this page** (legacy flat `edit_*` keys still read)
+- **On this page** rail always renders on chapter pages when enabled — pages without `##` / `###` show the page title as the only entry
+
 ## [1.3.2] - 2026-09-24
 
 ### Fixed
@@ -20,7 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `site.nav` — grouped sidebar sections; orders Prev/Next; unlisted chapters under More
 - Site chapter pages: sticky **On this page** outline for `h2` / `h3` (wide screens; Laravel-style rail); `###` headings get permalink anchors too
 - `import-readme` — split a `README.md` into `content/` chapters on `##` headings (`--file`, `--force`, `--dry-run`)
-- `site.repository` / `site.edit_path` / `site.edit_branch` — **Edit this page** links on chapter pages (docs preset fills these from `composer.json`)
+- `site.repository` / `site.edit` (`link`, `path`, `branch`) — **Edit this page** on chapters (`link` defaults to `false`; docs preset sets `link: true`)
 - Copy button on site code fences
 - Docs preset GitHub Pages workflow stub builds with `-e docs` and deploys via `actions/deploy-pages`
 - `site.versions` (+ optional `site.version`) — sidebar version switcher across peer deploys (`path` or absolute `url`)

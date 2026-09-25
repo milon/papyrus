@@ -329,12 +329,25 @@ html[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
 }
 
 .edit-page a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
     color: var(--muted);
     text-decoration: none;
 }
 
+.edit-page-icon {
+    flex: 0 0 auto;
+    width: 1rem;
+    height: 1rem;
+}
+
 .edit-page a:hover {
     color: var(--fg);
+    text-decoration: none;
+}
+
+.edit-page a:hover span {
     text-decoration: underline;
 }
 

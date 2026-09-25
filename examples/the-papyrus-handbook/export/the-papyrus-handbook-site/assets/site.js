@@ -432,7 +432,20 @@
         }
 
         var contentRoot = document.querySelector("main.content");
-        if (contentRoot && navigator.clipboard && navigator.clipboard.writeText) {
+        if (
+            contentRoot
+            && !document.body.hasAttribute("data-no-copy-code")
+            && navigator.clipboard
+            && navigator.clipboard.writeText
+        ) {
+            var copyIcon = '<svg class="code-copy-clipboard" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">'
+                + '<rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.75"/>'
+                + '<path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>'
+                + '</svg>'
+                + '<svg class="code-copy-check" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">'
+                + '<path d="M20 6L9 17l-5-5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>'
+                + '</svg>';
+
             Array.prototype.forEach.call(contentRoot.querySelectorAll("pre"), function (pre) {
                 if (pre.closest(".code-block") || pre.closest("figure.mermaid")) {
                     return;
@@ -447,17 +460,20 @@
                 button.type = "button";
                 button.className = "code-copy";
                 button.setAttribute("aria-label", "Copy code");
-                button.textContent = "Copy";
+                button.setAttribute("title", "Copy");
+                button.innerHTML = copyIcon;
                 wrap.appendChild(button);
 
                 button.addEventListener("click", function () {
                     var text = pre.innerText || pre.textContent || "";
                     navigator.clipboard.writeText(text).then(function () {
-                        button.textContent = "Copied";
                         button.classList.add("is-copied");
+                        button.setAttribute("aria-label", "Copied");
+                        button.setAttribute("title", "Copied");
                         window.setTimeout(function () {
-                            button.textContent = "Copy";
                             button.classList.remove("is-copied");
+                            button.setAttribute("aria-label", "Copy code");
+                            button.setAttribute("title", "Copy");
                         }, 1600);
                     }).catch(function () {});
                 });

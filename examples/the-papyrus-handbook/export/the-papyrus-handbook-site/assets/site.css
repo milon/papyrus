@@ -270,16 +270,24 @@ pre {
     top: 0.5rem;
     z-index: 1;
     align-self: start;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
     margin: 0.5rem 0.5rem 0 0;
-    padding: 0.25rem 0.55rem;
+    padding: 0;
     border: 1px solid var(--toggle-border);
     border-radius: 0;
     background: var(--pre-bg);
     color: var(--muted);
-    font-family: inherit;
-    font-size: 0.7rem;
-    line-height: 1.2;
     cursor: pointer;
+}
+
+.code-copy svg {
+    width: 0.95rem;
+    height: 0.95rem;
+    display: block;
 }
 
 .code-copy:hover {
@@ -294,6 +302,18 @@ pre {
 
 .code-copy.is-copied {
     color: var(--fg);
+}
+
+.code-copy .code-copy-check {
+    display: none;
+}
+
+.code-copy.is-copied .code-copy-clipboard {
+    display: none;
+}
+
+.code-copy.is-copied .code-copy-check {
+    display: block;
 }
 
 pre code {
@@ -334,6 +354,13 @@ code {
 
 .mermaid-diagram { margin: 0 0 1.875em 0; text-align: center; }
 .mermaid-diagram img { max-width: 100%; height: auto; }
+
+/* Markdown images (screenshots, diagrams) must stay inside the reading column */
+.content-main img,
+.title-page img {
+    max-width: 100%;
+    height: auto;
+}
 
 figure.mermaid {
     width: 100%;
@@ -867,12 +894,25 @@ html[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
 }
 
 .edit-page a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
     color: var(--muted);
     text-decoration: none;
 }
 
+.edit-page-icon {
+    flex: 0 0 auto;
+    width: 1rem;
+    height: 1rem;
+}
+
 .edit-page a:hover {
     color: var(--fg);
+    text-decoration: none;
+}
+
+.edit-page a:hover span {
     text-decoration: underline;
 }
 

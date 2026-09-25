@@ -183,8 +183,11 @@ face is registered.
     'cname' => 'docs.example.com',
     'base_path' => '/my-repo', // project Pages path; omit for custom domains at /
     'repository' => 'https://github.com/you/your-book',
-    'edit_path' => 'content',
-    'edit_branch' => 'main',
+    'edit' => [
+        'link' => true, // default false — set true to show Edit this page
+        'path' => 'content',
+        'branch' => 'main',
+    ],
     'links' => [
         ['label' => 'Downloads', 'chapter' => '19-downloads.md'],
         ['label' => 'Source on GitHub', 'url' => 'https://github.com/you/your-book'],
@@ -212,11 +215,20 @@ face is registered.
 | `base_path`    | unset (site at `/`)                         | Path prefix for project GitHub Pages (e.g. `/my-repo`); injects `<base href>`; also prefixes sitemap locs                 |
 | `links`        | unset                                       | Explicit home-page links; each item needs `label` plus either `url` or `chapter`                                          |
 | `nav`          | unset                                       | Grouped sidebar: list of `{ group, chapters: [...] }`; orders Prev/Next too                                               |
-| `repository`   | unset                                       | GitHub repo URL; enables **Edit this page** on chapters (also legacy home links when `links` is unset)                    |
-| `edit_path`    | `content`                                   | Path from repo root to `content/` (e.g. `docs/content`)                                                                   |
-| `edit_branch`  | `main`                                      | Branch used in edit URLs                                                                                                  |
+| `repository`   | unset                                       | GitHub repo URL; used for **Edit this page** and legacy home links when `links` is unset                                  |
+| `edit`         | unset                                       | Nested edit-link settings; see below                                                                                      |
+| `copy_code`    | `true`                                      | Set `false` to disable the Copy control on code fences                                                                    |
+| `page_toc`     | `true`                                      | Set `false` to hide the **On this page** rail                                                                             |
 | `version`      | unset                                       | Current version label for the switcher (e.g. `v12`)                                                                       |
 | `versions`     | unset                                       | Peer builds for the version switcher; see below                                                                           |
+
+`site.edit` (optional):
+
+| Key      | Default   | Notes                                                                                          |
+|----------|-----------|------------------------------------------------------------------------------------------------|
+| `link`   | `false`   | Set `true` to show **Edit this page** (also accepts `enabled`)                                 |
+| `path`   | `content` | Path from repo root to `content/` (e.g. `docs/content`)                                        |
+| `branch` | `main`    | Branch used in edit URLs                                                                       |
 
 `chapter` matches a chapter source name like `19-downloads.md`, `19-downloads`,
 or a full relative source path, and links to that generated page.

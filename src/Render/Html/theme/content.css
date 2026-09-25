@@ -220,16 +220,24 @@ pre {
     top: 0.5rem;
     z-index: 1;
     align-self: start;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
     margin: 0.5rem 0.5rem 0 0;
-    padding: 0.25rem 0.55rem;
+    padding: 0;
     border: 1px solid var(--toggle-border);
     border-radius: 0;
     background: var(--pre-bg);
     color: var(--muted);
-    font-family: inherit;
-    font-size: 0.7rem;
-    line-height: 1.2;
     cursor: pointer;
+}
+
+.code-copy svg {
+    width: 0.95rem;
+    height: 0.95rem;
+    display: block;
 }
 
 .code-copy:hover {
@@ -244,6 +252,18 @@ pre {
 
 .code-copy.is-copied {
     color: var(--fg);
+}
+
+.code-copy .code-copy-check {
+    display: none;
+}
+
+.code-copy.is-copied .code-copy-clipboard {
+    display: none;
+}
+
+.code-copy.is-copied .code-copy-check {
+    display: block;
 }
 
 pre code {

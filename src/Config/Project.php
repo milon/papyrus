@@ -718,13 +718,7 @@ final class Project
      */
     public function siteEditPath(): string
     {
-        $site = $this->config['site'] ?? [];
-
-        if (! is_array($site)) {
-            return 'content';
-        }
-
-        $editPath = $site['edit_path'] ?? null;
+        $editPath = $this->siteEditConfig()['path'] ?? null;
 
         if (! is_string($editPath) || trim($editPath) === '') {
             return 'content';
@@ -738,13 +732,7 @@ final class Project
      */
     public function siteEditBranch(): string
     {
-        $site = $this->config['site'] ?? [];
-
-        if (! is_array($site)) {
-            return 'main';
-        }
-
-        $branch = $site['edit_branch'] ?? null;
+        $branch = $this->siteEditConfig()['branch'] ?? null;
 
         if (! is_string($branch) || trim($branch) === '') {
             return 'main';
@@ -754,10 +742,121 @@ final class Project
     }
 
     /**
-     * Full URL to edit a chapter on GitHub, or null when repository is unset.
+     * Whether chapter pages show “Edit this page” (requires repository). Default false.
+     */
+    public function siteEditLinkEnabled(): bool
+    {
+        $edit = $this->siteEditConfig();
+
+        if (array_key_exists('link', $edit)) {
+            return $this->coerceBool($edit['link'], false);
+        }
+
+        if (array_key_exists('enabled', $edit)) {
+            return $this->coerceBool($edit['enabled'], false);
+        }
+
+        return false;
+    }
+
+    /**
+     * @return array<string, mixed>
+     */
+    private function siteEditConfig(): array
+    {
+        $site = $this->config['site'] ?? [];
+
+        if (! is_array($site)) {
+            return [];
+        }
+
+        $edit = $site['edit'] ?? null;
+
+        if (is_array($edit)) {
+            return $edit;
+        }
+
+        // Legacy flat keys (site.edit_path / edit_branch / edit_link).
+        $legacy = [];
+
+        if (array_key_exists('edit_path', $site)) {
+            $legacy['path'] = $site['edit_path'];
+        }
+
+        if (array_key_exists('edit_branch', $site)) {
+            $legacy['branch'] = $site['edit_branch'];
+        }
+
+        if (array_key_exists('edit_link', $site)) {
+            $legacy['link'] = $site['edit_link'];
+        }
+
+        return $legacy;
+    }
+
+    /**
+     * Whether fenced code blocks get a Copy control. Default true.
+     */
+    public function siteCopyCodeEnabled(): bool
+    {
+        return $this->siteFlag('copy_code', true);
+    }
+
+    /**
+     * Whether chapter pages show the On this page rail. Default true.
+     */
+    public function sitePageTocEnabled(): bool
+    {
+        return $this->siteFlag('page_toc', true);
+    }
+
+    private function siteFlag(string $key, bool $default): bool
+    {
+        $site = $this->config['site'] ?? [];
+
+        if (! is_array($site)) {
+            return $default;
+        }
+
+        return $this->coerceBool($site[$key] ?? null, $default);
+    }
+
+    private function coerceBool(mixed $value, bool $default): bool
+    {
+        if ($value === null) {
+            return $default;
+        }
+
+        if (is_bool($value)) {
+            return $value;
+        }
+
+        if (is_int($value) || is_float($value)) {
+            return (bool) $value;
+        }
+
+        if (! is_string($value)) {
+            return $default;
+        }
+
+        $normalized = strtolower(trim($value));
+
+        return match ($normalized) {
+            '1', 'true', 'yes', 'on' => true,
+            '0', 'false', 'no', 'off' => false,
+            default => $default,
+        };
+    }
+
+    /**
+     * Full URL to edit a chapter on GitHub, or null when repository is unset / edit link disabled.
      */
     public function chapterEditUrl(string $chapterSource): ?string
     {
+        if (! $this->siteEditLinkEnabled()) {
+            return null;
+        }
+
         $repository = $this->siteRepository();
 
         if ($repository === null) {

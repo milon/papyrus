@@ -134,7 +134,7 @@ starter chapters (welcome, install, usage, reference, changelog), an empty
 
 If a `composer.json` is found in the target directory or its parent, Papyrus
 fills `title`, `site.lead`, `site.links` (GitHub / Packagist),
-`site.repository` / `site.edit_path` (for **Edit this page**), and a suggested
+`site.repository` / `site.edit` (for **Edit this page**), and a suggested
 `site.base_path` (e.g. `/barcode` for `milon/barcode`). There is no KDP or
 sample-PDF config in this preset.
 
@@ -172,8 +172,10 @@ site:
   lead: Short pitch for the home page.
   base_path: /barcode          # omit with a custom domain / cname
   repository: https://github.com/milon/barcode
-  edit_path: docs-src/content # path from repo root to content/
-  edit_branch: master         # default main
+  edit:
+    link: true                 # default false
+    path: docs-src/content     # path from repo root to content/
+    branch: master             # default main
   links:
     - { label: GitHub, url: https://github.com/milon/barcode }
     - { label: Packagist, url: https://packagist.org/packages/milon/barcode }
