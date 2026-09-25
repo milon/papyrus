@@ -7,6 +7,7 @@ namespace Milon\Papyrus\Config;
 use Milon\Papyrus\Migration\JsonConfigWriter;
 use Milon\Papyrus\Migration\PhpConfigWriter;
 use Milon\Papyrus\Migration\YamlConfigWriter;
+use Milon\Papyrus\Support\PackagePaths;
 
 final class ConfigWriter
 {
@@ -48,7 +49,7 @@ final class ConfigWriter
      */
     public static function stubConfig(): array
     {
-        $path = dirname(__DIR__, 2).'/stubs/papyrus.php';
+        $path = PackagePaths::stub('papyrus.php');
         $config = require $path;
 
         if (! is_array($config)) {

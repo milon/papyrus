@@ -2,10 +2,14 @@
 
 declare(strict_types=1);
 
-$autoloadCandidates = [
-    dirname(__DIR__, 2).'/vendor/autoload.php',
-    dirname(__DIR__, 3).'/autoload.php',
-];
+$autoloadCandidates = [];
+
+if (class_exists(Phar::class, false) && Phar::running() !== '') {
+    $autoloadCandidates[] = 'phar://'.Phar::running(false).'/vendor/autoload.php';
+}
+
+$autoloadCandidates[] = dirname(__DIR__, 2).'/vendor/autoload.php';
+$autoloadCandidates[] = dirname(__DIR__, 3).'/autoload.php';
 
 $autoload = null;
 

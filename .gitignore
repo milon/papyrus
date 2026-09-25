@@ -4,6 +4,7 @@
 /.papyrus/
 /examples/**/.papyrus/
 /export/
+/build/
 *.pdf
 !docs/**/*.pdf
 *.epub

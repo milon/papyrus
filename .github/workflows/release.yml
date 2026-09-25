@@ -47,13 +47,31 @@ jobs:
 
     steps:
       - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.4"
+          extensions: dom, gd, mbstring, zip, zlib, phar
+          coverage: none
+          tools: composer:v2
+          ini-values: phar.readonly=0
+
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Build PHAR
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          PAPYRUS_PHAR_VERSION="$version" composer build:phar
 
       - name: Create GitHub Release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           tag="${GITHUB_REF_NAME}"
-          args=(--generate-notes --verify-tag --title "$tag")
+          args=(--generate-notes --verify-tag --title "$tag" build/papyrus.phar)
           if [[ "$tag" == *-* ]]; then
             args+=(--prerelease)
           fi

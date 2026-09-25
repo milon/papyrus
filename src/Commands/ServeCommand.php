@@ -9,6 +9,7 @@ use Milon\Papyrus\Config\Project;
 use Milon\Papyrus\Mermaid\MermaidException;
 use Milon\Papyrus\Render\Html\HtmlException;
 use Milon\Papyrus\Render\Html\SiteRenderer;
+use Milon\Papyrus\Support\PackagePaths;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -107,6 +108,11 @@ final class ServeCommand extends BookCommand
 
         $router = dirname(__DIR__).'/Serve/router.php';
 
+        if (PackagePaths::runningInPhar()) {
+            // php -S cannot always use a phar:// router path; stage a tiny bootstrap.
+            $router = $this->stagedPharRouter();
+        }
+
         if (! is_file($router)) {
             $output->writeln('<error>Site router not found: '.$router.'</error>');
 
@@ -178,6 +184,11 @@ final class ServeCommand extends BookCommand
         $env['PAPYRUS_SITE_DIR'] = $siteDir;
         $env['PAPYRUS_SITE_BASE'] = $basePath;
 
+        $phar = \Phar::running(false);
+        if ($phar !== '') {
+            $env['PAPYRUS_PHAR'] = $phar;
+        }
+
         $process = proc_open($command, [STDIN, STDOUT, STDERR], $pipes, $siteDir, $env);
 
         if (! is_resource($process)) {
@@ -190,5 +201,24 @@ final class ServeCommand extends BookCommand
     private function isValidHost(string $host): bool
     {
         return $host !== '' && (bool) preg_match('/^[A-Za-z0-9.-]+$/', $host);
+    }
+
+    private function stagedPharRouter(): string
+    {
+        $phar = \Phar::running(false);
+        $router = sys_get_temp_dir().'/papyrus-serve-router-'.md5($phar).'.php';
+        $contents = <<<'PHP'
+<?php
+
+declare(strict_types=1);
+
+require 'phar://'.getenv('PAPYRUS_PHAR').'/src/Serve/router.php';
+PHP;
+
+        if (! is_file($router) || file_get_contents($router) !== $contents) {
+            file_put_contents($router, $contents);
+        }
+
+        return $router;
     }
 }

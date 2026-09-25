@@ -11,6 +11,7 @@ use Milon\Papyrus\Markdown\BookConverter;
 use Milon\Papyrus\Mermaid\MermaidCache;
 use Milon\Papyrus\Mermaid\MermaidCliResolver;
 use Milon\Papyrus\Mermaid\MermaidRenderer;
+use Milon\Papyrus\Support\PackagePaths;
 
 final class Project
 {
@@ -20,6 +21,7 @@ final class Project
 
     public const DEFAULT_ASSETS_DIR = 'assets';
 
+    /** @deprecated Use packageAssetsDir() — kept for callers that read the constant. */
     public const PACKAGE_ASSETS_DIR = __DIR__.'/../../stubs/assets';
 
     public const DEFAULT_EXPORT_DIR = 'export';
@@ -230,7 +232,7 @@ final class Project
 
     public function packageAssetsDir(): string
     {
-        return self::normalizePath(self::PACKAGE_ASSETS_DIR);
+        return self::normalizePath(PackagePaths::stub('assets'));
     }
 
     public function assetPath(string $relativePath): ?string

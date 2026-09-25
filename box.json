@@ -1,0 +1,70 @@
+{
+    "alias": "papyrus.phar",
+    "banner": false,
+    "chmod": "0755",
+    "compression": "GZ",
+    "compactors": [
+        "KevinGH\\Box\\Compactor\\Php",
+        "KevinGH\\Box\\Compactor\\Json"
+    ],
+    "directories": [
+        "src",
+        "stubs"
+    ],
+    "files": [
+        "composer.json",
+        "LICENSE"
+    ],
+    "finder": [
+        {
+            "name": "*.php",
+            "exclude": [
+                "Tests",
+                "tests",
+                "test"
+            ],
+            "in": "vendor"
+        },
+        {
+            "name": [
+                "composer.json",
+                "installed.json",
+                "installed.php",
+                "InstalledVersions.php",
+                "*.json",
+                "*.txt",
+                "*.md",
+                "*.yml",
+                "*.yaml",
+                "*.xml",
+                "*.css",
+                "*.js",
+                "*.html",
+                "*.ttf",
+                "*.otf",
+                "*.ttc",
+                "*.map",
+                "*.bash",
+                "*.zsh",
+                "*.fish",
+                "LICENSE*",
+                "COPYING*"
+            ],
+            "exclude": [
+                "Tests",
+                "tests",
+                "test",
+                "docs",
+                "doc"
+            ],
+            "in": "vendor"
+        },
+        {
+            "in": "vendor/symfony/console/Resources"
+        }
+    ],
+    "git-version": "git_version",
+    "main": "bin/papyrus",
+    "output": "build/papyrus.phar",
+    "shebang": "#!/usr/bin/env php"
+}

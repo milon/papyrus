@@ -33,6 +33,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class Application extends SymfonyApplication
 {
+    /**
+     * Replaced by Box when building a PHAR (`git-version` placeholder).
+     */
+    private const BOX_VERSION = '@git_version@';
+
     public function __construct()
     {
         parent::__construct('Papyrus', self::resolveVersion());
@@ -64,6 +69,10 @@ final class Application extends SymfonyApplication
 
     private static function resolveVersion(): string
     {
+        if (! str_contains(self::BOX_VERSION, '@')) {
+            return ltrim(self::BOX_VERSION, 'v');
+        }
+
         if (! class_exists(InstalledVersions::class)) {
             return 'dev';
         }

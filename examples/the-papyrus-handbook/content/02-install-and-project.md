@@ -67,6 +67,19 @@ vendor/bin/papyrus init
 vendor/bin/papyrus doctor
 ```
 
+### PHAR (no Composer project)
+
+From [GitHub Releases](https://github.com/milon/papyrus/releases), download `papyrus.phar`. You still need PHP 8.2+ with the extensions above — not Composer.
+
+```bash
+curl -L -o papyrus.phar https://github.com/milon/papyrus/releases/download/v1.5.0/papyrus.phar
+chmod +x papyrus.phar
+php papyrus.phar --version
+php papyrus.phar build:site -d path/to/book
+```
+
+In CI for a non-PHP repo, install PHP (for example `shivammathur/setup-php`), download the PHAR, and run `php papyrus.phar …`.
+
 Wire Composer scripts (example):
 
 ```json

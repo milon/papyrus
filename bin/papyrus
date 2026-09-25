@@ -3,10 +3,16 @@
 
 declare(strict_types=1);
 
-$autoloadCandidates = [
-    __DIR__.'/../../../autoload.php', // composer dependency: vendor/milon/papyrus/bin
-    __DIR__.'/../vendor/autoload.php', // package checkout
-];
+use Milon\Papyrus\Console\Application;
+
+$autoloadCandidates = [];
+
+if (class_exists(Phar::class, false) && Phar::running() !== '') {
+    $autoloadCandidates[] = 'phar://'.Phar::running(false).'/vendor/autoload.php';
+}
+
+$autoloadCandidates[] = __DIR__.'/../../../autoload.php'; // composer dependency: vendor/milon/papyrus/bin
+$autoloadCandidates[] = __DIR__.'/../vendor/autoload.php'; // package checkout
 
 $autoload = null;
 foreach ($autoloadCandidates as $candidate) {
@@ -22,7 +28,5 @@ if ($autoload === null) {
 }
 
 require $autoload;
-
-use Milon\Papyrus\Console\Application;
 
 exit(Application::main());

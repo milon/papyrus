@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Milon\Papyrus\Stubs;
 
+use Milon\Papyrus\Support\PackagePaths;
+
 final class StubRepository
 {
     public function __construct(
@@ -12,7 +14,7 @@ final class StubRepository
 
     public static function default(): self
     {
-        return new self(dirname(__DIR__, 2).'/stubs');
+        return new self(PackagePaths::stubs());
     }
 
     /**

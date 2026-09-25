@@ -18,6 +18,7 @@ Influenced by [ibis-next](https://github.com/Hi-Folks/ibis-next), with first-cla
 - **PDF / EPUB / HTML** — light & dark themes, `--parallel` PDF builds, single-file HTML
 - **Writing** — Mermaid at build time, draft chapters (`draft: true`), sample PDFs, multi-script fonts
 - **Tooling** — `doctor`, `watch`, `lint`, `sizes`, `asset:publish`, `migrate-ibis`
+- **PHAR** — downloadable `papyrus.phar` for CI without a Composer project (needs PHP 8.2+)
 - **Caches** — chapter HTML and Mermaid figures under `.papyrus/`; `-e` / `--export` for CI / `docs/`
 
 ## Handbook
@@ -87,6 +88,16 @@ Optional Composer scripts: `"build": "papyrus build"`, `"build:site": "papyrus b
     "build:kdp": "papyrus kdp"
   }
 }
+```
+
+**PHAR (no Composer project)**
+
+Download `papyrus.phar` from [Releases](https://github.com/milon/papyrus/releases). Needs PHP 8.2+ with the same extensions; does not need Composer.
+
+```bash
+curl -L -o papyrus.phar https://github.com/milon/papyrus/releases/download/v1.5.0/papyrus.phar
+chmod +x papyrus.phar
+php papyrus.phar build:site -d path/to/book
 ```
 
 ```bash

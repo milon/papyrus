@@ -10,6 +10,7 @@ use Milon\Papyrus\Mermaid\MermaidException;
 use Milon\Papyrus\Render\Pdf\ParallelPdfRenderer;
 use Milon\Papyrus\Render\Pdf\PdfException;
 use Milon\Papyrus\Render\Pdf\PdfRenderer;
+use Milon\Papyrus\Support\PackagePaths;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
@@ -111,6 +112,6 @@ final class PdfCommand extends BookCommand
 
     private function papyrusBinary(): string
     {
-        return dirname(__DIR__, 2).'/bin/papyrus';
+        return PackagePaths::cliEntrypoint();
     }
 }

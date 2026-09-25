@@ -62,7 +62,8 @@
         "test": "phpunit",
         "lint": "pint --test",
         "format": "pint",
-        "build:handbook": "bash scripts/build-handbook.sh"
+        "build:handbook": "bash scripts/build-handbook.sh",
+        "build:phar": "bash scripts/build-phar.sh"
     },
     "minimum-stability": "stable",
     "prefer-stable": true
