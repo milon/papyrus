@@ -26,9 +26,10 @@ Amazon KDP exports. You are reading those same chapters as a Papyrus site.
 6. **build** — all-in-one export, watch, caches
 7. **build:pdf** / **epub** / **html** / **site** / **sample** — one chapter each (`serve` is covered with site)
 8. **kdp** and **kdp:\*** — Kindle, print, covers, metadata, package
-9. **Migration and CI** — ibis-next migration and GitHub Actions
-10. **Command reference** — full CLI tables
-11. **Downloads** — light and dark PDF previews from GitHub
+9. **Migration** — ibis-next migration
+10. **CI for documentation** — Composer and PHAR workflows for GitHub Pages
+11. **Command reference** — full CLI tables
+12. **Downloads** — light and dark PDF previews from GitHub
 
 Copyright © 2026 [Nuruzzaman Milon](https://github.com/milon) /
 [Papyrus](https://github.com/milon/papyrus). Released under the same terms as

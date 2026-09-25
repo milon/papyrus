@@ -1,8 +1,8 @@
 ---
-title: Migration and CI
+title: Migration
 ---
 
-# Migration and CI
+# Migration
 
 ## Migrating from ibis-next
 
@@ -38,18 +38,14 @@ After migration:
 
 ## Continuous integration
 
-Copy the stub workflow from the Papyrus package:
+For documentation sites (`build:site` + GitHub Pages), see
+[CI for documentation](18-ci-documentation.html) — Composer for PHP repos and
+`papyrus.phar` for everything else.
 
-`stubs/github/workflows/book-build.yml`
-
-A typical book job installs PHP with `dom`, `gd`, `mbstring`, `zip`, `zlib`,
-runs `composer install`, `papyrus doctor`, optional `papyrus lint`, then
-`composer build`.
-
-To publish a `build:site` output on GitHub Pages, add a job that runs
-`papyrus build:site` and deploys the site directory to a `gh-pages` branch
-(see [pages.yml](https://github.com/milon/papyrus/blob/master/.github/workflows/pages.yml)
-in this repository for a working example, including Chromium for Mermaid).
+For full book builds (PDF / EPUB / KDP), copy
+`stubs/github/workflows/book-build.yml` from the Papyrus package. A typical job
+installs PHP with `dom`, `gd`, `mbstring`, `zip`, `zlib`, runs `composer install`
+(or downloads the PHAR), then `papyrus doctor` and `papyrus build`.
 
 ## Programmatic use
 

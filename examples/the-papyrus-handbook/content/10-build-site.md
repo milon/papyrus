@@ -83,7 +83,7 @@ Optional `site` block in `papyrus.php`:
     'cname' => 'docs.example.com',      // GitHub Pages custom domain
     'base_path' => '/my-repo',          // project Pages under github.io/my-repo/; omit with cname
     'links' => [
-        ['label' => 'Downloads', 'chapter' => '19-downloads.md'],
+        ['label' => 'Downloads', 'chapter' => '20-downloads.md'],
         ['label' => 'Source on GitHub', 'url' => 'https://github.com/you/your-book'],
     ],
 ],
@@ -216,7 +216,7 @@ the CTA (GitHub, Packagist, …). Author is shown when `author` is set on the
 project.
 
 Nothing is inferred from chapter titles for `links`. If you want a Downloads link on Home,
-add it explicitly with `['label' => 'Downloads', 'chapter' => '19-downloads.md']`.
+add it explicitly with `['label' => 'Downloads', 'chapter' => '20-downloads.md']`.
 
 Use `base_path` when the site is not at the domain root (for example
 `https://user.github.io/my-repo/`). Leave it unset when using a custom domain

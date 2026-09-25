@@ -41,7 +41,7 @@ return [
             'branch' => 'master',
         ],
         'links' => [
-            ['label' => 'Downloads', 'chapter' => '19-downloads.md'],
+            ['label' => 'Downloads', 'chapter' => '20-downloads.md'],
             ['label' => 'Source on GitHub', 'url' => 'https://github.com/milon/papyrus'],
             ['label' => 'Packagist', 'url' => 'https://packagist.org/packages/milon/papyrus'],
             ['label' => 'Issues', 'url' => 'https://github.com/milon/papyrus/issues'],
@@ -88,8 +88,9 @@ return [
                 'group' => 'Ship it',
                 'chapters' => [
                     '17-migration-and-ci.md',
-                    '18-command-reference.md',
-                    '19-downloads.md',
+                    '18-ci-documentation.md',
+                    '19-command-reference.md',
+                    '20-downloads.md',
                 ],
             ],
         ],

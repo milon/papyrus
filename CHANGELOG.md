@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - `papyrus.phar` release artifact (Box, ~47MB gzipped) — download and run with PHP 8.2+; no Composer project required (`composer build:phar` / `PAPYRUS_PHAR_VERSION=1.5.0`)
+- Handbook chapter **CI for documentation** — Composer and PHAR GitHub Actions examples for `build:site` / Pages
 
 ## [1.4.0] - 2026-09-24
 

@@ -78,7 +78,9 @@ php papyrus.phar --version
 php papyrus.phar build:site -d path/to/book
 ```
 
-In CI for a non-PHP repo, install PHP (for example `shivammathur/setup-php`), download the PHAR, and run `php papyrus.phar …`.
+In CI for a non-PHP repo, install PHP (for example `shivammathur/setup-php`),
+download the PHAR, and run `php papyrus.phar …`. Full Composer and PHAR
+workflow examples are in [CI for documentation](18-ci-documentation.html).
 
 Wire Composer scripts (example):
 

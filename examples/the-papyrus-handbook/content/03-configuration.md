@@ -189,7 +189,7 @@ face is registered.
         'branch' => 'main',
     ],
     'links' => [
-        ['label' => 'Downloads', 'chapter' => '19-downloads.md'],
+        ['label' => 'Downloads', 'chapter' => '20-downloads.md'],
         ['label' => 'Source on GitHub', 'url' => 'https://github.com/you/your-book'],
         ['label' => 'Issues', 'url' => 'https://github.com/you/your-book/issues'],
     ],
@@ -231,7 +231,7 @@ face is registered.
 | `path`   | `content` | Path from repo root to `content/` (e.g. `docs/content`)                                        |
 | `branch` | `main`    | Branch used in edit URLs                                                                       |
 
-`chapter` matches a chapter source name like `19-downloads.md`, `19-downloads`,
+`chapter` matches a chapter source name like `20-downloads.md`, `20-downloads`,
 or a full relative source path, and links to that generated page.
 `repository` still works as a legacy fallback that auto-adds GitHub, Packagist,
 and Issues links when `links` is not set. Chapters are never linked
