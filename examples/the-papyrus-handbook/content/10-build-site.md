@@ -89,20 +89,20 @@ Optional `site` block in `papyrus.php`:
 ],
 ```
 
-| Key         | Default                                   | Meaning                                                                 |
-|-------------|-------------------------------------------|-------------------------------------------------------------------------|
-| `banner`    | `banner.jpg` then `banner.png` if present | Hero image on Home                                                      |
-| `lead`      | unset                                     | Short pitch under the title on Home                                     |
-| `cname`     | unset                                     | Writes `CNAME` in the site root for a GitHub Pages custom domain        |
-| `base_path` | unset                                     | URL prefix for project Pages (writes `<base href="/prefix/">`)          |
-| `links`     | unset                                     | Home-page links; each item needs `label` plus either `url` or `chapter` |
-| `nav`       | unset (filename order)                    | Grouped sidebar sections; see below                                     |
-| `repository` | unset                                    | GitHub URL; used with `edit` for **Edit this page**                     |
-| `edit`      | unset                                     | `{ link, path, branch }` — see Edit on GitHub below                     |
-| `copy_code` | `true`                                    | Set `false` to hide the Copy control on fences                          |
-| `page_toc`  | `true`                                    | Set `false` to hide the **On this page** rail                           |
-| `version`   | unset                                     | Current label for the version switcher                                  |
-| `versions`  | unset                                     | Peer deploys for the version switcher (needs 2+)                        |
+| Key          | Default                                   | Meaning                                                                 |
+|--------------|-------------------------------------------|-------------------------------------------------------------------------|
+| `banner`     | `banner.jpg` then `banner.png` if present | Hero image on Home                                                      |
+| `lead`       | unset                                     | Short pitch under the title on Home                                     |
+| `cname`      | unset                                     | Writes `CNAME` in the site root for a GitHub Pages custom domain        |
+| `base_path`  | unset                                     | URL prefix for project Pages (writes `<base href="/prefix/">`)          |
+| `links`      | unset                                     | Home-page links; each item needs `label` plus either `url` or `chapter` |
+| `nav`        | unset (filename order)                    | Grouped sidebar sections; see below                                     |
+| `repository` | unset                                     | GitHub URL; used with `edit` for **Edit this page**                     |
+| `edit`       | unset                                     | `{ link, path, branch }` — see Edit on GitHub below                     |
+| `copy_code`  | `true`                                    | Set `false` to hide the Copy control on fences                          |
+| `page_toc`   | `true`                                    | Set `false` to hide the **On this page** rail                           |
+| `version`    | unset                                     | Current label for the version switcher                                  |
+| `versions`   | unset                                     | Peer deploys for the version switcher (needs 2+)                        |
 
 ### Sidebar groups (`site.nav`)
 
@@ -176,10 +176,10 @@ List peers so the sidebar shows a version select:
 ],
 ```
 
-| Entry key | Required | Meaning |
-|-----------|----------|---------|
-| `label`   | yes      | Shown in the select (also accepted as `version`) |
-| `path`    | one of `path` / `url` | Absolute site path prefix (same rules as `base_path`) |
+| Entry key | Required              | Meaning                                                   |
+|-----------|-----------------------|-----------------------------------------------------------|
+| `label`   | yes                   | Shown in the select (also accepted as `version`)          |
+| `path`    | one of `path` / `url` | Absolute site path prefix (same rules as `base_path`)     |
 | `url`     | one of `path` / `url` | Full `https://…` override when peers live on another host |
 
 Current build: match `site.version` to a label, else match `site.base_path` to a
