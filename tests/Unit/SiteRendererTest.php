@@ -64,6 +64,7 @@ final class SiteRendererTest extends TestCase
             $this->assertStringContainsString('html[data-theme="dark"]', $css);
             $this->assertStringContainsString('.sidebar', $css);
             $this->assertStringContainsString('.book-banner', $css);
+            $this->assertStringContainsString('.content-main img', $css);
             $this->assertStringContainsString('@media (min-width: 56em)', $css);
             $this->assertFileExists($siteDir.'/.nojekyll');
             $this->assertFileDoesNotExist($siteDir.'/CNAME');
