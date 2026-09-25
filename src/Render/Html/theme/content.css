@@ -285,6 +285,13 @@ code {
 .mermaid-diagram { margin: 0 0 1.875em 0; text-align: center; }
 .mermaid-diagram img { max-width: 100%; height: auto; }
 
+/* Markdown images (screenshots, diagrams) must stay inside the reading column */
+.content-main img,
+.title-page img {
+    max-width: 100%;
+    height: auto;
+}
+
 figure.mermaid {
     width: 100%;
     max-width: 100%;
