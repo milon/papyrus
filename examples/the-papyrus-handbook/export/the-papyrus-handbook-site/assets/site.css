@@ -509,13 +509,6 @@ div[style*="page-break"] { display: none; }
 .title-page.docs-home {
     padding-top: 1.5em;
 }
-.title-page .docs-kicker {
-    margin: 0 0 0.75em;
-    font-size: 0.8rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
-}
 .title-page .docs-actions {
     margin: 2rem 0 0;
 }
@@ -562,6 +555,20 @@ div[style*="page-break"] { display: none; }
     color: var(--heading);
 }
 .not-found p { color: var(--muted); }
+.not-found .docs-cta-primary {
+    display: inline-block;
+    margin-top: 1.5rem;
+    padding: 0.7rem 1.25rem;
+    border: 1px solid var(--fg);
+    background: var(--heading);
+    color: var(--bg);
+    text-decoration: none;
+    font-family: "Linux Libertine", "Libertinus Serif", Georgia, serif;
+}
+.not-found .docs-cta-primary:hover {
+    text-decoration: none;
+    opacity: 0.92;
+}
 
 .theme-toggle,
 .nav-toggle,
@@ -737,20 +744,56 @@ html[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
     margin-top: 0.35rem;
 }
 
+.sidebar-group-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 100%;
+    margin: 0;
+    padding: 0.35rem 1rem 0.25rem;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.sidebar-group-toggle:hover {
+    color: var(--fg);
+}
+
+.sidebar-group-toggle:focus-visible {
+    outline: 2px solid var(--link);
+    outline-offset: -2px;
+}
+
 .sidebar-group-label {
     display: block;
-    padding: 0.35rem 1rem 0.25rem;
     font-size: 0.7rem;
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
-    color: var(--muted);
+}
+
+.sidebar-group-chevron {
+    flex: 0 0 auto;
+    transition: transform 0.15s ease;
+}
+
+.sidebar-group-toggle[aria-expanded="false"] .sidebar-group-chevron {
+    transform: rotate(-90deg);
 }
 
 .sidebar-group > ul {
     list-style: none;
     margin: 0;
     padding: 0;
+}
+
+.sidebar-group.is-collapsed > ul {
+    display: none;
 }
 
 .sidebar-backdrop {
@@ -945,21 +988,6 @@ html[data-theme="dark"] .theme-toggle .icon-sun { display: block; }
 }
 
 .chapter-nav .next { text-align: right; margin-left: auto; }
-
-.start-reading {
-    display: inline-block;
-    margin-top: 2.5rem;
-    padding: 0.7rem 1.25rem;
-    border: 1px solid var(--toggle-border);
-    color: var(--heading);
-    text-decoration: none;
-    font-family: "Linux Libertine", "Libertinus Serif", Georgia, serif;
-}
-
-.start-reading:hover {
-    border-color: var(--fg);
-    text-decoration: none;
-}
 
 @media (min-width: 56em) {
     .nav-toggle { display: none; }

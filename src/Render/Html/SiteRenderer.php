@@ -93,62 +93,6 @@ final class SiteRenderer
      */
     private function renderIndex(array $pages): string
     {
-        if ($this->project->isDocsSite()) {
-            return $this->renderDocsIndex($pages);
-        }
-
-        return $this->renderBookIndex($pages);
-    }
-
-    /**
-     * @param  list<array{chapter: Chapter, file: string, title: string}>  $pages
-     */
-    private function renderBookIndex(array $pages): string
-    {
-        $first = $pages[0];
-        $title = htmlspecialchars($this->project->title(), ENT_QUOTES | ENT_HTML5);
-        $subtitle = htmlspecialchars($this->project->subtitle(), ENT_QUOTES | ENT_HTML5);
-        $author = htmlspecialchars($this->project->author(), ENT_QUOTES | ENT_HTML5);
-        $firstFile = htmlspecialchars($first['file'], ENT_QUOTES | ENT_HTML5);
-        $firstTitle = htmlspecialchars($first['title'], ENT_QUOTES | ENT_HTML5);
-
-        $bannerHtml = $this->homeBannerHtml($title);
-        $leadHtml = $this->homeLeadHtml();
-        $linksHtml = $this->homeLinksHtml($pages);
-
-        $subtitleHtml = $this->project->subtitle() !== ''
-            ? '<p class="book-subtitle">'.$subtitle.'</p>'
-            : '';
-        $authorHtml = $this->project->author() !== ''
-            ? '<p class="book-author">'.$author.'</p>'
-            : '';
-
-        $body = <<<HTML
-<div class="title-page">
-    {$bannerHtml}
-    <h1 class="book-title">{$title}</h1>
-    {$subtitleHtml}
-    {$leadHtml}
-    {$authorHtml}
-    {$linksHtml}
-    <a class="start-reading" href="{$firstFile}">Start reading — {$firstTitle}</a>
-</div>
-HTML;
-
-        return $this->document(
-            pages: $pages,
-            pageTitle: $this->project->title(),
-            activeFile: 'index.html',
-            body: $body,
-            topbarTitle: $this->project->title(),
-        );
-    }
-
-    /**
-     * @param  list<array{chapter: Chapter, file: string, title: string}>  $pages
-     */
-    private function renderDocsIndex(array $pages): string
-    {
         $cta = $this->docsStartPage($pages);
         $title = htmlspecialchars($this->project->title(), ENT_QUOTES | ENT_HTML5);
         $ctaFile = htmlspecialchars($cta['file'], ENT_QUOTES | ENT_HTML5);
@@ -162,15 +106,20 @@ HTML;
             $subtitleHtml = '<p class="book-subtitle">'.htmlspecialchars($this->project->subtitle(), ENT_QUOTES | ENT_HTML5).'</p>';
         }
 
+        $authorHtml = '';
+        if ($this->project->author() !== '') {
+            $authorHtml = '<p class="book-author">'.htmlspecialchars($this->project->author(), ENT_QUOTES | ENT_HTML5).'</p>';
+        }
+
         $linksHtml = $this->homeLinksHtml($pages, 'docs-home-links');
 
         $body = <<<HTML
 <div class="title-page docs-home">
     {$bannerHtml}
-    <p class="docs-kicker">Documentation</p>
     <h1 class="book-title">{$title}</h1>
     {$subtitleHtml}
     {$leadHtml}
+    {$authorHtml}
     <p class="docs-actions">
         <a class="docs-cta-primary" href="{$ctaFile}">Get started — {$ctaTitle}</a>
     </p>
@@ -301,7 +250,7 @@ HTML;
     <p class="not-found-code">404</p>
     <h1>Page not found</h1>
     <p>This URL is not part of {$title}.</p>
-    <a class="start-reading" href="index.html">Back to home</a>
+    <a class="docs-cta-primary" href="index.html">Back to home</a>
 </div>
 HTML;
 
@@ -660,10 +609,10 @@ HTML;
             }
 
             if ($section['group'] !== null) {
-                $sectionsHtml .= sprintf(
-                    '<li class="sidebar-group"><span class="sidebar-group-label">%s</span><ul>%s</ul></li>',
-                    htmlspecialchars($section['group'], ENT_QUOTES | ENT_HTML5),
+                $sectionsHtml .= $this->sidebarGroupHtml(
+                    $section['group'],
                     $sectionItems,
+                    str_contains($sectionItems, 'aria-current="page"'),
                 );
             } else {
                 $sectionsHtml .= $sectionItems;
@@ -681,13 +630,47 @@ HTML;
         }
 
         if ($extra !== '') {
-            $sectionsHtml .= sprintf(
-                '<li class="sidebar-group"><span class="sidebar-group-label">More</span><ul>%s</ul></li>',
+            $sectionsHtml .= $this->sidebarGroupHtml(
+                'More',
                 $extra,
+                str_contains($extra, 'aria-current="page"'),
             );
         }
 
         return '<nav class="sidebar-nav"><ul>'.$sectionsHtml.'</ul></nav>';
+    }
+
+    private function sidebarGroupHtml(string $label, string $items, bool $containsActive): string
+    {
+        $id = 'sidebar-group-'.$this->sidebarGroupId($label);
+        $labelEsc = htmlspecialchars($label, ENT_QUOTES | ENT_HTML5);
+
+        return sprintf(
+            '<li class="sidebar-group" data-group="%s">'.
+            '<button type="button" class="sidebar-group-toggle" aria-expanded="true" aria-controls="%s">'.
+            '<span class="sidebar-group-label">%s</span>'.
+            '<svg class="sidebar-group-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false">'.
+            '<path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>'.
+            '</svg>'.
+            '</button>'.
+            '<ul id="%s"%s>%s</ul>'.
+            '</li>',
+            $labelEsc,
+            $id,
+            $labelEsc,
+            $id,
+            $containsActive ? ' data-contains-active' : '',
+            $items,
+        );
+    }
+
+    private function sidebarGroupId(string $label): string
+    {
+        $slug = strtolower(trim($label));
+        $slug = preg_replace('/[^a-z0-9]+/', '-', $slug) ?? 'group';
+        $slug = trim($slug, '-');
+
+        return $slug !== '' ? $slug : 'group';
     }
 
     /**

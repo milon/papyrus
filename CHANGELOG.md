@@ -13,6 +13,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `site.copy_code` / `site.page_toc` (default `true`) and `site.edit.link` (default `false`) to toggle those controls
 - `site.edit` nests `link` / `path` / `branch` for **Edit this page** (legacy flat `edit_*` keys still read)
 - **On this page** rail always renders on chapter pages when enabled — pages without `##` / `###` show the page title as the only entry
+- Unified `build:site` home (former docs layout): **Get started** CTA, optional author, `links` below; `site.mode` ignored
+- Collapsible `site.nav` sidebar groups (remembered in the browser; active group stays open)
 
 ## [1.3.2] - 2026-09-24
 

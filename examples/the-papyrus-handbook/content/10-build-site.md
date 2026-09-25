@@ -78,7 +78,6 @@ Optional `site` block in `papyrus.php`:
 
 ```php
 'site' => [
-    'mode' => 'book',                   // or 'docs' for a package documentation home
     'banner' => 'banner.jpg',           // under assets/; auto-detects banner.jpg / banner.png
     'lead' => 'A one-line pitch for the home page.',
     'cname' => 'docs.example.com',      // GitHub Pages custom domain
@@ -92,7 +91,6 @@ Optional `site` block in `papyrus.php`:
 
 | Key         | Default                                   | Meaning                                                                 |
 |-------------|-------------------------------------------|-------------------------------------------------------------------------|
-| `mode`      | `book`                                    | `docs` uses a package-style home (Get started CTA); `book` keeps Start reading |
 | `banner`    | `banner.jpg` then `banner.png` if present | Hero image on Home                                                      |
 | `lead`      | unset                                     | Short pitch under the title on Home                                     |
 | `cname`     | unset                                     | Writes `CNAME` in the site root for a GitHub Pages custom domain        |
@@ -110,7 +108,6 @@ Optional `site` block in `papyrus.php`:
 
 ```php
 'site' => [
-    'mode' => 'docs',
     'nav' => [
         [
             'group' => 'Getting started',
@@ -127,7 +124,9 @@ Optional `site` block in `papyrus.php`:
 Chapter names match the same way as `links.chapter` (filename, stem, or path).
 When `nav` is set, the sidebar shows labeled groups and Prev/Next follow that
 order. Chapters not listed still appear under **More**. Omit `nav` to keep the
-default natural filename order.
+default natural filename order. Group headings are collapsible (chevron toggle);
+open/closed state is remembered in the browser, and the group containing the
+current page always starts expanded.
 
 ### On this page
 
@@ -199,12 +198,13 @@ can.
 screenshots at `assets/examples/foo.png` and reference them from Markdown as
 `assets/examples/foo.png` so they work with `site.base_path` and `<base href>`.
 
-### Docs home CTA (`mode: docs`)
+### Home CTA
 
-With `mode: docs`, the primary button prefers a chapter whose slug or title
-contains “install”, “quick start”, or “getting started”; otherwise it skips a
+The home page primary button prefers a chapter whose slug or title contains
+“install”, “quick start”, or “getting started”; otherwise it skips a
 Welcome/`00-` chapter and links to the next page. Secondary `links` stay below
-the CTA (GitHub, Packagist, …).
+the CTA (GitHub, Packagist, …). Author is shown when `author` is set on the
+project.
 
 Nothing is inferred from chapter titles for `links`. If you want a Downloads link on Home,
 add it explicitly with `['label' => 'Downloads', 'chapter' => '19-downloads.md']`.

@@ -332,31 +332,35 @@ final class Project
     }
 
     /**
-     * Site presentation mode: `book` (default) or `docs`.
+     * @deprecated Site home is unified; preferred install/quick-start CTA for all projects.
+     *             Kept for older configs that still set site.mode.
      */
     public function siteMode(): string
     {
         $site = $this->config['site'] ?? [];
 
         if (! is_array($site)) {
-            return 'book';
+            return 'docs';
         }
 
         $mode = $site['mode'] ?? null;
 
         if (! is_string($mode)) {
-            return 'book';
+            return 'docs';
         }
 
         return match (strtolower(trim($mode))) {
-            'docs', 'doc', 'documentation' => 'docs',
-            default => 'book',
+            'book' => 'book',
+            default => 'docs',
         };
     }
 
+    /**
+     * @deprecated Always true for site rendering; retained for callers that checked docs mode.
+     */
     public function isDocsSite(): bool
     {
-        return $this->siteMode() === 'docs';
+        return true;
     }
 
     /**

@@ -120,11 +120,11 @@ final class InitCommandTest extends TestCase
 
         $yml = file_get_contents($docs.'/papyrus.yml');
         $this->assertIsString($yml);
-        $this->assertStringContainsString('mode: docs', $yml);
         $this->assertStringContainsString('repository:', $yml);
         $this->assertStringContainsString('edit:', $yml);
         $this->assertStringContainsString('path: docs/content', $yml);
         $this->assertStringContainsString('link: true', $yml);
+        $this->assertStringNotContainsString('mode:', $yml);
         $this->assertStringContainsString('build:site -e docs', (string) file_get_contents($docs.'/github/workflows/docs-site.yml'));
         $this->assertStringNotContainsString('kdp:', $yml);
         $this->assertStringNotContainsString('sample:', $yml);

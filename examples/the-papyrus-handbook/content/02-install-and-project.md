@@ -143,8 +143,9 @@ papyrus build:site -e docs
 papyrus serve -s docs/<slug>-site
 ```
 
-`site.mode: docs` is set so the home page uses a **Get started** CTA (and
-secondary GitHub/Packagist links) instead of “Start reading.”
+The site home always uses a **Get started** CTA (preferring Install / quick-start
+chapters) with secondary links below. Set `author` on the project if you want
+the author line on Home. Older `site.mode: book|docs` values are ignored.
 
 ### Import an existing README
 
@@ -168,7 +169,6 @@ like:
 # papyrus.yml
 title: milon/barcode
 site:
-  mode: docs
   lead: Short pitch for the home page.
   base_path: /barcode          # omit with a custom domain / cname
   repository: https://github.com/milon/barcode

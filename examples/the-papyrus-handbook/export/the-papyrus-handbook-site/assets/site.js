@@ -57,6 +57,46 @@
             backdrop.addEventListener("click", closeSidebar);
         }
 
+        var groupKey = "papyrus-sidebar-groups";
+        var groupPrefs = {};
+        try {
+            var rawPrefs = localStorage.getItem(groupKey);
+            if (rawPrefs) groupPrefs = JSON.parse(rawPrefs) || {};
+        } catch (e) {}
+
+        function setGroupExpanded(group, expanded) {
+            var toggle = group.querySelector(".sidebar-group-toggle");
+            if (!toggle) return;
+            toggle.setAttribute("aria-expanded", expanded ? "true" : "false");
+            group.classList.toggle("is-collapsed", !expanded);
+        }
+
+        function saveGroupPrefs() {
+            try { localStorage.setItem(groupKey, JSON.stringify(groupPrefs)); } catch (e) {}
+        }
+
+        document.querySelectorAll(".sidebar-group").forEach(function (group) {
+            var name = group.getAttribute("data-group") || "";
+            var list = group.querySelector(":scope > ul");
+            var containsActive = list && list.hasAttribute("data-contains-active");
+            var preferred = Object.prototype.hasOwnProperty.call(groupPrefs, name)
+                ? groupPrefs[name]
+                : true;
+
+            setGroupExpanded(group, containsActive ? true : preferred);
+
+            var toggle = group.querySelector(".sidebar-group-toggle");
+            if (!toggle) return;
+            toggle.addEventListener("click", function () {
+                var next = toggle.getAttribute("aria-expanded") !== "true";
+                setGroupExpanded(group, next);
+                if (name) {
+                    groupPrefs[name] = next;
+                    saveGroupPrefs();
+                }
+            });
+        });
+
         var searchOpen = document.getElementById("search-open");
         var searchModal = document.getElementById("search-modal");
         var searchModalBackdrop = document.getElementById("search-modal-backdrop");

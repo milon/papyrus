@@ -64,7 +64,6 @@ final class DocsPresetConfig
             ],
 
             'site' => [
-                'mode' => 'docs',
                 'lead' => $lead,
                 // Project GitHub Pages: set to /<repo>. Omit (or use cname) for a custom domain.
                 'base_path' => $basePath,

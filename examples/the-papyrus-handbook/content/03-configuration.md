@@ -208,7 +208,6 @@ face is registered.
 
 | Key         | Default                                     | Notes                                                                                                                     |
 |-------------|---------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
-| `mode`         | `book`                                      | `docs` → package documentation home (Get started); set by `init --preset=docs`                                            |
 | `banner`       | auto `banner.jpg` / `banner.png` if present | Under `assets/`                                                                                                           |
 | `lead`         | unset                                       | Home page pitch                                                                                                           |
 | `cname`        | unset                                       | Custom domain; writes a `CNAME` file in the site root for GitHub Pages; absolute `sitemap.xml` / `robots.txt` Sitemap URL |
@@ -234,7 +233,8 @@ face is registered.
 or a full relative source path, and links to that generated page.
 `repository` still works as a legacy fallback that auto-adds GitHub, Packagist,
 and Issues links when `links` is not set. Chapters are never linked
-automatically; add them explicitly through `links`.
+automatically; add them explicitly through `links`. Older `site.mode` values
+(`book` / `docs`) are ignored — every site home uses **Get started**.
 
 ```php
 'site' => [

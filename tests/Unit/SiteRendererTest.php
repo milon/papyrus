@@ -37,7 +37,8 @@ final class SiteRendererTest extends TestCase
             $this->assertStringContainsString('theme-toggle', $index);
             $this->assertStringContainsString('nav-toggle', $index);
             $this->assertStringContainsString('Mini Book', $index);
-            $this->assertStringContainsString('Start reading', $index);
+            $this->assertStringContainsString('Get started', $index);
+            $this->assertStringNotContainsString('Start reading', $index);
 
             $chapter = file_get_contents($siteDir.'/01-chapter-one.html');
             $this->assertIsString($chapter);
@@ -238,7 +239,7 @@ PHP);
     }
 
     #[Test]
-    public function docs_mode_home_uses_get_started_cta(): void
+    public function site_home_uses_get_started_cta_and_optional_author(): void
     {
         $bookDir = sys_get_temp_dir().'/papyrus-site-docs-'.uniqid('', true);
         $export = sys_get_temp_dir().'/papyrus-site-docs-export-'.uniqid('', true);
@@ -254,9 +255,9 @@ PHP);
 
 return [
     'title' => 'Barcode',
+    'author' => 'Nuruzzaman Milon',
     'themes' => ['light'],
     'site' => [
-        'mode' => 'docs',
         'lead' => 'Barcode generator for PHP and Laravel',
         'links' => [
             ['label' => 'GitHub', 'url' => 'https://github.com/milon/barcode'],
@@ -275,7 +276,7 @@ PHP);
             $index = file_get_contents($siteDir.'/index.html');
             $this->assertIsString($index);
             $this->assertStringContainsString('class="title-page docs-home"', $index);
-            $this->assertStringContainsString('Documentation', $index);
+            $this->assertStringNotContainsString('Documentation', $index);
             $this->assertStringContainsString('Barcode generator for PHP and Laravel', $index);
             $this->assertStringContainsString('Get started — Install', $index);
             $this->assertStringContainsString('href="01-install.html"', $index);
@@ -283,7 +284,8 @@ PHP);
             $this->assertStringContainsString('https://github.com/milon/barcode', $index);
             $this->assertStringContainsString('rel="noopener noreferrer"', $index);
             $this->assertStringNotContainsString('Start reading', $index);
-            $this->assertStringNotContainsString('class="book-author"', $index);
+            $this->assertStringContainsString('class="book-author"', $index);
+            $this->assertStringContainsString('Nuruzzaman Milon', $index);
 
             $css = file_get_contents($siteDir.'/assets/site.css');
             $this->assertIsString($css);
@@ -315,7 +317,6 @@ return [
     'title' => 'Nav Docs',
     'themes' => ['light'],
     'site' => [
-        'mode' => 'docs',
         'nav' => [
             [
                 'group' => 'Getting started',
@@ -339,9 +340,17 @@ PHP);
             $index = file_get_contents($siteDir.'/index.html');
             $this->assertIsString($index);
             $this->assertStringContainsString('sidebar-group-label', $index);
+            $this->assertStringContainsString('sidebar-group-toggle', $index);
+            $this->assertStringContainsString('aria-expanded="true"', $index);
             $this->assertStringContainsString('Getting started', $index);
             $this->assertStringContainsString('Reference', $index);
             $this->assertStringContainsString('More', $index);
+
+            $install = file_get_contents($siteDir.'/01-install.html');
+            $this->assertIsString($install);
+            $this->assertStringContainsString('data-contains-active', $install);
+            $this->assertStringContainsString('href="02-usage.html"', $install);
+            $this->assertStringContainsString('Next</span>Usage', $install);
 
             // Nav order: Install before Usage; Welcome/Extra fall into More.
             $installPos = strpos($index, '01-install.html');
@@ -353,14 +362,14 @@ PHP);
             $this->assertTrue($installPos < $usagePos);
             $this->assertTrue($usagePos < $apiPos);
 
-            $install = file_get_contents($siteDir.'/01-install.html');
-            $this->assertIsString($install);
-            $this->assertStringContainsString('href="02-usage.html"', $install);
-            $this->assertStringContainsString('Next</span>Usage', $install);
-
             $css = file_get_contents($siteDir.'/assets/site.css');
             $this->assertIsString($css);
-            $this->assertStringContainsString('.sidebar-group-label', $css);
+            $this->assertStringContainsString('.sidebar-group-toggle', $css);
+            $this->assertStringContainsString('.sidebar-group.is-collapsed', $css);
+
+            $js = file_get_contents($siteDir.'/assets/site.js');
+            $this->assertIsString($js);
+            $this->assertStringContainsString('papyrus-sidebar-groups', $js);
         } finally {
             $this->removeDir($bookDir);
             $this->removeDir($export);
