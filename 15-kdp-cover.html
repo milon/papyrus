@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>kdp:cover — The Papyrus Handbook</title>
+    <link rel="stylesheet" href="assets/site.css">
+    <script src="assets/site.js"></script>
+</head>
+<body>
+    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+    <aside class="sidebar" id="sidebar" aria-label="Chapters">
+        <div class="sidebar-header">
+            <a class="sidebar-brand" href="index.html">The Papyrus Handbook</a>
+            <p class="sidebar-subtitle">Markdown to PDF, EPUB, HTML sites, and KDP</p>
+            
+        </div>
+        <nav class="sidebar-nav"><ul><li><a href="index.html">Home</a></li><li class="sidebar-group" data-group="Start here"><button type="button" class="sidebar-group-toggle" aria-expanded="true" aria-controls="sidebar-group-start-here"><span class="sidebar-group-label">Start here</span><svg class="sidebar-group-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul id="sidebar-group-start-here"><li><a href="00-welcome.html">Welcome</a></li><li><a href="01-introduction.html">Introduction</a></li><li><a href="02-install-and-project.html">Install and project layout</a></li></ul></li><li class="sidebar-group" data-group="Authoring"><button type="button" class="sidebar-group-toggle" aria-expanded="true" aria-controls="sidebar-group-authoring"><span class="sidebar-group-label">Authoring</span><svg class="sidebar-group-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul id="sidebar-group-authoring"><li><a href="03-configuration.html">Configuration</a></li><li><a href="04-writing-content.html">Writing content</a></li><li><a href="05-themes-and-assets.html">Themes and assets</a></li></ul></li><li class="sidebar-group" data-group="Build"><button type="button" class="sidebar-group-toggle" aria-expanded="true" aria-controls="sidebar-group-build"><span class="sidebar-group-label">Build</span><svg class="sidebar-group-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul id="sidebar-group-build"><li><a href="06-build.html">build</a></li><li><a href="07-build-pdf.html">build:pdf</a></li><li><a href="08-build-epub.html">build:epub</a></li><li><a href="09-build-html.html">build:html</a></li><li><a href="10-build-site.html">build:site</a></li><li><a href="11-build-sample.html">build:sample</a></li></ul></li><li class="sidebar-group" data-group="Amazon KDP"><button type="button" class="sidebar-group-toggle" aria-expanded="true" aria-controls="sidebar-group-amazon-kdp"><span class="sidebar-group-label">Amazon KDP</span><svg class="sidebar-group-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul id="sidebar-group-amazon-kdp" data-contains-active><li><a href="12-kdp.html">kdp</a></li><li><a href="13-kdp-ebook.html">kdp:ebook</a></li><li><a href="14-kdp-print.html">kdp:print</a></li><li><a class="is-active" href="15-kdp-cover.html" aria-current="page">kdp:cover</a></li><li><a href="16-kdp-metadata.html">kdp:metadata</a></li></ul></li><li class="sidebar-group" data-group="Ship it"><button type="button" class="sidebar-group-toggle" aria-expanded="true" aria-controls="sidebar-group-ship-it"><span class="sidebar-group-label">Ship it</span><svg class="sidebar-group-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true" focusable="false"><path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></button><ul id="sidebar-group-ship-it"><li><a href="17-migration-and-ci.html">Migration</a></li><li><a href="18-ci-documentation.html">CI for documentation</a></li><li><a href="19-command-reference.html">Command reference</a></li><li><a href="20-downloads.html">Downloads</a></li></ul></li></ul></nav>
+    </aside>
+    <div class="layout">
+        <header class="topbar">
+            <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="sidebar" aria-label="Open chapter list" title="Chapters">
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                    <path d="M4 7h16M4 12h16M4 17h16"/>
+                </svg>
+            </button>
+            <p class="topbar-title">kdp:cover</p>
+            <div class="topbar-actions">
+                <button type="button" class="search-open" id="search-open" aria-label="Search" title="Search (/)">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M20 20l-3.5-3.5"/>
+                    </svg>
+                </button>
+                <button type="button" class="theme-toggle" id="theme-toggle" aria-pressed="false" aria-label="Switch to dark mode" title="Dark mode">
+                    <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+                    </svg>
+                    <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="12" cy="12" r="4"/>
+                        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+                    </svg>
+                </button>
+            </div>
+        </header>
+        <main class="content">
+            <div class="content-with-toc"><div class="content-main"><div style="page-break-after: always;"></div><h1>kdp:cover</h1>
+<p>Copy configured cover images from <code>assets/</code> into <code>export/</code> with KDP-oriented
+filenames. No enable flag — safe to run anytime.</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus kdp:cover
+papyrus kdp:cover -d /path/to/book -e /path/to/out
+papyrus kdp:cover --dimensions --pages=220
+papyrus kdp:cover --wrap --pages=220
+papyrus kdp:cover --wrap --theme=light
+</code></pre>
+<h2 id="options"><a class="heading-permalink" href="#options" aria-hidden="true" tabindex="-1">#</a>Options</h2>
+<table>
+<thead>
+<tr>
+<th>Option</th>
+<th>Short</th>
+<th>Default</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>--dir</code></td>
+<td><code>-d</code></td>
+<td>current directory</td>
+<td>Book root</td>
+</tr>
+<tr>
+<td><code>--export</code></td>
+<td><code>-e</code></td>
+<td><code>export/</code></td>
+<td>Output directory</td>
+</tr>
+<tr>
+<td><code>--dimensions</code></td>
+<td></td>
+<td>off</td>
+<td>Print wrap-cover size estimate (spine + full bleed)</td>
+</tr>
+<tr>
+<td><code>--wrap</code></td>
+<td></td>
+<td>off</td>
+<td>Generate wraparound cover PDF + PNG preview</td>
+</tr>
+<tr>
+<td><code>--pages</code></td>
+<td></td>
+<td>from print PDF</td>
+<td>Page count for <code>--dimensions</code> / <code>--wrap</code></td>
+</tr>
+<tr>
+<td><code>--theme</code></td>
+<td></td>
+<td>first theme</td>
+<td>Front-cover theme used by <code>--wrap</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="sources-and-outputs"><a class="heading-permalink" href="#sources-and-outputs" aria-hidden="true" tabindex="-1">#</a>Sources and outputs</h2>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Export name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>kdp.ebook.cover</code> → <code>assets/&lt;file&gt;</code></td>
+<td><code>&lt;slug&gt;-kdp-ebook-cover.&lt;ext&gt;</code></td>
+</tr>
+<tr>
+<td><code>cover[&lt;theme&gt;]</code> or <code>cover.image</code></td>
+<td><code>&lt;slug&gt;-kdp-print-cover-&lt;theme&gt;.&lt;ext&gt;</code> (one per theme)</td>
+</tr>
+</tbody>
+</table>
+<p>Missing source files are skipped (no error). If nothing is copied, the
+command still succeeds with a comment.</p>
+<h2 id="example"><a class="heading-permalink" href="#example" aria-hidden="true" tabindex="-1">#</a>Example</h2>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'cover'</span> =&gt; [
+    <span class="hljs-string">'image'</span> =&gt; <span class="hljs-string">'cover.png'</span>,
+    <span class="hljs-string">'light'</span> =&gt; <span class="hljs-string">'cover-light.png'</span>,
+],
+<span class="hljs-string">'kdp'</span> =&gt; [
+    <span class="hljs-string">'ebook'</span> =&gt; [
+        <span class="hljs-string">'cover'</span> =&gt; <span class="hljs-string">'cover-ebook.jpg'</span>,
+    ],
+],
+</code></pre>
+<p>With themes <code>light</code> and <code>dark</code>, a typical export folder might contain:</p>
+<pre><code class="language-text">export/my-book-kdp-ebook-cover.jpg
+export/my-book-kdp-print-cover-light.png
+export/my-book-kdp-print-cover-dark.png   # if dark cover resolves
+</code></pre>
+<p>Papyrus copies files as-is for ebook/front covers. With <code>--wrap</code> it also
+composes a <strong>paperback wraparound</strong> PDF (back | spine | front, plus bleed)
+using Amazon’s spine formula and your front cover image:</p>
+<pre><code class="language-bash hljs bash" data-lang="bash">papyrus kdp:cover --wrap
+papyrus kdp:cover --wrap --pages=220
+</code></pre>
+<p>Outputs:</p>
+<pre><code class="language-text">export/&lt;slug&gt;-kdp-print-wrap.pdf   # upload to KDP as the cover
+export/&lt;slug&gt;-kdp-print-wrap.png   # preview
+</code></pre>
+<p>Optional config:</p>
+<pre><code class="language-php hljs php" data-lang="php"><span class="hljs-string">'cover'</span> =&gt; [
+    <span class="hljs-string">'image'</span> =&gt; <span class="hljs-string">'cover.png'</span>,
+    <span class="hljs-string">'back'</span> =&gt; <span class="hljs-string">'back-cover.png'</span>,   <span class="hljs-comment">// optional; otherwise a text back panel is drawn</span>
+],
+<span class="hljs-string">'kdp'</span> =&gt; [
+    <span class="hljs-string">'print'</span> =&gt; [
+        <span class="hljs-string">'paper'</span> =&gt; <span class="hljs-string">'white'</span>,       <span class="hljs-comment">// or cream — affects spine width</span>
+        <span class="hljs-string">'back_cover'</span> =&gt; <span class="hljs-string">'back-cover.png'</span>, <span class="hljs-comment">// preferred over cover.back</span>
+        <span class="hljs-string">'spine_color'</span> =&gt; <span class="hljs-string">'#1a1a1a'</span>,       <span class="hljs-comment">// optional; default samples the front cover</span>
+    ],
+],
+</code></pre>
+<p>Without <code>--pages</code>, Papyrus counts pages in <code>export/&lt;slug&gt;-kdp-print.pdf</code>
+(build <code>kdp:print</code> first). Spine text is drawn only when Amazon allows it
+(≥ 79 pages). Always verify with Amazon’s cover calculator before upload.</p>
+<div class="page-actions"><button type="button" class="page-action" id="copy-page-markdown" aria-label="Copy page as Markdown" title="Copy as Markdown"><svg class="page-action-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><rect x="9" y="9" width="13" height="13" rx="2" stroke="currentColor" stroke-width="1.75"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Copy as Markdown</span></button><script type="application/json" id="page-markdown-source">"---\ntitle: kdp:cover\n---\n\n# kdp:cover\n\nCopy configured cover images from `assets/` into `export/` with KDP-oriented\nfilenames. No enable flag — safe to run anytime.\n\n```bash\npapyrus kdp:cover\npapyrus kdp:cover -d /path/to/book -e /path/to/out\npapyrus kdp:cover --dimensions --pages=220\npapyrus kdp:cover --wrap --pages=220\npapyrus kdp:cover --wrap --theme=light\n```\n\n## Options\n\n| Option         | Short | Default           | Meaning                                             |\n|----------------|-------|-------------------|-----------------------------------------------------|\n| `--dir`        | `-d`  | current directory | Book root                                           |\n| `--export`     | `-e`  | `export/`         | Output directory                                    |\n| `--dimensions` |       | off               | Print wrap-cover size estimate (spine + full bleed) |\n| `--wrap`       |       | off               | Generate wraparound cover PDF + PNG preview         |\n| `--pages`      |       | from print PDF    | Page count for `--dimensions` / `--wrap`            |\n| `--theme`      |       | first theme       | Front-cover theme used by `--wrap`                  |\n\n## Sources and outputs\n\n| Source                              | Export name                                            |\n|-------------------------------------|--------------------------------------------------------|\n| `kdp.ebook.cover` → `assets/\u003Cfile\u003E` | `\u003Cslug\u003E-kdp-ebook-cover.\u003Cext\u003E`                         |\n| `cover[\u003Ctheme\u003E]` or `cover.image`   | `\u003Cslug\u003E-kdp-print-cover-\u003Ctheme\u003E.\u003Cext\u003E` (one per theme) |\n\nMissing source files are skipped (no error). If nothing is copied, the\ncommand still succeeds with a comment.\n\n## Example\n\n```php\n\u0027cover\u0027 =\u003E [\n    \u0027image\u0027 =\u003E \u0027cover.png\u0027,\n    \u0027light\u0027 =\u003E \u0027cover-light.png\u0027,\n],\n\u0027kdp\u0027 =\u003E [\n    \u0027ebook\u0027 =\u003E [\n        \u0027cover\u0027 =\u003E \u0027cover-ebook.jpg\u0027,\n    ],\n],\n```\n\nWith themes `light` and `dark`, a typical export folder might contain:\n\n```text\nexport/my-book-kdp-ebook-cover.jpg\nexport/my-book-kdp-print-cover-light.png\nexport/my-book-kdp-print-cover-dark.png   # if dark cover resolves\n```\n\nPapyrus copies files as-is for ebook/front covers. With `--wrap` it also\ncomposes a **paperback wraparound** PDF (back | spine | front, plus bleed)\nusing Amazon’s spine formula and your front cover image:\n\n```bash\npapyrus kdp:cover --wrap\npapyrus kdp:cover --wrap --pages=220\n```\n\nOutputs:\n\n```text\nexport/\u003Cslug\u003E-kdp-print-wrap.pdf   # upload to KDP as the cover\nexport/\u003Cslug\u003E-kdp-print-wrap.png   # preview\n```\n\nOptional config:\n\n```php\n\u0027cover\u0027 =\u003E [\n    \u0027image\u0027 =\u003E \u0027cover.png\u0027,\n    \u0027back\u0027 =\u003E \u0027back-cover.png\u0027,   // optional; otherwise a text back panel is drawn\n],\n\u0027kdp\u0027 =\u003E [\n    \u0027print\u0027 =\u003E [\n        \u0027paper\u0027 =\u003E \u0027white\u0027,       // or cream — affects spine width\n        \u0027back_cover\u0027 =\u003E \u0027back-cover.png\u0027, // preferred over cover.back\n        \u0027spine_color\u0027 =\u003E \u0027#1a1a1a\u0027,       // optional; default samples the front cover\n    ],\n],\n```\n\nWithout `--pages`, Papyrus counts pages in `export/\u003Cslug\u003E-kdp-print.pdf`\n(build `kdp:print` first). Spine text is drawn only when Amazon allows it\n(≥ 79 pages). Always verify with Amazon’s cover calculator before upload.\n"</script><button type="button" class="page-action" id="print-page" aria-label="Print this page" title="Print this page"><svg class="page-action-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M6 9V2h12v7" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 14h12v8H6z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/></svg><span>Print this page</span></button><a class="page-action" href="https://github.com/milon/papyrus/edit/master/examples/the-papyrus-handbook/content/15-kdp-cover.md" target="_blank" rel="noopener noreferrer"><svg class="page-action-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false"><path d="M12 20h9" stroke="currentColor" stroke-width="1.75" stroke-linecap="round"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z" stroke="currentColor" stroke-width="1.75" stroke-linejoin="round"/></svg><span>Edit this page</span></a></div><nav class="chapter-nav" aria-label="Chapter"><a class="prev" href="14-kdp-print.html"><span class="label">Previous</span>kdp:print</a><a class="next" href="16-kdp-metadata.html"><span class="label">Next</span>kdp:metadata</a></nav></div><aside class="page-toc" aria-label="On this page"><p class="page-toc-title"><svg class="page-toc-icon" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" focusable="false"><path d="M1.833 8h12.333M1.833 3.833h12.333M1.833 12.167H7.666" stroke="currentColor" stroke-width="1.25" stroke-linecap="square"/></svg>On this page</p><div class="page-toc-rail"><ul><li><a href="#options">Options</a></li><li><a href="#sources-and-outputs">Sources and outputs</a></li><li><a href="#example">Example</a></li></ul></div></aside></div>
+        </main>
+    </div>
+    <div class="search-modal" id="search-modal" hidden role="dialog" aria-modal="true" aria-labelledby="search-modal-title">
+        <div class="search-modal-backdrop" id="search-modal-backdrop"></div>
+        <div class="search-modal-panel" id="search-modal-panel">
+            <h2 id="search-modal-title" class="visually-hidden">Search</h2>
+            <div class="search-modal-header">
+                <div class="search-modal-input-wrap">
+                    <svg class="search-modal-input-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <circle cx="11" cy="11" r="7"/>
+                        <path d="M20 20l-3.5-3.5"/>
+                    </svg>
+                    <label class="visually-hidden" for="search-modal-input">Search chapters</label>
+                    <input id="search-modal-input" type="search" role="searchbox" placeholder="Search chapters…" autocomplete="off">
+                </div>
+                <button type="button" class="search-modal-close" id="search-modal-close" aria-label="Close search">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                        <path d="M6 6l12 12M18 6L6 18"/>
+                    </svg>
+                </button>
+            </div>
+            <div class="search-modal-body">
+                <p class="search-modal-hint" id="search-modal-hint"><kbd>/</kbd> to search from any page</p>
+                <div class="search-results" id="search-results" hidden></div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
