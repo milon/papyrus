@@ -4,6 +4,13 @@
   <img src="assets/papyrus-banner.jpg" alt="Papyrus — Site, PDF, EPUB, HTML, and KDP" width="100%">
 </p>
 
+<p align="center">
+  <a href="https://packagist.org/packages/milon/papyrus"><img src="https://img.shields.io/packagist/v/milon/papyrus.svg" alt="Latest version"></a>
+  <a href="https://packagist.org/packages/milon/papyrus"><img src="https://img.shields.io/packagist/php-v/milon/papyrus.svg" alt="PHP version"></a>
+  <a href="https://github.com/milon/papyrus/actions/workflows/ci.yml"><img src="https://github.com/milon/papyrus/actions/workflows/ci.yml/badge.svg" alt="Tests"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
+</p>
+
 PHP CLI for Markdown book projects. One `content/` tree becomes PDF, EPUB, HTML, a multi-page site, sample PDFs, and Amazon KDP deliverables.
 
 Influenced by [ibis-next](https://github.com/Hi-Folks/ibis-next), with first-class extras for sites, Mermaid, multi-script fonts, drafts, and KDP. Book roots use `papyrus.php` (or `.yml` / `.json`), `content/`, and `assets/`. Themes, CSS, and fonts ship bundled; publish them locally only when you need to customize.
