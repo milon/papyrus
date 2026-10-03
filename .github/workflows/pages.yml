@@ -1,19 +1,37 @@
 name: pages
 
+# Builds the handbook site to verify config. Live site is deployed from milon/oss
+# to https://oss.milon.im/papyrus/
+
 on:
   push:
     branches: [main, master]
+    paths:
+      - "examples/the-papyrus-handbook/**"
+      - "src/**"
+      - "bin/**"
+      - "composer.json"
+      - "composer.lock"
+      - ".github/workflows/pages.yml"
+  pull_request:
+    paths:
+      - "examples/the-papyrus-handbook/**"
+      - "src/**"
+      - "bin/**"
+      - "composer.json"
+      - "composer.lock"
+      - ".github/workflows/pages.yml"
   workflow_dispatch:
 
 concurrency:
-  group: pages
+  group: pages-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
-  deploy:
+  build:
     runs-on: ubuntu-latest
 
     steps:
@@ -54,12 +72,5 @@ jobs:
           test -f docs/the-papyrus-handbook-site/index.html
           test -f docs/the-papyrus-handbook-site/404.html
           test -f docs/the-papyrus-handbook-site/.nojekyll
-          test -f docs/the-papyrus-handbook-site/assets/fonts/LinLibertine_R.ttf
-
-      - name: Deploy to gh-pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: docs/the-papyrus-handbook-site
-          force_orphan: true
-          commit_message: "Deploy handbook site"
+          grep -q 'base href="/papyrus/"' docs/the-papyrus-handbook-site/index.html
+          grep -q 'oss.milon.im' docs/the-papyrus-handbook-site/CNAME

@@ -15,7 +15,7 @@ PHP CLI for Markdown book projects. One `content/` tree becomes PDF, EPUB, HTML,
 
 Influenced by [ibis-next](https://github.com/Hi-Folks/ibis-next), with first-class extras for sites, Mermaid, multi-script fonts, drafts, and KDP. Book roots use `papyrus.php` (or `.yml` / `.json`), `content/`, and `assets/`. Themes, CSS, and fonts ship bundled; publish them locally only when you need to customize.
 
-**[Handbook](https://papyrus.milon.im/)** · [Packagist](https://packagist.org/packages/milon/papyrus) · [GitHub](https://github.com/milon/papyrus)
+**[Handbook](https://oss.milon.im/papyrus/)** · [Packagist](https://packagist.org/packages/milon/papyrus) · [GitHub](https://github.com/milon/papyrus)
 
 ## Features
 
@@ -25,7 +25,7 @@ Influenced by [ibis-next](https://github.com/Hi-Folks/ibis-next), with first-cla
 - **PDF / EPUB / HTML** — light & dark themes, `--parallel` PDF builds, single-file HTML
 - **Writing** — Mermaid at build time, draft chapters (`draft: true`), sample PDFs, multi-script fonts
 - **Tooling** — `doctor`, `watch`, `lint`, `sizes`, `asset:publish`, `migrate-ibis`
-- **PHAR** — downloadable `papyrus.phar` for CI without a Composer project (needs PHP 8.2+); see [CI for documentation](https://papyrus.milon.im/18-ci-documentation.html)
+- **PHAR** — downloadable `papyrus.phar` for CI without a Composer project (needs PHP 8.2+); see [CI for documentation](https://oss.milon.im/papyrus/18-ci-documentation.html)
 - **Caches** — chapter HTML and Mermaid figures under `.papyrus/`; `-e` / `--export` for CI / `docs/`
 
 ## Handbook
@@ -34,8 +34,8 @@ The sample book lives in [`examples/the-papyrus-handbook/`](examples/the-papyrus
 
 | Format     | Link                                                                                                    |
 |------------|---------------------------------------------------------------------------------------------------------|
-| Site       | [papyrus.milon.im](https://papyrus.milon.im/)                                                           |
-| Downloads  | [PDF previews](https://papyrus.milon.im/19-downloads.html)                                              |
+| Site       | [oss.milon.im/papyrus](https://oss.milon.im/papyrus/)                                                           |
+| Downloads  | [PDF previews](https://oss.milon.im/papyrus/19-downloads.html)                                              |
 | HTML       | [docs/the-papyrus-handbook.html](docs/the-papyrus-handbook.html)                                        |
 | PDF        | [light](docs/the-papyrus-handbook-light.pdf) · [dark](docs/the-papyrus-handbook-dark.pdf)               |
 | Sample PDF | [light](docs/sample-the-papyrus-handbook-light.pdf) · [dark](docs/sample-the-papyrus-handbook-dark.pdf) |
@@ -69,7 +69,7 @@ export PUPPETEER_EXECUTABLE_PATH="/Applications/Google Chrome.app/Contents/MacOS
 papyrus doctor
 ```
 
-Linux: install Chromium or Chrome, set `PUPPETEER_EXECUTABLE_PATH`, and put [epubcheck](https://github.com/w3c/epubcheck/releases) on `PATH`. Details are in the [install chapter](https://papyrus.milon.im/02-install-and-project.html).
+Linux: install Chromium or Chrome, set `PUPPETEER_EXECUTABLE_PATH`, and put [epubcheck](https://github.com/w3c/epubcheck/releases) on `PATH`. Details are in the [install chapter](https://oss.milon.im/papyrus/02-install-and-project.html).
 
 ## Install
 
@@ -179,7 +179,7 @@ papyrus asset:publish --only=themes
 | `lint`                                                                   | Lint PHP fences in `content/` (`--fix`)                                    |
 | `watch`                                                                  | Rebuild on change (`--with-site`, `--with-sample`, `--include-drafts`)     |
 
-Shared flags: `-d` / `--dir`, `-e` / `--export`, `--include-drafts`. Full options: [handbook command reference](https://papyrus.milon.im/18-command-reference.html).
+Shared flags: `-d` / `--dir`, `-e` / `--export`, `--include-drafts`. Full options: [handbook command reference](https://oss.milon.im/papyrus/18-command-reference.html).
 
 ```php
 $project = Milon\Papyrus\Config\Project::load($bookDir);
