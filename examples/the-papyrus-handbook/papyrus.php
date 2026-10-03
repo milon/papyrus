@@ -33,6 +33,7 @@ return [
     'site' => [
         'banner' => 'banner.jpg', // book-specific site home image
         'lead' => 'Official handbook for milon/papyrus — the same Markdown chapters build the PDF, HTML file, and this site.',
+        // Public URL oss.milon.im/papyrus — CI strips CNAME; Pages is milon.github.io/papyrus/
         'cname' => 'oss.milon.im',
         'base_path' => '/papyrus',
         'repository' => 'https://github.com/milon/papyrus',

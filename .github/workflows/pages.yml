@@ -1,34 +1,22 @@
 name: pages
 
-# Builds the handbook site to verify config. Live site is deployed from milon/oss
-# to https://oss.milon.im/papyrus/
+# Deploys to https://milon.github.io/papyrus/
+# Public URL: https://oss.milon.im/papyrus/ (Cloudflare Worker in milon/oss)
 
 on:
   push:
     branches: [main, master]
-    paths:
-      - "examples/the-papyrus-handbook/**"
-      - "src/**"
-      - "bin/**"
-      - "composer.json"
-      - "composer.lock"
-      - ".github/workflows/pages.yml"
   pull_request:
-    paths:
-      - "examples/the-papyrus-handbook/**"
-      - "src/**"
-      - "bin/**"
-      - "composer.json"
-      - "composer.lock"
-      - ".github/workflows/pages.yml"
   workflow_dispatch:
 
 concurrency:
-  group: pages-${{ github.ref }}
+  group: pages
   cancel-in-progress: true
 
 permissions:
   contents: read
+  pages: write
+  id-token: write
 
 jobs:
   build:
@@ -71,6 +59,21 @@ jobs:
           ./bin/papyrus build:site -d examples/the-papyrus-handbook -e docs
           test -f docs/the-papyrus-handbook-site/index.html
           test -f docs/the-papyrus-handbook-site/404.html
-          test -f docs/the-papyrus-handbook-site/.nojekyll
           grep -q 'base href="/papyrus/"' docs/the-papyrus-handbook-site/index.html
-          grep -q 'oss.milon.im' docs/the-papyrus-handbook-site/CNAME
+          # cname in papyrus.php is for absolute sitemap URLs only; do not claim the domain.
+          rm -f docs/the-papyrus-handbook-site/CNAME
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/the-papyrus-handbook-site
+
+  deploy:
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
